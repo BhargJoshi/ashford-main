@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +26,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s, opacity 0.4s ease-out, transform 0.3s, box-shadow 0.3s, border-color 0.3s; 
+            transition: background-color 0.3s, color 0.3s, opacity 0.4s ease-out, transform 0.3s, box-shadow 0.3s, border-color 0.3s;
         }
 
         body {
@@ -36,7 +35,7 @@
             font-family: var(--font-secondary);
             line-height: 1.6;
             scroll-behavior: smooth; 
-            overflow-x: hidden;
+            overflow-x: hidden; /* Prevents horizontal scrolling */
         }
 
         a {
@@ -51,7 +50,7 @@
         
         /* General layout helpers */
         .section-padding {
-            padding: 100px 5%; 
+            padding: 100px 5%;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -78,9 +77,7 @@
             color: var(--color-blue-accent);
         }
 
-        /* ------------------------------------------------------------------
-           --- Change 1: LOGO STYLING ---
-           ------------------------------------------------------------------ */
+        /* --- LOGO STYLING --- */
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
@@ -89,7 +86,7 @@
         }
         
         .logo-image {
-            height: 30px; /* Adjust size of the logo image */
+            height: 30px; 
             width: auto;
             margin-right: 0.5rem;
         }
@@ -116,7 +113,7 @@
             background-color: var(--color-blue-hover);
             color: var(--color-primary-text);
             transform: translateY(-4px) scale(1.03); 
-            box-shadow: 0 8px 25px rgba(0, 153, 255, 0.8); 
+            box-shadow: 0 8px 25px rgba(0, 153, 255, 0.8);
         }
         
         .btn-secondary {
@@ -176,7 +173,19 @@
         }
 
         nav a:hover::after, nav a.active::after {
-            width: 100%; 
+            width: 100%;
+        }
+        
+        /* Mobile Menu Toggle (Hidden on Desktop) */
+        .mobile-menu-toggle {
+            display: none; 
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--color-primary-text);
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
         }
 
         /* --- HERO SECTION --- */
@@ -225,7 +234,7 @@
             gap: 8rem; 
             width: 100%;
             position: absolute;
-            bottom: 30px; 
+            bottom: 30px;
         }
         
         .stat-item {
@@ -244,7 +253,7 @@
             letter-spacing: 1px;
         }
         
-        /* --- ABOUT SECTION (Animated Graph) --- */
+        /* --- ABOUT SECTION --- */
         .about-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -284,12 +293,12 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             padding: 20px;
             overflow: hidden;
-            display: flex; 
+            display: flex;
             justify-content: center;
             align-items: center;
         }
         
-        /* Animated Graph Styling */
+        /* Animated Graph Styling - Retained for design consistency */
         .animated-graph {
             position: absolute;
             bottom: 0;
@@ -347,7 +356,7 @@
         }
 
 
-        /* --- ADVANTAGE SECTION (Glow on Hover/Click) --- */
+        /* --- ADVANTAGE SECTION --- */
         .advantage-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -362,12 +371,11 @@
             background-color: var(--color-card-bg); 
             cursor: pointer;
             border: 1px solid transparent; 
-            
             transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
         }
         
         .advantage-item:hover, .advantage-item:active {
-            box-shadow: 0 0 25px var(--color-blue-accent); 
+            box-shadow: 0 0 25px var(--color-blue-accent);
             transform: translateY(-8px); 
             border-color: var(--color-blue-accent); 
         }
@@ -386,9 +394,7 @@
             color: var(--color-blue-accent);
         }
 
-        /* ------------------------------------------------------------------
-           --- SERVICES SECTION (Change 2: Button Standardization) ---
-           ------------------------------------------------------------------ */
+        /* --- SERVICES SECTION --- */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -551,7 +557,7 @@
             display: inline-block;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
-            font-size: 0; 
+            font-size: 0;
         }
 
         .slider-dot.active, .slider-dot:hover {
@@ -701,6 +707,174 @@
             transform: translateY(0);
         }
         
+        /* ------------------------------------------------------------------
+           --- MEDIA QUERIES FOR RESPONSIVENESS (900px - Tablet/Small Desktop) ---
+           ------------------------------------------------------------------ */
+        @media (max-width: 900px) {
+            
+            /* General */
+            h2 {
+                font-size: 2rem;
+            }
+            .section-padding {
+                padding: 80px 4%; 
+            }
+
+            /* Navigation (Mobile Menu activation) */
+            nav {
+                /* New: Force navigation to fullscreen overlay */
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: var(--color-dark-bg);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transform: translateX(100%); 
+                opacity: 0;
+                pointer-events: none;
+                transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+            }
+
+            nav.active {
+                transform: translateX(0);
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            nav a {
+                margin: 20px 0;
+                font-size: 1.5rem;
+                opacity: 0.9;
+            }
+            
+            .mobile-menu-toggle {
+                display: block; /* Show the hamburger button */
+                order: 3; 
+            }
+            
+            .join-button {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+
+            /* Hero */
+            .hero-section h1 {
+                font-size: 3rem; 
+            }
+            .stats-bar {
+                gap: 4rem; 
+            }
+
+            /* *** FLUID DESIGN FIXES: COLLAPSE TO SINGLE COLUMN *** */
+            
+            /* About Section - Collapses to single column */
+            .about-content {
+                grid-template-columns: 1fr; 
+                gap: 3rem;
+            }
+            .about-visual {
+                min-height: 300px; 
+            }
+            .about-text {
+                grid-row: 2; /* Move text below visual on mobile */
+            }
+
+            /* Advantage Section - Collapses to single column */
+            .advantage-grid {
+                grid-template-columns: 1fr; /* Aggressive collapse for mobile-first feel */
+            }
+
+            /* Services Section - Collapses to single column */
+            .services-grid {
+                grid-template-columns: 1fr; /* Aggressive collapse for mobile-first feel */
+            }
+            
+            /* Footer */
+            .footer {
+                flex-wrap: wrap; 
+                justify-content: flex-start;
+                gap: 30px;
+                padding: 40px 5%;
+            }
+            .footer-logo {
+                width: 100%; 
+                margin-bottom: 20px;
+            }
+            .footer-links, .footer-contact {
+                /* Ensures columns stack naturally without wrapping to next line */
+                min-width: 150px; 
+            }
+        }
+
+        /* ------------------------------------------------------------------
+           --- MEDIA QUERIES FOR RESPONSIVENESS (600px - Small Mobile) ---
+           ------------------------------------------------------------------ */
+        @media (max-width: 600px) {
+            
+            /* General */
+            .section-padding {
+                padding: 60px 4%;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            /* Hero */
+            .hero-section h1 {
+                font-size: 2.2rem; 
+            }
+            .hero-actions {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .btn-primary, .btn-secondary {
+                width: 100%; 
+                padding: 0.8rem 1.5rem;
+            }
+            .stats-bar {
+                /* Ensures stats also collapse/wrap nicely */
+                flex-wrap: wrap; 
+                gap: 2rem 1rem; 
+                position: relative; 
+                bottom: auto;
+                margin-top: 50px;
+            }
+            .stat-item {
+                width: 45%; 
+                text-align: center;
+            }
+            .stat-number {
+                font-size: 2rem;
+            }
+            .stat-label {
+                font-size: 0.8rem;
+            }
+            
+            /* CTA Section */
+            .cta-section h2 {
+                font-size: 2.2rem;
+            }
+            .newsletter-form {
+                flex-direction: column; 
+            }
+            .newsletter-form input {
+                width: 100%; 
+            }
+            .newsletter-form button {
+                width: 100%; 
+            }
+            
+            /* Footer */
+            .footer-links, .footer-contact {
+                width: 100%; /* Stack all footer elements */
+                margin-top: 20px;
+            }
+        }
+        
     </style>
 </head>
 <body>
@@ -710,7 +884,11 @@
             <img src="asfcm.webp" alt="Ashford Capital Logo" class="logo-image">
             Ashford <span class="highlight-blue">Capital</span>
         </div>
-        <nav>
+        
+        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" id="mobile-menu-toggle">
+            &#9776; </button>
+
+        <nav id="main-nav">
             <a href="#home" class="nav-link active">Home</a>
             <a href="#about" class="nav-link">About</a>
             <a href="#services" class="nav-link">Services</a>
@@ -722,18 +900,21 @@
     <section id="home" class="hero-section">
         <div class="hero-content">
             <p class="tagline scroll-fade">FINANCIAL EDUCATION & TRADING MENTORSHIP</p>
+            
             <h1 class="scroll-fade" style="transition-delay: 0.1s;">
                 WHERE TRADERS THRIVE<br>
                 ON <span class="highlight-blue">PRECISION</span> NOT<br>
                 <span class="highlight-white">PREDICTION</span>
             </h1>
             <p class="subtitle scroll-fade" style="transition-delay: 0.2s;">Your Market Approach, The Way It Suits You.</p>
+        
             <div class="hero-actions scroll-fade" style="transition-delay: 0.3s;">
                 <button class="btn-primary" onclick="showPopup('start')">Start Now →</button>
                 <button class="btn-secondary" onclick="document.getElementById('about').scrollIntoView({ behavior: 'smooth' });">
                     Learn More
                 </button>
             </div>
+  
         </div>
 
         <div class="stats-bar scroll-fade" style="transition-delay: 0.4s;">
@@ -749,6 +930,7 @@
                 <p class="stat-number">3+</p>
                 <p class="stat-label">Years Experience</p>
             </div>
+  
         </div>
     </section>
 
@@ -759,11 +941,13 @@
         </div>
         <div class="about-content scroll-fade">
             <div class="about-text">
+            
                 <p>
                     Ashford Capital combines **emotional mastery**, **market mechanics**, and **live execution support** to transform how you approach the markets.
                 </p>
                 <p>
-                    We don't teach generic theories. We provide **surgical, hands-on solutions** tailored to your trading style and goals.
+                    We don't teach generic theories.
+                    We provide **surgical, hands-on solutions** tailored to your trading style and goals.
                 </p>
 
                 <div class="feature-list">
@@ -785,6 +969,7 @@
                 <div class="animated-graph">
                     <div class="graph-line"></div>
                 </div>
+     
                 <div class="growth-rate">+127%</div>
             </div>
         </div>
@@ -794,25 +979,30 @@
         <div class="section-header scroll-fade">
             <p class="tag">ADVANTAGE</p>
             <h2>THE ASHFORD <span class="highlight-blue">ADVANTAGE</span></h2>
-            <p class="subtitle" style="font-size: 1rem; color: var(--color-text-light);">What sets us apart from every other trading education platform.</p>
+            <p class="subtitle" style="font-size: 1rem; color: 
+                var(--color-text-light);">What sets us apart from every other trading education platform.</p>
         </div>
         <div class="advantage-grid">
-            <div class="advantage-item scroll-fade" style="transition-delay: 0.1s;" onclick="showPopup('advantage', 'Clarity')">
+            <div class="advantage-item scroll-fade" style="transition-delay: 0.1s;"
+                onclick="showPopup('advantage', 'Clarity')">
                 <div class="advantage-icon">◒</div>
                 <h3>Clarity</h3>
                 <p>Cutting through market noise to focus on what truly matters.</p>
             </div>
-            <div class="advantage-item scroll-fade" style="transition-delay: 0.2s;" onclick="showPopup('advantage', 'Growth')">
+            <div class="advantage-item scroll-fade" style="transition-delay: 0.2s;"
+                onclick="showPopup('advantage', 'Growth')">
                 <div class="advantage-icon">🌱</div>
                 <h3>Growth</h3>
                 <p>Guided practice that accelerates your learning curve.</p>
             </div>
-            <div class="advantage-item scroll-fade" style="transition-delay: 0.3s;" onclick="showPopup('advantage', 'Precision')">
+            <div class="advantage-item scroll-fade" style="transition-delay: 0.3s;"
+                onclick="showPopup('advantage', 'Precision')">
                 <div class="advantage-icon">◎</div>
                 <h3>Precision</h3>
                 <p>Focus on exact entries and exits, not vague predictions.</p>
             </div>
-            <div class="advantage-item scroll-fade" style="transition-delay: 0.4s;" onclick="showPopup('advantage', 'Practice Over Perfection')">
+            <div class="advantage-item scroll-fade" style="transition-delay: 0.4s;"
+                onclick="showPopup('advantage', 'Practice Over Perfection')">
                 <div class="advantage-icon">↻</div>
                 <h3>Practice Over Perfection</h3>
                 <p>Consistent improvement through deliberate practice.</p>
@@ -822,6 +1012,7 @@
 
     <section id="services" class="section-padding">
         <div class="section-header scroll-fade">
+  
             <h2>OUR <span class="highlight-blue">SERVICES</span></h2>
             <p class="subtitle" style="font-size: 1rem; color: var(--color-text-light);">
                 Choose the program that fits your trading journey and start mastering the markets today.
@@ -833,10 +1024,12 @@
                 <span class="card-icon">📈</span>
                 <h3>Advanced Chart Analysis</h3>
                 <p class="price">₹1999<span style="font-size: 1rem;">/-</span></p>
+   
                 <p class="description">Master technical analysis and market structure to identify high-probability setups.</p>
                 <ul>
                     <li>Price Action Mastery</li>
                     <li>Support & Resistance</li>
+                 
                     <li>Volume Analysis</li>
                 </ul>
                 <button class="btn-primary" onclick="showPopup('enroll', 'Advanced Chart Analysis')">
@@ -844,16 +1037,20 @@
                 </button>
             </div>
 
+         
             <div class="service-card popular scroll-fade" style="transition-delay: 0.2s;">
                 <div class="popular-tag">POPULAR</div>
                 <span class="card-icon">↗</span>
                 <h3>Swing Trading</h3>
                 <p class="price">₹1999<span style="font-size: 1rem;">/-</span></p>
-                <p class="description">Learn to identify trends early and capture multi-day moves with precision.</p>
+                <p class="description">Learn to identify trends early 
+                    and capture multi-day moves with precision.
+                </p>
                 <ul>
                     <li>Trend Identification</li>
                     <li>Entry & Exit Timing</li>
                     <li>Risk Management</li>
+              
                 </ul>
                 <button class="btn-primary" onclick="showPopup('enroll', 'Swing Trading')">
                     Enroll Now →
@@ -861,16 +1058,19 @@
             </div>
 
             <div class="service-card scroll-fade" style="transition-delay: 0.4s;">
+            
                 <span class="card-icon">💰</span>
                 <h3>Investing</h3>
                 <p class="price">₹1999<span style="font-size: 1rem;">/-</span></p>
                 <p class="description">Build long-term wealth through strategic investment principles and portfolio management.</p>
                 <ul>
+                  
                     <li>Portfolio Building</li>
                     <li>Fundamental Analysis</li>
                     <li>Wealth Preservation</li>
                 </ul>
                 <button class="btn-primary" onclick="showPopup('enroll', 'Investing')">
+                    
                     Enroll Now →
                 </button>
             </div>
@@ -883,19 +1083,23 @@
             <p class="tag">TESTIMONIALS</p>
             <h2>WHAT OUR <span class="highlight-blue">TRADERS</span> SAY</h2>
         </div>
+    
         <div class="testimonial-card scroll-fade">
             <span class="quote-icon">❝</span>
             <p class="testimonial-text" id="testimonial-text">
-                "Ashford Capital transformed my approach to trading. The emotional mastery techniques alone have saved me from countless impulsive trades."
+                "Ashford Capital transformed my approach to trading.
+                The emotional mastery techniques alone have saved me from countless impulsive trades."
             </p>
             <div class="trader-info">
                 <div class="trader-initials" id="trader-initials">NS</div>
                 <div>
                     <div class="trader-name" id="trader-name">Niyati S</div>
+       
                     <div class="trader-type" id="trader-type">Swing Trader</div>
                 </div>
             </div>
-            <div style="text-align: center; margin-top: 2rem;">
+            <div style="text-align: center;
+                margin-top: 2rem;">
                 <span class="slider-dot active" onclick="showTestimonial(0)">•</span>
                 <span class="slider-dot" onclick="showTestimonial(1)">•</span>
             </div>
@@ -905,43 +1109,53 @@
     <section class="section-padding">
         <div class="section-header scroll-fade">
             <h2>FREQUENTLY <span class="highlight-blue">ASKED</span></h2>
+         
             <p class="subtitle" style="font-size: 1rem; color: var(--color-text-light);">Got questions? We've got answers.</p>
         </div>
         <div class="faq-list scroll-fade">
             <div class="faq-item">
                 <div class="faq-question" onclick="toggleFAQ(this)">
                     What trading experience do I need to join?
+            
                     <span class="arrow"></span>
                 </div>
                 <div class="faq-answer">
                     <p>Our programs cater to all levels, from absolute beginners to intermediate traders looking to refine their strategy. We focus on building fundamental precision first.</p>
+               
                 </div>
             </div>
             <div class="faq-item">
                 <div class="faq-question" onclick="toggleFAQ(this)">
                     How is the mentorship delivered?
                     <span class="arrow"></span>
+           
                 </div>
                 <div class="faq-answer">
                     <p>Mentorship is delivered through a combination of live weekly webinars, recorded video modules, direct one-on-one strategy sessions, and a private community chat for real-time support.</p>
                 </div>
             </div>
+      
             <div class="faq-item">
                 <div class="faq-question" onclick="toggleFAQ(this)">
                     What markets do you cover?
                     <span class="arrow"></span>
                 </div>
                 <div class="faq-answer">
-                    <p>Our core principles are universally applicable. While we primarily use Indian equity and commodity markets for examples, the techniques can be applied to Forex, Crypto, and US Stocks.</p>
+                    <p>Our core principles are universally applicable.
+                        While we primarily use Indian equity and commodity markets for examples, the techniques can be applied to Forex, Crypto, and US Stocks.
+                    </p>
                 </div>
             </div>
             <div class="faq-item">
                 <div class="faq-question" onclick="toggleFAQ(this)">
+                    
                     Is there a refund policy?
                     <span class="arrow"></span>
                 </div>
                 <div class="faq-answer">
-                    <p>We offer a conditional 7-day refund policy, provided the student has completed less than 10% of the core content and provides a valid reason. Please read the full terms before enrolling.</p>
+                    <p>We offer a conditional 7-day refund policy, provided the student has completed less than 10% of the core content and provides a valid reason.
+                        Please read the full terms before enrolling.
+                    </p>
                 </div>
             </div>
             <div class="faq-item">
@@ -950,7 +1164,10 @@
                     <span class="arrow"></span>
                 </div>
                 <div class="faq-answer">
-                    <p>No. Trading is a skill that requires discipline, practice, and time. We focus on consistent, sustainable growth, not quick predictions or high-risk gambling.</p>
+                    <p>No.
+                        Trading is a skill that requires discipline, practice, and time.
+                        We focus on consistent, sustainable growth, not quick predictions or high-risk gambling.
+                    </p>
                 </div>
             </div>
         </div>
@@ -959,7 +1176,8 @@
     <section class="cta-section">
         <h2 class="scroll-fade">READY TO <span class="highlight-blue">START?</span></h2>
         <p class="subtitle scroll-fade" style="margin-bottom: 2rem;">
-            Join hundreds of traders who have transformed their approach to the markets.
+            Join hundreds of traders who have transformed their 
+            approach to the markets.
         </p>
         <button class="btn-primary scroll-fade" onclick="showPopup('join')">
             Join Ashford Capital →
@@ -969,6 +1187,7 @@
         <form class="newsletter-form scroll-fade" onsubmit="return handleNewsletter(event)">
             <input type="email" placeholder="Enter your email" required>
             <button type="submit">Subscribe</button>
+    
         </form>
     </section>
 
@@ -977,20 +1196,25 @@
             <div class="footer-logo scroll-fade">
                  <div class="logo" style="margin-bottom: 0.5rem;">
                     <img src="asfcm.webp" alt="Ashford Capital Logo" class="logo-image">
+              
                     Ashford <span class="highlight-blue">Capital</span>
                 </div>
-                <p>Financial education and trading mentorship platform. Where traders thrive on precision, not prediction.</p>
+                <p>Financial education and trading mentorship platform.
+                    Where traders thrive on precision, not prediction.
+                </p>
             </div>
             <div class="footer-links scroll-fade" style="transition-delay: 0.1s;">
                 <h3>Quick Links</h3>
                 <a href="#home" class="scroll-link">Home</a>
                 <a href="#about" class="scroll-link">About</a>
+             
                 <a href="#services" class="scroll-link">Services</a>
                 <a href="#contact" class="scroll-link">Contact</a>
             </div>
             <div class="footer-contact scroll-fade" style="transition-delay: 0.2s;">
                 <h3>Contact</h3>
                 <a href="mailto:co.nexusworks@gmail.com"><span class="icon">✉</span> co.nexusworks@gmail.com</a>
+              
                 <p><span class="icon">📞</span> +91 9624887241</p>
                 <p><span class="icon">📸</span> @ashfordcapital_</p>
             </div>
@@ -998,20 +1222,28 @@
     </footer>
 
     <div id="popup-modal" style="
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-        background-color: rgba(0, 0, 0, 0.8); z-index: 9999; 
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: rgba(0, 0, 0, 0.8); z-index: 9999;
         display: none; justify-content: center; align-items: center;
         opacity: 0; transition: opacity 0.3s;
-    ">
+        ">
         <div style="
-            background-color: var(--color-card-bg); padding: 30px; 
+            background-color: var(--color-card-bg);
+            padding: 30px;
             border-radius: 10px; max-width: 500px; width: 90%; 
             text-align: center; box-shadow: 0 10px 30px rgba(0, 153, 255, 0.5);
-            transform: scale(0.9); transition: transform 0.3s;
+            transform: scale(0.9);
+            transition: transform 0.3s;
         ">
-            <h3 id="popup-title" style="color: var(--color-blue-accent); margin-bottom: 15px; font-size: 1.5rem;"></h3>
-            <p id="popup-message" style="color: var(--color-text-light); margin-bottom: 20px;"></p>
-            <div style="width: 100%; height: 150px; background: linear-gradient(45deg, var(--color-blue-accent), var(--color-dark-bg)); border-radius: 5px; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; color: white; font-weight: 600;">
+            <h3 id="popup-title" style="color: var(--color-blue-accent);
+                margin-bottom: 15px; font-size: 1.5rem;">
+            </h3>
+            <p id="popup-message" style="color: var(--color-text-light);
+                margin-bottom: 20px;">
+            </p>
+            <div style="width: 100%; height: 150px;
+                background: linear-gradient(45deg, var(--color-blue-accent), var(--color-dark-bg)); border-radius: 5px; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; color: white;
+                font-weight: 600;">
                 [Virtual Action Completed]
             </div>
             <button onclick="closePopup()" class="btn-primary" style="padding: 0.7rem 2rem;">Close</button>
@@ -1020,10 +1252,31 @@
 
 
     <script>
-        // 1. POPUP FUNCTIONALITY (Buttons)
+        // 1. MOBILE MENU TOGGLE FUNCTIONALITY (NEW)
+        const mobileToggle = document.getElementById('mobile-menu-toggle');
+        const mainNav = document.getElementById('main-nav');
+        
+        mobileToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            // Change button text to X when active, or back to hamburger
+            mobileToggle.innerHTML = mainNav.classList.contains('active') ? '&times;' : '&#9776;';
+        });
+
+        // Close menu when a link is clicked
+        mainNav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (mainNav.classList.contains('active')) {
+                    mainNav.classList.remove('active');
+                    mobileToggle.innerHTML = '&#9776;';
+                }
+            });
+        });
+        
+        // 2. POPUP FUNCTIONALITY (Buttons)
         const modal = document.getElementById('popup-modal');
         const modalContent = modal.querySelector('div');
 
+  
         function showPopup(type, serviceName = '') {
             let title = "";
             let message = "";
@@ -1034,6 +1287,7 @@
             } else if (type === 'enroll') {
                 title = `Enrollment Simulation: ${serviceName}`;
                 message = `Great choice! Enrollment for **${serviceName}** has been successfully initiated. Please check your email for the payment link and access details.`;
+          
             } else if (type === 'newsletter') {
                 title = "Subscription Confirmed!";
                 message = "Thank you for subscribing to Stay In The Know. Check your inbox for our latest updates.";
@@ -1042,6 +1296,7 @@
                 message = `You've highlighted the importance of **${serviceName}**. This item demonstrates our commitment to delivering precise, actionable education.`;
             }
 
+            
             document.getElementById('popup-title').innerHTML = title;
             document.getElementById('popup-message').innerHTML = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); 
 
@@ -1050,6 +1305,7 @@
                 modal.style.opacity = '1';
                 modalContent.style.transform = 'scale(1)';
             }, 10);
+     
         }
 
         function closePopup() {
@@ -1060,15 +1316,16 @@
             }, 300);
         }
 
-        // 2. NEWSLETTER FORM (Simulated Action)
+      
+        // 3. NEWSLETTER FORM (Simulated Action)
         function handleNewsletter(event) {
-            event.preventDefault(); 
+            event.preventDefault();
             showPopup('newsletter');
             event.target.querySelector('input[type="email"]').value = '';
             return false;
         }
 
-        // 3. FAQ ACCORDION
+        // 4. FAQ ACCORDION
         function toggleFAQ(element) {
             const item = element.parentElement;
             const answer = item.querySelector('.faq-answer');
@@ -1079,6 +1336,7 @@
                     faq.classList.remove('active');
                     faq.querySelector('.faq-answer').style.maxHeight = null;
                 }
+            
             });
 
             if (!isActive) {
@@ -1090,12 +1348,11 @@
             }
         }
 
-        // 4. TESTIMONIAL SLIDER 
+        // 5. TESTIMONIAL SLIDER 
         const testimonials = [
             { quote: "Ashford Capital transformed my approach to trading. The emotional mastery techniques alone have saved me from countless impulsive trades.", name: "Niyati S", type: "Swing Trader", initials: "NS" },
             { quote: "The market mechanics module opened my eyes to patterns I never noticed before. My win rate has improved significantly since joining.", name: "Souvik", type: "Day Trader", initials: "S" }
         ];
-
         const dotElements = document.querySelectorAll('.slider-dot');
 
         function showTestimonial(index) {
@@ -1104,7 +1361,6 @@
             document.getElementById('trader-initials').textContent = t.initials;
             document.getElementById('trader-name').textContent = t.name;
             document.getElementById('trader-type').textContent = t.type;
-            
             dotElements.forEach((dot, i) => {
                 dot.classList.remove('active');
                 if (i === index) dot.classList.add('active');
@@ -1114,10 +1370,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             showTestimonial(0);
         });
-        
-        // 5. SCROLL FADE/REVEAL EFFECT
+        // 6. SCROLL FADE/REVEAL EFFECT
         const scrollFadeElements = document.querySelectorAll('.scroll-fade');
-
         function checkScrollFade() {
             const viewportHeight = window.innerHeight;
             scrollFadeElements.forEach(el => {
@@ -1128,26 +1382,25 @@
             });
         }
 
-        // 6. SMOOTH SCROLL REDIRECTION
+        // 7. SMOOTH SCROLL REDIRECTION
         const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
-
         smoothScrollLinks.forEach(link => {
             if (link.href.includes('#')) {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
+                    const targetElement = 
+                        document.querySelector(targetId);
 
                     if (targetElement) {
                         targetElement.scrollIntoView({
                             behavior: 'smooth'
                         });
+ 
                     }
                 });
             }
         });
-
-
         // Initial check and event listener setup
         window.addEventListener('scroll', checkScrollFade);
         checkScrollFade(); 
