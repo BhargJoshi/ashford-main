@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +27,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s, opacity 0.4s ease-out, transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            transition: background-color 0.3s, color 0.3s, opacity 0.4s ease-out, transform 0.3s, box-shadow 0.3s, border-color 0.3s, text-shadow 0.3s;
         }
 
         body {
@@ -77,30 +78,50 @@
             color: var(--color-blue-accent);
         }
 
-        /* --- LOGO STYLING (UPDATED FOR IMAGE) --- */
+        /* --- LOGO STYLING (UPDATED FOR IMAGE & TEXT) --- */
         .logo {
-            /* Ensures the container only holds the image and respects its size */
             font-size: 1.5rem;
             font-weight: 700;
             display: flex;
             align-items: center;
+            cursor: pointer;
         }
         
         .logo-image {
             /* Image styling for the logo */
-            height: 40px; /* Increased size slightly for better visibility */
+            height: 40px; 
             width: auto;
-            margin-right: 0; 
-            /* Change 1: Added for smooth transition */
+            margin-right: 10px; /* Space between logo and text */
             transition: transform 0.3s, box-shadow 0.3s; 
-            cursor: pointer;
+        }
+
+        /* NEW: Style for the logo text */
+        .logo-text {
+            font-family: var(--font-main);
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--color-primary-text);
+            transition: transform 0.3s, text-shadow 0.3s; 
+            line-height: 1; 
+            display: inline-block;
+            white-space: nowrap; /* Prevents text wrap */
         }
         
-        /* Change 1: Hover effect for the logo image */
-        .logo-image:hover {
-            transform: scale(1.1); /* Expand slightly */
-            /* White glow */
+        /* Change 1: Hover effect applied to children of .logo */
+        .logo:hover .logo-image,
+        .logo:hover .logo-text {
+            transform: scale(1.05); /* Expand slightly for both */
+        }
+
+        .logo:hover .logo-image {
+            /* White glow for the image */
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.4);
+        }
+
+        .logo:hover .logo-text {
+            /* White glow for the text and color change for contrast */
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.4);
+            color: var(--color-blue-accent); 
         }
         
         /* --- BUTTON STYLES --- */
@@ -773,6 +794,13 @@
                 font-size: 0.9rem;
             }
 
+            /* Logo responsiveness */
+            .logo-text {
+                font-size: 1rem;
+            }
+            .logo-image {
+                height: 35px;
+            }
 
             /* Hero */
             .hero-section h1 {
@@ -836,6 +864,15 @@
                 font-size: 1.8rem;
             }
 
+            /* Logo responsiveness */
+            .logo-text {
+                font-size: 1rem;
+            }
+            .logo-image {
+                height: 30px;
+                margin-right: 5px;
+            }
+
             /* Hero */
             .hero-section h1 {
                 font-size: 2.2rem; 
@@ -895,6 +932,7 @@
     <header class="navbar">
         <div class="logo">
             <img src="asfcm.webp" alt="Ashford Capital Logo" class="logo-image">
+            <span class="logo-text">ASHFORD CAPITAL</span>
         </div>
         
         <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" id="mobile-menu-toggle">
@@ -1201,6 +1239,7 @@
             <div class="footer-logo scroll-fade">
                  <div class="logo" style="margin-bottom: 0.5rem;">
                     <img src="asfcm.webp" alt="Ashford Capital Logo" class="logo-image">
+                    <span class="logo-text">ASHFORD CAPITAL</span>
                 </div>
                 <p>Financial education and trading mentorship platform.
                     Where traders thrive on precision, not prediction.
@@ -1255,7 +1294,7 @@
 
 
     <script>
-        // Change 2: New Redirection Function
+        // Button Redirection Function (WhatsApp)
         function redirectToWhatsApp() {
             window.location.href = "https://chat.whatsapp.com/GfxPLzioMttJbROSb1RbUU";
         }
