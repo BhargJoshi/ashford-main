@@ -77,8 +77,9 @@
             color: var(--color-blue-accent);
         }
 
-        /* --- LOGO STYLING --- */
+        /* --- LOGO STYLING (UPDATED FOR IMAGE) --- */
         .logo {
+            /* Ensures the container only holds the image and respects its size */
             font-size: 1.5rem;
             font-weight: 700;
             display: flex;
@@ -86,9 +87,20 @@
         }
         
         .logo-image {
-            height: 30px; 
+            /* Image styling for the logo */
+            height: 40px; /* Increased size slightly for better visibility */
             width: auto;
-            margin-right: 0.5rem;
+            margin-right: 0; 
+            /* Change 1: Added for smooth transition */
+            transition: transform 0.3s, box-shadow 0.3s; 
+            cursor: pointer;
+        }
+        
+        /* Change 1: Hover effect for the logo image */
+        .logo-image:hover {
+            transform: scale(1.1); /* Expand slightly */
+            /* White glow */
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.4);
         }
         
         /* --- BUTTON STYLES --- */
@@ -228,7 +240,7 @@
             margin-bottom: 100px; 
         }
 
-        /* CHANGED: Removed two stats, retained one, added one new one */
+        /* Stats Bar Styling */
         .stats-bar {
             display: flex;
             justify-content: center;
@@ -883,7 +895,6 @@
     <header class="navbar">
         <div class="logo">
             <img src="asfcm.webp" alt="Ashford Capital Logo" class="logo-image">
-            Ashford <span class="highlight-blue">Capital</span>
         </div>
         
         <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" id="mobile-menu-toggle">
@@ -895,7 +906,7 @@
             <a href="#services" class="nav-link">Services</a>
             <a href="#contact" class="nav-link">Contact</a>
         </nav>
-        <button class="join-button" onclick="showPopup('join')">JOIN US</button>
+        <button class="join-button" onclick="redirectToWhatsApp()">JOIN US</button>
     </header>
 
     <section id="home" class="hero-section">
@@ -910,7 +921,7 @@
             <p class="subtitle scroll-fade" style="transition-delay: 0.2s;">Your Market Approach, The Way It Suits You.</p>
         
             <div class="hero-actions scroll-fade" style="transition-delay: 0.3s;">
-                <button class="btn-primary" onclick="showPopup('start')">Start Now →</button>
+                <button class="btn-primary" onclick="redirectToWhatsApp()">Start Now →</button>
                 <button class="btn-secondary" onclick="document.getElementById('about').scrollIntoView({ behavior: 'smooth' });">
                     Learn More
                 </button>
@@ -938,7 +949,7 @@
         <div class="about-content scroll-fade">
             <div class="about-text">
                 <p>
-                    Ashford Capital combines **emotional mastery**, **market mechanics**, and **live execution support** to transform how you approach the markets.
+                    Ashford Capital combines emotional mastery, market mechanics, and live execution support to transform how you approach the markets.
                 </p>
                 <p>
                     We don't teach generic theories. We provide surgical, hands-on solutions tailored to your trading style and goals.
@@ -1026,7 +1037,7 @@
                  
                     <li>Volume Analysis</li>
                 </ul>
-                <button class="btn-primary" onclick="showPopup('enroll', 'Advanced Chart Analysis')">
+                <button class="btn-primary" onclick="redirectToWhatsApp()">
                     Enroll Now →
                 </button>
             </div>
@@ -1046,7 +1057,7 @@
                     <li>Risk Management</li>
               
                 </ul>
-                <button class="btn-primary" onclick="showPopup('enroll', 'Swing Trading')">
+                <button class="btn-primary" onclick="redirectToWhatsApp()">
                     Enroll Now →
                 </button>
             </div>
@@ -1063,7 +1074,7 @@
                     <li>Fundamental Analysis</li>
                     <li>Wealth Preservation</li>
                 </ul>
-                <button class="btn-primary" onclick="showPopup('enroll', 'Investing')">
+                <button class="btn-primary" onclick="redirectToWhatsApp()">
                     
                     Enroll Now →
                 </button>
@@ -1173,7 +1184,7 @@
             Join hundreds of traders who have transformed their 
             approach to the markets.
         </p>
-        <button class="btn-primary scroll-fade" onclick="showPopup('join')">
+        <button class="btn-primary scroll-fade" onclick="redirectToWhatsApp()">
             Join Ashford Capital →
         </button>
 
@@ -1190,8 +1201,6 @@
             <div class="footer-logo scroll-fade">
                  <div class="logo" style="margin-bottom: 0.5rem;">
                     <img src="asfcm.webp" alt="Ashford Capital Logo" class="logo-image">
-              
-                    Ashford <span class="highlight-blue">Capital</span>
                 </div>
                 <p>Financial education and trading mentorship platform.
                     Where traders thrive on precision, not prediction.
@@ -1246,7 +1255,12 @@
 
 
     <script>
-        // 1. MOBILE MENU TOGGLE FUNCTIONALITY (NEW)
+        // Change 2: New Redirection Function
+        function redirectToWhatsApp() {
+            window.location.href = "https://chat.whatsapp.com/GfxPLzioMttJbROSb1RbUU";
+        }
+
+        // 1. MOBILE MENU TOGGLE FUNCTIONALITY
         const mobileToggle = document.getElementById('mobile-menu-toggle');
         const mainNav = document.getElementById('main-nav');
         
@@ -1266,7 +1280,7 @@
             });
         });
         
-        // 2. POPUP FUNCTIONALITY (Buttons)
+        // 2. POPUP FUNCTIONALITY (Kept for Advantage & Newsletter forms)
         const modal = document.getElementById('popup-modal');
         const modalContent = modal.querySelector('div');
 
@@ -1276,11 +1290,13 @@
             let message = "";
 
             if (type === 'start' || type === 'join') {
+                // NOTE: This branch is no longer used by main buttons, but left for robustness
                 title = "Welcome Aboard!";
-                message = "You are ready to join the Ashford Capital community. We've simulated your registration and sent a confirmation email.";
+                message = "This button now redirects to our WhatsApp community for quick joining! If you see this, you clicked the 'Advantage' or 'Newsletter' popups.";
             } else if (type === 'enroll') {
+                // NOTE: This branch is no longer used by main buttons
                 title = `Enrollment Simulation: ${serviceName}`;
-                message = `Great choice! Enrollment for **${serviceName}** has been successfully initiated. Please check your email for the payment link and access details.`;
+                message = `This button now redirects to our WhatsApp community! If you see this, you clicked the 'Advantage' or 'Newsletter' popups.`;
           
             } else if (type === 'newsletter') {
                 title = "Subscription Confirmed!";
