@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,7 +17,6 @@
             --color-text-light: rgba(255, 255, 255, 0.7);
             --color-card-bg: #151820;
             --color-green-growth: #00ff88; 
-            --color-red-accent: #ff4d4d;
             --font-main: 'Montserrat', sans-serif;
             --font-secondary: 'Inter', sans-serif;
         }
@@ -78,7 +76,6 @@
             color: var(--color-blue-accent);
         }
 
-        /* --- LOGO STYLING --- */
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
@@ -119,7 +116,6 @@
             color: var(--color-blue-accent); 
         }
         
-        /* --- BUTTON STYLES --- */
         .btn-primary, .btn-secondary, .join-button, .newsletter-form button {
             padding: 1rem 2.5rem;
             border: none;
@@ -212,7 +208,6 @@
             z-index: 1001;
         }
 
-        /* --- HERO SECTION --- */
         .hero-section {
             min-height: 90vh;
             display: flex;
@@ -277,7 +272,6 @@
             letter-spacing: 1px;
         }
         
-        /* --- ABOUT SECTION --- */
         .about-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -309,76 +303,67 @@
             width: 30px;
         }
 
+        /* --- VIDEO PLAYER STYLES --- */
         .about-visual {
-            min-height: 400px;
-            background-color: var(--color-card-bg);
-            border-radius: 10px;
+            width: 100%;
+            background-color: #000;
+            border-radius: 15px;
             position: relative;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            padding: 20px;
+            box-shadow: 0 0 30px rgba(0, 153, 255, 0.2);
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
         }
         
-        .animated-graph {
-            position: absolute;
-            bottom: 0;
-            left: 0;
+        #about-video {
             width: 100%;
             height: 100%;
-            opacity: 0.8;
-            background: linear-gradient(to top, rgba(0, 255, 136, 0.1), transparent);
-            border-radius: 10px;
-            overflow: hidden;
+            object-fit: contain;
+            display: block;
         }
-        
-        .graph-line {
+
+        .play-button-overlay {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 200%;
-            height: 100%;
-            background: linear-gradient(
-                90deg, 
-                transparent 0%, 
-                transparent 10%, 
-                var(--color-green-growth) 20%, 
-                var(--color-green-growth) 25%, 
-                transparent 30%, 
-                var(--color-green-growth) 40%, 
-                var(--color-green-growth) 50%, 
-                transparent 60%
-            );
-            background-size: 50% 100%;
-            border-top: 3px solid var(--color-green-growth);
-            transform: translateY(100%);
-            animation: drawGraph 3s ease-out forwards;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background-color: rgba(0, 153, 255, 0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 153, 255, 0.5);
         }
 
-        .growth-rate {
-            z-index: 10;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: var(--color-secondary-bg);
-            padding: 0.7rem 1rem;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--color-green-growth);
-            border: 1px solid var(--color-green-growth);
+        .play-button-overlay::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 25px solid white;
+            margin-left: 5px;
         }
 
-        @keyframes drawGraph {
-            to {
-                transform: translateY(0);
-                background-position: 100% 0;
-            }
+        .video-playing .play-button-overlay {
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(1.2);
         }
 
-        /* --- ADVANTAGE SECTION --- */
+        .about-visual:hover .play-button-overlay {
+            background-color: var(--color-blue-hover);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* --- REST OF SECTIONS STYLES --- */
         .advantage-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -416,7 +401,6 @@
             color: var(--color-blue-accent);
         }
 
-        /* --- SERVICES SECTION --- */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -513,70 +497,6 @@
             text-transform: uppercase;
         }
 
-        /* --- ADD-ONS SECTION --- */
-        .addons-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .addon-item {
-            padding: 2.5rem 2rem;
-            border-radius: 12px;
-            background-color: var(--color-card-bg);
-            cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-align: center;
-        }
-
-        .addon-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            display: inline-block;
-            transition: transform 0.3s;
-        }
-
-        /* RGB Dynamic Glows */
-        .addon-item.glow-blue:hover {
-            box-shadow: 0 0 30px rgba(0, 153, 255, 0.4);
-            border-color: var(--color-blue-accent);
-            transform: translateY(-10px);
-        }
-        .addon-item.glow-blue:hover .addon-icon {
-            text-shadow: 0 0 15px var(--color-blue-accent);
-        }
-
-        .addon-item.glow-green:hover {
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
-            border-color: var(--color-green-growth);
-            transform: translateY(-10px);
-        }
-        .addon-item.glow-green:hover .addon-icon {
-            text-shadow: 0 0 15px var(--color-green-growth);
-        }
-
-        .addon-item.glow-red:hover {
-            box-shadow: 0 0 30px rgba(255, 77, 77, 0.4);
-            border-color: var(--color-red-accent);
-            transform: translateY(-10px);
-        }
-        .addon-item.glow-red:hover .addon-icon {
-            text-shadow: 0 0 15px var(--color-red-accent);
-        }
-
-        .addon-item h3 {
-            font-size: 1.3rem;
-            margin-bottom: 12px;
-        }
-
-        .addon-item p {
-            color: var(--color-text-light);
-            font-size: 0.95rem;
-        }
-
-        /* --- TESTIMONIALS SECTION --- */
         .testimonial-card {
             background-color: var(--color-card-bg);
             border-radius: 15px;
@@ -650,7 +570,6 @@
             transform: scale(1.2);
         }
         
-        /* --- FAQ SECTION --- */
         .faq-list {
             max-width: 900px;
             margin: 0 auto;
@@ -705,7 +624,6 @@
             transform: rotate(180deg);
         }
 
-        /* --- CALL TO ACTION --- */
         .cta-section {
             text-align: center;
             padding: 80px 5%;
@@ -737,7 +655,6 @@
             font-size: 1rem;
         }
 
-        /* --- FOOTER / CONTACT --- */
         .footer {
             display: flex;
             justify-content: space-between;
@@ -780,7 +697,6 @@
             color: var(--color-blue-accent);
         }
         
-        /* --- SCROLL FADE/REVEAL EFFECT --- */
         .scroll-fade {
             opacity: 0;
             transform: translateY(20px);
@@ -792,13 +708,14 @@
             transform: translateY(0);
         }
         
-        /* --- RESPONSIVENESS --- */
         @media (max-width: 900px) {
             h2 { font-size: 2rem; }
             .section-padding { padding: 80px 4%; }
+
             nav {
                 position: fixed;
-                top: 0; left: 0; width: 100%; height: 100%;
+                top: 0; left: 0;
+                width: 100%; height: 100%;
                 background-color: var(--color-dark-bg);
                 flex-direction: column;
                 justify-content: center;
@@ -808,24 +725,58 @@
                 pointer-events: none;
                 transition: transform 0.4s ease-out, opacity 0.4s ease-out;
             }
-            nav.active { transform: translateX(0); opacity: 1; pointer-events: auto; }
-            nav a { margin: 20px 0; font-size: 1.5rem; opacity: 0.9; }
+
+            nav.active {
+                transform: translateX(0);
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            nav a {
+                margin: 20px 0;
+                font-size: 1.5rem;
+                opacity: 0.9;
+            }
+            
             .mobile-menu-toggle { display: block; order: 3; }
+            
             .join-button { padding: 0.7rem 1.5rem; font-size: 0.9rem; }
+            .logo-text { font-size: 1rem; }
+            .logo-image { height: 35px; }
             .hero-section h1 { font-size: 3rem; }
+            .stats-bar { gap: 4rem; }
+
             .about-content { grid-template-columns: 1fr; gap: 3rem; }
-            .advantage-grid, .services-grid, .addons-grid { grid-template-columns: 1fr; }
-            .footer { flex-wrap: wrap; gap: 30px; }
+            .about-visual { max-height: none; } 
+            .about-text { grid-row: 2; }
+
+            .advantage-grid { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+            
+            .footer { flex-wrap: wrap; justify-content: flex-start; gap: 30px; padding: 40px 5%; }
+            .footer-logo { width: 100%; margin-bottom: 20px; }
+            .footer-links, .footer-contact { min-width: 150px; }
         }
 
         @media (max-width: 600px) {
+            .section-padding { padding: 60px 4%; }
+            h2 { font-size: 1.8rem; }
+            .logo-text { font-size: 1rem; }
+            .logo-image { height: 30px; margin-right: 5px; }
             .hero-section h1 { font-size: 2.2rem; }
             .hero-actions { flex-direction: column; gap: 1rem; }
-            .stats-bar { position: relative; bottom: auto; margin-top: 50px; flex-wrap: wrap; }
-            .stat-item { width: 45%; }
+            .btn-primary, .btn-secondary { width: 100%; padding: 0.8rem 1.5rem; }
+            .stats-bar { flex-wrap: wrap; gap: 2rem 1rem; position: relative; bottom: auto; margin-top: 50px; }
+            .stat-item { width: 45%; text-align: center; }
+            .stat-number { font-size: 2rem; }
+            .stat-label { font-size: 0.8rem; }
+            .cta-section h2 { font-size: 2.2rem; }
             .newsletter-form { flex-direction: column; }
             .newsletter-form input { width: 100%; }
+            .newsletter-form button { width: 100%; }
+            .footer-links, .footer-contact { width: 100%; margin-top: 20px; }
         }
+        
     </style>
 </head>
 <body>
@@ -837,7 +788,7 @@
         </div>
         
         <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" id="mobile-menu-toggle">
-            &#9776; 
+            &#9776;
         </button>
 
         <nav id="main-nav">
@@ -852,6 +803,7 @@
     <section id="home" class="hero-section">
         <div class="hero-content">
             <p class="tagline scroll-fade">FINANCIAL EDUCATION & TRADING MENTORSHIP</p>
+            
             <h1 class="scroll-fade" style="transition-delay: 0.1s;">
                 WHERE TRADERS THRIVE<br>
                 ON <span class="highlight-blue">PRECISION</span> NOT<br>
@@ -876,7 +828,7 @@
                 <p class="stat-number">ALL</p>
                 <p class="stat-label">MARKET TYPES</p>
             </div>
-                    </div>
+        </div>
     </section>
 
     <section id="about" class="section-padding">
@@ -895,22 +847,26 @@
                 
                 <div class="feature-list">
                     <div class="feature-item">
-                        <span class="feature-icon">◎</span> Market Clarity: Understand what the market is doing — and why — without relying on indicators or opinions.
+                        <span class="feature-icon">◎</span>
+                        Market Clarity: Understand what the market is doing — and why — without relying on indicators or opinions.
                     </div>
                     <div class="feature-item">
-                        <span class="feature-icon">⚡</span> Execution Practice: Execute decisions consistently in live markets, even under pressure and real risk.
+                        <span class="feature-icon">⚡</span>
+                        Execution Practice: Execute decisions consistently in live markets, even under pressure and real risk.
                     </div>
                     <div class="feature-item">
-                        <span class="feature-icon">↗</span> Capital Intelligence: Manage capital with institutional logic, prioritizing preservation, positioning, and longevity.
+                        <span class="feature-icon">↗</span>
+                        Capital Intelligence: Manage capital with institutional logic, prioritizing preservation, positioning, and longevity.
                     </div>
                 </div>
             </div>
 
-            <div class="about-visual">
-                <div class="animated-graph">
-                    <div class="graph-line"></div>
-                </div>
-                <div class="growth-rate">+127%</div>
+            <div class="about-visual" id="video-container" onclick="toggleVideo()">
+                <video id="about-video" playsinline>
+                    <source src="int reel.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="play-button-overlay" id="play-button"></div>
             </div>
         </div>
     </section>
@@ -963,9 +919,10 @@
                     <li>Support & Resistance</li>
                     <li>Volume Analysis</li>
                 </ul>
-                <button class="btn-primary" onclick="redirectToCTA()"> Enroll Now → </button>
+                <button class="btn-primary" onclick="redirectToCTA()">
+                    Enroll Now →
+                </button>
             </div>
-
             <div class="service-card popular scroll-fade" style="transition-delay: 0.2s;">
                 <div class="popular-tag">POPULAR</div>
                 <span class="card-icon">↗</span>
@@ -977,9 +934,10 @@
                     <li>Entry & Exit Timing</li>
                     <li>Risk Management</li>
                 </ul>
-                <button class="btn-primary" onclick="redirectToCTA()"> Enroll Now → </button>
+                <button class="btn-primary" onclick="redirectToCTA()">
+                    Enroll Now →
+                </button>
             </div>
-
             <div class="service-card scroll-fade" style="transition-delay: 0.4s;">
                 <span class="card-icon">💰</span>
                 <h3>Investing</h3>
@@ -990,77 +948,9 @@
                     <li>Fundamental Analysis</li>
                     <li>Wealth Preservation</li>
                 </ul>
-                <button class="btn-primary" onclick="redirectToCTA()"> Enroll Now → </button>
-            </div>
-        </div>
-    </section>
-
-    <section id="addons" class="section-padding" style="background-color: var(--color-dark-bg);">
-        <div class="section-header scroll-fade">
-            <p class="tag">EXTRAS</p>
-            <h2>THE ASHFORD <span class="highlight-blue">ADD-ONS</span></h2>
-            <p class="subtitle" style="font-size: 1rem; color: var(--color-text-light);">Advanced resources designed to elevate your market execution.</p>
-        </div>
-        <div class="addons-grid">
-            <div class="addon-item glow-blue scroll-fade">
-                <span class="addon-icon">📊</span>
-                <h3>Daily Market Structure Brief</h3>
-                <p>Daily breakdown of price structure and directional context.</p>
-            </div>
-            <div class="addon-item glow-green scroll-fade">
-                <span class="addon-icon">📄</span>
-                <h3>Weekly Market Outlook Report</h3>
-                <p>PDF analysis covering swing and higher-timeframe markets.</p>
-            </div>
-            <div class="addon-item glow-red scroll-fade">
-                <span class="addon-icon">💬</span>
-                <h3>Live Market Discussion Room</h3>
-                <p>Group discussions to decode live market behavior.</p>
-            </div>
-            <div class="addon-item glow-blue scroll-fade">
-                <span class="addon-icon">🎯</span>
-                <h3>Live Execution Practice Sessions</h3>
-                <p>Execute and review trades in real market conditions.</p>
-            </div>
-            <div class="addon-item glow-green scroll-fade">
-                <span class="addon-icon">🔍</span>
-                <h3>Post-Market Trade Review</h3>
-                <p>End-of-day analysis of decisions and execution quality.</p>
-            </div>
-            <div class="addon-item glow-red scroll-fade">
-                <span class="addon-icon">🛡️</span>
-                <h3>Risk & Position Sizing Guidance</h3>
-                <p>Capital protection through structured risk allocation rules.</p>
-            </div>
-            <div class="addon-item glow-blue scroll-fade">
-                <span class="addon-icon">💰</span>
-                <h3>Capital Deployment Sessions</h3>
-                <p>When and how to deploy capital across opportunities.</p>
-            </div>
-            <div class="addon-item glow-green scroll-fade">
-                <span class="addon-icon">🔔</span>
-                <h3>Volatility & Event Alert System</h3>
-                <p>Advance alerts for market-moving events and volatility shifts.</p>
-            </div>
-            <div class="addon-item glow-red scroll-fade">
-                <span class="addon-icon">📚</span>
-                <h3>Decision Framework Playbooks</h3>
-                <p>PDFs explaining analysis, execution, and capital logic.</p>
-            </div>
-            <div class="addon-item glow-blue scroll-fade">
-                <span class="addon-icon">⭐</span>
-                <h3>Performance Review & Feedback</h3>
-                <p>Regular feedback on discipline, logic, and execution habits.</p>
-            </div>
-            <div class="addon-item glow-green scroll-fade">
-                <span class="addon-icon">👥</span>
-                <h3>Role-Based Peer Discussion Groups</h3>
-                <p>Focused peer interaction aligned with your market role.</p>
-            </div>
-            <div class="addon-item glow-red scroll-fade">
-                <span class="addon-icon">🏆</span>
-                <h3>Market Progression & Upgrade Review</h3>
-                <p>Structured evaluation for advancing to higher market roles.</p>
+                <button class="btn-primary" onclick="redirectToCTA()">
+                    Enroll Now →
+                </button>
             </div>
         </div>
     </section>
@@ -1122,6 +1012,24 @@
                     <p>Our core principles are universally applicable. While we primarily use Indian equity and commodity markets for examples, the techniques can be applied to Forex, Crypto, and US Stocks.</p>
                 </div>
             </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Is there a refund policy?
+                    <span class="arrow"></span>
+                </div>
+                <div class="faq-answer">
+                    <p>We offer a conditional 7-day refund policy, provided the student has completed less than 10% of the core content and provides a valid reason. Please read the full terms before enrolling.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Can you make me rich overnight?
+                    <span class="arrow"></span>
+                </div>
+                <div class="faq-answer">
+                    <p>No. Trading is a skill that requires discipline, practice, and time. We focus on consistent, sustainable growth, not quick predictions or high-risk gambling.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1133,6 +1041,7 @@
         <button class="btn-primary scroll-fade" onclick="redirectToCTA()">
             Join Ashford Capital →
         </button>
+
         <h3 class="scroll-fade" style="margin-top: 5rem; font-weight: 700;">Stay In The Know</h3>
         <form class="newsletter-form scroll-fade" onsubmit="return handleNewsletter(event)">
             <input type="email" placeholder="Enter your email" required>
@@ -1147,15 +1056,17 @@
                     <img src="asfcm.webp" alt="Ashford Capital Logo" class="logo-image">
                     <span class="logo-text">ASHFORD CAPITAL</span>
                 </div>
-                <p>Financial education and trading mentorship platform. Where traders thrive on precision, not prediction. </p>
+                <p>Financial education and trading mentorship platform. Where traders thrive on precision, not prediction.</p>
             </div>
+            
             <div class="footer-links scroll-fade" style="transition-delay: 0.1s;">
                 <h3>Quick Links</h3>
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#services">Services</a>
-                <a href="#contact">Contact</a>
+                <a href="#home" class="scroll-link">Home</a>
+                <a href="#about" class="scroll-link">About</a>
+                <a href="#services" class="scroll-link">Services</a>
+                <a href="#contact" class="scroll-link">Contact</a>
             </div>
+
             <div class="footer-contact scroll-fade" style="transition-delay: 0.2s;">
                 <h3>Contact</h3>
                 <a href="mailto:co.nexusworks@gmail.com"><span class="icon">✉</span> co.nexusworks@gmail.com</a>
@@ -1165,93 +1076,159 @@
         </div>
     </footer>
 
-    <div id="popup-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center; padding: 20px;">
-        <div style="background-color: var(--color-card-bg); border: 2px solid var(--color-blue-accent); padding: 40px; border-radius: 15px; max-width: 600px; width: 100%; position: relative; box-shadow: 0 0 30px rgba(0, 153, 255, 0.3);">
-            <button onclick="closePopup()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 1.5rem; color: #fff; cursor: pointer;">&times;</button>
-            <h2 id="modal-title" style="margin-bottom: 20px;"></h2>
-            <p id="modal-text" style="color: var(--color-text-light); line-height: 1.8;"></p>
+    <div id="popup-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 9999; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s;">
+        <div style="background-color: var(--color-card-bg); padding: 30px; border-radius: 10px; max-width: 500px; width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0, 153, 255, 0.5); transform: scale(0.9); transition: transform 0.3s;">
+            <h3 id="popup-title" style="color: var(--color-blue-accent); margin-bottom: 15px; font-size: 1.5rem;"></h3>
+            <p id="popup-message" style="color: var(--color-text-light); margin-bottom: 20px;"></p>
+            <div style="width: 100%; height: 150px; background: linear-gradient(45deg, var(--color-blue-accent), var(--color-dark-bg)); border-radius: 5px; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; color: white; font-weight: 600;">
+                [Virtual Action Completed]
+            </div>
+            <button onclick="closePopup()" class="btn-primary" style="padding: 0.7rem 2rem;">Close</button>
         </div>
     </div>
 
     <script>
-        // REDIRECTION CHANGE
         function redirectToCTA() {
             window.location.href = "https://ashford-cta.vercel.app/";
         }
 
-        // MOBILE MENU
-        const toggleBtn = document.getElementById('mobile-menu-toggle');
+        const menuToggle = document.getElementById('mobile-menu-toggle');
         const mainNav = document.getElementById('main-nav');
-        toggleBtn.addEventListener('click', () => {
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        menuToggle.addEventListener('click', () => {
             mainNav.classList.toggle('active');
-            toggleBtn.innerHTML = mainNav.classList.contains('active') ? '&times;' : '&#9776;';
+            menuToggle.innerHTML = mainNav.classList.contains('active') ? '&times;' : '&#9776;';
         });
 
-        // FAQ TOGGLE
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('active');
+                menuToggle.innerHTML = '&#9776;';
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        function toggleVideo() {
+            const video = document.getElementById('about-video');
+            const container = document.getElementById('video-container');
+
+            if (video.paused) {
+                video.play();
+                container.classList.add('video-playing');
+            } else {
+                video.pause();
+                container.classList.remove('video-playing');
+            }
+        }
+
+        document.getElementById('about-video').onended = function() {
+            document.getElementById('video-container').classList.remove('video-playing');
+        };
+
+        const testimonials = [
+            { quote: "Ashford Capital transformed my approach to trading. The emotional mastery techniques alone have saved me from countless impulsive trades.", name: "Niyati S", type: "Swing Trader", initials: "NS" },
+            { quote: "The market mechanics module opened my eyes to patterns I never noticed before. My win rate has improved significantly since joining.", name: "Souvik", type: "Day Trader", initials: "S" }
+        ];
+
+        function showTestimonial(index) {
+            const t = testimonials[index];
+            document.getElementById('testimonial-text').textContent = `"${t.quote}"`;
+            document.getElementById('trader-initials').textContent = t.initials;
+            document.getElementById('trader-name').textContent = t.name;
+            document.getElementById('trader-type').textContent = t.type;
+            const dots = document.querySelectorAll('.slider-dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
         function toggleFAQ(element) {
             const item = element.parentElement;
             const answer = item.querySelector('.faq-answer');
             const isActive = item.classList.contains('active');
+
             document.querySelectorAll('.faq-item').forEach(i => {
                 i.classList.remove('active');
-                i.querySelector('.faq-answer').style.maxHeight = '0px';
+                i.querySelector('.faq-answer').style.maxHeight = null;
             });
+
             if (!isActive) {
                 item.classList.add('active');
                 answer.style.maxHeight = answer.scrollHeight + 'px';
             }
         }
 
-        // TESTIMONIAL SLIDER
-        const testimonials = [
-            { text: '"Ashford Capital transformed my approach to trading. The emotional mastery techniques alone have saved me from countless impulsive trades."', name: "Niyati S", type: "Swing Trader", initials: "NS" },
-            { text: '"Finally found a platform that focuses on market logic instead of just signals. The capital preservation strategy is a game-changer."', name: "Rahul K", type: "Equity Trader", initials: "RK" }
-        ];
-
-        function showTestimonial(index) {
-            document.getElementById('testimonial-text').innerText = testimonials[index].text;
-            document.getElementById('trader-name').innerText = testimonials[index].name;
-            document.getElementById('trader-type').innerText = testimonials[index].type;
-            document.getElementById('trader-initials').innerText = testimonials[index].initials;
-            const dots = document.querySelectorAll('.slider-dot');
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[index].classList.add('active');
+        function handleNewsletter(e) {
+            e.preventDefault();
+            showPopup('newsletter');
+            e.target.reset();
+            return false;
         }
 
-        // POPUP LOGIC
-        function showPopup(type, title) {
-            const modal = document.getElementById('popup-modal');
-            const modalTitle = document.getElementById('modal-title');
-            const modalText = document.getElementById('modal-text');
-            modalTitle.innerText = title;
-            modalText.innerText = "Detailed insights and training parameters for " + title + " are included in our core curriculum. We focus on structured decision logic and capital deployment rules.";
+        const modal = document.getElementById('popup-modal');
+        const modalContent = modal.querySelector('div');
+
+        function showPopup(type, serviceName = '') {
+            let title = "";
+            let message = "";
+            if (type === 'newsletter') {
+                title = "Subscription Confirmed!";
+                message = "Thank you for subscribing to Stay In The Know. Check your inbox for our latest updates.";
+            } else if (type === 'advantage') {
+                title = `Advantage: ${serviceName}`;
+                message = `You've highlighted the importance of **${serviceName}**. This item demonstrates our commitment to delivering precise, actionable education.`;
+            }
+            document.getElementById('popup-title').innerHTML = title;
+            document.getElementById('popup-message').innerHTML = message.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); 
             modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modalContent.style.transform = 'scale(1)';
+            }, 10);
         }
 
         function closePopup() {
-            document.getElementById('popup-modal').style.display = 'none';
+            modal.style.opacity = '0';
+            modalContent.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
         }
 
-        // SCROLL REVEAL
+        document.addEventListener('DOMContentLoaded', () => {
+            showTestimonial(0);
+        });
+
         const scrollFadeElements = document.querySelectorAll('.scroll-fade');
         function checkScrollFade() {
+            const viewportHeight = window.innerHeight;
             scrollFadeElements.forEach(el => {
                 const rect = el.getBoundingClientRect();
-                if (rect.top < window.innerHeight * 0.85) { 
+                if (rect.top < viewportHeight * 0.85) { 
                     el.classList.add('visible');
                 } 
             });
         }
 
-        window.addEventListener('scroll', checkScrollFade);
-        window.onload = checkScrollFade;
+        const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
+        smoothScrollLinks.forEach(link => {
+            if (link.href.includes('#')) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            }
+        });
 
-        // NEWSLETTER
-        function handleNewsletter(e) {
-            e.preventDefault();
-            alert("Subscription successful!");
-            return false;
-        }
+        window.addEventListener('scroll', checkScrollFade);
+        checkScrollFade(); 
+        
     </script>
 </body>
 </html>
