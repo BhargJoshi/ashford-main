@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ashford Capital: 𝗟𝗶𝘃𝗲 𝗠𝗮𝗿𝗸𝗲𝘁 𝗠𝗲𝗻𝘁𝗼𝗿𝘀𝗵𝗶𝗽 & 𝗧𝗿𝗮𝗶𝗻𝗶𝗻𝗴</title>
+    <title>Ashford Capital: Live Market Mentorship & Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -286,28 +287,23 @@
             color: var(--color-text-light);
         }
 
-        .execution-highlight {
+        /* FIXED: RECTANGLE CARD STYLE */
+        .execution-card {
             display: inline-block;
+            border: 2px solid var(--color-blue-accent);
+            background-color: rgba(0, 153, 255, 0.05);
+            padding: 20px 30px;
+            border-radius: 8px;
+            margin: 10px 0 30px 0;
+            text-align: left;
+        }
+
+        .execution-card-text {
             color: #ffffff;
             font-family: var(--font-main);
             font-weight: 800;
             font-size: 1.4rem;
-            margin: 10px 0 30px 0;
-            position: relative;
-            cursor: pointer;
-        }
-        .execution-highlight::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -5px;
-            width: 0;
-            height: 3px;
-            background: var(--color-blue-accent);
-            transition: width 0.4s ease-in-out;
-        }
-        .execution-highlight:hover::after {
-            width: 100%;
+            margin: 0;
         }
         
         .feature-list {
@@ -763,16 +759,20 @@
             }
             
             .mobile-menu-toggle { display: block; order: 3; }
+            
             .join-button { padding: 0.7rem 1.5rem; font-size: 0.9rem; }
             .logo-text { font-size: 1rem; }
             .logo-image { height: 35px; }
             .hero-section h1 { font-size: 3rem; }
             .stats-bar { gap: 4rem; }
+
             .about-content { grid-template-columns: 1fr; gap: 3rem; }
             .about-visual { max-height: none; } 
             .about-text { grid-row: 2; }
+
             .advantage-grid { grid-template-columns: 1fr; }
             .services-grid { grid-template-columns: 1fr; }
+            
             .footer { flex-wrap: wrap; justify-content: flex-start; gap: 30px; padding: 40px 5%; }
             .footer-logo { width: 100%; margin-bottom: 20px; }
             .footer-links, .footer-contact { min-width: 150px; }
@@ -796,6 +796,7 @@
             .newsletter-form button { width: 100%; }
             .footer-links, .footer-contact { width: 100%; margin-top: 20px; }
         }
+        
     </style>
 </head>
 <body>
@@ -806,7 +807,9 @@
             <span class="logo-text">ASHFORD CAPITAL</span>
         </div>
         
-        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" id="mobile-menu-toggle">&#9776;</button>
+        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" id="mobile-menu-toggle">
+            &#9776;
+        </button>
 
         <nav id="main-nav">
             <a href="#home" class="nav-link active">Home</a>
@@ -819,18 +822,23 @@
 
     <section id="home" class="hero-section">
         <div class="hero-content">
-            <p class="tagline scroll-fade">𝗟𝗶𝘃𝗲 𝗠𝗮𝗿𝗸𝗲𝘁 𝗠𝗲𝗻𝘁𝗼𝗿𝘀𝗵𝗶𝗽 & 𝗧𝗿𝗮𝗶𝗻𝗶𝗻𝗴</p>
+            <p class="tagline scroll-fade">Live Market Mentorship & Training</p>
+            
             <h1 class="scroll-fade" style="transition-delay: 0.1s;">
                 WHERE TRADERS THRIVE<br>
                 ON <span class="highlight-blue">PRECISION</span> NOT<br>
                 <span class="highlight-white">PREDICTION</span>
             </h1>
             <p class="subtitle scroll-fade" style="transition-delay: 0.2s;">Learn Better Concepts & Master Their Execution.</p>
+        
             <div class="hero-actions scroll-fade" style="transition-delay: 0.3s;">
                 <button class="btn-primary" onclick="redirectToCTA()">Let's Start→</button>
-                <button class="btn-secondary" onclick="document.getElementById('about').scrollIntoView({ behavior: 'smooth' });">Let Me See</button>
+                <button class="btn-secondary" onclick="document.getElementById('about').scrollIntoView({ behavior: 'smooth' });">
+                    Let Me See
+                </button>
             </div>
         </div>
+
         <div class="stats-bar scroll-fade" style="transition-delay: 0.4s;">
             <div class="stat-item">
                 <p class="stat-number">3+</p>
@@ -840,7 +848,7 @@
                 <p class="stat-number">ALL</p>
                 <p class="stat-label">MARKET TYPES</p>
             </div>
-        </div>
+       </div>
     </section>
 
     <section id="about" class="section-padding">
@@ -850,26 +858,34 @@
         </div>
         <div class="about-content scroll-fade">
             <div class="about-text">
-                <div class="execution-highlight">
-                    Most Learn The Concepts But Fail At Real Time Execution...<span class="highlight-blue">WE FIX THAT</span>
+                <div class="execution-card">
+                    <p class="execution-card-text">
+                        Most Learn The Concepts But Fail At Real Time Execution...<span class="highlight-blue">WE FIX THAT</span>
+                    </p>
                 </div>
-                <p>Ashford Capital is a market decision institution. [cite: 179] We train how to see markets clearly, operate within them decisively, and think in capital — not just trades. [cite: 180]</p>
-                <p>We don’t sell strategies, tips, or signals. [cite: 181] We train complete market roles, so traders stop guessing and start making structured decisions. [cite: 182]</p>
+                <p>
+                    Ashford Capital is a market decision institution. We train how to see markets clearly, operate within them decisively, and think in capital — not just trades.
+                </p>
+                <p>
+                    We don’t sell strategies, tips, or signals. We train complete market roles, so traders stop guessing and start making structured decisions.
+                </p>
+                
                 <div class="feature-list">
                     <div class="feature-item">
                         <span class="feature-icon">◎</span>
-                        Market Clarity: Understand what the market is doing — and why — without relying on indicators or opinions. [cite: 184]
+                        Market Clarity: Understand what the market is doing — and why — without relying on indicators or opinions.
                     </div>
                     <div class="feature-item">
                         <span class="feature-icon">⚡</span>
-                        Execution Practice: Execute decisions consistently in live markets, even under pressure and real risk. [cite: 185]
+                        Execution Practice: Execute decisions consistently in live markets, even under pressure and real risk.
                     </div>
                     <div class="feature-item">
                         <span class="feature-icon">↗</span>
-                        Capital Intelligence: Manage capital with institutional logic, prioritizing preservation, positioning, and longevity. [cite: 186]
+                        Capital Intelligence: Manage capital with institutional logic, prioritizing preservation, positioning, and longevity.
                     </div>
                 </div>
             </div>
+
             <div class="about-visual" id="video-container" onclick="toggleVideo()">
                 <video id="about-video" playsinline>
                     <source src="int reel.mp4" type="video/mp4">
@@ -963,7 +979,7 @@
         </div>
         <div class="testimonial-card scroll-fade">
             <span class="quote-icon">❝</span>
-            <p class="testimonial-text" id="testimonial-text"> "Ashford Capital transformed my approach to trading. [cite: 203] The emotional mastery techniques alone have saved me from countless impulsive trades." [cite: 204]</p>
+            <p class="testimonial-text" id="testimonial-text"> "Ashford Capital transformed my approach to trading. The emotional mastery techniques alone have saved me from countless impulsive trades." </p>
             <div class="trader-info">
                 <div class="trader-initials" id="trader-initials">NS</div>
                 <div>
@@ -986,22 +1002,30 @@
         <div class="faq-list scroll-fade">
             <div class="faq-item">
                 <div class="faq-question" onclick="toggleFAQ(this)"> What trading experience do I need to join? <span class="arrow"></span> </div>
-                <div class="faq-answer"> <p>Our programs cater to all levels, from absolute beginners to intermediate traders looking to refine their strategy. [cite: 207, 208] We focus on building fundamental precision first. [cite: 208]</p> </div>
+                <div class="faq-answer"> <p>Our programs cater to all levels, from absolute beginners to intermediate traders looking to refine their strategy. We focus on building fundamental precision first.</p> </div>
             </div>
             <div class="faq-item">
                 <div class="faq-question" onclick="toggleFAQ(this)"> How is the mentorship delivered? <span class="arrow"></span> </div>
-                <div class="faq-answer"> <p>Mentorship is delivered through live weekly webinars, recorded modules, direct sessions, and a private community chat. [cite: 208, 209]</p> </div>
+                <div class="faq-answer"> <p>Mentorship is delivered through a combination of live weekly webinars, recorded video modules, direct one-on-one strategy sessions, and a private community chat for real-time support.</p> </div>
             </div>
             <div class="faq-item">
                 <div class="faq-question" onclick="toggleFAQ(this)"> What markets do you cover? <span class="arrow"></span> </div>
-                <div class="faq-answer"> <p>Our principles are universal. [cite: 210] While we focus on Indian equity and commodity markets, the techniques apply to Forex, Crypto, and US Stocks. [cite: 211]</p> </div>
+                <div class="faq-answer"> <p>Our core principles are universally applicable. While we primarily use Indian equity and commodity markets for examples, the techniques can be applied to Forex, Crypto, and US Stocks.</p> </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)"> Is there a refund policy? <span class="arrow"></span> </div>
+                <div class="faq-answer"> <p>We offer a conditional 7-day refund policy, provided the student has completed less than 10% of the core content and provides a valid reason. Please read the full terms before enrolling.</p> </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)"> Can you make me rich overnight? <span class="arrow"></span> </div>
+                <div class="faq-answer"> <p>No. Trading is a skill that requires discipline, practice, and time. We focus on consistent, sustainable growth, not quick predictions or high-risk gambling.</p> </div>
             </div>
         </div>
     </section>
 
     <section class="cta-section">
         <h2 class="scroll-fade">READY TO <span class="highlight-blue">START?</span></h2>
-        <p class="subtitle scroll-fade" style="margin-bottom: 2rem;"> Join hundreds of traders who have transformed their approach to the markets. [cite: 216] </p>
+        <p class="subtitle scroll-fade" style="margin-bottom: 2rem;"> Join hundreds of traders who have transformed their approach to the markets. </p>
         <button class="btn-primary scroll-fade" onclick="redirectToCTA()"> Join Ashford Capital → </button>
         <h3 class="scroll-fade" style="margin-top: 5rem; font-weight: 700;">Stay In The Know</h3>
         <form class="newsletter-form scroll-fade" onsubmit="return handleNewsletter(event)">
@@ -1017,7 +1041,7 @@
                     <img src="asfcm.webp" alt="Ashford Capital Logo" class="logo-image">
                     <span class="logo-text">ASHFORD CAPITAL</span>
                 </div>
-                <p>Financial education and trading mentorship platform. [cite: 219] Where traders thrive on precision, not prediction. [cite: 220]</p>
+                <p>Financial education and trading mentorship platform. Where traders thrive on precision, not prediction.</p>
             </div>
             <div class="footer-links scroll-fade" style="transition-delay: 0.1s;">
                 <h3>Quick Links</h3>
@@ -1045,10 +1069,7 @@
     </div>
 
     <script>
-        // Restored CTA Redirection
-        function redirectToCTA() { 
-            window.location.href = "https://ashford-cta.vercel.app/"; 
-        }
+        function redirectToCTA() { window.location.href = "https://ashford-cta.vercel.app/"; }
         
         const menuToggle = document.getElementById('mobile-menu-toggle');
         const mainNav = document.getElementById('main-nav');
@@ -1061,6 +1082,7 @@
         document.querySelectorAll('.nav-link, .scroll-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
+                
                 if (href.startsWith('#')) {
                     e.preventDefault();
                     const target = document.querySelector(href);
@@ -1102,7 +1124,6 @@
                 type: 'Intraday Specialist'
             }
         ];
-        
         let currentTestimonial = 0;
         function showTestimonial(index) {
             currentTestimonial = index;
@@ -1156,11 +1177,6 @@
             });
         }, observerOptions);
         scrollFadeElements.forEach(el => observer.observe(el));
-
-        function handleNewsletter(event) {
-            event.preventDefault();
-            return false;
-        }
     </script>
 </body>
 </html>
