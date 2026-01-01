@@ -286,14 +286,23 @@
             color: var(--color-text-light);
         }
 
-        /* ADDED: SPECIAL ANIMATED LINE STYLE */
+        /* MODIFIED: SURROUNDED IN A RECTANGLE CARD */
+        .execution-card {
+            background-color: var(--color-card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 10px 0 30px 0;
+            display: inline-block;
+            width: 100%;
+        }
+
         .execution-highlight {
             display: inline-block;
             color: #ffffff;
             font-family: var(--font-main);
             font-weight: 800;
             font-size: 1.4rem;
-            margin: 10px 0 30px 0;
             position: relative;
             cursor: pointer;
         }
@@ -828,14 +837,11 @@
     <section id="home" class="hero-section">
         <div class="hero-content">
             <p class="tagline scroll-fade">𝗟𝗶𝘃𝗲 𝗠𝗮𝗿𝗸𝗲𝘁 𝗠𝗲𝗻𝘁𝗼𝗿𝘀𝗵𝗶𝗽 & 𝗧𝗿𝗮𝗶𝗻𝗶𝗻𝗴</p>
-            
             <h1 class="scroll-fade" style="transition-delay: 0.1s;">
-                WHERE TRADERS THRIVE<br>
-                ON <span class="highlight-blue">PRECISION</span> NOT<br>
-                <span class="highlight-white">PREDICTION</span>
+                WHERE TRADERS THRIVE<br> ON <span class="highlight-blue">PRECISION</span> NOT<br> <span class="highlight-white">PREDICTION</span>
             </h1>
             <p class="subtitle scroll-fade" style="transition-delay: 0.2s;">Learn Better Concepts & Master Their Execution.</p>
-        
+            
             <div class="hero-actions scroll-fade" style="transition-delay: 0.3s;">
                 <button class="btn-primary" onclick="redirectToCTA()">Let's Start→</button>
                 <button class="btn-secondary" onclick="document.getElementById('about').scrollIntoView({ behavior: 'smooth' });">
@@ -853,6 +859,10 @@
                 <p class="stat-number">ALL</p>
                 <p class="stat-label">MARKET TYPES</p>
             </div>
+            <div class="stat-item">
+                <p class="stat-number">1:1</p>
+                <p class="stat-label">MENTORSHIP</p>
+            </div>
         </div>
     </section>
 
@@ -863,9 +873,10 @@
         </div>
         <div class="about-content scroll-fade">
             <div class="about-text">
-                
-                <div class="execution-highlight">
-                    Most Learn The Concepts But Fail At Real Time Execution...<span class="highlight-blue">WE FIX THAT</span>
+                <div class="execution-card">
+                    <div class="execution-highlight">
+                        Most Learn The Concepts, But Fail At Real Time Execution...<span class="highlight-blue">WE FIX THAT</span>
+                    </div>
                 </div>
                 <p>
                     Ashford Capital is a market decision institution. We train how to see markets clearly, operate within them decisively, and think in capital — not just trades.
@@ -876,16 +887,13 @@
                 
                 <div class="feature-list">
                     <div class="feature-item">
-                        <span class="feature-icon">◎</span>
-                        Market Clarity: Understand what the market is doing — and why — without relying on indicators or opinions.
+                        <span class="feature-icon">◎</span> Market Clarity: Understand what the market is doing — and why — without relying on indicators or opinions.
                     </div>
                     <div class="feature-item">
-                        <span class="feature-icon">⚡</span>
-                        Execution Practice: Execute decisions consistently in live markets, even under pressure and real risk.
+                        <span class="feature-icon">⚡</span> Execution Practice: Execute decisions consistently in live markets, even under pressure and real risk.
                     </div>
                     <div class="feature-item">
-                        <span class="feature-icon">↗</span>
-                        Capital Intelligence: Manage capital with institutional logic, prioritizing preservation, positioning, and longevity.
+                        <span class="feature-icon">↗</span> Capital Intelligence: Manage capital with institutional logic, prioritizing preservation, positioning, and longevity.
                     </div>
                 </div>
             </div>
@@ -933,8 +941,11 @@
     <section id="services" class="section-padding">
         <div class="section-header scroll-fade">
             <h2>OUR <span class="highlight-blue">SERVICES</span></h2>
-            <p class="subtitle" style="font-size: 1rem; color: var(--color-text-light);"> Choose the program that fits your trading journey and start mastering the markets today.</p>
+            <p class="subtitle" style="font-size: 1rem; color: var(--color-text-light);">
+                Choose the program that fits your trading journey and start mastering the markets today.
+            </p>
         </div>
+        
         <div class="services-grid">
             <div class="service-card scroll-fade">
                 <span class="card-icon">📈</span>
@@ -946,8 +957,11 @@
                     <li>Support & Resistance</li>
                     <li>Volume Analysis</li>
                 </ul>
-                <button class="btn-primary" onclick="redirectToCTA()"> Enroll Now → </button>
+                <button class="btn-primary" onclick="redirectToCTA()">
+                    Enroll Now →
+                </button>
             </div>
+
             <div class="service-card popular scroll-fade" style="transition-delay: 0.2s;">
                 <div class="popular-tag">POPULAR</div>
                 <span class="card-icon">↗</span>
@@ -959,8 +973,11 @@
                     <li>Entry & Exit Timing</li>
                     <li>Risk Management</li>
                 </ul>
-                <button class="btn-primary" onclick="redirectToCTA()"> Enroll Now → </button>
+                <button class="btn-primary" onclick="redirectToCTA()">
+                    Enroll Now →
+                </button>
             </div>
+
             <div class="service-card scroll-fade" style="transition-delay: 0.4s;">
                 <span class="card-icon">💰</span>
                 <h3>Investing</h3>
@@ -971,7 +988,9 @@
                     <li>Fundamental Analysis</li>
                     <li>Wealth Preservation</li>
                 </ul>
-                <button class="btn-primary" onclick="redirectToCTA()"> Enroll Now → </button>
+                <button class="btn-primary" onclick="redirectToCTA()">
+                    Enroll Now →
+                </button>
             </div>
         </div>
     </section>
@@ -981,9 +1000,12 @@
             <p class="tag">TESTIMONIALS</p>
             <h2>WHAT OUR <span class="highlight-blue">TRADERS</span> SAY</h2>
         </div>
+        
         <div class="testimonial-card scroll-fade">
             <span class="quote-icon">❝</span>
-            <p class="testimonial-text" id="testimonial-text"> "Ashford Capital transformed my approach to trading. The emotional mastery techniques alone have saved me from countless impulsive trades." </p>
+            <p class="testimonial-text" id="testimonial-text">
+                "Ashford Capital transformed my approach to trading. The emotional mastery techniques alone have saved me from countless impulsive trades."
+            </p>
             <div class="trader-info">
                 <div class="trader-initials" id="trader-initials">NS</div>
                 <div>
@@ -991,6 +1013,7 @@
                     <div class="trader-type" id="trader-type">Swing Trader</div>
                 </div>
             </div>
+            
             <div style="text-align: center; margin-top: 2rem;">
                 <span class="slider-dot active" onclick="showTestimonial(0)">•</span>
                 <span class="slider-dot" onclick="showTestimonial(1)">•</span>
@@ -1003,34 +1026,69 @@
             <h2>FREQUENTLY <span class="highlight-blue">ASKED</span></h2>
             <p class="subtitle" style="font-size: 1rem; color: var(--color-text-light);">Got questions? We've got answers.</p>
         </div>
+        
         <div class="faq-list scroll-fade">
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)"> What trading experience do I need to join? <span class="arrow"></span> </div>
-                <div class="faq-answer"> <p>Our programs cater to all levels, from absolute beginners to intermediate traders looking to refine their strategy. We focus on building fundamental precision first.</p> </div>
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What trading experience do I need to join?
+                    <span class="arrow"></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Our programs cater to all levels, from absolute beginners to intermediate traders looking to refine their strategy. We focus on building fundamental precision first.</p>
+                </div>
             </div>
+
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)"> How is the mentorship delivered? <span class="arrow"></span> </div>
-                <div class="faq-answer"> <p>Mentorship is delivered through a combination of live weekly webinars, recorded video modules, direct one-on-one strategy sessions, and a private community chat for real-time support.</p> </div>
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How is the mentorship delivered?
+                    <span class="arrow"></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Mentorship is delivered through a combination of live weekly webinars, recorded video modules, direct one-on-one strategy sessions, and a private community chat for real-time support.</p>
+                </div>
             </div>
+
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)"> What markets do you cover? <span class="arrow"></span> </div>
-                <div class="faq-answer"> <p>Our core principles are universally applicable. While we primarily use Indian equity and commodity markets for examples, the techniques can be applied to Forex, Crypto, and US Stocks.</p> </div>
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What markets do you cover?
+                    <span class="arrow"></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Our core principles are universally applicable. While we primarily use Indian equity and commodity markets for examples, the techniques can be applied to Forex, Crypto, and US Stocks.</p>
+                </div>
             </div>
+
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)"> Is there a refund policy? <span class="arrow"></span> </div>
-                <div class="faq-answer"> <p>We offer a conditional 7-day refund policy, provided the student has completed less than 10% of the core content and provides a valid reason. Please read the full terms before enrolling.</p> </div>
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Is there a refund policy?
+                    <span class="arrow"></span>
+                </div>
+                <div class="faq-answer">
+                    <p>We offer a conditional 7-day refund policy, provided the student has completed less than 10% of the core content and provides a valid reason. Please read the full terms before enrolling.</p>
+                </div>
             </div>
+
             <div class="faq-item">
-                <div class="faq-question" onclick="toggleFAQ(this)"> Can you make me rich overnight? <span class="arrow"></span> </div>
-                <div class="faq-answer"> <p>No. Trading is a skill that requires discipline, practice, and time. We focus on consistent, sustainable growth, not quick predictions or high-risk gambling.</p> </div>
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Can you make me rich overnight?
+                    <span class="arrow"></span>
+                </div>
+                <div class="faq-answer">
+                    <p>No. Trading is a skill that requires discipline, practice, and time. We focus on consistent, sustainable growth, not quick predictions or high-risk gambling.</p>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="cta-section">
         <h2 class="scroll-fade">READY TO <span class="highlight-blue">START?</span></h2>
-        <p class="subtitle scroll-fade" style="margin-bottom: 2rem;"> Join hundreds of traders who have transformed their approach to the markets. </p>
-        <button class="btn-primary scroll-fade" onclick="redirectToCTA()"> Join Ashford Capital → </button>
+        <p class="subtitle scroll-fade" style="margin-bottom: 2rem;">
+            Join hundreds of traders who have transformed their approach to the markets.
+        </p>
+        <button class="btn-primary scroll-fade" onclick="redirectToCTA()">
+            Join Ashford Capital →
+        </button>
+
         <h3 class="scroll-fade" style="margin-top: 5rem; font-weight: 700;">Stay In The Know</h3>
         <form class="newsletter-form scroll-fade" onsubmit="return handleNewsletter(event)">
             <input type="email" placeholder="Enter your email" required>
@@ -1038,71 +1096,67 @@
         </form>
     </section>
 
-    <footer id="contact" class="section-padding" style="padding-top: 60px; padding-bottom: 60px;">
+    <footer id="contact" class="section-padding" style="padding-top: 50px; padding-bottom: 50px;">
         <div class="footer">
-            <div class="footer-logo scroll-fade">
-                <div class="logo" style="margin-bottom: 0.5rem;">
-                    <img src="asfcm.webp" alt="Ashford Capital Logo" class="logo-image">
-                    <span class="logo-text">ASHFORD CAPITAL</span>
-                </div>
-                <p>Financial education and trading mentorship platform. Where traders thrive on precision, not prediction.</p>
+            <div class="footer-logo">
+                <h3>ASHFORD CAPITAL</h3>
+                <p>Trading mentorship and financial education for the modern market.</p>
             </div>
-            <div class="footer-links scroll-fade" style="transition-delay: 0.1s;">
+            <div class="footer-links">
                 <h3>Quick Links</h3>
-                <a href="#home" class="scroll-link">Home</a>
-                <a href="#about" class="scroll-link">About</a>
-                <a href="#services" class="scroll-link">Services</a>
-                <a href="#contact" class="scroll-link">Contact</a>
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#services">Services</a>
             </div>
-            <div class="footer-contact scroll-fade" style="transition-delay: 0.2s;">
+            <div class="footer-contact">
                 <h3>Contact</h3>
-                <a href="mailto:co.nexusworks@gmail.com"><span class="icon">✉</span> co.nexusworks@gmail.com</a>
-                <p><span class="icon">📞</span> +91 9624887241</p>
-                <p><span class="icon">📸</span> @ashfordcapital_</p>
+                <p><span class="icon">✉</span> ashfordcapitalofficial@gmail.com</p>
+                <p><span class="icon">☏</span> +91 93226 62058</p>
             </div>
         </div>
     </footer>
 
-    <div id="popup-modal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); z-index: 9999; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s;">
-        <div style="background-color: var(--color-card-bg); padding: 30px; border-radius: 10px; max-width: 500px; width: 90%; text-align: center; box-shadow: 0 10px 30px rgba(0, 153, 255, 0.5); transform: scale(0.9); transition: transform 0.3s;">
-            <h3 id="popup-title" style="color: var(--color-blue-accent); margin-bottom: 15px; font-size: 1.5rem;"></h3>
-            <p id="popup-message" style="color: var(--color-text-light); margin-bottom: 20px;"></p>
-            <div style="width: 100%; height: 150px; background: linear-gradient(45deg, var(--color-blue-accent), var(--color-dark-bg)); border-radius: 5px; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; color: white; font-weight: 600;"> [Virtual Action Completed] </div>
-            <button onclick="closePopup()" class="btn-primary" style="padding: 0.7rem 2rem;">Close</button>
+    <div id="popup-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:2000; justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s ease;">
+        <div style="background:var(--color-card-bg); padding:40px; border-radius:15px; max-width:500px; width:90%; border:1px solid var(--color-blue-accent); text-align:center; transform:scale(0.9); transition:transform 0.3s ease;">
+            <h3 id="popup-title" style="font-size:2rem; margin-bottom:15px; color:var(--color-blue-accent);"></h3>
+            <p id="popup-message" style="color:var(--color-text-light); margin-bottom:25px; font-size:1.1rem;"></p>
+            <button class="btn-primary" onclick="closePopup()">Got it</button>
         </div>
     </div>
 
     <script>
-        function redirectToCTA() { window.location.href = "https://ashford-cta.vercel.app/"; }
-        
-        const menuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileToggle = document.getElementById('mobile-menu-toggle');
         const mainNav = document.getElementById('main-nav');
-        
-        menuToggle.addEventListener('click', () => {
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        mobileToggle.addEventListener('click', () => {
             mainNav.classList.toggle('active');
-            menuToggle.innerHTML = mainNav.classList.contains('active') ? '&#10005;' : '&#9776;';
+            mobileToggle.innerHTML = mainNav.classList.contains('active') ? '✕' : '&#9776;';
         });
 
-        document.querySelectorAll('.nav-link, .scroll-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                const href = link.getAttribute('href');
-                if (href.startsWith('#')) {
-                    e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) {
-                        mainNav.classList.remove('active');
-                        menuToggle.innerHTML = '&#9776;';
-                        target.scrollIntoView({ behavior: 'smooth' });
-                        document.querySelectorAll('.nav-link').forEach(nl => nl.classList.remove('active'));
-                        if (link.classList.contains('nav-link')) link.classList.add('active');
-                    }
-                }
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mainNav.classList.remove('active');
+                mobileToggle.innerHTML = '&#9776;';
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
             });
         });
 
+        function redirectToCTA() {
+            window.open('https://forms.gle/zXmY6j5v2sU8Zp3w9', '_blank');
+        }
+
+        function handleNewsletter(e) {
+            e.preventDefault();
+            alert('Thank you for subscribing! Check your inbox soon.');
+            e.target.reset();
+            return false;
+        }
+
         const video = document.getElementById('about-video');
         const videoContainer = document.getElementById('video-container');
-        
+
         function toggleVideo() {
             if (video.paused) {
                 video.play();
@@ -1113,45 +1167,58 @@
             }
         }
 
+        video.addEventListener('ended', () => {
+            videoContainer.classList.remove('video-playing');
+        });
+
         const testimonials = [
             {
-                text: '"Ashford Capital transformed my approach to trading. The emotional mastery techniques alone have saved me from countless impulsive trades."',
-                name: 'Niyati S',
-                initials: 'NS',
-                type: 'Swing Trader'
+                text: "Ashford Capital transformed my approach to trading. The emotional mastery techniques alone have saved me from countless impulsive trades.",
+                name: "Niyati S",
+                type: "Swing Trader",
+                initials: "NS"
             },
             {
-                text: '"The clarity I gained from the advanced chart analysis module is incredible. I finally understand the \'why\' behind market movements."',
-                name: 'Arjun M',
-                initials: 'AM',
-                type: 'Intraday Specialist'
+                text: "The institutional framework they teach is unmatched. I finally stopped chasing signals and started understanding market logic.",
+                name: "Rahul M",
+                type: "Intraday Trader",
+                initials: "RM"
             }
         ];
 
         let currentTestimonial = 0;
         function showTestimonial(index) {
-            currentTestimonial = index;
             const textEl = document.getElementById('testimonial-text');
             const nameEl = document.getElementById('trader-name');
-            const initialsEl = document.getElementById('trader-initials');
             const typeEl = document.getElementById('trader-type');
+            const initialsEl = document.getElementById('trader-initials');
             const dots = document.querySelectorAll('.slider-dot');
 
             textEl.style.opacity = '0';
             setTimeout(() => {
-                textEl.textContent = testimonials[index].text;
+                textEl.textContent = `"${testimonials[index].text}"`;
                 nameEl.textContent = testimonials[index].name;
-                initialsEl.textContent = testimonials[index].initials;
                 typeEl.textContent = testimonials[index].type;
+                initialsEl.textContent = testimonials[index].initials;
                 textEl.style.opacity = '1';
                 dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+                currentTestimonial = index;
             }, 300);
         }
 
         function toggleFAQ(element) {
             const item = element.parentElement;
-            item.classList.toggle('active');
             const answer = item.querySelector('.faq-answer');
+            const allItems = document.querySelectorAll('.faq-item');
+
+            allItems.forEach(i => {
+                if (i !== item && i.classList.contains('active')) {
+                    i.classList.remove('active');
+                    i.querySelector('.faq-answer').style.maxHeight = '0';
+                }
+            });
+
+            item.classList.toggle('active');
             answer.style.maxHeight = item.classList.contains('active') ? answer.scrollHeight + "px" : "0";
         }
 
