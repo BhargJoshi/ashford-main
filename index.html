@@ -1024,13 +1024,13 @@
         // LENIS SMOOTH SCROLL — wired into GSAP ScrollTrigger
         // ============================================================
         const lenis = new Lenis({
-            duration:        1.4,          // inertia feel — higher = more glide
-            easing:          t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // expo ease-out
+            duration:        2.0,          // longer glide = more inertia feel
+            easing:          t => 1 - Math.pow(1 - t, 4), // quartic ease-out — slower tail-off
             orientation:     'vertical',
             gestureOrientation: 'vertical',
             smoothWheel:     true,
-            wheelMultiplier: 0.9,
-            touchMultiplier: 1.8,
+            wheelMultiplier: 0.75,         // each wheel tick moves less distance
+            touchMultiplier: 1.5,
             infinite:        false,
         });
 
