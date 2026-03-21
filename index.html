@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 
     <style>
         /* =============================================
@@ -29,6 +30,11 @@
            RESET & BASE
         ============================================= */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* Lenis smooth scroll setup */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto !important; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 
         body {
             background-color: var(--color-dark-bg);
@@ -1015,6 +1021,50 @@
 
 
         // ============================================================
+        // LENIS SMOOTH SCROLL — wired into GSAP ScrollTrigger
+        // ============================================================
+        const lenis = new Lenis({
+            duration:        1.4,          // inertia feel — higher = more glide
+            easing:          t => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // expo ease-out
+            orientation:     'vertical',
+            gestureOrientation: 'vertical',
+            smoothWheel:     true,
+            wheelMultiplier: 0.9,
+            touchMultiplier: 1.8,
+            infinite:        false,
+        });
+
+        // Feed Lenis scroll position into GSAP ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update);
+
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+
+        // Override every native scrollIntoView / anchor click so Lenis handles them
+        document.querySelectorAll('a[href^="#"], button[onclick*="scrollIntoView"]').forEach(el => {
+            // anchor links
+            if (el.tagName === 'A') {
+                el.addEventListener('click', (e) => {
+                    const href = el.getAttribute('href');
+                    if (href && href.startsWith('#')) {
+                        const target = document.querySelector(href);
+                        if (target) { e.preventDefault(); lenis.scrollTo(target, { offset: 0, duration: 1.4 }); }
+                    }
+                }, { capture: true });
+            }
+        });
+        // Patch the "Let Me See" button that uses scrollIntoView inline
+        document.querySelectorAll('[onclick*="scrollIntoView"]').forEach(btn => {
+            const match = btn.getAttribute('onclick').match(/#([\w-]+)/);
+            if (match) {
+                btn.addEventListener('click', (e) => {
+                    const target = document.getElementById(match[1]);
+                    if (target) { e.preventDefault(); e.stopImmediatePropagation(); lenis.scrollTo(target, { offset: 0, duration: 1.4 }); }
+                }, { capture: true });
+            }
+        });
+
+        // ============================================================
         // GSAP SCROLLTRIGGER — CLEAN, ID-BASED, ZERO CONFLICTS
         // ============================================================
         gsap.registerPlugin(ScrollTrigger);
@@ -1036,9 +1086,11 @@
         // ============================================================
         // 2. HERO PARALLAX — bg layers drift at different speeds
         // ============================================================
-        gsap.to('.grid-lines',   { y: -80,  ease: 'none', scrollTrigger: { trigger: '.hero-section', start: 'top top', end: 'bottom top', scrub: 1.5 } });
-        gsap.to('#hero-glow',    { y: -120, scale: 1.3, ease: 'none', scrollTrigger: { trigger: '.hero-section', start: 'top top', end: 'bottom top', scrub: 2 } });
-        gsap.to('.hero-content', { y: -55,  ease: 'none', scrollTrigger: { trigger: '.hero-section', start: 'top top', end: 'bottom top', scrub: true } });
+        // Parallax depth: grid (far) → glow (mid) → content (near)
+        gsap.to('.grid-lines',   { y: -160, ease: 'none', scrollTrigger: { trigger: '.hero-section', start: 'top top', end: 'bottom top', scrub: 1.5 } });
+        gsap.to('#hero-glow',    { y: -220, scale: 1.4, ease: 'none', scrollTrigger: { trigger: '.hero-section', start: 'top top', end: 'bottom top', scrub: 2 } });
+        gsap.to('.hero-content', { y: -80,  ease: 'none', scrollTrigger: { trigger: '.hero-section', start: 'top top', end: 'bottom top', scrub: true } });
+        gsap.to('.stats-bar',    { y: -30,  ease: 'none', scrollTrigger: { trigger: '.hero-section', start: 'top top', end: 'bottom top', scrub: 1 } });
 
         // ============================================================
         // 3. MARQUEE — fade in on scroll
@@ -1089,6 +1141,9 @@
             if (para)     scrollyTl.fromTo(para,     { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: step * 0.14, ease: 'power2.out' }, childIn + step * 0.10);
             if (i < totalScenes - 1) scrollyTl.to(el, { opacity: 0, y: -28, duration: step * 0.18, ease: 'power2.in' }, fadeOut);
         });
+
+        // Subtle parallax on scrolly background pseudo-element via a helper div
+        gsap.to('#scrolly-sticky', { backgroundPositionY: '30%', ease: 'none', scrollTrigger: { trigger: '#scrolly-pin', start: 'top top', end: 'bottom bottom', scrub: 1 } });
 
         // ============================================================
         // 5. ABOUT — left side & right side fly in, features stagger up
