@@ -121,16 +121,11 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem 5%;
-            position: fixed;
+            position: sticky;
             top: 0;
             width: 100%;
-            z-index: 2000;
-            background: transparent;
-            transition: background 0.4s ease;
-        }
-        .navbar.scrolled {
-            background: rgba(14,17,26,0.95);
-            backdrop-filter: blur(10px);
+            z-index: 1000;
+            background: var(--color-dark-bg);
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         .logo {
@@ -139,10 +134,7 @@
             display: flex;
             align-items: center;
             cursor: pointer;
-            opacity: 0;
-            transition: opacity 0.4s ease;
         }
-        .logo.visible { opacity: 1; }
         .logo-image {
             height: 40px;
             width: auto;
@@ -162,215 +154,42 @@
         .logo:hover .logo-image { transform: scale(1.05); box-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4); }
         .logo:hover .logo-text  { transform: scale(1.05); text-shadow: 0 0 8px rgba(255,255,255,0.8); color: var(--color-blue-accent); }
 
-        /* HAMBURGER BUTTON */
-        .hamburger-btn {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 44px;
-            height: 44px;
+        nav a {
+            display: inline-block;
+            position: relative;
+            opacity: 0.8;
+            margin: 0 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: opacity 0.3s, color 0.3s, transform 0.3s;
+        }
+        nav a:hover { opacity: 1; color: var(--color-blue-accent); transform: scale(1.05); }
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 3px;
+            bottom: -5px; left: 0;
+            background-color: var(--color-blue-accent);
+            transition: width 0.3s ease-out;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+
+        .mobile-menu-toggle {
+            display: none;
             background: none;
             border: none;
+            font-size: 2rem;
+            color: var(--color-primary-text);
             cursor: pointer;
-            z-index: 2100;
-            gap: 6px;
             padding: 0;
-        }
-        .hamburger-btn span {
-            display: block;
-            width: 28px;
-            height: 2px;
-            background: var(--color-primary-text);
-            border-radius: 2px;
-            transition: transform 0.35s ease, opacity 0.35s ease, width 0.35s ease;
-            transform-origin: center;
-        }
-        .hamburger-btn.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-        .hamburger-btn.open span:nth-child(2) { opacity: 0; width: 0; }
-        .hamburger-btn.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-        /* SLIDE-IN DRAWER NAV */
-        .nav-drawer {
-            position: fixed;
-            top: 0; right: 0;
-            width: 320px;
-            max-width: 90vw;
-            height: 100vh;
-            background: rgba(14,17,26,0.98);
-            backdrop-filter: blur(20px);
-            border-left: 1px solid rgba(0,153,255,0.15);
-            z-index: 2050;
-            transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 3rem 2.5rem;
-        }
-        .nav-drawer.open { transform: translateX(0); }
-        .nav-drawer-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 2040;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
-        }
-        .nav-drawer-overlay.open { opacity: 1; pointer-events: auto; }
-        .nav-drawer nav {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
-        .nav-drawer nav a {
-            display: block;
-            position: relative;
-            opacity: 0.75;
-            padding: 18px 0;
-            font-weight: 700;
-            font-size: 1.4rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            transition: opacity 0.3s, color 0.3s, padding-left 0.3s;
-            font-family: var(--font-main);
-        }
-        .nav-drawer nav a:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
-        .nav-drawer nav a:hover, .nav-drawer nav a.active { opacity: 1; color: var(--color-blue-accent); padding-left: 12px; }
-        .nav-drawer-join {
-            margin-top: 2.5rem;
-        }
-        .nav-drawer-join .join-button { width: 100%; text-align: center; }
-        .nav-drawer-label {
-            font-size: 0.7rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--color-blue-accent);
-            margin-bottom: 2rem;
-            opacity: 0.7;
-        }
-
-        /* Hide old mobile toggle */
-        .mobile-menu-toggle { display: none !important; }
-
-        /* =============================================
-           LANDING SECTION (new first page)
-        ============================================= */
-        .landing-section {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .landing-bg {
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(180deg, rgba(14,17,26,0.55) 0%, rgba(14,17,26,0.75) 100%),
-                url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1800&q=80') center/cover no-repeat;
-            z-index: 0;
-        }
-        .landing-bg-grid {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(0,153,255,0.06) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,153,255,0.06) 1px, transparent 1px);
-            background-size: 60px 60px;
-            z-index: 1;
-        }
-        .landing-bg-glow {
-            position: absolute;
-            width: 700px; height: 700px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0,153,255,0.1) 0%, transparent 70%);
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1;
-            pointer-events: none;
-        }
-        .landing-content {
-            position: relative;
-            z-index: 2;
-        }
-        .landing-name {
-            font-family: var(--font-main);
-            font-size: clamp(3.5rem, 9vw, 8rem);
-            font-weight: 900;
-            letter-spacing: 0.05em;
-            line-height: 1;
-            color: #fff;
-            text-shadow: 0 0 60px rgba(0,153,255,0.25);
-            margin-bottom: 0;
-        }
-        .landing-name .name-ashford { display: block; }
-        .landing-name .name-capital { display: block; color: var(--color-blue-accent); }
-        .landing-tagline-sub {
-            font-size: 0.85rem;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.45);
-            margin-top: 1.5rem;
-            margin-bottom: 3rem;
-            font-family: var(--font-secondary);
-        }
-        .landing-nav-links {
-            display: flex;
-            gap: 2.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .landing-nav-links a {
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-weight: 600;
-            color: rgba(255,255,255,0.6);
-            transition: color 0.3s;
-            font-family: var(--font-secondary);
-        }
-        .landing-nav-links a:hover { color: var(--color-blue-accent); }
-        .landing-scroll-hint {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            opacity: 0.4;
-        }
-        .landing-scroll-hint span {
-            font-size: 0.65rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #fff;
-        }
-        .scroll-chevron {
-            width: 20px; height: 20px;
-            border-right: 2px solid #fff;
-            border-bottom: 2px solid #fff;
-            transform: rotate(45deg);
-            animation: scrollBounce 1.6s ease-in-out infinite;
-        }
-        @keyframes scrollBounce {
-            0%, 100% { transform: rotate(45deg) translateY(0); opacity: 0.4; }
-            50% { transform: rotate(45deg) translateY(6px); opacity: 0.9; }
+            z-index: 1001;
         }
 
         /* =============================================
            HERO SECTION
         ============================================= */
         .hero-section {
-            min-height: 100vh;
+            min-height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -379,23 +198,6 @@
             padding: 8rem 5% 100px;
             position: relative;
             overflow: hidden;
-        }
-        /* Hero floating brand name that slides to top-left on scroll */
-        .hero-brand-name {
-            font-family: var(--font-main);
-            font-size: clamp(2rem, 5vw, 4rem);
-            font-weight: 900;
-            letter-spacing: 0.06em;
-            color: #fff;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, calc(-50% - 120px));
-            white-space: nowrap;
-            z-index: 2;
-            pointer-events: none;
-            will-change: transform, font-size, opacity;
-            opacity: 0;
         }
         .hero-bg-layer { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
         .hero-bg-layer .grid-lines {
@@ -736,6 +538,19 @@
         @media (max-width: 900px) {
             h2 { font-size: 2rem; }
             .section, .section-alt { padding: 80px 0; }
+            nav {
+                position: fixed; top: 0; left: 0;
+                width: 100%; height: 100%;
+                background-color: var(--color-dark-bg);
+                flex-direction: column;
+                justify-content: center; align-items: center;
+                transform: translateX(100%); opacity: 0;
+                pointer-events: none;
+                transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+            }
+            nav.active { transform: translateX(0); opacity: 1; pointer-events: auto; }
+            nav a { margin: 20px 0; font-size: 1.5rem; opacity: 0.9; }
+            .mobile-menu-toggle { display: block; order: 3; }
             .join-button { padding: 0.7rem 1.5rem; font-size: 0.9rem; }
             .logo-text { font-size: 1rem; }
             .logo-image { height: 35px; }
@@ -751,7 +566,6 @@
             .footer { flex-wrap: wrap; justify-content: flex-start; gap: 30px; padding: 40px 5%; }
             .footer-logo { width: 100%; margin-bottom: 20px; }
             .footer-links, .footer-contact { min-width: 150px; }
-            .nav-drawer { width: 280px; }
         }
         @media (max-width: 600px) {
             .section, .section-alt { padding: 60px 0; }
@@ -779,59 +593,21 @@
 </head>
 <body>
 
-    <!-- ============ OVERLAY ============ -->
-    <div class="nav-drawer-overlay" id="nav-overlay"></div>
-
     <!-- ============ NAVBAR ============ -->
-    <header class="navbar" id="main-navbar">
-        <div class="logo" id="navbar-logo">
+    <header class="navbar">
+        <div class="logo">
             <img src="asfcm.webp" alt="Ashford Capital Logo" class="logo-image">
             <span class="logo-text">ASHFORD CAPITAL</span>
         </div>
-        <button class="hamburger-btn" id="hamburger-btn" aria-label="Open navigation menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-    </header>
-
-    <!-- ============ SLIDE DRAWER NAV ============ -->
-    <div class="nav-drawer" id="nav-drawer">
-        <div class="nav-drawer-label">Navigation</div>
+        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" id="mobile-menu-toggle">&#9776;</button>
         <nav id="main-nav">
-            <a href="#landing"   class="nav-link active">Home</a>
-            <a href="#about"     class="nav-link">About</a>
-            <a href="#services"  class="nav-link">Services</a>
-            <a href="#contact"   class="nav-link">Contact</a>
+            <a href="#home"     class="nav-link active">Home</a>
+            <a href="#about"    class="nav-link">About</a>
+            <a href="#services" class="nav-link">Services</a>
+            <a href="#contact"  class="nav-link">Contact</a>
         </nav>
-        <div class="nav-drawer-join">
-            <button class="join-button" onclick="redirectToCTA(); closeDrawer();">JOIN US</button>
-        </div>
-    </div>
-
-    <!-- ============ LANDING (new first section) ============ -->
-    <section id="landing" class="landing-section">
-        <div class="landing-bg"></div>
-        <div class="landing-bg-grid"></div>
-        <div class="landing-bg-glow"></div>
-        <div class="landing-content">
-            <h1 class="landing-name" id="landing-name">
-                <span class="name-ashford">ASHFORD</span>
-                <span class="name-capital">CAPITAL</span>
-            </h1>
-            <p class="landing-tagline-sub" id="landing-sub">Live Market Mentorship &amp; Training</p>
-            <div class="landing-nav-links" id="landing-nav-links">
-                <a href="#home">About</a>
-                <a href="#services">Services</a>
-                <a href="#testimonials-section">Traders</a>
-                <a href="#contact">Contact</a>
-            </div>
-        </div>
-        <div class="landing-scroll-hint">
-            <span>Scroll</span>
-            <div class="scroll-chevron"></div>
-        </div>
-    </section>
+        <button class="join-button" onclick="redirectToCTA()">JOIN US</button>
+    </header>
 
     <!-- ============ HERO ============ -->
     <section id="home" class="hero-section">
@@ -839,8 +615,6 @@
             <div class="grid-lines"></div>
             <div class="hero-glow" id="hero-glow"></div>
         </div>
-        <!-- Brand name that animates from center to top-left on scroll -->
-        <div class="hero-brand-name" id="hero-brand-name">ASHFORD CAPITAL</div>
         <div class="hero-content">
             <span class="tagline" id="hero-tagline">Live Market Mentorship &amp; Training</span>
             <h1>
@@ -1171,59 +945,29 @@
         // ============================================================
         function redirectToCTA() { window.location.href = "https://ashford-cta.vercel.app/"; }
 
-        // ============================================================
-        // HAMBURGER DRAWER MENU
-        // ============================================================
-        const hamburgerBtn = document.getElementById('hamburger-btn');
-        const navDrawer    = document.getElementById('nav-drawer');
-        const navOverlay   = document.getElementById('nav-overlay');
-
-        function openDrawer() {
-            hamburgerBtn.classList.add('open');
-            navDrawer.classList.add('open');
-            navOverlay.classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeDrawer() {
-            hamburgerBtn.classList.remove('open');
-            navDrawer.classList.remove('open');
-            navOverlay.classList.remove('open');
-            document.body.style.overflow = '';
-        }
-
-        hamburgerBtn.addEventListener('click', () => {
-            navDrawer.classList.contains('open') ? closeDrawer() : openDrawer();
+        const menuToggle = document.getElementById('mobile-menu-toggle');
+        const mainNav    = document.getElementById('main-nav');
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            menuToggle.innerHTML = mainNav.classList.contains('active') ? '&#10005;' : '&#9776;';
         });
-        navOverlay.addEventListener('click', closeDrawer);
 
-        document.querySelectorAll('.nav-link').forEach(link => {
+        document.querySelectorAll('.nav-link, .scroll-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 const href = link.getAttribute('href');
                 if (href && href.startsWith('#')) {
                     e.preventDefault();
-                    closeDrawer();
                     const target = document.querySelector(href);
                     if (target) {
-                        setTimeout(() => { target.scrollIntoView({ behavior: 'smooth' }); }, 350);
+                        mainNav.classList.remove('active');
+                        menuToggle.innerHTML = '&#9776;';
+                        target.scrollIntoView({ behavior: 'smooth' });
+                        document.querySelectorAll('.nav-link').forEach(nl => nl.classList.remove('active'));
+                        if (link.classList.contains('nav-link')) link.classList.add('active');
                     }
-                    document.querySelectorAll('.nav-link').forEach(nl => nl.classList.remove('active'));
-                    link.classList.add('active');
                 }
             });
         });
-
-        // Navbar bg on scroll + logo reveal
-        const mainNavbar = document.getElementById('main-navbar');
-        const navbarLogo = document.getElementById('navbar-logo');
-        window.addEventListener('scroll', () => {
-            const heroSection = document.getElementById('home');
-            const heroBottom  = heroSection ? heroSection.getBoundingClientRect().bottom : 0;
-            if (window.scrollY > 60) {
-                mainNavbar.classList.add('scrolled');
-            } else {
-                mainNavbar.classList.remove('scrolled');
-            }
-        }, { passive: true });
 
         const video          = document.getElementById('about-video');
         const videoContainer = document.getElementById('video-container');
@@ -1326,55 +1070,13 @@
         gsap.registerPlugin(ScrollTrigger);
 
         // ============================================================
-        // 1. LANDING SECTION — entrance animation
-        // ============================================================
-        gsap.set(['#landing-name', '#landing-sub', '#landing-nav-links'], { opacity: 0, y: 40 });
-        gsap.timeline({ delay: 0.2 })
-            .to('#landing-name',      { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' })
-            .to('#landing-sub',       { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, '-=0.5')
-            .to('#landing-nav-links', { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, '-=0.4');
-
-        // ============================================================
-        // 2. HERO BRAND NAME — fades in as hero section enters, then moves
-        //    from center toward top-left as user scrolls
-        // ============================================================
-        const heroBrand = document.getElementById('hero-brand-name');
-
-        // Show brand name when hero section is in view
-        ScrollTrigger.create({
-            trigger: '#home',
-            start: 'top 80%',
-            onEnter: () => gsap.to('#hero-brand-name', { opacity: 1, duration: 0.6, ease: 'power2.out' }),
-            onLeaveBack: () => gsap.to('#hero-brand-name', { opacity: 0, duration: 0.3 }),
-        });
-
-        // Animate from center-top to top-left corner as hero scrolls
-        gsap.to('#hero-brand-name', {
-            top: '4.5rem',
-            left: '5%',
-            xPercent: 0,
-            yPercent: 0,
-            fontSize: '1.5rem',
-            ease: 'none',
-            scrollTrigger: {
-                trigger: '#home',
-                start: 'top top',
-                end: 'center top',
-                scrub: 1.2,
-            }
-        });
-
-        // ============================================================
-        // 3. HERO — staggered on-load reveal (fires when hero enters viewport)
-        // ============================================================
+        // 1. HERO — staggered on-load reveal
         // ============================================================
         // Use gsap.set so elements stay visible if JS is slow / GSAP errors later
         gsap.set(['#hero-tagline', '.hero-line', '#hero-subtitle', '#hero-actions', '#stat-1', '#stat-2'],
             { opacity: 0, y: 40 });
 
-        gsap.timeline({
-            scrollTrigger: { trigger: '#home', start: 'top 80%', toggleActions: 'play none none none' }
-        })
+        gsap.timeline({ delay: 0.15 })
             .to('#hero-tagline',         { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' })
             .to('.hero-line',            { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out', stagger: 0.14 }, '-=0.3')
             .to('#hero-subtitle',        { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, '-=0.3')
@@ -1382,7 +1084,7 @@
             .to(['#stat-1', '#stat-2'],  { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out', stagger: 0.1 }, '-=0.2');
 
         // ============================================================
-        // 4. HERO PARALLAX — bg layers drift at different speeds
+        // 2. HERO PARALLAX — bg layers drift at different speeds
         // ============================================================
         // Parallax depth: grid (far) → glow (mid) → content (near)
         gsap.to('.grid-lines',   { y: -160, ease: 'none', scrollTrigger: { trigger: '.hero-section', start: 'top top', end: 'bottom top', scrub: 1.5 } });
