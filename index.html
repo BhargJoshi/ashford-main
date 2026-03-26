@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ashford Capital: Live Market Mentorship & Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/the-seasons" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
@@ -174,16 +175,85 @@
         }
         nav a:hover::after, nav a.active::after { width: 100%; }
 
-        .mobile-menu-toggle {
-            display: none;
+        /* Navbar right group */
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* Hamburger button — always visible */
+        .hamburger-toggle {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
             background: none;
             border: none;
-            font-size: 2rem;
-            color: var(--color-primary-text);
             cursor: pointer;
-            padding: 0;
-            z-index: 1001;
+            padding: 6px;
+            z-index: 1100;
+            width: 38px;
+            height: 38px;
         }
+        .ham-bar {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: var(--color-primary-text);
+            border-radius: 2px;
+            transition: transform 0.35s ease, opacity 0.25s ease, background-color 0.25s ease;
+            transform-origin: center;
+        }
+        /* X state when active */
+        .hamburger-toggle.open .ham-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger-toggle.open .ham-bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger-toggle.open .ham-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* Nav overlay — always hidden, slides in on toggle */
+        #main-nav {
+            position: fixed;
+            top: 0; right: 0;
+            width: min(320px, 80vw);
+            height: 100%;
+            background-color: var(--color-secondary-bg);
+            border-left: 1px solid rgba(255,255,255,0.06);
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 100px 40px 60px;
+            transform: translateX(100%);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
+            display: flex;
+            z-index: 1050;
+            box-shadow: -8px 0 40px rgba(0,0,0,0.5);
+        }
+        #main-nav.active {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #main-nav a {
+            margin: 16px 0;
+            font-size: 1.4rem;
+            opacity: 0.85;
+            letter-spacing: 2px;
+        }
+
+        /* Backdrop when menu is open */
+        #nav-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 1040;
+        }
+        #nav-backdrop.active { display: block; }
+
+        .mobile-menu-toggle { display: none; }
 
         /* =============================================
            HERO SECTION
@@ -226,6 +296,20 @@
             display: block;
         }
         .hero-section h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 20px; max-width: 900px; font-weight: 900; }
+        .hero-brand-name {
+            font-family: 'The Seasons', serif;
+            font-weight: 400;
+            font-size: clamp(3.5rem, 10vw, 9rem);
+            line-height: 1;
+            letter-spacing: 0.02em;
+            color: var(--color-primary-text);
+            display: block;
+            width: 90vw;
+            max-width: 1400px;
+            text-align: center;
+            margin-bottom: 24px;
+            white-space: nowrap;
+        }
         .subtitle { font-size: 1.2rem; color: var(--color-text-light); margin-bottom: 40px; }
         .hero-actions {
             display: flex;
@@ -538,19 +622,6 @@
         @media (max-width: 900px) {
             h2 { font-size: 2rem; }
             .section, .section-alt { padding: 80px 0; }
-            nav {
-                position: fixed; top: 0; left: 0;
-                width: 100%; height: 100%;
-                background-color: var(--color-dark-bg);
-                flex-direction: column;
-                justify-content: center; align-items: center;
-                transform: translateX(100%); opacity: 0;
-                pointer-events: none;
-                transition: transform 0.4s ease-out, opacity 0.4s ease-out;
-            }
-            nav.active { transform: translateX(0); opacity: 1; pointer-events: auto; }
-            nav a { margin: 20px 0; font-size: 1.5rem; opacity: 0.9; }
-            .mobile-menu-toggle { display: block; order: 3; }
             .join-button { padding: 0.7rem 1.5rem; font-size: 0.9rem; }
             .logo-text { font-size: 1rem; }
             .logo-image { height: 35px; }
@@ -599,28 +670,31 @@
             <img src="asfcm.webp" alt="Ashford Capital Logo" class="logo-image">
             <span class="logo-text">ASHFORD CAPITAL</span>
         </div>
-        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu" id="mobile-menu-toggle">&#9776;</button>
+        <div class="navbar-right">
+            <button class="join-button" onclick="redirectToCTA()">JOIN US</button>
+            <button class="hamburger-toggle" aria-label="Toggle navigation menu" id="mobile-menu-toggle">
+                <span class="ham-bar"></span>
+                <span class="ham-bar"></span>
+                <span class="ham-bar"></span>
+            </button>
+        </div>
         <nav id="main-nav">
             <a href="#home"     class="nav-link active">Home</a>
             <a href="#about"    class="nav-link">About</a>
             <a href="#services" class="nav-link">Services</a>
             <a href="#contact"  class="nav-link">Contact</a>
         </nav>
-        <button class="join-button" onclick="redirectToCTA()">JOIN US</button>
     </header>
-
-    <!-- ============ HERO ============ -->
+    <div id="nav-backdrop"></div>
     <section id="home" class="hero-section">
         <div class="hero-bg-layer">
             <div class="grid-lines"></div>
             <div class="hero-glow" id="hero-glow"></div>
         </div>
         <div class="hero-content">
-            <span class="tagline" id="hero-tagline">Live Market Mentorship &amp; Training</span>
+            <span class="tagline" id="hero-tagline">WHERE TRADERS THRIVE ON PRECISION NOT PREDICTION</span>
             <h1>
-                <span class="hero-line" style="display:block;">WHERE TRADERS THRIVE</span>
-                <span class="hero-line" style="display:block;">ON <span class="highlight-blue">PRECISION</span> NOT</span>
-                <span class="hero-line" style="display:block;">PREDICTION</span>
+                <span class="hero-brand-name hero-line">ASHFORD CAPITAL</span>
             </h1>
             <p class="subtitle" id="hero-subtitle">Clarity in Concepts &amp; Precision in their Execution.</p>
             <div class="hero-actions" id="hero-actions">
@@ -947,10 +1021,23 @@
 
         const menuToggle = document.getElementById('mobile-menu-toggle');
         const mainNav    = document.getElementById('main-nav');
+        const navBackdrop = document.getElementById('nav-backdrop');
+
+        function openNav() {
+            mainNav.classList.add('active');
+            navBackdrop.classList.add('active');
+            menuToggle.classList.add('open');
+        }
+        function closeNav() {
+            mainNav.classList.remove('active');
+            navBackdrop.classList.remove('active');
+            menuToggle.classList.remove('open');
+        }
+
         menuToggle.addEventListener('click', () => {
-            mainNav.classList.toggle('active');
-            menuToggle.innerHTML = mainNav.classList.contains('active') ? '&#10005;' : '&#9776;';
+            mainNav.classList.contains('active') ? closeNav() : openNav();
         });
+        navBackdrop.addEventListener('click', closeNav);
 
         document.querySelectorAll('.nav-link, .scroll-link').forEach(link => {
             link.addEventListener('click', (e) => {
@@ -959,8 +1046,7 @@
                     e.preventDefault();
                     const target = document.querySelector(href);
                     if (target) {
-                        mainNav.classList.remove('active');
-                        menuToggle.innerHTML = '&#9776;';
+                        closeNav();
                         target.scrollIntoView({ behavior: 'smooth' });
                         document.querySelectorAll('.nav-link').forEach(nl => nl.classList.remove('active'));
                         if (link.classList.contains('nav-link')) link.classList.add('active');
