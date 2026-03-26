@@ -228,7 +228,7 @@
             pointer-events: none;
             transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
             display: flex;
-            z-index: 1050;
+            z-index: 1060;
             box-shadow: -8px 0 40px rgba(0,0,0,0.5);
         }
         #main-nav.active {
@@ -237,19 +237,36 @@
             pointer-events: auto;
         }
         #main-nav a {
-            margin: 16px 0;
+            margin: 14px 0;
             font-size: 1.4rem;
-            opacity: 0.85;
+            opacity: 1;
             letter-spacing: 2px;
+            display: inline-block;
+            position: relative;
+            transition: transform 0.25s ease, color 0.25s ease;
         }
+        #main-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 2px;
+            bottom: -4px; left: 0;
+            background-color: var(--color-blue-accent);
+            transition: width 0.3s ease-out;
+        }
+        #main-nav a:hover {
+            transform: scale(1.07);
+            color: var(--color-blue-accent);
+            opacity: 1;
+        }
+        #main-nav a:hover::after { width: 100%; }
 
-        /* Backdrop when menu is open */
+        /* Backdrop — only behind the nav panel, not over it */
         #nav-backdrop {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.55);
-            z-index: 1040;
+            background: rgba(0,0,0,0.45);
+            z-index: 1050;
         }
         #nav-backdrop.active { display: block; }
 
@@ -286,7 +303,7 @@
             transform: translate(-50%, -50%);
             pointer-events: none;
         }
-        .hero-content { position: relative; z-index: 1; }
+        .hero-content { position: relative; z-index: 1; width: 100%; }
         .tagline {
             font-size: 0.9rem;
             letter-spacing: 2px;
@@ -295,20 +312,22 @@
             margin-bottom: 20px;
             display: block;
         }
-        .hero-section h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 20px; max-width: 900px; font-weight: 900; }
+        .hero-section h1 { line-height: 1; margin-bottom: 0; font-weight: 900; width: 100%; }
         .hero-brand-name {
             font-family: 'The Seasons', serif;
             font-weight: 400;
-            font-size: clamp(3.5rem, 10vw, 9rem);
-            line-height: 1;
-            letter-spacing: 0.02em;
+            font-size: clamp(2.8rem, 8.5vw, 8rem);
+            line-height: 1.05;
+            letter-spacing: 0.04em;
             color: var(--color-primary-text);
             display: block;
-            width: 90vw;
-            max-width: 1400px;
+            width: 100%;
             text-align: center;
-            margin-bottom: 24px;
-            white-space: nowrap;
+            margin-bottom: 28px;
+            white-space: normal;
+            word-break: break-word;
+            padding: 0 4%;
+            box-sizing: border-box;
         }
         .subtitle { font-size: 1.2rem; color: var(--color-text-light); margin-bottom: 40px; }
         .hero-actions {
