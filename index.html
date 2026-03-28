@@ -1,2131 +1,2183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ashford Capital — Precision. Not Prediction.</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ashford Capital — Precision. Not Prediction.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Geist+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <style>
-/* ══════════════════════════════════════════════════
-   ROOT VARIABLES
-══════════════════════════════════════════════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DESIGN TOKEN SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 :root {
-    --c-void:     #03040a;
-    --c-deep:     #070910;
-    --c-surface:  #0c0e17;
-    --c-panel:    #111420;
-    --c-border:   rgba(255,255,255,0.06);
-    --c-wire:     rgba(255,255,255,0.04);
-    --c-gold:     #c8a96e;
-    --c-gold-dim: #8a6f3e;
-    --c-gold-glow:rgba(200,169,110,0.15);
-    --c-ice:      #6eb4ff;
-    --c-ice-dim:  #3a7bbf;
-    --c-text:     #e8e4dc;
-    --c-muted:    rgba(232,228,220,0.45);
-    --c-ghost:    rgba(232,228,220,0.15);
-    --f-head:     'Syne', sans-serif;
-    --f-mono:     'Space Mono', monospace;
-    --f-body:     'DM Mono', monospace;
-    --ease-smooth: cubic-bezier(0.25,0.46,0.45,0.94);
+  /* Core palette */
+  --ink:       #02030a;
+  --ink-deep:  #050710;
+  --ink-mid:   #0a0d1a;
+  --ink-lift:  #0f1222;
+  --ink-panel: #131729;
+
+  /* Blue — structural, dominant accent */
+  --blue:      #1a6bff;
+  --blue-bright: #3d85ff;
+  --blue-pale: #6ba3ff;
+  --blue-dim:  #0e3d99;
+  --blue-ghost:rgba(26, 107, 255, 0.08);
+  --blue-glow: rgba(26, 107, 255, 0.22);
+
+  /* Green — rare, precious, highlight only */
+  --green:     #00e676;
+  --green-dim: #00994d;
+  --green-ghost: rgba(0, 230, 118, 0.07);
+  --green-glow:  rgba(0, 230, 118, 0.18);
+
+  /* Text hierarchy */
+  --t-primary: #eef0f7;
+  --t-secondary: rgba(220, 225, 240, 0.65);
+  --t-tertiary:  rgba(180, 190, 215, 0.38);
+  --t-ghost:     rgba(150, 165, 200, 0.18);
+
+  /* Borders */
+  --b-faint:  rgba(255,255,255,0.05);
+  --b-soft:   rgba(255,255,255,0.08);
+  --b-blue:   rgba(26, 107, 255, 0.18);
+  --b-green:  rgba(0, 230, 118, 0.15);
+
+  /* Typography */
+  --f-serif:  'Cormorant Garamond', serif;
+  --f-sans:   'Outfit', sans-serif;
+  --f-mono:   'Geist Mono', monospace;
+
+  /* Motion */
+  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-silk: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* ══════════════════════════════════════════════════
-   RESET & BASE
-══════════════════════════════════════════════════ */
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: auto; }
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: auto; height: auto; }
 html.lenis { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 
 body {
-    background: var(--c-void);
-    color: var(--c-text);
-    font-family: var(--f-body);
-    font-size: 15px;
-    line-height: 1.7;
-    overflow-x: hidden;
-    cursor: none;
+  background: var(--ink);
+  color: var(--t-primary);
+  font-family: var(--f-sans);
+  font-size: 15px;
+  line-height: 1.75;
+  overflow-x: hidden;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
 }
 
 a { text-decoration: none; color: inherit; }
-h1,h2,h3,h4 { font-family: var(--f-head); font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
-strong { font-weight: 700; color: var(--c-text); }
 
-/* ══════════════════════════════════════════════════
+h1, h2, h3, h4 {
+  font-family: var(--f-serif);
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    CUSTOM CURSOR
-══════════════════════════════════════════════════ */
-#cursor-dot {
-    width: 6px; height: 6px;
-    background: var(--c-gold);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none; z-index: 99999;
-    transform: translate(-50%,-50%);
-    transition: width 0.15s, height 0.15s, background 0.2s;
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#c-dot {
+  width: 5px; height: 5px;
+  background: var(--blue-bright);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  z-index: 99999; pointer-events: none;
+  transform: translate(-50%,-50%);
+  transition: width .15s, height .15s, background .2s;
+  mix-blend-mode: screen;
 }
-#cursor-ring {
-    width: 36px; height: 36px;
-    border: 1px solid rgba(200,169,110,0.4);
-    border-radius: 50%;
-    position: fixed; top: 0; left: 0;
-    pointer-events: none; z-index: 99998;
-    transform: translate(-50%,-50%);
-    transition: width 0.3s var(--ease-smooth), height 0.3s var(--ease-smooth), border-color 0.3s, opacity 0.3s;
+#c-ring {
+  width: 32px; height: 32px;
+  border: 1px solid rgba(26,107,255,0.45);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  z-index: 99998; pointer-events: none;
+  transform: translate(-50%,-50%);
+  transition: width .35s var(--ease-expo), height .35s var(--ease-expo),
+              border-color .3s, opacity .3s;
 }
-body.cursor-hover #cursor-dot { width: 10px; height: 10px; background: var(--c-ice); }
-body.cursor-hover #cursor-ring { width: 60px; height: 60px; border-color: rgba(110,180,255,0.4); }
+#c-ring.expanded {
+  width: 56px; height: 56px;
+  border-color: rgba(0,230,118,0.4);
+}
+#c-dot.green-mode { background: var(--green); }
 
-/* ══════════════════════════════════════════════════
-   3D CANVAS BACKGROUND
-══════════════════════════════════════════════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   3D CANVAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 #bg-canvas {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 0;
-    pointer-events: none;
+  position: fixed; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
 }
 
-/* ══════════════════════════════════════════════════
-   SCROLLING CONTENT LAYER
-══════════════════════════════════════════════════ */
-#scroll-wrapper {
-    position: relative;
-    z-index: 10;
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   GRAIN TEXTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#grain {
+  position: fixed; inset: 0; z-index: 2;
+  pointer-events: none; opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ══════════════════════════════════════════════════
-   NOISE OVERLAY
-══════════════════════════════════════════════════ */
-#noise-overlay {
-    position: fixed; inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0.025;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    background-size: 128px 128px;
-}
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MAIN CONTENT LAYER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#app { position: relative; z-index: 10; }
 
-/* ══════════════════════════════════════════════════
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    NAVBAR
-══════════════════════════════════════════════════ */
-#navbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 500;
-    padding: 0 5%;
-    height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--c-border);
-    background: rgba(3,4,10,0.7);
-    backdrop-filter: blur(24px) saturate(1.4);
-    -webkit-backdrop-filter: blur(24px) saturate(1.4);
-    transition: background 0.3s;
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 600;
+  height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 4%;
+  border-bottom: 1px solid var(--b-faint);
+  background: rgba(2,3,10,0.6);
+  backdrop-filter: blur(28px) saturate(1.6);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
+  transition: background .4s, border-color .4s;
 }
-#navbar.opaque { background: rgba(3,4,10,0.95); }
+#nav.solid { background: rgba(5,7,16,0.95); border-color: var(--b-blue); }
 
 .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--f-head);
-    font-weight: 800;
-    font-size: 1.1rem;
-    letter-spacing: 0.04em;
-    color: var(--c-text);
-    cursor: none;
+  display: flex; align-items: center; gap: 12px;
+  cursor: none;
 }
-.nav-logo-mark {
-    width: 32px; height: 32px;
-    border: 1px solid var(--c-gold);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.7rem;
-    font-family: var(--f-mono);
-    color: var(--c-gold);
-    letter-spacing: 0.05em;
-    position: relative;
-    overflow: hidden;
-    transition: box-shadow 0.3s;
+.nav-logo-gem {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--blue-dim) 0%, var(--blue) 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  transition: filter .3s;
 }
-.nav-logo-mark::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(200,169,110,0.1) 0%, transparent 60%);
+.nav-logo-gem::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, transparent 60%);
 }
-.nav-logo:hover .nav-logo-mark { box-shadow: 0 0 20px rgba(200,169,110,0.3); }
+.nav-logo-gem svg { width: 14px; fill: white; position: relative; z-index: 1; }
+.nav-logo:hover .nav-logo-gem { filter: drop-shadow(0 0 10px var(--blue-glow)); }
+
+.nav-wordmark {
+  font-family: var(--f-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--t-primary);
+  transition: color .25s;
+}
+.nav-logo:hover .nav-wordmark { color: var(--blue-pale); }
 
 .nav-links {
-    display: flex;
-    gap: 2.5rem;
-    align-items: center;
+  display: flex; align-items: center; gap: 2.5rem;
 }
 .nav-link {
-    font-family: var(--f-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--c-muted);
-    cursor: none;
-    position: relative;
-    transition: color 0.25s;
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--t-secondary);
+  cursor: none; position: relative;
+  transition: color .25s;
 }
-.nav-link::before {
-    content: attr(data-index);
-    position: absolute;
-    left: -16px;
-    font-size: 0.55rem;
-    color: var(--c-gold-dim);
-    opacity: 0;
-    transition: opacity 0.25s;
+.nav-link::after {
+  content: '';
+  position: absolute; bottom: -3px; left: 0;
+  width: 0; height: 1px;
+  background: var(--blue-bright);
+  transition: width .35s var(--ease-expo);
 }
-.nav-link:hover { color: var(--c-text); }
-.nav-link:hover::before { opacity: 1; }
+.nav-link:hover { color: var(--t-primary); }
+.nav-link:hover::after { width: 100%; }
 
-.nav-cta {
-    font-family: var(--f-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--c-void);
-    background: var(--c-gold);
-    border: none;
-    padding: 0.55rem 1.5rem;
-    cursor: none;
-    position: relative;
-    overflow: hidden;
-    transition: box-shadow 0.3s, transform 0.2s;
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+.nav-join {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-bright) 100%);
+  border: none; padding: .6rem 1.6rem;
+  cursor: none; position: relative; overflow: hidden;
+  transition: box-shadow .35s, transform .2s;
 }
-.nav-cta::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity 0.3s;
+.nav-join::before {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left .5s;
 }
-.nav-cta:hover { box-shadow: 0 0 30px rgba(200,169,110,0.5); transform: translateY(-1px); }
-.nav-cta:hover::before { opacity: 1; }
+.nav-join:hover { box-shadow: 0 0 32px var(--blue-glow); transform: translateY(-1px); }
+.nav-join:hover::before { left: 100%; }
 
-.mobile-toggle { display: none; background: none; border: none; color: var(--c-text); font-size: 1.5rem; cursor: pointer; }
+.mob-toggle { display: none; background: none; border: none; color: var(--t-primary); font-size: 1.3rem; cursor: pointer; }
 
-/* ══════════════════════════════════════════════════
-   HERO SECTION
-══════════════════════════════════════════════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 #hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 100px 5% 60px;
-    position: relative;
-    overflow: hidden;
-    text-align: center;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 5% 80px;
+  position: relative; overflow: hidden;
 }
 
-.hero-overline {
-    font-family: var(--f-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--c-gold);
-    margin-bottom: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    opacity: 0;
-}
-.hero-overline::before, .hero-overline::after {
-    content: '';
-    width: 40px; height: 1px;
-    background: var(--c-gold-dim);
+/* Radial vignette at top */
+#hero::before {
+  content: '';
+  position: absolute; top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 900px; height: 500px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(26,107,255,0.1) 0%, transparent 70%);
+  pointer-events: none;
 }
 
-.hero-h1 {
-    font-size: clamp(3.5rem, 9vw, 8.5rem);
-    font-weight: 800;
-    line-height: 0.95;
-    margin-bottom: 0;
-    max-width: 1100px;
-    opacity: 0;
-    position: relative;
+.hero-eyebrow {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--green);
+  display: flex; align-items: center; gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2.2rem;
+  opacity: 0;
 }
-.hero-h1 .line { display: block; overflow: hidden; }
-.hero-h1 .line-inner { display: block; transform: translateY(100%); }
-.hero-h1 .accent { color: var(--c-gold); }
-.hero-h1 .thin { font-weight: 400; color: var(--c-muted); }
+.hero-eyebrow .eye-line {
+  width: 36px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green-dim));
+}
+.hero-eyebrow .eye-line.right {
+  background: linear-gradient(90deg, var(--green-dim), transparent);
+}
+
+.hero-title {
+  font-family: var(--f-serif);
+  font-size: clamp(3.8rem, 9vw, 9rem);
+  font-weight: 300;
+  line-height: 0.96;
+  margin-bottom: 0.2rem;
+  opacity: 0;
+}
+.hero-title .mask { overflow: hidden; display: block; }
+.hero-title .inner { display: block; transform: translateY(110%); }
+.hero-title .weight { font-weight: 600; }
+.hero-title .blue { color: var(--blue-bright); font-style: italic; }
+.hero-title .ghost-word { color: var(--t-tertiary); font-weight: 300; }
+
+.hero-rule {
+  width: 1px;
+  height: 0;
+  background: linear-gradient(to bottom, var(--blue-bright), transparent);
+  margin: 2rem auto;
+  opacity: 0;
+}
 
 .hero-sub {
-    font-family: var(--f-mono);
-    font-size: 0.9rem;
-    color: var(--c-muted);
-    margin-top: 2.5rem;
-    letter-spacing: 0.04em;
-    opacity: 0;
-    max-width: 500px;
+  font-family: var(--f-sans);
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--t-secondary);
+  max-width: 480px;
+  line-height: 1.8;
+  opacity: 0;
+  letter-spacing: 0.01em;
 }
 
 .hero-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 3rem;
-    justify-content: center;
-    opacity: 0;
+  display: flex; gap: 1rem; justify-content: center;
+  margin-top: 2.5rem; opacity: 0; flex-wrap: wrap;
 }
 
-/* BUTTONS */
-.btn-prime {
-    font-family: var(--f-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--c-void);
-    background: var(--c-gold);
-    border: none;
-    padding: 1rem 2.5rem;
-    cursor: none;
-    position: relative;
-    overflow: hidden;
-    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-    transition: box-shadow 0.3s, transform 0.2s;
+/* ─── BUTTON SYSTEM ─── */
+.btn-primary {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--t-primary);
+  background: transparent;
+  border: 1px solid var(--blue);
+  padding: .85rem 2.2rem;
+  cursor: none; position: relative; overflow: hidden;
+  transition: color .3s, border-color .3s, box-shadow .3s, transform .2s;
 }
-.btn-prime::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.5s;
+.btn-primary::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-bright) 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .4s var(--ease-expo);
+  z-index: -1;
 }
-.btn-prime:hover { box-shadow: 0 0 40px rgba(200,169,110,0.5); transform: translateY(-2px); }
-.btn-prime:hover::after { transform: translateX(100%); }
+.btn-primary:hover { color: white; border-color: var(--blue-bright); box-shadow: 0 0 36px var(--blue-glow); transform: translateY(-2px); }
+.btn-primary:hover::before { transform: scaleX(1); }
 
-.btn-ghost {
-    font-family: var(--f-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--c-text);
-    background: transparent;
-    border: 1px solid var(--c-border);
-    padding: 1rem 2.5rem;
-    cursor: none;
-    position: relative;
-    overflow: hidden;
-    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-    transition: border-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s;
+.btn-secondary {
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--t-secondary);
+  background: transparent;
+  border: 1px solid var(--b-soft);
+  padding: .85rem 2.2rem;
+  cursor: none; position: relative; overflow: hidden;
+  transition: color .3s, border-color .3s, transform .2s;
 }
-.btn-ghost:hover {
-    border-color: var(--c-gold-dim);
-    color: var(--c-gold);
-    box-shadow: 0 0 20px rgba(200,169,110,0.1), inset 0 0 20px rgba(200,169,110,0.03);
-    transform: translateY(-2px);
-}
+.btn-secondary:hover { color: var(--t-primary); border-color: var(--b-blue); transform: translateY(-2px); }
 
-.hero-stats {
-    display: flex;
-    gap: 5rem;
-    margin-top: 5rem;
-    opacity: 0;
+.hero-metrics {
+  display: flex; gap: 5rem; margin-top: 4.5rem;
+  justify-content: center; opacity: 0;
+  padding-top: 3rem;
+  border-top: 1px solid var(--b-faint);
 }
-.hero-stat {}
-.hero-stat-num {
-    font-family: var(--f-head);
-    font-size: 2.8rem;
-    font-weight: 800;
-    color: var(--c-gold);
-    line-height: 1;
-    display: block;
+.h-metric {}
+.h-metric-val {
+  font-family: var(--f-serif);
+  font-size: 3.2rem;
+  font-weight: 300;
+  color: var(--t-primary);
+  line-height: 1;
+  display: block;
 }
-.hero-stat-label {
-    font-family: var(--f-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--c-muted);
-    display: block;
-    margin-top: 0.4rem;
+.h-metric-val .accent { color: var(--blue-bright); }
+.h-metric-val .green-accent { color: var(--green); }
+.h-metric-label {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+  display: block;
+  margin-top: 0.4rem;
 }
 
-/* HERO CORNER MARKS */
-.hero-corner {
-    position: absolute;
-    width: 30px; height: 30px;
-    opacity: 0.25;
-}
-.hero-corner.tl { top: 90px; left: 5%; border-top: 1px solid var(--c-gold); border-left: 1px solid var(--c-gold); }
-.hero-corner.tr { top: 90px; right: 5%; border-top: 1px solid var(--c-gold); border-right: 1px solid var(--c-gold); }
-.hero-corner.bl { bottom: 40px; left: 5%; border-bottom: 1px solid var(--c-gold); border-left: 1px solid var(--c-gold); }
-.hero-corner.br { bottom: 40px; right: 5%; border-bottom: 1px solid var(--c-gold); border-right: 1px solid var(--c-gold); }
+/* Floating corner marks */
+.hc { position: absolute; width: 24px; height: 24px; opacity: 0.2; }
+.hc.tl { top: 80px; left: 4%; border-top: 1px solid var(--blue); border-left: 1px solid var(--blue); }
+.hc.tr { top: 80px; right: 4%; border-top: 1px solid var(--blue); border-right: 1px solid var(--blue); }
+.hc.bl { bottom: 50px; left: 4%; border-bottom: 1px solid var(--green); border-left: 1px solid var(--green); }
+.hc.br { bottom: 50px; right: 4%; border-bottom: 1px solid var(--green); border-right: 1px solid var(--green); }
 
-/* SCAN LINE */
-.hero-scanline {
-    position: absolute;
-    left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(200,169,110,0.3), transparent);
-    top: 50%;
-    animation: scanline 4s linear infinite;
-    pointer-events: none;
+/* Scroll indicator */
+.scroll-cue {
+  position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  opacity: 0;
 }
-@keyframes scanline {
-    0% { top: 80px; opacity: 0; }
-    5% { opacity: 1; }
-    95% { opacity: 0.3; }
-    100% { top: 100%; opacity: 0; }
+.scroll-cue span {
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--t-tertiary);
+  text-transform: uppercase;
 }
-
-/* ══════════════════════════════════════════════════
-   MARQUEE STRIP
-══════════════════════════════════════════════════ */
-.marquee-strip {
-    position: relative; z-index: 10;
-    overflow: hidden;
-    border-top: 1px solid var(--c-border);
-    border-bottom: 1px solid var(--c-border);
-    background: rgba(7,9,16,0.8);
-    padding: 14px 0;
-    white-space: nowrap;
+.scroll-track {
+  width: 1px; height: 40px;
+  background: var(--b-faint);
+  position: relative; overflow: hidden;
 }
-.marquee-track { display: inline-flex; gap: 3rem; animation: mscroll 28s linear infinite; }
-.marquee-track span {
-    font-family: var(--f-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--c-muted);
+.scroll-fill {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 40%; background: var(--blue-bright);
+  animation: scrollfill 1.8s var(--ease-expo) infinite;
 }
-.marquee-track .sep { color: var(--c-gold); opacity: 0.5; }
-@keyframes mscroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-/* ══════════════════════════════════════════════════
-   SECTION BASE
-══════════════════════════════════════════════════ */
-.section { padding: 120px 0; position: relative; }
-.section-inner { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
-
-.section-label {
-    font-family: var(--f-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--c-gold);
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    margin-bottom: 1.5rem;
-}
-.section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--c-gold-dim), transparent);
-    max-width: 80px;
+@keyframes scrollfill {
+  0%   { top: 0;   opacity: 1; }
+  80%  { top: 100%; opacity: 0.4; }
+  100% { top: 100%; opacity: 0; }
 }
 
-.section-h2 {
-    font-size: clamp(2.2rem, 5vw, 4rem);
-    margin-bottom: 1.5rem;
-    max-width: 700px;
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MARQUEE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.marquee {
+  overflow: hidden;
+  border-top: 1px solid var(--b-blue);
+  border-bottom: 1px solid var(--b-faint);
+  background: var(--ink-deep);
+  padding: 13px 0;
+  white-space: nowrap;
 }
+.marquee-inner {
+  display: inline-flex; gap: 3.5rem;
+  animation: mq 35s linear infinite;
+}
+.marquee-inner span {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+}
+.marquee-inner .dot { color: var(--blue-dim); font-size: 0.5rem; }
+.marquee-inner .green-word { color: var(--green-dim); }
+@keyframes mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-/* ══════════════════════════════════════════════════
-   SCROLLYTELLING — PINNED CINEMATIC
-══════════════════════════════════════════════════ */
-#scrolly-wrap { min-height: 500vh; position: relative; }
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION COMMONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.s { padding: 120px 0; }
+.s-inner { max-width: 1240px; margin: 0 auto; padding: 0 5%; }
+
+.s-label {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--blue-pale);
+  display: flex; align-items: center; gap: .8rem;
+  margin-bottom: 1.2rem;
+}
+.s-label::before { content: ''; width: 24px; height: 1px; background: var(--blue-dim); }
+
+.s-h2 {
+  font-family: var(--f-serif);
+  font-size: clamp(2.4rem, 5.5vw, 4.5rem);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+.s-h2 .blue { color: var(--blue-bright); font-style: italic; }
+.s-h2 .green { color: var(--green); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCROLLYTELLING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#scrolly { min-height: 500vh; position: relative; }
 #scrolly-pin {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+  position: sticky; top: 0; height: 100vh;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  background: var(--ink-deep);
 }
 
-.scrolly-scene {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; pointer-events: none;
-    flex-direction: column;
-    text-align: center;
-    padding: 0 5%;
-}
-.scrolly-eyebrow {
-    font-family: var(--f-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--c-gold);
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-}
-.scrolly-eyebrow::before, .scrolly-eyebrow::after {
-    content: '';
-    width: 30px; height: 1px;
-    background: var(--c-gold-dim);
-}
-.scrolly-h2 {
-    font-size: clamp(2.8rem, 7vw, 6.5rem);
-    font-weight: 800;
-    max-width: 900px;
-    line-height: 1.0;
-}
-.scrolly-h2 .gold { color: var(--c-gold); }
-.scrolly-h2 .mute { color: var(--c-muted); font-weight: 400; }
-.scrolly-body {
-    font-family: var(--f-mono);
-    font-size: 0.9rem;
-    color: var(--c-muted);
-    margin-top: 1.8rem;
-    max-width: 520px;
-    letter-spacing: 0.02em;
+/* Ambient light behind */
+#scrolly-pin::before {
+  content: '';
+  position: absolute;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(26,107,255,0.05) 0%, transparent 65%);
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  pointer-events: none;
 }
 
-.scrolly-progress {
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 20;
+.sy-scene {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; text-align: center;
+  padding: 0 6%; opacity: 0; pointer-events: none;
 }
-.scrolly-pip {
-    width: 1px;
-    height: 30px;
-    background: rgba(255,255,255,0.1);
-    position: relative;
-    overflow: hidden;
+.sy-num {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  color: var(--t-tertiary);
+  text-transform: uppercase;
+  margin-bottom: 1.8rem;
+  display: flex; align-items: center; gap: .7rem;
 }
-.scrolly-pip.active { background: rgba(200,169,110,0.4); }
-.scrolly-pip.active::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--c-gold);
-    animation: pipfill 0.4s forwards;
-}
-@keyframes pipfill { from { transform: scaleY(0); transform-origin: top; } to { transform: scaleY(1); } }
+.sy-num .tick { width: 20px; height: 1px; background: var(--blue-dim); }
+.sy-num .green-tick { background: var(--green-dim); }
 
-/* ══════════════════════════════════════════════════
-   ABOUT SECTION
-══════════════════════════════════════════════════ */
-#about { background: rgba(7,9,16,0.85); backdrop-filter: blur(2px); }
+.sy-h2 {
+  font-family: var(--f-serif);
+  font-size: clamp(3rem, 8vw, 7.5rem);
+  font-weight: 300;
+  line-height: 1.0;
+  max-width: 960px;
+}
+.sy-h2 .blue { color: var(--blue-bright); font-style: italic; }
+.sy-h2 .green { color: var(--green); }
+.sy-h2 .ghost { color: var(--t-tertiary); }
 
-.about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: center;
-}
-
-.about-manifesto {
-    background: linear-gradient(135deg, rgba(200,169,110,0.06) 0%, rgba(200,169,110,0.02) 100%);
-    border: 1px solid rgba(200,169,110,0.15);
-    padding: 2.5rem;
-    margin-bottom: 2rem;
-    position: relative;
-    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
-}
-.about-manifesto::before {
-    content: '"';
-    font-family: var(--f-head);
-    font-size: 5rem;
-    color: var(--c-gold);
-    opacity: 0.15;
-    position: absolute;
-    top: -10px; left: 20px;
-    line-height: 1;
-}
-.about-manifesto p {
-    font-family: var(--f-head);
-    font-size: 1.1rem;
-    font-weight: 600;
-    line-height: 1.5;
-    color: var(--c-text);
-}
-.about-manifesto .highlight { color: var(--c-gold); }
-
-.about-body { color: var(--c-muted); margin-bottom: 1.2rem; font-size: 0.9rem; }
-
-.feature-items { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
-.feature-item {
-    display: flex;
-    gap: 1rem;
-    align-items: flex-start;
-    padding: 1rem 1.2rem;
-    border: 1px solid var(--c-border);
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s, background 0.3s;
-    cursor: none;
-}
-.feature-item::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 2px;
-    background: var(--c-gold);
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform 0.3s;
-}
-.feature-item:hover { border-color: rgba(200,169,110,0.2); background: rgba(200,169,110,0.03); }
-.feature-item:hover::before { transform: scaleY(1); }
-.feature-icon {
-    font-family: var(--f-mono);
-    font-size: 0.65rem;
-    color: var(--c-gold);
-    min-width: 30px;
-    padding-top: 0.15rem;
-    letter-spacing: 0.05em;
-}
-.feature-text { font-size: 0.85rem; color: var(--c-muted); }
-.feature-text strong { color: var(--c-text); }
-
-/* VIDEO PANEL */
-.about-video-panel {
-    position: relative;
-    background: var(--c-panel);
-    border: 1px solid var(--c-border);
-    aspect-ratio: 9/10;
-    overflow: hidden;
-    cursor: none;
-}
-.about-video-panel::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(180deg, transparent 60%, rgba(3,4,10,0.9) 100%);
-    z-index: 2;
-    pointer-events: none;
-}
-.about-video-panel video {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-}
-.video-overlay {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 3;
-    transition: opacity 0.3s;
-}
-.play-ring {
-    width: 72px; height: 72px;
-    border: 1px solid rgba(200,169,110,0.5);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    backdrop-filter: blur(8px);
-    background: rgba(3,4,10,0.4);
-    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-    cursor: none;
-}
-.play-ring::after {
-    content: '';
-    width: 0; height: 0;
-    border-style: solid;
-    border-width: 10px 0 10px 18px;
-    border-color: transparent transparent transparent var(--c-gold);
-    margin-left: 4px;
-}
-.about-video-panel:hover .play-ring { transform: scale(1.1); box-shadow: 0 0 30px rgba(200,169,110,0.3); border-color: rgba(200,169,110,0.8); }
-.video-panel-label {
-    position: absolute;
-    bottom: 1.5rem; left: 1.5rem;
-    z-index: 4;
-    font-family: var(--f-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--c-muted);
+.sy-sub {
+  font-family: var(--f-sans);
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--t-secondary);
+  max-width: 500px;
+  margin-top: 2rem;
+  line-height: 1.9;
+  letter-spacing: 0.01em;
 }
 
-/* CORNER ACCENTS */
-.corner-accent {
-    position: absolute;
-    width: 20px; height: 20px;
-    z-index: 5;
+/* Progress rail */
+.sy-rail {
+  position: absolute; right: 4%; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 8px;
 }
-.corner-accent.tl { top: 10px; left: 10px; border-top: 1px solid var(--c-gold); border-left: 1px solid var(--c-gold); }
-.corner-accent.tr { top: 10px; right: 10px; border-top: 1px solid var(--c-gold); border-right: 1px solid var(--c-gold); }
-.corner-accent.bl { bottom: 10px; left: 10px; border-bottom: 1px solid var(--c-gold); border-left: 1px solid var(--c-gold); }
-.corner-accent.br { bottom: 10px; right: 10px; border-bottom: 1px solid var(--c-gold); border-right: 1px solid var(--c-gold); }
+.sy-tick {
+  width: 1px; height: 28px;
+  background: var(--b-faint);
+  position: relative; overflow: hidden;
+  transition: background .3s;
+}
+.sy-tick.live { background: rgba(26,107,255,0.3); }
+.sy-tick.live::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--blue-bright);
+  animation: tickfill .4s forwards;
+}
+@keyframes tickfill { from { transform: scaleY(0); transform-origin: top; } to { transform: scaleY(1); } }
 
-/* ══════════════════════════════════════════════════
-   ADVANTAGE SECTION
-══════════════════════════════════════════════════ */
-#advantage { background: var(--c-void); }
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ABOUT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#about { background: var(--ink); }
 
-.advantage-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--c-border);
-    border: 1px solid var(--c-border);
-    margin-top: 3rem;
+.about-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 80px; align-items: start;
 }
-.adv-card {
-    background: var(--c-void);
-    padding: 2.5rem 2rem;
-    position: relative;
-    overflow: hidden;
-    cursor: none;
-    transition: background 0.4s;
-}
-.adv-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 30% 30%, rgba(200,169,110,0.08) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.4s;
-}
-.adv-card:hover { background: rgba(200,169,110,0.03); }
-.adv-card:hover::before { opacity: 1; }
 
-.adv-number {
-    font-family: var(--f-mono);
-    font-size: 0.58rem;
-    letter-spacing: 0.15em;
-    color: var(--c-gold-dim);
-    margin-bottom: 1.5rem;
-    display: block;
+.about-pull-quote {
+  font-family: var(--f-serif);
+  font-size: clamp(1.5rem, 2.8vw, 2.1rem);
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--t-primary);
+  padding: 2.5rem;
+  border-left: 1px solid var(--blue);
+  background: linear-gradient(135deg, rgba(26,107,255,0.04) 0%, transparent 60%);
+  margin-bottom: 2.5rem;
+  position: relative;
 }
-.adv-icon {
-    font-size: 1.8rem;
-    margin-bottom: 1.2rem;
-    display: block;
-    filter: grayscale(0.3);
-    transition: transform 0.3s;
+.about-pull-quote .green { color: var(--green); font-style: italic; }
+
+.about-body-text {
+  font-size: 0.88rem;
+  font-weight: 300;
+  color: var(--t-secondary);
+  line-height: 2;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.01em;
 }
-.adv-card:hover .adv-icon { transform: scale(1.15) rotate(-5deg); }
+.about-body-text strong { color: var(--t-primary); font-weight: 500; }
+
+.pillars { display: flex; flex-direction: column; gap: 1px; margin-top: 2.5rem; }
+.pillar-row {
+  display: flex; gap: 1.5rem; align-items: flex-start;
+  padding: 1.3rem 0;
+  border-bottom: 1px solid var(--b-faint);
+  transition: background .25s; cursor: none;
+  position: relative;
+}
+.pillar-row::before {
+  content: '';
+  position: absolute; left: -1.5rem; top: 0; bottom: 0;
+  width: 1px;
+  background: var(--green);
+  transform: scaleY(0);
+  transition: transform .35s var(--ease-expo);
+}
+.pillar-row:hover::before { transform: scaleY(1); }
+.pillar-row:hover { background: rgba(0,230,118,0.025); }
+
+.pillar-code {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--blue-pale);
+  min-width: 36px;
+  padding-top: 0.3rem;
+}
+.pillar-content {}
+.pillar-title {
+  font-family: var(--f-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--t-primary);
+  margin-bottom: 0.3rem;
+}
+.pillar-desc {
+  font-family: var(--f-sans);
+  font-size: 0.8rem;
+  color: var(--t-secondary);
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+/* VIDEO */
+.about-video-wrap {
+  position: relative;
+  background: var(--ink-panel);
+  border: 1px solid var(--b-soft);
+  overflow: hidden; cursor: none;
+  aspect-ratio: 4/5;
+}
+.about-video-wrap::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(2,3,10,0.85) 100%);
+  z-index: 2; pointer-events: none;
+}
+.about-video-wrap video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.v-overlay {
+  position: absolute; inset: 0; z-index: 3;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity .3s;
+}
+.v-btn {
+  width: 76px; height: 76px;
+  border: 1px solid rgba(26,107,255,0.4);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(5,7,16,0.5);
+  backdrop-filter: blur(10px);
+  transition: transform .35s var(--ease-back), box-shadow .3s, border-color .3s;
+}
+.v-btn::after {
+  content: '';
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 10px 0 10px 18px;
+  border-color: transparent transparent transparent var(--blue-bright);
+  margin-left: 4px;
+}
+.about-video-wrap:hover .v-btn {
+  transform: scale(1.1);
+  box-shadow: 0 0 40px var(--blue-glow);
+  border-color: rgba(26,107,255,0.7);
+}
+.v-label {
+  position: absolute; bottom: 1.5rem; left: 1.5rem; z-index: 4;
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+}
+
+/* Decorative corner marks on video */
+.vc { position: absolute; width: 18px; height: 18px; z-index: 5; }
+.vc.tl { top: 12px; left: 12px; border-top: 1px solid var(--blue-dim); border-left: 1px solid var(--blue-dim); }
+.vc.tr { top: 12px; right: 12px; border-top: 1px solid var(--blue-dim); border-right: 1px solid var(--blue-dim); }
+.vc.bl { bottom: 12px; left: 12px; border-bottom: 1px solid var(--green-dim); border-left: 1px solid var(--green-dim); }
+.vc.br { bottom: 12px; right: 12px; border-bottom: 1px solid var(--green-dim); border-right: 1px solid var(--green-dim); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ADVANTAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#advantage { background: var(--ink-deep); }
+
+.adv-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 1px;
+  background: var(--b-faint);
+  border: 1px solid var(--b-faint);
+  margin-top: 3.5rem;
+}
+.adv-cell {
+  background: var(--ink-deep);
+  padding: 2.8rem 2rem;
+  position: relative; overflow: hidden;
+  cursor: none;
+  transition: background .4s;
+}
+.adv-cell::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  transform: scaleX(0);
+  transition: transform .5s var(--ease-expo);
+}
+.adv-cell:hover { background: var(--blue-ghost); }
+.adv-cell:hover::before { transform: scaleX(1); }
+
+.adv-num {
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: var(--blue-dim);
+  display: block; margin-bottom: 1.8rem;
+}
+.adv-glyph {
+  font-size: 2rem; display: block;
+  margin-bottom: 1.2rem;
+  transition: transform .35s var(--ease-back);
+  filter: hue-rotate(0deg);
+}
+.adv-cell:hover .adv-glyph { transform: scale(1.2) translateY(-3px); }
+
 .adv-title {
-    font-family: var(--f-head);
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin-bottom: 0.7rem;
-    color: var(--c-text);
+  font-family: var(--f-serif);
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--t-primary);
+  margin-bottom: .7rem;
 }
-.adv-desc { font-size: 0.82rem; color: var(--c-muted); line-height: 1.6; }
+.adv-desc { font-size: 0.8rem; color: var(--t-secondary); line-height: 1.75; font-weight: 300; }
 
-.adv-card-line {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--c-gold-dim), transparent);
-    transform: scaleX(0);
-    transition: transform 0.4s;
+.adv-cell-foot {
+  position: absolute;
+  bottom: 1.5rem; right: 1.5rem;
+  width: 20px; height: 20px;
+  border-bottom: 1px solid var(--b-faint);
+  border-right: 1px solid var(--b-faint);
+  transition: border-color .3s;
 }
-.adv-card:hover .adv-card-line { transform: scaleX(1); }
+.adv-cell:hover .adv-cell-foot { border-color: var(--blue-dim); }
 
-/* ══════════════════════════════════════════════════
-   SERVICES SECTION
-══════════════════════════════════════════════════ */
-#services { background: rgba(7,9,16,0.9); }
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SERVICES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#services { background: var(--ink); }
 
-.services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--c-border);
-    border: 1px solid var(--c-border);
-    margin-top: 3rem;
+.svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1px;
+  background: var(--b-faint);
+  border: 1px solid var(--b-faint);
+  margin-top: 3.5rem;
 }
 .svc-card {
-    background: var(--c-void);
-    padding: 3rem 2.5rem;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-    cursor: none;
-    transition: background 0.4s;
+  background: var(--ink);
+  padding: 3rem 2.5rem;
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden; cursor: none;
+  transition: background .4s;
 }
-.svc-card.featured { background: rgba(200,169,110,0.04); }
-.svc-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--c-gold), transparent);
-    transform: scaleX(0);
-    transition: transform 0.5s;
+.svc-card.star { background: linear-gradient(160deg, rgba(26,107,255,0.06) 0%, var(--ink) 60%); }
+.svc-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--blue-bright), transparent);
+  opacity: 0;
+  transition: opacity .4s;
 }
-.svc-card:hover::before, .svc-card.featured::before { transform: scaleX(1); }
-.svc-card:hover { background: rgba(200,169,110,0.03); }
-.svc-card.featured:hover { background: rgba(200,169,110,0.06); }
+.svc-card:hover::after, .svc-card.star::after { opacity: 1; }
+.svc-card:hover { background: var(--blue-ghost); }
 
-.svc-badge {
-    font-family: var(--f-mono);
-    font-size: 0.58rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--c-void);
-    background: var(--c-gold);
-    display: inline-block;
-    padding: 0.25rem 0.7rem;
-    margin-bottom: 1.5rem;
-    align-self: flex-start;
-    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+.svc-star-badge {
+  font-family: var(--f-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green);
+  border: 1px solid var(--b-green);
+  padding: 0.25rem 0.8rem;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  align-self: flex-start;
+  background: var(--green-ghost);
 }
-.svc-icon {
-    font-size: 2.2rem;
-    margin-bottom: 1.2rem;
-    display: block;
-}
-.svc-title {
-    font-family: var(--f-head);
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
+.svc-icon { font-size: 2.2rem; display: block; margin-bottom: 1.2rem; }
+.svc-name {
+  font-family: var(--f-serif);
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--t-primary);
+  margin-bottom: .5rem;
+  line-height: 1.15;
 }
 .svc-price {
-    font-family: var(--f-mono);
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--c-gold);
-    line-height: 1;
-    margin-bottom: 1.2rem;
+  font-family: var(--f-mono);
+  font-size: 1.6rem;
+  color: var(--blue-bright);
+  line-height: 1;
+  margin-bottom: 1.3rem;
+  letter-spacing: -0.02em;
 }
-.svc-price span { font-size: 0.8rem; color: var(--c-muted); vertical-align: middle; }
-.svc-desc { font-size: 0.82rem; color: var(--c-muted); margin-bottom: 1.5rem; line-height: 1.7; }
-.svc-list { list-style: none; margin-bottom: 2rem; flex: 1; }
+.svc-price small { font-size: 0.7rem; color: var(--t-tertiary); letter-spacing: 0.05em; }
+.svc-desc { font-size: 0.82rem; color: var(--t-secondary); font-weight: 300; line-height: 1.8; margin-bottom: 1.8rem; }
+.svc-list { list-style: none; margin-bottom: 2.5rem; flex: 1; }
 .svc-list li {
-    font-family: var(--f-mono);
-    font-size: 0.75rem;
-    color: var(--c-muted);
-    padding: 0.6rem 0;
-    border-bottom: 1px solid var(--c-wire);
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    letter-spacing: 0.03em;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  color: var(--t-secondary);
+  padding: .65rem 0;
+  border-bottom: 1px solid var(--b-faint);
+  display: flex; align-items: center; gap: .8rem;
+  letter-spacing: 0.03em;
 }
-.svc-list li::before {
-    content: '→';
-    color: var(--c-gold);
-    font-size: 0.7rem;
-    flex-shrink: 0;
-}
+.svc-list li::before { content: '→'; color: var(--blue-pale); font-size: 0.65rem; flex-shrink: 0; }
 
-/* ══════════════════════════════════════════════════
-   PHILOSOPHY / MANIFESTO SECTION
-══════════════════════════════════════════════════ */
-#philosophy {
-    background: var(--c-void);
-    padding: 140px 0;
-    overflow: hidden;
-    position: relative;
-}
-.philosophy-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 5%;
-}
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PHILOSOPHY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#philosophy { background: var(--ink-deep); overflow: hidden; }
+
 .philosophy-statement {
-    font-family: var(--f-head);
-    font-size: clamp(1.8rem, 4vw, 3.2rem);
-    font-weight: 800;
-    line-height: 1.2;
-    max-width: 900px;
+  font-family: var(--f-serif);
+  font-size: clamp(1.9rem, 4vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1.4;
+  max-width: 860px;
+  margin-bottom: 80px;
 }
-.philosophy-statement .gold { color: var(--c-gold); }
-.philosophy-statement .ghost { color: var(--c-ghost); }
+.philosophy-statement .blue { color: var(--blue-bright); font-style: italic; }
+.philosophy-statement .green { color: var(--green); }
+.philosophy-statement .ghost { color: var(--t-tertiary); }
 
-.philosophy-pillars {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-    background: var(--c-border);
-    margin-top: 80px;
-    border: 1px solid var(--c-border);
+.phil-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1px;
+  background: var(--b-faint);
+  border: 1px solid var(--b-faint);
 }
-.pillar {
-    background: var(--c-void);
-    padding: 3rem 2.5rem;
-    position: relative;
-    cursor: none;
-    transition: background 0.3s;
+.phil-card {
+  background: var(--ink-deep);
+  padding: 3rem;
+  position: relative; overflow: hidden; cursor: none;
+  transition: background .4s;
 }
-.pillar:hover { background: rgba(200,169,110,0.02); }
-.pillar-num {
-    font-family: var(--f-mono);
-    font-size: 3rem;
-    font-weight: 700;
-    color: rgba(200,169,110,0.1);
-    position: absolute;
-    top: 1.5rem; right: 1.5rem;
-    line-height: 1;
-    transition: color 0.3s;
-}
-.pillar:hover .pillar-num { color: rgba(200,169,110,0.2); }
-.pillar-title {
-    font-family: var(--f-head);
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--c-text);
-}
-.pillar-body { font-size: 0.82rem; color: var(--c-muted); line-height: 1.8; }
+.phil-card:hover { background: rgba(26,107,255,0.03); }
 
-/* ══════════════════════════════════════════════════
+.phil-index {
+  font-family: var(--f-serif);
+  font-size: 5rem;
+  font-weight: 300;
+  color: var(--blue-ghost);
+  position: absolute;
+  top: 1rem; right: 1.5rem;
+  line-height: 1;
+  transition: color .4s;
+  pointer-events: none;
+  border: none; background: none;
+  /* render as text so outline appears */
+  -webkit-text-stroke: 1px rgba(26,107,255,0.12);
+  color: transparent;
+  transition: -webkit-text-stroke .4s;
+}
+.phil-card:hover .phil-index { -webkit-text-stroke: 1px rgba(26,107,255,0.25); }
+
+.phil-title {
+  font-family: var(--f-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  color: var(--t-primary);
+}
+.phil-body { font-size: 0.82rem; color: var(--t-secondary); line-height: 1.9; font-weight: 300; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    TESTIMONIALS
-══════════════════════════════════════════════════ */
-#testimonials { background: rgba(7,9,16,0.9); }
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#testimonials { background: var(--ink); }
 
-.testi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--c-border); border: 1px solid var(--c-border); margin-top: 3rem; }
-.testi-card {
-    background: var(--c-void);
-    padding: 3rem;
-    position: relative;
-    overflow: hidden;
-    cursor: none;
-    transition: background 0.3s;
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 1px;
+  background: var(--b-faint);
+  border: 1px solid var(--b-faint);
+  margin-top: 3.5rem;
 }
-.testi-card:hover { background: rgba(200,169,110,0.02); }
-.testi-quote-mark {
-    font-family: var(--f-head);
-    font-size: 4rem;
-    color: var(--c-gold);
-    opacity: 0.2;
-    line-height: 1;
-    margin-bottom: 1rem;
+.testi-card {
+  background: var(--ink);
+  padding: 3.5rem;
+  cursor: none; position: relative; overflow: hidden;
+  transition: background .4s;
+}
+.testi-card:hover { background: var(--blue-ghost); }
+.testi-mark {
+  font-family: var(--f-serif);
+  font-size: 5rem;
+  color: var(--blue-dim);
+  line-height: 0.8;
+  opacity: 0.35;
+  margin-bottom: .8rem;
+  display: block;
 }
 .testi-text {
-    font-family: var(--f-head);
-    font-size: 1.05rem;
-    font-weight: 600;
-    line-height: 1.5;
-    color: var(--c-text);
-    margin-bottom: 2rem;
+  font-family: var(--f-serif);
+  font-size: 1.15rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--t-primary);
+  margin-bottom: 2.5rem;
+  font-style: italic;
 }
-.testi-author {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+.testi-byline { display: flex; align-items: center; gap: 1.2rem; }
+.testi-av {
+  width: 42px; height: 42px;
+  background: linear-gradient(135deg, var(--blue-dim), var(--blue));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  color: white;
+  letter-spacing: 0.05em;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
-.testi-avatar {
-    width: 40px; height: 40px;
-    background: rgba(200,169,110,0.1);
-    border: 1px solid rgba(200,169,110,0.2);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--f-mono);
-    font-size: 0.7rem;
-    color: var(--c-gold);
-    letter-spacing: 0.05em;
-    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
-}
-.testi-name { font-family: var(--f-head); font-size: 0.9rem; font-weight: 700; }
-.testi-role { font-family: var(--f-mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--c-muted); text-transform: uppercase; }
+.testi-name { font-family: var(--f-sans); font-size: 0.9rem; font-weight: 600; }
+.testi-role { font-family: var(--f-mono); font-size: 0.6rem; color: var(--t-tertiary); letter-spacing: 0.12em; text-transform: uppercase; }
 
-/* ══════════════════════════════════════════════════
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    FAQ
-══════════════════════════════════════════════════ */
-#faq { background: var(--c-void); }
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#faq { background: var(--ink-deep); }
 
-.faq-list { margin-top: 3rem; border: 1px solid var(--c-border); }
-.faq-item {
-    border-bottom: 1px solid var(--c-border);
-    cursor: none;
-    transition: background 0.3s;
+.faq-wrap { border: 1px solid var(--b-faint); margin-top: 3.5rem; }
+.faq-row {
+  border-bottom: 1px solid var(--b-faint); cursor: none;
+  transition: background .3s;
 }
-.faq-item:last-child { border-bottom: none; }
-.faq-item:hover { background: rgba(200,169,110,0.02); }
+.faq-row:last-child { border-bottom: none; }
+.faq-row:hover { background: var(--blue-ghost); }
+
 .faq-q {
-    padding: 1.5rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
-    font-family: var(--f-head);
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--c-text);
-    user-select: none;
+  padding: 1.6rem 2rem;
+  display: flex; justify-content: space-between; align-items: center; gap: 2rem;
+  user-select: none;
 }
-.faq-q-text { flex: 1; }
-.faq-toggle {
-    width: 24px; height: 24px;
-    border: 1px solid var(--c-border);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    font-family: var(--f-mono);
-    font-size: 1rem;
-    color: var(--c-gold);
-    transition: transform 0.3s, border-color 0.3s, background 0.3s;
-    clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px));
+.faq-q-text {
+  font-family: var(--f-serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--t-primary);
+  flex: 1;
 }
-.faq-item.open .faq-toggle { transform: rotate(45deg); border-color: rgba(200,169,110,0.4); background: rgba(200,169,110,0.08); }
-.faq-a {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s var(--ease-smooth);
+.faq-plus {
+  width: 26px; height: 26px;
+  border: 1px solid var(--b-blue);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--blue-bright);
+  font-family: var(--f-mono);
+  font-size: 1rem; line-height: 1;
+  flex-shrink: 0;
+  transition: transform .35s var(--ease-back), background .3s, border-color .3s;
 }
-.faq-a-inner {
-    padding: 0 2rem 1.5rem;
-    font-size: 0.85rem;
-    color: var(--c-muted);
-    line-height: 1.8;
-    border-left: 2px solid rgba(200,169,110,0.2);
-    margin-left: 2rem;
-}
-.faq-item.open .faq-a { max-height: 300px; }
+.faq-row.open .faq-plus { transform: rotate(45deg); background: var(--blue-ghost); border-color: var(--blue); }
 
-/* ══════════════════════════════════════════════════
-   CTA SECTION
-══════════════════════════════════════════════════ */
+.faq-a { max-height: 0; overflow: hidden; transition: max-height .45s var(--ease-silk); }
+.faq-a-body {
+  padding: 0 2rem 1.8rem 4rem;
+  font-size: 0.85rem;
+  color: var(--t-secondary);
+  font-weight: 300;
+  line-height: 2;
+  letter-spacing: 0.01em;
+}
+.faq-row.open .faq-a { max-height: 300px; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CTA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 #cta {
-    background: var(--c-void);
-    padding: 160px 0;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+  background: var(--ink);
+  padding: 160px 0;
+  text-align: center;
+  position: relative; overflow: hidden;
 }
 #cta::before {
-    content: '';
-    position: absolute;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(200,169,110,0.06) 0%, transparent 70%);
-    left: 50%; top: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
+  content: '';
+  position: absolute;
+  width: 800px; height: 800px;
+  background: radial-gradient(ellipse, rgba(26,107,255,0.07) 0%, transparent 65%);
+  left: 50%; top: 50%; transform: translate(-50%,-50%);
+  pointer-events: none;
 }
-.cta-inner { max-width: 900px; margin: 0 auto; padding: 0 5%; }
+#cta::after {
+  content: '';
+  position: absolute;
+  width: 400px; height: 400px;
+  background: radial-gradient(ellipse, rgba(0,230,118,0.04) 0%, transparent 65%);
+  left: 60%; top: 40%; transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+
+.cta-inner { max-width: 860px; margin: 0 auto; padding: 0 5%; position: relative; z-index: 1; }
 .cta-h2 {
-    font-size: clamp(2.8rem, 7vw, 6rem);
-    font-weight: 800;
-    margin-bottom: 1.5rem;
-    line-height: 1.0;
+  font-family: var(--f-serif);
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 300;
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
 }
-.cta-h2 .gold { color: var(--c-gold); }
-.cta-h2 .mute { color: var(--c-muted); font-weight: 400; }
-.cta-sub {
-    font-family: var(--f-mono);
-    font-size: 0.9rem;
-    color: var(--c-muted);
-    margin-bottom: 3rem;
-    letter-spacing: 0.04em;
+.cta-h2 .blue { color: var(--blue-bright); font-style: italic; }
+.cta-h2 .green { color: var(--green); }
+.cta-h2 .ghost { color: var(--t-tertiary); }
+.cta-body {
+  font-size: 0.9rem;
+  color: var(--t-secondary);
+  font-weight: 300;
+  margin-bottom: 3rem;
+  line-height: 2;
+  letter-spacing: 0.01em;
 }
-.cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
-.newsletter-box {
-    margin-top: 5rem;
-    padding-top: 4rem;
-    border-top: 1px solid var(--c-border);
+.nl-box {
+  margin-top: 5rem;
+  padding-top: 4rem;
+  border-top: 1px solid var(--b-faint);
 }
-.newsletter-label {
-    font-family: var(--f-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--c-muted);
-    margin-bottom: 1.5rem;
+.nl-label {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+  margin-bottom: 1.5rem;
 }
-.newsletter-form {
-    display: flex;
-    gap: 0;
-    max-width: 500px;
-    margin: 0 auto;
+.nl-form { display: flex; max-width: 480px; margin: 0 auto; }
+.nl-input {
+  flex: 1;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--b-soft);
+  border-right: none;
+  padding: .85rem 1.2rem;
+  color: var(--t-primary);
+  font-family: var(--f-mono);
+  font-size: 0.78rem;
+  outline: none;
+  transition: border-color .3s;
+  letter-spacing: 0.03em;
 }
-.newsletter-input {
-    flex: 1;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--c-border);
-    border-right: none;
-    padding: 0.9rem 1.2rem;
-    color: var(--c-text);
-    font-family: var(--f-mono);
-    font-size: 0.8rem;
-    outline: none;
-    transition: border-color 0.3s;
+.nl-input:focus { border-color: var(--blue-dim); }
+.nl-input::placeholder { color: var(--t-ghost); }
+.nl-btn {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: white;
+  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-bright) 100%);
+  border: none; padding: .85rem 1.5rem;
+  cursor: none;
+  transition: box-shadow .3s;
 }
-.newsletter-input:focus { border-color: rgba(200,169,110,0.3); }
-.newsletter-input::placeholder { color: var(--c-ghost); }
-.newsletter-btn {
-    background: var(--c-gold);
-    border: 1px solid var(--c-gold);
-    color: var(--c-void);
-    font-family: var(--f-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    padding: 0.9rem 1.5rem;
-    cursor: none;
-    transition: box-shadow 0.3s, background 0.3s;
-}
-.newsletter-btn:hover { box-shadow: 0 0 20px rgba(200,169,110,0.4); }
+.nl-btn:hover { box-shadow: 0 0 24px var(--blue-glow); }
 
-/* ══════════════════════════════════════════════════
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    FOOTER
-══════════════════════════════════════════════════ */
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 footer {
-    background: var(--c-deep);
-    border-top: 1px solid var(--c-border);
-    padding: 60px 5%;
+  background: var(--ink-deep);
+  border-top: 1px solid var(--b-faint);
+  padding: 70px 5% 50px;
 }
-.footer-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 60px;
-    align-items: start;
+.footer-wrap {
+  max-width: 1240px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px;
 }
-.footer-brand { }
-.footer-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--f-head);
-    font-weight: 800;
-    margin-bottom: 1.2rem;
-    cursor: none;
+.footer-brand-logo {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 1.2rem;
+  cursor: none;
 }
-.footer-logo-mark {
-    width: 28px; height: 28px;
-    border: 1px solid var(--c-gold);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.6rem;
-    font-family: var(--f-mono);
-    color: var(--c-gold);
+.footer-gem {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--blue-dim), var(--blue));
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+.footer-brand-name {
+  font-family: var(--f-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 .footer-tagline {
-    font-family: var(--f-mono);
-    font-size: 0.75rem;
-    color: var(--c-muted);
-    line-height: 1.8;
-    letter-spacing: 0.03em;
-    max-width: 280px;
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  color: var(--t-tertiary);
+  line-height: 2;
+  letter-spacing: 0.03em;
+  max-width: 280px;
 }
-.footer-col-title {
-    font-family: var(--f-mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--c-gold);
-    margin-bottom: 1.2rem;
+.footer-col-h {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--blue-pale);
+  margin-bottom: 1.4rem;
+  display: flex; align-items: center; gap: .6rem;
 }
-.footer-links { list-style: none; }
-.footer-links li { margin-bottom: 0.7rem; }
-.footer-links a {
-    font-family: var(--f-mono);
-    font-size: 0.78rem;
-    color: var(--c-muted);
-    cursor: none;
-    transition: color 0.2s;
-    letter-spacing: 0.03em;
+.footer-col-h::before { content: ''; width: 16px; height: 1px; background: var(--blue-dim); }
+.footer-nav { list-style: none; }
+.footer-nav li { margin-bottom: .75rem; }
+.footer-nav a {
+  font-family: var(--f-sans);
+  font-size: 0.82rem;
+  color: var(--t-secondary);
+  font-weight: 300; cursor: none;
+  transition: color .25s;
 }
-.footer-links a:hover { color: var(--c-gold); }
+.footer-nav a:hover { color: var(--blue-pale); }
 
 .footer-bottom {
-    max-width: 1200px;
-    margin: 3rem auto 0;
-    padding-top: 2rem;
-    border-top: 1px solid var(--c-border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  max-width: 1240px; margin: 3.5rem auto 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--b-faint);
+  display: flex; justify-content: space-between; align-items: center;
 }
 .footer-copy {
-    font-family: var(--f-mono);
-    font-size: 0.65rem;
-    color: var(--c-ghost);
-    letter-spacing: 0.08em;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--t-tertiary);
+}
+.footer-motto {
+  font-family: var(--f-serif);
+  font-size: 0.85rem;
+  color: var(--t-tertiary);
+  font-style: italic;
 }
 
-/* ══════════════════════════════════════════════════
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    MODAL
-══════════════════════════════════════════════════ */
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 #modal {
-    display: none;
-    position: fixed; inset: 0;
-    z-index: 1000;
-    background: rgba(3,4,10,0.85);
-    backdrop-filter: blur(12px);
-    align-items: center;
-    justify-content: center;
+  display: none; position: fixed; inset: 0;
+  z-index: 900;
+  background: rgba(2,3,10,0.82);
+  backdrop-filter: blur(16px);
+  align-items: center; justify-content: center;
 }
 #modal.show { display: flex; }
 .modal-box {
-    background: var(--c-panel);
-    border: 1px solid var(--c-border);
-    padding: 3rem;
-    max-width: 460px;
-    width: 90%;
-    position: relative;
-    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
-    transform: scale(0.9) translateY(20px);
-    transition: transform 0.3s var(--ease-smooth);
+  background: var(--ink-panel);
+  border: 1px solid var(--b-blue);
+  padding: 3.5rem;
+  max-width: 480px; width: 90%;
+  position: relative;
+  transform: translateY(20px);
+  transition: transform .35s var(--ease-expo);
+  overflow: hidden;
 }
-#modal.show .modal-box { transform: scale(1) translateY(0); }
-.modal-close {
-    position: absolute;
-    top: 1.5rem; right: 1.5rem;
-    background: none; border: none;
-    color: var(--c-muted);
-    font-size: 1rem;
-    cursor: none;
-    transition: color 0.2s;
-    font-family: var(--f-mono);
+#modal.show .modal-box { transform: translateY(0); }
+.modal-box::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue-bright), transparent);
 }
-.modal-close:hover { color: var(--c-text); }
+.modal-x {
+  position: absolute; top: 1.5rem; right: 1.5rem;
+  background: none; border: none;
+  color: var(--t-tertiary); font-size: 1rem;
+  cursor: none; font-family: var(--f-mono);
+  transition: color .2s;
+}
+.modal-x:hover { color: var(--t-primary); }
+.modal-eyebrow {
+  font-family: var(--f-mono); font-size: 0.58rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--blue-pale); margin-bottom: .6rem;
+}
 .modal-title {
-    font-family: var(--f-head);
-    font-size: 1.4rem;
-    font-weight: 800;
-    margin-bottom: 0.8rem;
-    color: var(--c-text);
+  font-family: var(--f-serif);
+  font-size: 1.8rem; font-weight: 300;
+  margin-bottom: 1rem;
 }
-.modal-label {
-    font-family: var(--f-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.2em;
-    color: var(--c-gold);
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-    display: block;
+.modal-body {
+  font-size: 0.85rem; color: var(--t-secondary);
+  font-weight: 300; line-height: 1.9;
+  margin-bottom: 2rem;
 }
-.modal-body { font-size: 0.85rem; color: var(--c-muted); line-height: 1.8; margin-bottom: 2rem; }
-.modal-corner { position: absolute; width: 16px; height: 16px; }
-.modal-corner.tl { top: 10px; left: 10px; border-top: 1px solid var(--c-gold); border-left: 1px solid var(--c-gold); }
-.modal-corner.br { bottom: 10px; right: 10px; border-bottom: 1px solid var(--c-gold); border-right: 1px solid var(--c-gold); }
 
-/* ══════════════════════════════════════════════════
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    SCROLLBAR
-══════════════════════════════════════════════════ */
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: var(--c-void); }
-::-webkit-scrollbar-thumb { background: var(--c-gold-dim); }
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--blue-dim); }
 
-/* ══════════════════════════════════════════════════
-   GLITCH TEXT EFFECT
-══════════════════════════════════════════════════ */
-.glitch {
-    position: relative;
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   LIVE TICKER (decorative top bar)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#ticker {
+  height: 28px;
+  background: var(--ink-deep);
+  border-bottom: 1px solid var(--b-faint);
+  overflow: hidden;
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 700;
+  display: flex; align-items: center;
 }
-.glitch::before, .glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    inset: 0;
-    opacity: 0;
+#ticker-inner {
+  display: inline-flex; gap: 4rem;
+  animation: ticker 40s linear infinite;
+  white-space: nowrap;
 }
-.glitch:hover::before {
-    opacity: 0.7;
-    color: var(--c-ice);
-    clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
-    transform: translateX(-2px);
-    animation: glitch1 0.3s step-end;
+.ticker-item {
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  color: var(--t-tertiary);
+  display: flex; align-items: center; gap: .5rem;
 }
-.glitch:hover::after {
-    opacity: 0.7;
-    color: var(--c-gold);
-    clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
-    transform: translateX(2px);
-    animation: glitch2 0.3s step-end;
-}
-@keyframes glitch1 { 0%,100% { transform:translateX(-2px); } 50% { transform:translateX(3px); } }
-@keyframes glitch2 { 0%,100% { transform:translateX(2px);  } 50% { transform:translateX(-3px); } }
+.ticker-item .up   { color: var(--green); }
+.ticker-item .down { color: #ff4d6d; }
+.ticker-sep { color: var(--b-soft); }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-/* ══════════════════════════════════════════════════
-   UTILITY
-══════════════════════════════════════════════════ */
-.reveal { opacity: 0; transform: translateY(30px); }
-.reveal.in { opacity: 1; transform: translateY(0); transition: opacity 0.7s var(--ease-smooth), transform 0.7s var(--ease-smooth); }
+/* Shift nav down for ticker */
+#nav { top: 28px; }
 
-/* ══════════════════════════════════════════════════
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    RESPONSIVE
-══════════════════════════════════════════════════ */
-@media (max-width: 900px) {
-    .nav-links { display: none; }
-    .mobile-toggle { display: block; }
-    .about-grid { grid-template-columns: 1fr; gap: 40px; }
-    .advantage-grid { grid-template-columns: 1fr 1fr; }
-    .services-grid { grid-template-columns: 1fr; }
-    .philosophy-pillars { grid-template-columns: 1fr; }
-    .testi-grid { grid-template-columns: 1fr; }
-    .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
-    .hero-stats { gap: 3rem; }
-    .scrolly-h2 { font-size: clamp(2.2rem,8vw,3.5rem); }
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 960px) {
+  .nav-links { display: none; }
+  .mob-toggle { display: block; }
+  .about-layout { grid-template-columns: 1fr; gap: 50px; }
+  .adv-grid { grid-template-columns: 1fr 1fr; }
+  .svc-grid { grid-template-columns: 1fr; }
+  .phil-grid { grid-template-columns: 1fr; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .footer-wrap { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .hero-metrics { gap: 3rem; flex-wrap: wrap; }
 }
 @media (max-width: 600px) {
-    .advantage-grid { grid-template-columns: 1fr; }
-    .footer-inner { grid-template-columns: 1fr; gap: 30px; }
-    .hero-actions { flex-direction: column; align-items: center; }
-    .hero-stats { flex-direction: column; gap: 1.5rem; align-items: center; }
-    .newsletter-form { flex-direction: column; }
-    .newsletter-input { border-right: 1px solid var(--c-border); border-bottom: none; }
-    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
-    .philosophy-pillars { grid-template-columns: 1fr; }
+  #ticker { display: none; }
+  #nav { top: 0; }
+  .adv-grid { grid-template-columns: 1fr; }
+  .footer-wrap { grid-template-columns: 1fr; gap: 30px; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .hero-metrics { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+  .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+  .nl-form { flex-direction: column; }
+  .nl-input { border-right: 1px solid var(--b-soft); border-bottom: none; }
+  .cta-btns { flex-direction: column; align-items: center; }
 }
 </style>
 </head>
 <body>
 
-<!-- CURSORS -->
-<div id="cursor-dot"></div>
-<div id="cursor-ring"></div>
+<!-- ── CURSORS ── -->
+<div id="c-dot"></div>
+<div id="c-ring"></div>
 
-<!-- 3D BACKGROUND CANVAS -->
+<!-- ── 3D CANVAS ── -->
 <canvas id="bg-canvas"></canvas>
 
-<!-- NOISE OVERLAY -->
-<div id="noise-overlay"></div>
+<!-- ── GRAIN ── -->
+<div id="grain"></div>
 
-<!-- MODAL -->
+<!-- ── MODAL ── -->
 <div id="modal">
-    <div class="modal-box">
-        <button class="modal-close" onclick="closeModal()">✕</button>
-        <div class="modal-corner tl"></div>
-        <div class="modal-corner br"></div>
-        <span class="modal-label" id="modal-label">Ashford Capital</span>
-        <h3 class="modal-title" id="modal-title">Title</h3>
-        <p class="modal-body" id="modal-body">Body</p>
-        <button class="btn-prime" onclick="redirectToCTA()">Join Now →</button>
-    </div>
+  <div class="modal-box">
+    <button class="modal-x" onclick="closeModal()">✕</button>
+    <p class="modal-eyebrow" id="modal-ey">Ashford Capital</p>
+    <h3 class="modal-title" id="modal-title">—</h3>
+    <p class="modal-body" id="modal-body">—</p>
+    <button class="btn-primary" onclick="redirectToCTA()">Join Now →</button>
+  </div>
 </div>
 
-<!-- ══════ NAVBAR ══════ -->
-<header id="navbar">
-    <div class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-        <div class="nav-logo-mark">AC</div>
-        <span>ASHFORD CAPITAL</span>
+<!-- ── LIVE TICKER ── -->
+<div id="ticker">
+  <div id="ticker-inner">
+    <span class="ticker-item">NIFTY50 <span class="up">▲ 0.42%</span></span><span class="ticker-sep">|</span>
+    <span class="ticker-item">SENSEX <span class="up">▲ 0.38%</span></span><span class="ticker-sep">|</span>
+    <span class="ticker-item">BANKNIFTY <span class="down">▼ 0.17%</span></span><span class="ticker-sep">|</span>
+    <span class="ticker-item">USDINR <span class="down">▼ 0.08%</span></span><span class="ticker-sep">|</span>
+    <span class="ticker-item">GOLD <span class="up">▲ 0.55%</span></span><span class="ticker-sep">|</span>
+    <span class="ticker-item">CRUDE <span class="up">▲ 1.12%</span></span><span class="ticker-sep">|</span>
+    <span class="ticker-item">MIDCAP <span class="up">▲ 0.73%</span></span><span class="ticker-sep">|</span>
+    <span class="ticker-item">VIX <span class="down">▼ 2.1%</span></span><span class="ticker-sep">|</span>
+    <!-- duplicate -->
+    <span class="ticker-item">NIFTY50 <span class="up">▲ 0.42%</span></span><span class="ticker-sep">|</span>
+    <span class="ticker-item">SENSEX <span class="up">▲ 0.38%</span></span><span class="ticker-sep">|</span>
+    <span class="ticker-item">BANKNIFTY <span class="down">▼ 0.17%</span></span><span class="ticker-sep">|</span>
+    <span class="ticker-item">USDINR <span class="down">▼ 0.08%</span></span><span class="ticker-sep">|</span>
+    <span class="ticker-item">GOLD <span class="up">▲ 0.55%</span></span><span class="ticker-sep">|</span>
+    <span class="ticker-item">CRUDE <span class="up">▲ 1.12%</span></span><span class="ticker-sep">|</span>
+    <span class="ticker-item">MIDCAP <span class="up">▲ 0.73%</span></span><span class="ticker-sep">|</span>
+    <span class="ticker-item">VIX <span class="down">▼ 2.1%</span></span><span class="ticker-sep">|</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     APPLICATION
+════════════════════════════════════════ -->
+<div id="app">
+
+<!-- ── NAVBAR ── -->
+<header id="nav">
+  <div class="nav-logo" onclick="lenisTop()">
+    <div class="nav-logo-gem">
+      <svg viewBox="0 0 16 16"><path d="M8 1L15 5V11L8 15L1 11V5L8 1Z"/></svg>
     </div>
-    <nav class="nav-links">
-        <a href="#about"     class="nav-link" data-index="01">About</a>
-        <a href="#services"  class="nav-link" data-index="02">Services</a>
-        <a href="#philosophy" class="nav-link" data-index="03">Philosophy</a>
-        <a href="#faq"       class="nav-link" data-index="04">FAQ</a>
-    </nav>
-    <button class="nav-cta" onclick="redirectToCTA()">Join Now</button>
-    <button class="mobile-toggle" id="mob-toggle">☰</button>
+    <span class="nav-wordmark">Ashford Capital</span>
+  </div>
+  <nav class="nav-links" id="nav-links">
+    <a class="nav-link" href="#about">About</a>
+    <a class="nav-link" href="#services">Services</a>
+    <a class="nav-link" href="#philosophy">Philosophy</a>
+    <a class="nav-link" href="#faq">FAQ</a>
+  </nav>
+  <button class="nav-join" onclick="redirectToCTA()">Join Now</button>
+  <button class="mob-toggle" id="mob-toggle">☰</button>
 </header>
 
-<!-- ══════ SCROLL WRAPPER ══════ -->
-<div id="scroll-wrapper">
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hc tl"></div><div class="hc tr"></div>
+  <div class="hc bl"></div><div class="hc br"></div>
 
-<!-- ══════ HERO ══════ -->
-<section id="hero" id="home">
-    <div class="hero-corner tl"></div>
-    <div class="hero-corner tr"></div>
-    <div class="hero-corner bl"></div>
-    <div class="hero-corner br"></div>
-    <div class="hero-scanline"></div>
+  <div class="hero-eyebrow" id="h-eyebrow">
+    <span class="eye-line"></span>
+    Live Market Mentorship &amp; Training
+    <span class="eye-line right"></span>
+  </div>
 
-    <div class="hero-overline" id="hero-overline">
-        Live Market Mentorship &amp; Training
+  <h1 class="hero-title" id="h-title">
+    <span class="mask"><span class="inner">Where Traders</span></span>
+    <span class="mask"><span class="inner weight blue">Thrive on</span></span>
+    <span class="mask"><span class="inner ghost-word">Precision.</span></span>
+    <span class="mask"><span class="inner">Not Prediction.</span></span>
+  </h1>
+
+  <div class="hero-rule" id="h-rule"></div>
+
+  <p class="hero-sub" id="h-sub">
+    Clarity in concepts. Precision in execution.<br>
+    Ashford Capital — where markets become readable.
+  </p>
+
+  <div class="hero-actions" id="h-actions">
+    <button class="btn-primary" onclick="redirectToCTA()">Begin Your Edge →</button>
+    <button class="btn-secondary" onclick="lenisTo('#about')">Explore ↓</button>
+  </div>
+
+  <div class="hero-metrics" id="h-metrics">
+    <div class="h-metric">
+      <span class="h-metric-val"><span class="accent" data-count="3">0</span>+</span>
+      <span class="h-metric-label">Years of Mastery</span>
     </div>
-
-    <h1 class="hero-h1" id="hero-h1">
-        <span class="line"><span class="line-inner">WHERE TRADERS</span></span>
-        <span class="line"><span class="line-inner accent">THRIVE ON</span></span>
-        <span class="line"><span class="line-inner thin">precision.</span></span>
-        <span class="line"><span class="line-inner">NOT PREDICTION.</span></span>
-    </h1>
-
-    <p class="hero-sub" id="hero-sub">
-        Clarity in Concepts. Precision in Execution.<br>Ashford Capital — where markets become readable.
-    </p>
-
-    <div class="hero-actions" id="hero-actions">
-        <button class="btn-prime" onclick="redirectToCTA()">Begin Your Edge →</button>
-        <button class="btn-ghost" onclick="lenisScrollTo('#about')">Explore ↓</button>
+    <div class="h-metric">
+      <span class="h-metric-val">All</span>
+      <span class="h-metric-label">Market Types</span>
     </div>
-
-    <div class="hero-stats" id="hero-stats">
-        <div class="hero-stat">
-            <span class="hero-stat-num" data-count="3">0</span>
-            <span class="hero-stat-label">+ Years Mastery</span>
-        </div>
-        <div class="hero-stat">
-            <span class="hero-stat-num">ALL</span>
-            <span class="hero-stat-label">Market Types</span>
-        </div>
-        <div class="hero-stat">
-            <span class="hero-stat-num">100%</span>
-            <span class="hero-stat-label">Live Execution</span>
-        </div>
+    <div class="h-metric">
+      <span class="h-metric-val green-accent">Live</span>
+      <span class="h-metric-label">Execution Training</span>
     </div>
+  </div>
+
+  <div class="scroll-cue" id="scroll-cue">
+    <span>Scroll</span>
+    <div class="scroll-track"><div class="scroll-fill"></div></div>
+  </div>
 </section>
 
-<!-- ══════ MARQUEE ══════ -->
-<div class="marquee-strip">
-    <div class="marquee-track">
-        <span>Precision Trading</span><span class="sep">◆</span>
-        <span>Live Mentorship</span><span class="sep">◆</span>
-        <span>Market Clarity</span><span class="sep">◆</span>
-        <span>Execution Mastery</span><span class="sep">◆</span>
-        <span>Capital Intelligence</span><span class="sep">◆</span>
-        <span>Structured Decisions</span><span class="sep">◆</span>
-        <span>Ashford Capital</span><span class="sep">◆</span>
-        <span>Precision Trading</span><span class="sep">◆</span>
-        <span>Live Mentorship</span><span class="sep">◆</span>
-        <span>Market Clarity</span><span class="sep">◆</span>
-        <span>Execution Mastery</span><span class="sep">◆</span>
-        <span>Capital Intelligence</span><span class="sep">◆</span>
-        <span>Structured Decisions</span><span class="sep">◆</span>
-        <span>Ashford Capital</span><span class="sep">◆</span>
-    </div>
+<!-- ── MARQUEE ── -->
+<div class="marquee">
+  <div class="marquee-inner">
+    <span>Precision Trading</span><span class="dot">◆</span>
+    <span>Live Mentorship</span><span class="dot">◆</span>
+    <span class="green-word">Market Clarity</span><span class="dot">◆</span>
+    <span>Execution Mastery</span><span class="dot">◆</span>
+    <span>Capital Intelligence</span><span class="dot">◆</span>
+    <span class="green-word">Structured Decisions</span><span class="dot">◆</span>
+    <span>Ashford Capital</span><span class="dot">◆</span>
+    <span>Precision Trading</span><span class="dot">◆</span>
+    <span>Live Mentorship</span><span class="dot">◆</span>
+    <span class="green-word">Market Clarity</span><span class="dot">◆</span>
+    <span>Execution Mastery</span><span class="dot">◆</span>
+    <span>Capital Intelligence</span><span class="dot">◆</span>
+    <span class="green-word">Structured Decisions</span><span class="dot">◆</span>
+    <span>Ashford Capital</span><span class="dot">◆</span>
+  </div>
 </div>
 
-<!-- ══════ SCROLLYTELLING ══════ -->
-<div id="scrolly-wrap">
-    <div id="scrolly-pin">
+<!-- ── SCROLLYTELLING ── -->
+<div id="scrolly">
+  <div id="scrolly-pin">
 
-        <div class="scrolly-scene" id="sc-1">
-            <div class="scrolly-eyebrow">The Problem</div>
-            <h2 class="scrolly-h2">Most traders<br><span class="gold">know the theory.</span><br><span class="mute">But freeze.</span></h2>
-            <p class="scrolly-body">They've read the books. Watched the videos. Know every term. Yet markets still feel alien when real capital is on the line.</p>
-        </div>
-
-        <div class="scrolly-scene" id="sc-2">
-            <div class="scrolly-eyebrow">The Gap</div>
-            <h2 class="scrolly-h2">Real money.<br><span class="gold">Real pressure.</span><br><span class="mute">No script.</span></h2>
-            <p class="scrolly-body">Live markets are psychologically different. Emotions override logic every single time — until you've been trained otherwise.</p>
-        </div>
-
-        <div class="scrolly-scene" id="sc-3">
-            <div class="scrolly-eyebrow">The Solution</div>
-            <h2 class="scrolly-h2">We train<br><span class="gold">execution.</span><br><span class="mute">Not theory.</span></h2>
-            <p class="scrolly-body">Real trades. Real pressure. Real decisions — systematically built through structured practice until execution becomes instinct.</p>
-        </div>
-
-        <div class="scrolly-scene" id="sc-4">
-            <div class="scrolly-eyebrow">The Outcome</div>
-            <h2 class="scrolly-h2">Precision.<br><span class="mute">Not</span> <span class="gold">prediction.</span></h2>
-            <p class="scrolly-body">Stop guessing. Start operating like a professional market participant. That is the Ashford standard.</p>
-        </div>
-
-        <div class="scrolly-progress">
-            <div class="scrolly-pip active" id="pip-0"></div>
-            <div class="scrolly-pip" id="pip-1"></div>
-            <div class="scrolly-pip" id="pip-2"></div>
-            <div class="scrolly-pip" id="pip-3"></div>
-        </div>
+    <div class="sy-scene" id="sy1">
+      <div class="sy-num"><span class="tick"></span>01 / The Problem<span class="tick"></span></div>
+      <h2 class="sy-h2">Most traders<br><span class="blue">know the theory.</span><br><span class="ghost">But freeze when it matters.</span></h2>
+      <p class="sy-sub">They've read the books. Watched the videos. Know every term. Yet markets still feel alien when real capital is on the line.</p>
     </div>
+
+    <div class="sy-scene" id="sy2">
+      <div class="sy-num"><span class="tick"></span>02 / The Gap<span class="tick green-tick"></span></div>
+      <h2 class="sy-h2">Real money.<br><span class="blue">Real pressure.</span><br><span class="ghost">No script.</span></h2>
+      <p class="sy-sub">Live markets are psychologically different. Emotions override logic every single time — until you've been trained otherwise.</p>
+    </div>
+
+    <div class="sy-scene" id="sy3">
+      <div class="sy-num"><span class="tick"></span>03 / The Solution<span class="tick green-tick"></span></div>
+      <h2 class="sy-h2">We train<br><span class="green">execution.</span><br><span class="ghost">Not theory.</span></h2>
+      <p class="sy-sub">Real trades. Real pressure. Real decisions — systematically built through structured practice until execution becomes second nature.</p>
+    </div>
+
+    <div class="sy-scene" id="sy4">
+      <div class="sy-num"><span class="tick"></span>04 / The Outcome<span class="tick green-tick"></span></div>
+      <h2 class="sy-h2">Precision.<br><span class="ghost">Not</span> <span class="blue">prediction.</span></h2>
+      <p class="sy-sub">Stop guessing. Start operating like a professional market participant. That is the Ashford standard.</p>
+    </div>
+
+    <div class="sy-rail">
+      <div class="sy-tick live" id="syt0"></div>
+      <div class="sy-tick" id="syt1"></div>
+      <div class="sy-tick" id="syt2"></div>
+      <div class="sy-tick" id="syt3"></div>
+    </div>
+  </div>
 </div>
 
-<!-- ══════ ABOUT ══════ -->
-<section id="about" class="section">
-    <div class="section-inner">
-        <div class="about-grid">
-            <div id="about-left">
-                <div class="section-label">About Ashford</div>
-                <h2 class="section-h2">So what exactly is <span style="color:var(--c-gold)">Ashford?</span></h2>
+<!-- ── ABOUT ── -->
+<section id="about" class="s">
+  <div class="s-inner">
+    <div class="about-layout">
+      <div id="about-left">
+        <div class="s-label">About Ashford</div>
+        <h2 class="s-h2">What exactly is <span class="blue">Ashford?</span></h2>
 
-                <div class="about-manifesto">
-                    <p>Most learn the concepts but fail at real-time execution…<span class="highlight"> We fix that.</span></p>
-                </div>
-
-                <p class="about-body">Ashford Capital prioritizes <strong>executional clarity</strong> of concepts you learn. We train how to see markets beyond ordinary, operate within them strategically, and think in systems — not just trades.</p>
-                <p class="about-body">We don't sell strategies, tips, or signals. We train on how the market operates in itself, so traders stop predicting and start making structured decisions.</p>
-
-                <div class="feature-items">
-                    <div class="feature-item">
-                        <span class="feature-icon">[ MK ]</span>
-                        <span class="feature-text"><strong>Market Clarity</strong> — Understand what the market is doing and why, without indicators or opinions.</span>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">[ EP ]</span>
-                        <span class="feature-text"><strong>Execution Practice</strong> — Execute decisions consistently in live markets, even under maximum pressure.</span>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">[ CI ]</span>
-                        <span class="feature-text"><strong>Capital Intelligence</strong> — Manage capital professionally. Preservation, positioning, longevity.</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="about-video-panel" id="video-container" onclick="toggleVideo()">
-                <div class="corner-accent tl"></div>
-                <div class="corner-accent tr"></div>
-                <div class="corner-accent bl"></div>
-                <div class="corner-accent br"></div>
-                <video id="about-video" playsinline>
-                    <source src="int reel.mp4" type="video/mp4">
-                </video>
-                <div class="video-overlay" id="video-overlay">
-                    <div class="play-ring"></div>
-                </div>
-                <span class="video-panel-label">[ Ashford Capital — Intro Reel ]</span>
-            </div>
+        <div class="about-pull-quote">
+          Most learn the concepts but fail at real-time execution.
+          <span class="green"> We fix that.</span>
         </div>
+
+        <p class="about-body-text">Ashford Capital prioritizes <strong>executional clarity</strong> of concepts you learn. We train how to see markets beyond ordinary, operate within them strategically, and think in systems — not just trades.</p>
+        <p class="about-body-text">We don't sell strategies, tips, or signals. We train on how the market operates in itself, so traders stop predicting and start making structured decisions.</p>
+
+        <div class="pillars">
+          <div class="pillar-row">
+            <span class="pillar-code">MK</span>
+            <div class="pillar-content">
+              <div class="pillar-title">Market Clarity</div>
+              <div class="pillar-desc">Understand what the market is communicating — without indicators or opinions clouding the signal.</div>
+            </div>
+          </div>
+          <div class="pillar-row">
+            <span class="pillar-code">EP</span>
+            <div class="pillar-content">
+              <div class="pillar-title">Execution Practice</div>
+              <div class="pillar-desc">Execute decisions consistently in live markets, even under maximum psychological pressure.</div>
+            </div>
+          </div>
+          <div class="pillar-row">
+            <span class="pillar-code">CI</span>
+            <div class="pillar-content">
+              <div class="pillar-title">Capital Intelligence</div>
+              <div class="pillar-desc">Manage capital professionally. Preservation, positioning, and longevity over all else.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-video-wrap" id="vid-wrap" onclick="toggleVideo()">
+        <div class="vc tl"></div><div class="vc tr"></div>
+        <div class="vc bl"></div><div class="vc br"></div>
+        <video id="main-vid" playsinline>
+          <source src="int reel.mp4" type="video/mp4">
+        </video>
+        <div class="v-overlay" id="v-overlay">
+          <div class="v-btn"></div>
+        </div>
+        <span class="v-label">[ Ashford Capital — Intro Reel ]</span>
+      </div>
     </div>
+  </div>
 </section>
 
-<!-- ══════ ADVANTAGE ══════ -->
-<section id="advantage" class="section">
-    <div class="section-inner">
-        <div class="section-label">The Edge</div>
-        <h2 class="section-h2">The Ashford <span style="color:var(--c-gold)">Advantage</span></h2>
-        <p style="color:var(--c-muted); font-size:0.85rem; margin-top:0.5rem; font-family:var(--f-mono);">What sets us apart from every other trading education platform.</p>
+<!-- ── ADVANTAGE ── -->
+<section id="advantage" class="s">
+  <div class="s-inner">
+    <div class="s-label">The Edge</div>
+    <h2 class="s-h2">The Ashford <span class="blue">Advantage</span></h2>
+    <p style="color:var(--t-secondary);font-size:.85rem;font-weight:300;margin-top:.4rem;">What separates us from every other trading education platform.</p>
 
-        <div class="advantage-grid" id="adv-grid">
-            <div class="adv-card" onclick="openModal('Clarity', 'Our Clarity framework cuts through market noise — no indicators, no opinions. Pure price logic. This is what separates systematic traders from gamblers.')">
-                <span class="adv-number">[ 01 ]</span>
-                <span class="adv-icon">◉</span>
-                <h3 class="adv-title">Clarity</h3>
-                <p class="adv-desc">Cutting through market noise to focus on what truly matters.</p>
-                <div class="adv-card-line"></div>
-            </div>
-            <div class="adv-card" onclick="openModal('Growth', 'Better concepts executed in live markets — making you a more skilful participant every session. Growth is not motivation. It is compounding skill.')">
-                <span class="adv-number">[ 02 ]</span>
-                <span class="adv-icon">↗</span>
-                <h3 class="adv-title">Growth</h3>
-                <p class="adv-desc">Better concepts executed in live markets — making you a more skilful participant.</p>
-                <div class="adv-card-line"></div>
-            </div>
-            <div class="adv-card" onclick="openModal('Precision', 'Precise entries and exits, not vague predictions. When you see the same setups repeatedly, execution becomes mechanical. Mechanical is profitable.')">
-                <span class="adv-number">[ 03 ]</span>
-                <span class="adv-icon">⊕</span>
-                <h3 class="adv-title">Precision</h3>
-                <p class="adv-desc">Precise entries and exits, not vague predictions.</p>
-                <div class="adv-card-line"></div>
-            </div>
-            <div class="adv-card" onclick="openModal('Practice', 'Consistent improvement through regular practice and constant learning support. Perfection is the enemy of progress. Practice compounds into mastery.')">
-                <span class="adv-number">[ 04 ]</span>
-                <span class="adv-icon">↺</span>
-                <h3 class="adv-title">Practice</h3>
-                <p class="adv-desc">Consistent improvement through regular practice and constant learning support.</p>
-                <div class="adv-card-line"></div>
-            </div>
-        </div>
+    <div class="adv-grid">
+      <div class="adv-cell" onclick="openModal('Clarity', 'Our Clarity framework cuts through market noise — no indicators, no opinions. Pure price logic. This is what separates systematic traders from gamblers.')">
+        <span class="adv-num">[ 01 ]</span>
+        <span class="adv-glyph">◉</span>
+        <h3 class="adv-title">Clarity</h3>
+        <p class="adv-desc">Cutting through market noise to focus precisely on what truly matters.</p>
+        <div class="adv-cell-foot"></div>
+      </div>
+      <div class="adv-cell" onclick="openModal('Growth', 'Better concepts executed in live markets — making you a more skilful participant every session. Growth is not motivation. It is compounding skill, one session at a time.')">
+        <span class="adv-num">[ 02 ]</span>
+        <span class="adv-glyph">↗</span>
+        <h3 class="adv-title">Growth</h3>
+        <p class="adv-desc">Better concepts executed in live markets — compounding skill every session.</p>
+        <div class="adv-cell-foot"></div>
+      </div>
+      <div class="adv-cell" onclick="openModal('Precision', 'Precise entries and exits, not vague predictions. When you see the same setups repeatedly, execution becomes mechanical. Mechanical is consistently profitable.')">
+        <span class="adv-num">[ 03 ]</span>
+        <span class="adv-glyph">⊕</span>
+        <h3 class="adv-title">Precision</h3>
+        <p class="adv-desc">Precise entries and exits, built on structure — not vague prediction.</p>
+        <div class="adv-cell-foot"></div>
+      </div>
+      <div class="adv-cell" onclick="openModal('Practice Over Perfection', 'Consistent improvement through regular practice and constant learning support. Perfection is the enemy of progress. Practice compounds into mastery — session by session.')">
+        <span class="adv-num">[ 04 ]</span>
+        <span class="adv-glyph">↺</span>
+        <h3 class="adv-title">Practice</h3>
+        <p class="adv-desc">Consistent improvement through regular practice and continuous learning support.</p>
+        <div class="adv-cell-foot"></div>
+      </div>
     </div>
+  </div>
 </section>
 
-<!-- ══════ SERVICES ══════ -->
-<section id="services" class="section">
-    <div class="section-inner">
-        <div class="section-label">Programs</div>
-        <h2 class="section-h2">Our <span style="color:var(--c-gold)">Services</span></h2>
-        <p style="color:var(--c-muted); font-size:0.85rem; margin-top:0.5rem; font-family:var(--f-mono);">Choose the program that fits your trading journey.</p>
+<!-- ── SERVICES ── -->
+<section id="services" class="s">
+  <div class="s-inner">
+    <div class="s-label">Programs</div>
+    <h2 class="s-h2">Our <span class="blue">Services</span></h2>
+    <p style="color:var(--t-secondary);font-size:.85rem;font-weight:300;margin-top:.4rem;">Choose the program that fits your trading journey.</p>
 
-        <div class="services-grid" id="svc-grid">
-            <div class="svc-card" id="svc-1">
-                <span class="svc-icon">📊</span>
-                <h3 class="svc-title">Advanced Chart Analysis</h3>
-                <div class="svc-price">₹1,999 <span>/ program</span></div>
-                <p class="svc-desc">Master technical analysis and market structure to identify high-probability setups with surgical accuracy.</p>
-                <ul class="svc-list">
-                    <li>Price Action Mastery</li>
-                    <li>Support &amp; Resistance</li>
-                    <li>Volume Analysis</li>
-                </ul>
-                <button class="btn-prime" onclick="redirectToCTA()">Enroll Now →</button>
-            </div>
-            <div class="svc-card featured" id="svc-2">
-                <span class="svc-badge">Most Popular</span>
-                <span class="svc-icon">↗</span>
-                <h3 class="svc-title">Swing Trading</h3>
-                <div class="svc-price">₹1,999 <span>/ program</span></div>
-                <p class="svc-desc">Learn to identify trends early and capture multi-day moves with precision and disciplined risk management.</p>
-                <ul class="svc-list">
-                    <li>Trend Identification</li>
-                    <li>Entry &amp; Exit Timing</li>
-                    <li>Risk Management</li>
-                </ul>
-                <button class="btn-prime" onclick="redirectToCTA()">Enroll Now →</button>
-            </div>
-            <div class="svc-card" id="svc-3">
-                <span class="svc-icon">💎</span>
-                <h3 class="svc-title">Investing</h3>
-                <div class="svc-price">₹1,999 <span>/ program</span></div>
-                <p class="svc-desc">Build long-term wealth through strategic investment principles and professional portfolio management.</p>
-                <ul class="svc-list">
-                    <li>Portfolio Building</li>
-                    <li>Fundamental Analysis</li>
-                    <li>Wealth Preservation</li>
-                </ul>
-                <button class="btn-prime" onclick="redirectToCTA()">Enroll Now →</button>
-            </div>
-        </div>
+    <div class="svc-grid">
+      <div class="svc-card">
+        <span class="svc-icon">📊</span>
+        <h3 class="svc-name">Advanced Chart Analysis</h3>
+        <div class="svc-price">₹1,999 <small>/ program</small></div>
+        <p class="svc-desc">Master technical analysis and market structure to identify high-probability setups with surgical accuracy.</p>
+        <ul class="svc-list">
+          <li>Price Action Mastery</li>
+          <li>Support &amp; Resistance</li>
+          <li>Volume Analysis</li>
+        </ul>
+        <button class="btn-primary" onclick="redirectToCTA()">Enroll Now →</button>
+      </div>
+
+      <div class="svc-card star">
+        <span class="svc-star-badge">Most Popular</span>
+        <span class="svc-icon">↗</span>
+        <h3 class="svc-name">Swing Trading</h3>
+        <div class="svc-price">₹1,999 <small>/ program</small></div>
+        <p class="svc-desc">Learn to identify trends early and capture multi-day moves with precision and disciplined risk management.</p>
+        <ul class="svc-list">
+          <li>Trend Identification</li>
+          <li>Entry &amp; Exit Timing</li>
+          <li>Risk Management</li>
+        </ul>
+        <button class="btn-primary" onclick="redirectToCTA()">Enroll Now →</button>
+      </div>
+
+      <div class="svc-card">
+        <span class="svc-icon">💎</span>
+        <h3 class="svc-name">Investing</h3>
+        <div class="svc-price">₹1,999 <small>/ program</small></div>
+        <p class="svc-desc">Build long-term wealth through strategic investment principles and professional portfolio management.</p>
+        <ul class="svc-list">
+          <li>Portfolio Building</li>
+          <li>Fundamental Analysis</li>
+          <li>Wealth Preservation</li>
+        </ul>
+        <button class="btn-primary" onclick="redirectToCTA()">Enroll Now →</button>
+      </div>
     </div>
+  </div>
 </section>
 
-<!-- ══════ PHILOSOPHY ══════ -->
-<section id="philosophy" class="section">
-    <div class="philosophy-inner">
-        <div class="section-label">Our Philosophy</div>
-        <div class="philosophy-statement" id="philosophy-text">
-            Markets are not random. They are <span class="gold">structured.</span><br>
-            They are not unpredictable. They are <span class="gold">systematic.</span><br>
-            The edge is not secret. It is <span class="ghost">simply unseen</span><br>
-            by those who haven't trained their perception.
-        </div>
-
-        <div class="philosophy-pillars">
-            <div class="pillar">
-                <span class="pillar-num">01</span>
-                <h4 class="pillar-title">See Beyond Noise</h4>
-                <p class="pillar-body">We train perception first. Before any strategy, traders must learn to see what the market is actually communicating — not what they want it to say.</p>
-            </div>
-            <div class="pillar">
-                <span class="pillar-num">02</span>
-                <h4 class="pillar-title">Systems Over Emotion</h4>
-                <p class="pillar-body">Every losing streak has psychology at its core. We build systems that remove guesswork and replace impulse with structured, repeatable decision trees.</p>
-            </div>
-            <div class="pillar">
-                <span class="pillar-num">03</span>
-                <h4 class="pillar-title">Longevity as Strategy</h4>
-                <p class="pillar-body">Winning big once is gambling. Winning consistently is craft. Capital preservation, position sizing, and patience are the real alpha generators.</p>
-            </div>
-        </div>
+<!-- ── PHILOSOPHY ── -->
+<section id="philosophy" class="s">
+  <div class="s-inner">
+    <div class="s-label">Our Philosophy</div>
+    <div class="philosophy-statement">
+      Markets are not random.<br>
+      They are <span class="blue">structured.</span><br>
+      They are not unpredictable.<br>
+      They are <span class="blue">systematic.</span><br>
+      The edge is not secret.<br>
+      It is <span class="ghost">simply unseen</span> —<br>
+      by those who haven't trained their <span class="green">perception.</span>
     </div>
+
+    <div class="phil-grid">
+      <div class="phil-card">
+        <span class="phil-index">01</span>
+        <h4 class="phil-title">See Beyond Noise</h4>
+        <p class="phil-body">We train perception first. Before any strategy, traders must learn to see what the market is actually communicating — not what they want it to say.</p>
+      </div>
+      <div class="phil-card">
+        <span class="phil-index">02</span>
+        <h4 class="phil-title">Systems Over Emotion</h4>
+        <p class="phil-body">Every losing streak has psychology at its core. We build systems that remove guesswork and replace impulse with structured, repeatable decision frameworks.</p>
+      </div>
+      <div class="phil-card">
+        <span class="phil-index">03</span>
+        <h4 class="phil-title">Longevity as Strategy</h4>
+        <p class="phil-body">Winning big once is gambling. Winning consistently is craft. Capital preservation, position sizing, and patience are the real alpha generators.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- ══════ TESTIMONIALS ══════ -->
-<section id="testimonials" class="section">
-    <div class="section-inner">
-        <div class="section-label">Results</div>
-        <h2 class="section-h2">From the <span style="color:var(--c-gold)">field</span></h2>
+<!-- ── TESTIMONIALS ── -->
+<section id="testimonials" class="s">
+  <div class="s-inner">
+    <div class="s-label">Results</div>
+    <h2 class="s-h2">From the <span class="blue">field</span></h2>
 
-        <div class="testi-grid">
-            <div class="testi-card">
-                <div class="testi-quote-mark">"</div>
-                <p class="testi-text">Ashford Capital transformed my approach to trading. The emotional mastery techniques alone have saved me from countless impulsive trades.</p>
-                <div class="testi-author">
-                    <div class="testi-avatar">NS</div>
-                    <div>
-                        <div class="testi-name">Niyati S.</div>
-                        <div class="testi-role">Swing Trader</div>
-                    </div>
-                </div>
-            </div>
-            <div class="testi-card">
-                <div class="testi-quote-mark">"</div>
-                <p class="testi-text">The clarity I gained from the advanced chart analysis module is incredible. I finally understand the why behind market movements.</p>
-                <div class="testi-author">
-                    <div class="testi-avatar">AM</div>
-                    <div>
-                        <div class="testi-name">Arjun M.</div>
-                        <div class="testi-role">Intraday Specialist</div>
-                    </div>
-                </div>
-            </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <span class="testi-mark">"</span>
+        <p class="testi-text">Ashford Capital transformed my approach to trading. The emotional mastery techniques alone have saved me from countless impulsive trades.</p>
+        <div class="testi-byline">
+          <div class="testi-av">NS</div>
+          <div>
+            <div class="testi-name">Niyati S.</div>
+            <div class="testi-role">Swing Trader</div>
+          </div>
         </div>
+      </div>
+      <div class="testi-card">
+        <span class="testi-mark">"</span>
+        <p class="testi-text">The clarity I gained from the advanced chart analysis module is incredible. I finally understand the why behind market movements — not just the what.</p>
+        <div class="testi-byline">
+          <div class="testi-av">AM</div>
+          <div>
+            <div class="testi-name">Arjun M.</div>
+            <div class="testi-role">Intraday Specialist</div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 
-<!-- ══════ FAQ ══════ -->
-<section id="faq" class="section">
-    <div class="section-inner">
-        <div class="section-label">FAQ</div>
-        <h2 class="section-h2">Common <span style="color:var(--c-gold)">Questions</span></h2>
+<!-- ── FAQ ── -->
+<section id="faq" class="s">
+  <div class="s-inner">
+    <div class="s-label">FAQ</div>
+    <h2 class="s-h2">Common <span class="blue">Questions</span></h2>
 
-        <div class="faq-list" id="faq-list">
-            <div class="faq-item">
-                <div class="faq-q" onclick="toggleFAQ(this)">
-                    <span class="faq-q-text">Who is Ashford Capital for?</span>
-                    <span class="faq-toggle">+</span>
-                </div>
-                <div class="faq-a">
-                    <div class="faq-a-inner">For anyone serious about markets — whether you're just starting or have been trading for years and still feel like something is missing. If you want structured thinking over luck, this is for you.</div>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q" onclick="toggleFAQ(this)">
-                    <span class="faq-q-text">Do I need prior trading experience?</span>
-                    <span class="faq-toggle">+</span>
-                </div>
-                <div class="faq-a">
-                    <div class="faq-a-inner">No. Our programs are built from first principles. Whether you're a beginner or intermediate, the curriculum adapts to build your understanding layer by layer.</div>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q" onclick="toggleFAQ(this)">
-                    <span class="faq-q-text">What markets do you cover?</span>
-                    <span class="faq-toggle">+</span>
-                </div>
-                <div class="faq-a">
-                    <div class="faq-a-inner">All market types — equities, derivatives, commodities, and more. Market structure principles apply universally. Once you understand the language, you can read any chart.</div>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q" onclick="toggleFAQ(this)">
-                    <span class="faq-q-text">Is this live training or recorded content?</span>
-                    <span class="faq-toggle">+</span>
-                </div>
-                <div class="faq-a">
-                    <div class="faq-a-inner">Primarily live. We believe recorded theory without live application is incomplete. Sessions are conducted in real-time market environments so you train with actual stakes and pressure.</div>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-q" onclick="toggleFAQ(this)">
-                    <span class="faq-q-text">What makes Ashford different from other programs?</span>
-                    <span class="faq-toggle">+</span>
-                </div>
-                <div class="faq-a">
-                    <div class="faq-a-inner">Most programs sell strategies. We sell perception. We train you to see what others can't — which means the setups find you, not the other way around. No signals, no shortcuts. Pure systematic mastery.</div>
-                </div>
-            </div>
+    <div class="faq-wrap">
+      <div class="faq-row">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <span class="faq-q-text">Who is Ashford Capital for?</span>
+          <span class="faq-plus">+</span>
         </div>
+        <div class="faq-a"><div class="faq-a-body">For anyone serious about markets — whether you're just starting or have been trading for years and still feel like something is missing. If you want structured thinking over luck, this is for you.</div></div>
+      </div>
+      <div class="faq-row">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <span class="faq-q-text">Do I need prior trading experience?</span>
+          <span class="faq-plus">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-body">No. Our programs are built from first principles. Whether you're a beginner or intermediate, the curriculum adapts to build your understanding layer by layer.</div></div>
+      </div>
+      <div class="faq-row">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <span class="faq-q-text">What markets do you cover?</span>
+          <span class="faq-plus">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-body">All market types — equities, derivatives, commodities, and more. Market structure principles apply universally. Once you understand the language, you can read any chart.</div></div>
+      </div>
+      <div class="faq-row">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <span class="faq-q-text">Is this live training or recorded content?</span>
+          <span class="faq-plus">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-body">Primarily live. We believe recorded theory without live application is incomplete. Sessions are conducted in real-time market environments so you train with actual stakes and pressure.</div></div>
+      </div>
+      <div class="faq-row">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <span class="faq-q-text">What makes Ashford different from other programs?</span>
+          <span class="faq-plus">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-body">Most programs sell strategies. We sell perception. We train you to see what others can't — which means the setups find you, not the other way around. No signals, no shortcuts. Pure systematic mastery.</div></div>
+      </div>
     </div>
+  </div>
 </section>
 
-<!-- ══════ CTA ══════ -->
-<section id="cta" class="section">
-    <div class="cta-inner">
-        <div class="section-label" style="justify-content:center">Ready to Begin</div>
-        <h2 class="cta-h2">
-            Stop <span class="mute">guessing.</span><br>
-            Start <span class="gold">operating.</span>
-        </h2>
-        <p class="cta-sub">Join traders who see what others miss. The edge is trainable. The market is readable. Your move.</p>
-        <div class="cta-actions">
-            <button class="btn-prime" onclick="redirectToCTA()">Claim Your Edge →</button>
-            <button class="btn-ghost" onclick="lenisScrollTo('#services')">View Programs</button>
-        </div>
-
-        <div class="newsletter-box">
-            <p class="newsletter-label">Market Insights — Weekly Dispatch</p>
-            <form class="newsletter-form" onsubmit="handleNewsletter(event)">
-                <input type="email" class="newsletter-input" placeholder="your@email.com" required>
-                <button type="submit" class="newsletter-btn">Subscribe</button>
-            </form>
-        </div>
+<!-- ── CTA ── -->
+<section id="cta">
+  <div class="cta-inner">
+    <div class="s-label" style="justify-content:center;margin-bottom:1.5rem">Ready to Begin</div>
+    <h2 class="cta-h2">
+      Stop <span class="ghost">guessing.</span><br>
+      Start <span class="blue">operating.</span>
+    </h2>
+    <p class="cta-body">Join traders who see what others miss. The edge is trainable.<br>The market is readable. Your move.</p>
+    <div class="cta-btns">
+      <button class="btn-primary" onclick="redirectToCTA()">Claim Your Edge →</button>
+      <button class="btn-secondary" onclick="lenisTo('#services')">View Programs</button>
     </div>
+
+    <div class="nl-box">
+      <p class="nl-label">Market Insights — Weekly Dispatch</p>
+      <form class="nl-form" onsubmit="handleNL(event)">
+        <input type="email" class="nl-input" placeholder="your@email.com" required>
+        <button type="submit" class="nl-btn">Subscribe</button>
+      </form>
+    </div>
+  </div>
 </section>
 
-<!-- ══════ FOOTER ══════ -->
+<!-- ── FOOTER ── -->
 <footer>
-    <div class="footer-inner">
-        <div class="footer-brand">
-            <div class="footer-logo">
-                <div class="footer-logo-mark">AC</div>
-                <span>ASHFORD CAPITAL</span>
-            </div>
-            <p class="footer-tagline">Precision in every decision. Clarity in every market. Execution as a discipline.</p>
-        </div>
-        <div>
-            <p class="footer-col-title">Navigate</p>
-            <ul class="footer-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#philosophy">Philosophy</a></li>
-                <li><a href="#testimonials">Results</a></li>
-                <li><a href="#faq">FAQ</a></li>
-            </ul>
-        </div>
-        <div id="footer-contact">
-            <p class="footer-col-title">Connect</p>
-            <ul class="footer-links">
-                <li><a href="https://ashford-cta.vercel.app/" target="_blank">Join Now</a></li>
-                <li><a href="#">Instagram</a></li>
-                <li><a href="#">Telegram</a></li>
-                <li><a href="#">YouTube</a></li>
-            </ul>
-        </div>
+  <div class="footer-wrap">
+    <div>
+      <div class="footer-brand-logo" onclick="lenisTop()">
+        <div class="footer-gem"></div>
+        <span class="footer-brand-name">Ashford Capital</span>
+      </div>
+      <p class="footer-tagline">Precision in every decision. Clarity in every market. Execution as a discipline — not a hope.</p>
     </div>
-    <div class="footer-bottom">
-        <span class="footer-copy">© 2025 Ashford Capital. All rights reserved.</span>
-        <span class="footer-copy">Precision. Not Prediction.</span>
+    <div>
+      <p class="footer-col-h">Navigate</p>
+      <ul class="footer-nav">
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#philosophy">Philosophy</a></li>
+        <li><a href="#testimonials">Results</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
     </div>
+    <div>
+      <p class="footer-col-h">Connect</p>
+      <ul class="footer-nav">
+        <li><a href="https://ashford-cta.vercel.app/" target="_blank">Join Now</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Telegram</a></li>
+        <li><a href="#">YouTube</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Ashford Capital. All rights reserved.</span>
+    <span class="footer-motto">Precision. Not Prediction.</span>
+  </div>
 </footer>
 
-</div><!-- /scroll-wrapper -->
+</div><!-- /app -->
 
 <script>
-/* ══════════════════════════════════════════════════
-   THREE.JS — CINEMATIC 3D BACKGROUND
-══════════════════════════════════════════════════ */
-(function() {
-    const canvas = document.getElementById('bg-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+/* ════════════════════════════════════════
+   THREE.JS — ELEGANT 3D BACKGROUND
+════════════════════════════════════════ */
+(function initThree() {
+  const canvas = document.getElementById('bg-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(0, 2, 30);
+
+  /* ─ GRID — elegant perspective floor ─ */
+  const gridGeo = new THREE.PlaneGeometry(100, 100, 48, 48);
+  const gridMat = new THREE.MeshBasicMaterial({
+    color: 0x0a1a40,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.22
+  });
+  const grid = new THREE.Mesh(gridGeo, gridMat);
+  grid.rotation.x = -Math.PI / 2.4;
+  grid.position.y = -12;
+  scene.add(grid);
+
+  /* ─ SECOND GRID — subtle layer ─ */
+  const grid2 = new THREE.Mesh(
+    new THREE.PlaneGeometry(80, 80, 24, 24),
+    new THREE.MeshBasicMaterial({ color: 0x001833, wireframe: true, transparent: true, opacity: 0.09 })
+  );
+  grid2.rotation.x = -Math.PI / 2.4;
+  grid2.position.y = -11.8;
+  scene.add(grid2);
+
+  /* ─ PARTICLES — blue + rare green ─ */
+  const N = 900;
+  const pPos = new Float32Array(N * 3);
+  const pCol = new Float32Array(N * 3);
+  for (let i = 0; i < N; i++) {
+    pPos[i*3]   = (Math.random() - 0.5) * 90;
+    pPos[i*3+1] = (Math.random() - 0.5) * 70;
+    pPos[i*3+2] = (Math.random() - 0.5) * 50 - 10;
+    const isGreen = Math.random() < 0.06; // 6% chance — green is rare
+    if (isGreen) {
+      pCol[i*3] = 0.0; pCol[i*3+1] = 0.9; pCol[i*3+2] = 0.46;
+    } else {
+      const bright = 0.15 + Math.random() * 0.4;
+      pCol[i*3] = bright * 0.2; pCol[i*3+1] = bright * 0.45; pCol[i*3+2] = bright;
+    }
+  }
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+  pGeo.setAttribute('color', new THREE.BufferAttribute(pCol, 3));
+  const pMat = new THREE.PointsMaterial({
+    size: 0.13,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.55,
+    sizeAttenuation: true
+  });
+  const particles = new THREE.Points(pGeo, pMat);
+  scene.add(particles);
+
+  /* ─ THIN LINE RINGS — refined geometry ─ */
+  function makeRing(r, segments, color, opacity) {
+    const geo = new THREE.TorusGeometry(r, 0.008, 6, segments);
+    const mat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity });
+    return new THREE.Mesh(geo, mat);
+  }
+  const rings = new THREE.Group();
+  const r1 = makeRing(9,  100, 0x1a6bff, 0.10);
+  const r2 = makeRing(16, 100, 0x0e3d99, 0.06);
+  const r3 = makeRing(5,  80,  0x00e676, 0.08); // green ring — rare accent
+  const r4 = makeRing(22, 100, 0x0a2255, 0.04);
+  rings.add(r1, r2, r3, r4);
+  scene.add(rings);
+
+  /* ─ DIAMOND GLYPH — center piece ─ */
+  const diamondGeo = new THREE.OctahedronGeometry(2.5, 0);
+  const diamondMat = new THREE.MeshBasicMaterial({
+    color: 0x0a2060,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.18
+  });
+  const diamond = new THREE.Mesh(diamondGeo, diamondMat);
+  diamond.position.set(0, 0, -5);
+  scene.add(diamond);
+
+  /* ─ HORIZONTAL LINES — market chart feel ─ */
+  function makeLine(y, color, opacity) {
+    const geo = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(-50, y, -8),
+      new THREE.Vector3( 50, y, -8)
+    ]);
+    const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
+    return new THREE.Line(geo, mat);
+  }
+  [-3, -1, 1, 3, 5].forEach((y, i) => {
+    scene.add(makeLine(y, 0x1a3a6b, 0.04 - i * 0.005));
+  });
+
+  /* ─ ANIMATE ─ */
+  let scrollP = 0, targetP = 0, t = 0;
+  let mx = 0, my = 0;
+
+  window.addEventListener('scroll', () => {
+    targetP = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  });
+  window.addEventListener('mousemove', e => {
+    mx = (e.clientX / window.innerWidth  - 0.5);
+    my = (e.clientY / window.innerHeight - 0.5);
+  });
+
+  (function tick() {
+    requestAnimationFrame(tick);
+    t += 0.003;
+    scrollP += (targetP - scrollP) * 0.035;
+
+    // Camera — cinematic, elegant drift
+    camera.position.x  = mx * 3 + Math.sin(t * 0.4) * 1.5;
+    camera.position.y  = 2 - my * 2 - scrollP * 14;
+    camera.position.z  = 30 - scrollP * 8;
+    camera.rotation.z  = scrollP * 0.15 + mx * 0.02;
+    camera.lookAt(0, -scrollP * 8, 0);
+
+    // Rings — slow, refined
+    r1.rotation.x = t * 0.18 + scrollP * 2.5;
+    r1.rotation.y = t * 0.12;
+    r2.rotation.x = -t * 0.10;
+    r2.rotation.z = t * 0.07 + scrollP * 1.2;
+    r3.rotation.y = t * 0.25 + scrollP * 1.8; // green ring faster
+    r3.rotation.x = scrollP * 2;
+    r4.rotation.z = t * 0.04;
+    r4.rotation.y = t * 0.06;
+
+    // Diamond
+    diamond.rotation.x = t * 0.15;
+    diamond.rotation.y = t * 0.22 + scrollP * 1.5;
+    diamond.position.y = Math.sin(t * 0.5) * 0.5;
+
+    // Grid depth shift
+    grid.position.y = -12 + scrollP * 5;
+    gridMat.opacity = Math.max(0.02, 0.22 - scrollP * 0.15);
+    grid2.position.y = -11.8 + scrollP * 4.5;
+
+    // Particles slow drift
+    particles.rotation.y = t * 0.03 + scrollP * 0.3;
+    pMat.opacity = Math.max(0.08, 0.55 - scrollP * 0.3);
+
+    renderer.render(scene, camera);
+  })();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 0);
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 0, 28);
-
-    /* — GRID PLANE — */
-    const gridGeo = new THREE.PlaneGeometry(120, 120, 60, 60);
-    const gridMat = new THREE.MeshBasicMaterial({
-        color: 0x1a1200,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.18
-    });
-    const gridMesh = new THREE.Mesh(gridGeo, gridMat);
-    gridMesh.rotation.x = -Math.PI / 2.2;
-    gridMesh.position.y = -14;
-    scene.add(gridMesh);
-
-    /* — PARTICLES — */
-    const particleCount = 800;
-    const pGeo = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const sizes = new Float32Array(particleCount);
-    for (let i = 0; i < particleCount; i++) {
-        positions[i*3]   = (Math.random() - 0.5) * 80;
-        positions[i*3+1] = (Math.random() - 0.5) * 80;
-        positions[i*3+2] = (Math.random() - 0.5) * 40 - 10;
-        sizes[i] = Math.random() * 2 + 0.5;
-    }
-    pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    pGeo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-    const pMat = new THREE.PointsMaterial({
-        color: 0xc8a96e,
-        size: 0.12,
-        transparent: true,
-        opacity: 0.35,
-        sizeAttenuation: true
-    });
-    const particles = new THREE.Points(pGeo, pMat);
-    scene.add(particles);
-
-    /* — FLOATING GEOMETRIC RINGS — */
-    const ringGroup = new THREE.Group();
-    scene.add(ringGroup);
-
-    function makeRing(r, segments, color, opacity, y, z) {
-        const geo = new THREE.TorusGeometry(r, 0.015, 8, segments);
-        const mat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity });
-        const m = new THREE.Mesh(geo, mat);
-        m.position.set(0, y, z);
-        return m;
-    }
-    const ring1 = makeRing(8, 80, 0xc8a96e, 0.12, 0, -5);
-    const ring2 = makeRing(14, 80, 0x6eb4ff, 0.06, 0, -10);
-    const ring3 = makeRing(5, 60, 0xc8a96e, 0.08, 0, -3);
-    ringGroup.add(ring1, ring2, ring3);
-
-    /* — AXIS LINES — */
-    function makeLine(from, to, color, opacity) {
-        const geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...from), new THREE.Vector3(...to)]);
-        const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
-        return new THREE.Line(geo, mat);
-    }
-    scene.add(makeLine([-60, 0, 0], [60, 0, 0], 0xc8a96e, 0.06));
-    scene.add(makeLine([0, -60, 0], [0, 60, 0], 0xc8a96e, 0.06));
-
-    /* — SCROLL PROGRESS & CAMERA — */
-    let scrollProgress = 0;
-    let targetScroll   = 0;
-    let time = 0;
-
-    window.addEventListener('scroll', () => {
-        const max = document.body.scrollHeight - window.innerHeight;
-        targetScroll = window.scrollY / max;
-    });
-
-    function animate() {
-        requestAnimationFrame(animate);
-        time += 0.004;
-        scrollProgress += (targetScroll - scrollProgress) * 0.04;
-
-        // Camera cinematic movement
-        camera.position.x = Math.sin(time * 0.3) * 2;
-        camera.position.y = Math.cos(time * 0.2) * 1.5 - scrollProgress * 12;
-        camera.position.z = 28 - scrollProgress * 10;
-        camera.rotation.z = scrollProgress * 0.3;
-        camera.lookAt(0, -scrollProgress * 8, 0);
-
-        // Rings
-        ring1.rotation.x = time * 0.2 + scrollProgress * 2;
-        ring1.rotation.y = time * 0.15;
-        ring2.rotation.x = -time * 0.12;
-        ring2.rotation.z = time * 0.08 + scrollProgress * 1.5;
-        ring3.rotation.y = time * 0.3;
-        ring3.rotation.x = scrollProgress * 3;
-
-        // Grid depth
-        gridMesh.position.y = -14 + scrollProgress * 6;
-        gridMesh.rotation.x = -Math.PI / 2.2 + scrollProgress * 0.3;
-        gridMat.opacity = 0.18 - scrollProgress * 0.1;
-
-        // Particles drift
-        particles.rotation.y = time * 0.05 + scrollProgress * 0.5;
-        particles.rotation.x = scrollProgress * 0.2;
-        pMat.opacity = 0.35 - scrollProgress * 0.15;
-
-        renderer.render(scene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
-    /* — MOUSE PARALLAX — */
-    let mx = 0, my = 0;
-    window.addEventListener('mousemove', e => {
-        mx = (e.clientX / window.innerWidth  - 0.5) * 2;
-        my = (e.clientY / window.innerHeight - 0.5) * 2;
-        ringGroup.rotation.x += (my * 0.02 - ringGroup.rotation.x) * 0.03;
-        ringGroup.rotation.y += (mx * 0.02 - ringGroup.rotation.y) * 0.03;
-    });
+  });
 })();
 
-/* ══════════════════════════════════════════════════
+/* ════════════════════════════════════════
    CUSTOM CURSOR
-══════════════════════════════════════════════════ */
-const dot  = document.getElementById('cursor-dot');
-const ring = document.getElementById('cursor-ring');
+════════════════════════════════════════ */
+const cDot  = document.getElementById('c-dot');
+const cRing = document.getElementById('c-ring');
 let cx = 0, cy = 0, rx = 0, ry = 0;
 
-window.addEventListener('mousemove', e => {
-    cx = e.clientX; cy = e.clientY;
-    dot.style.left  = cx + 'px';
-    dot.style.top   = cy + 'px';
+document.addEventListener('mousemove', e => {
+  cx = e.clientX; cy = e.clientY;
+  cDot.style.left = cx + 'px'; cDot.style.top = cy + 'px';
 });
-
-(function trackRing() {
-    rx += (cx - rx) * 0.1;
-    ry += (cy - ry) * 0.1;
-    ring.style.left = rx + 'px';
-    ring.style.top  = ry + 'px';
-    requestAnimationFrame(trackRing);
+(function lerpRing() {
+  rx += (cx - rx) * 0.1; ry += (cy - ry) * 0.1;
+  cRing.style.left = rx + 'px'; cRing.style.top = ry + 'px';
+  requestAnimationFrame(lerpRing);
 })();
 
-document.querySelectorAll('button, a, .adv-card, .svc-card, .feature-item, .testi-card, .pillar, .faq-item').forEach(el => {
-    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+const hoverEls = document.querySelectorAll('button, a, .adv-cell, .svc-card, .pillar-row, .testi-card, .faq-row, .phil-card, .nav-logo, .footer-brand-logo');
+hoverEls.forEach(el => {
+  el.addEventListener('mouseenter', () => { cRing.classList.add('expanded'); cDot.classList.add('green-mode'); });
+  el.addEventListener('mouseleave', () => { cRing.classList.remove('expanded'); cDot.classList.remove('green-mode'); });
 });
 
-/* ══════════════════════════════════════════════════
+/* ════════════════════════════════════════
    LENIS SMOOTH SCROLL
-══════════════════════════════════════════════════ */
+════════════════════════════════════════ */
 const lenis = new Lenis({
-    duration: 1.8,
-    easing: t => 1 - Math.pow(1 - t, 4),
-    smoothWheel: true,
-    wheelMultiplier: 0.8,
-    touchMultiplier: 1.4,
+  duration: 1.9,
+  easing: t => 1 - Math.pow(1 - t, 4),
+  smoothWheel: true,
+  wheelMultiplier: 0.75,
+  touchMultiplier: 1.5,
 });
 lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add(time => lenis.raf(time * 1000));
 gsap.ticker.lagSmoothing(0);
 
-function lenisScrollTo(sel) {
-    const el = document.querySelector(sel);
-    if (el) lenis.scrollTo(el, { offset: -72, duration: 1.6 });
+function lenisTo(sel) {
+  const el = document.querySelector(sel);
+  if (el) lenis.scrollTo(el, { offset: -96, duration: 1.7 });
 }
+function lenisTop() { lenis.scrollTo(0, { duration: 1.5 }); }
 
-/* ══════════════════════════════════════════════════
-   GSAP — REGISTER PLUGIN
-══════════════════════════════════════════════════ */
+/* ════════════════════════════════════════
+   GSAP ANIMATIONS
+════════════════════════════════════════ */
 gsap.registerPlugin(ScrollTrigger);
 
-/* ══════ HERO ANIMATION ══════ */
-const heroTl = gsap.timeline({ delay: 0.2 });
-heroTl
-    .to('#hero-overline', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' })
-    .to('#hero-h1', { opacity: 1, duration: 0 }, '-=0.3')
-    .to('#hero-h1 .line-inner', {
-        y: 0, opacity: 1, duration: 0.8, ease: 'power4.out', stagger: 0.12
-    }, '-=0.2')
-    .to('#hero-sub',    { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.3')
-    .to('#hero-actions',{ opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '-=0.25')
-    .to('#hero-stats',  { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '-=0.2');
+/* ─ HERO ─ */
+gsap.set(['#h-eyebrow','#h-title','#h-rule','#h-sub','#h-actions','#h-metrics','#scroll-cue'], { opacity: 0 });
+gsap.set('#h-title .inner', { y: '110%' });
 
-gsap.set('#hero-overline,#hero-sub,#hero-actions,#hero-stats', { opacity: 0, y: 30 });
-gsap.set('#hero-h1 .line-inner', { y: '100%', opacity: 0 });
+const heroTL = gsap.timeline({ delay: 0.3 });
+heroTL
+  .to('#h-eyebrow', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
+  .to('#h-title',   { opacity: 1, duration: 0 }, '-=0.2')
+  .to('#h-title .inner', { y: '0%', duration: 1, ease: 'power4.out', stagger: 0.13 }, '-=0.1')
+  .to('#h-rule',    { opacity: 1, height: 48, duration: 0.7, ease: 'power3.out' }, '-=0.3')
+  .to('#h-sub',     { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.4')
+  .to('#h-actions', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.3')
+  .to('#h-metrics', { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.25')
+  .to('#scroll-cue',{ opacity: 1, duration: 0.5 }, '-=0.1');
 
-/* ══════ SCROLLY CINEMATIC ══════ */
-const scenes = ['#sc-1','#sc-2','#sc-3','#sc-4'];
-const pips = document.querySelectorAll('.scrolly-pip');
-gsap.set(scenes, { opacity: 0 });
+/* ─ SCROLLYTELLING ─ */
+const syScenes = ['#sy1','#sy2','#sy3','#sy4'];
+const syTicks  = document.querySelectorAll('.sy-tick');
+gsap.set(syScenes, { opacity: 0 });
 
-const scrollyTl = gsap.timeline({
-    scrollTrigger: {
-        trigger: '#scrolly-wrap',
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.8,
-        pin: '#scrolly-pin',
-        pinSpacing: false,
-        onUpdate(self) {
-            const idx = Math.min(3, Math.floor(self.progress * 4));
-            pips.forEach((p,i) => p.classList.toggle('active', i === idx));
-        }
+const syTL = gsap.timeline({
+  scrollTrigger: {
+    trigger: '#scrolly',
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 0.9,
+    pin: '#scrolly-pin',
+    pinSpacing: false,
+    onUpdate(self) {
+      const i = Math.min(3, Math.floor(self.progress * 4));
+      syTicks.forEach((t, idx) => t.classList.toggle('live', idx === i));
     }
+  }
 });
-const step = 0.25;
-scenes.forEach((sel, i) => {
-    const el = document.querySelector(sel);
-    const inStart = i * step;
-    const fadeOut = inStart + step * 0.7;
-    scrollyTl.to(el, { opacity: 1, y: 0, duration: step * 0.2, ease: 'power2.out' }, inStart);
-    if (el) {
-        const eyebrow = el.querySelector('.scrolly-eyebrow');
-        const h2 = el.querySelector('.scrolly-h2');
-        const body = el.querySelector('.scrolly-body');
-        if (eyebrow) scrollyTl.fromTo(eyebrow, { y:20, opacity:0 }, { y:0, opacity:1, duration:step*0.15 }, inStart+step*0.05);
-        if (h2)      scrollyTl.fromTo(h2,      { y:40, opacity:0 }, { y:0, opacity:1, duration:step*0.2  }, inStart+step*0.08);
-        if (body)    scrollyTl.fromTo(body,     { y:20, opacity:0 }, { y:0, opacity:1, duration:step*0.15 }, inStart+step*0.14);
-    }
-    if (i < 3) scrollyTl.to(el, { opacity: 0, y: -30, duration: step*0.2 }, fadeOut);
-});
-
-/* ══════ ABOUT ══════ */
-gsap.timeline({ scrollTrigger: { trigger: '#about', start: 'top 75%', toggleActions: 'play none none none' } })
-    .from('#about-left .section-label', { y:20, opacity:0, duration:0.5, ease:'power2.out' })
-    .from('#about-left .section-h2',   { y:30, opacity:0, duration:0.6, ease:'power3.out' }, '-=0.2')
-    .from('.about-manifesto',          { y:30, opacity:0, duration:0.6, ease:'power3.out' }, '-=0.3')
-    .from('.about-body',               { y:20, opacity:0, duration:0.5, stagger:0.15, ease:'power2.out' }, '-=0.2')
-    .from('.feature-item',             { x:-30, opacity:0, stagger:0.12, duration:0.5, ease:'power2.out' }, '-=0.2')
-    .from('#video-container',          { x:60, opacity:0, duration:0.9, ease:'power3.out' }, '<');
-
-/* ══════ ADVANTAGE ══════ */
-gsap.timeline({ scrollTrigger: { trigger: '#advantage', start: 'top 75%', toggleActions: 'play none none none' } })
-    .from('#advantage .section-label', { y:20, opacity:0, duration:0.4 })
-    .from('#advantage .section-h2',   { y:30, opacity:0, duration:0.55, ease:'power3.out' }, '-=0.2')
-    .from('.adv-card', { y:60, opacity:0, scale:0.92, stagger:0.1, duration:0.7, ease:'back.out(1.5)' }, '-=0.1');
-
-/* ══════ SERVICES ══════ */
-gsap.timeline({ scrollTrigger: { trigger: '#services', start: 'top 75%', toggleActions: 'play none none none' } })
-    .from('#services .section-label', { y:20, opacity:0, duration:0.4 })
-    .from('#services .section-h2',   { y:30, opacity:0, duration:0.55, ease:'power3.out' }, '-=0.2')
-    .from('.svc-card', { y:70, opacity:0, stagger:0.15, duration:0.75, ease:'power3.out' }, '-=0.1');
-
-/* ══════ PHILOSOPHY ══════ */
-gsap.timeline({ scrollTrigger: { trigger: '#philosophy', start: 'top 75%', toggleActions: 'play none none none' } })
-    .from('.philosophy-statement', { y:40, opacity:0, duration:0.9, ease:'power3.out' })
-    .from('.pillar', { y:50, opacity:0, stagger:0.15, duration:0.7, ease:'power3.out' }, '-=0.4');
-
-/* ══════ TESTIMONIALS ══════ */
-gsap.timeline({ scrollTrigger: { trigger: '#testimonials', start: 'top 75%', toggleActions: 'play none none none' } })
-    .from('#testimonials .section-label', { y:20, opacity:0, duration:0.4 })
-    .from('#testimonials .section-h2',   { y:30, opacity:0, duration:0.55 }, '-=0.2')
-    .from('.testi-card', { y:50, opacity:0, scale:0.94, stagger:0.15, duration:0.75, ease:'back.out(1.4)' }, '-=0.1');
-
-/* ══════ FAQ ══════ */
-gsap.timeline({ scrollTrigger: { trigger: '#faq', start: 'top 80%', toggleActions: 'play none none none' } })
-    .from('#faq .section-label', { y:20, opacity:0, duration:0.4 })
-    .from('#faq .section-h2',   { y:30, opacity:0, duration:0.55 }, '-=0.2')
-    .from('.faq-item', { x:-40, opacity:0, stagger:0.08, duration:0.55, ease:'power2.out' }, '-=0.1');
-
-/* ══════ CTA ══════ */
-gsap.timeline({ scrollTrigger: { trigger: '#cta', start: 'top 80%', toggleActions: 'play none none none' } })
-    .from('.cta-h2',       { y:60, opacity:0, duration:0.8, ease:'power3.out' })
-    .from('.cta-sub',      { y:30, opacity:0, duration:0.6 }, '-=0.4')
-    .from('.cta-actions',  { scale:0.9, opacity:0, duration:0.55, ease:'back.out(1.5)' }, '-=0.25')
-    .from('.newsletter-box',{ y:30, opacity:0, duration:0.5 }, '-=0.1');
-
-/* ══════ FOOTER ══════ */
-gsap.timeline({ scrollTrigger: { trigger: 'footer', start: 'top 90%', toggleActions: 'play none none none' } })
-    .from('.footer-brand', { x:-30, opacity:0, duration:0.6, ease:'power2.out' })
-    .from('footer .footer-col-title', { y:20, opacity:0, stagger:0.1, duration:0.45 }, '-=0.3');
-
-/* ══════ NAVBAR SCROLL BEHAVIOR ══════ */
-let lastScroll = 0;
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    if (y > 60) navbar.classList.add('opaque');
-    else navbar.classList.remove('opaque');
-    lastScroll = y;
+const st = 0.25;
+syScenes.forEach((sel, i) => {
+  const el = document.querySelector(sel);
+  const s  = i * st;
+  syTL.to(el, { opacity: 1, duration: st * 0.18, ease: 'power2.out' }, s);
+  if (el) {
+    const num = el.querySelector('.sy-num');
+    const h   = el.querySelector('.sy-h2');
+    const p   = el.querySelector('.sy-sub');
+    if (num) syTL.fromTo(num, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: st * 0.14 }, s + st * 0.06);
+    if (h)   syTL.fromTo(h,   { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: st * 0.2  }, s + st * 0.08);
+    if (p)   syTL.fromTo(p,   { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: st * 0.14 }, s + st * 0.16);
+  }
+  if (i < 3) syTL.to(el, { opacity: 0, y: -30, duration: st * 0.15 }, s + st * 0.72);
 });
 
-/* ══════ NAV LINK SMOOTH SCROLL ══════ */
-document.querySelectorAll('.nav-link').forEach(a => {
-    a.addEventListener('click', e => {
-        const href = a.getAttribute('href');
-        if (href && href.startsWith('#')) {
-            e.preventDefault();
-            lenisScrollTo(href);
-        }
-    });
-});
+/* ─ ABOUT ─ */
+gsap.timeline({ scrollTrigger: { trigger: '#about', start: 'top 76%', toggleActions: 'play none none none' } })
+  .from('.s-label', { y: 16, opacity: 0, duration: 0.5, ease: 'power2.out' })
+  .from('#about .s-h2',  { y: 30, opacity: 0, duration: 0.65, ease: 'power3.out' }, '-=0.2')
+  .from('.about-pull-quote', { x: -40, opacity: 0, duration: 0.7, ease: 'power3.out' }, '-=0.3')
+  .from('.about-body-text',  { y: 20, opacity: 0, stagger: 0.15, duration: 0.55 }, '-=0.2')
+  .from('.pillar-row',       { x: -30, opacity: 0, stagger: 0.1,  duration: 0.5, ease: 'power2.out' }, '-=0.2')
+  .from('#vid-wrap',         { x: 60,  opacity: 0, duration: 0.85, ease: 'power3.out' }, '<');
 
-/* ══════ MOBILE NAV ══════ */
-const mobToggle = document.getElementById('mob-toggle');
-const navLinks = document.querySelector('.nav-links');
-if (mobToggle) {
-    mobToggle.addEventListener('click', () => {
-        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-        navLinks.style.flexDirection = 'column';
-        navLinks.style.position = 'fixed';
-        navLinks.style.top = '72px';
-        navLinks.style.left = '0';
-        navLinks.style.right = '0';
-        navLinks.style.background = 'rgba(3,4,10,0.98)';
-        navLinks.style.padding = '2rem';
-        navLinks.style.gap = '2rem';
-        navLinks.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
-    });
-}
+/* ─ ADVANTAGE ─ */
+gsap.timeline({ scrollTrigger: { trigger: '#advantage', start: 'top 76%', toggleActions: 'play none none none' } })
+  .from('#advantage .s-label', { y: 16, opacity: 0, duration: 0.4 })
+  .from('#advantage .s-h2',    { y: 28, opacity: 0, duration: 0.55, ease: 'power3.out' }, '-=0.2')
+  .from('.adv-cell', { y: 55, opacity: 0, scale: 0.95, stagger: 0.1, duration: 0.7, ease: 'back.out(1.4)' }, '-=0.1');
 
-/* ══════ VIDEO TOGGLE ══════ */
-const video = document.getElementById('about-video');
-const vOverlay = document.getElementById('video-overlay');
-function toggleVideo() {
-    if (!video) return;
-    if (video.paused) {
-        video.play();
-        if (vOverlay) vOverlay.style.opacity = '0';
-    } else {
-        video.pause();
-        if (vOverlay) vOverlay.style.opacity = '1';
-    }
-}
+/* ─ SERVICES ─ */
+gsap.timeline({ scrollTrigger: { trigger: '#services', start: 'top 76%', toggleActions: 'play none none none' } })
+  .from('#services .s-label', { y: 16, opacity: 0, duration: 0.4 })
+  .from('#services .s-h2',    { y: 28, opacity: 0, duration: 0.55 }, '-=0.2')
+  .from('.svc-card', { y: 60, opacity: 0, stagger: 0.14, duration: 0.75, ease: 'power3.out' }, '-=0.1');
 
-/* ══════ FAQ TOGGLE ══════ */
-function toggleFAQ(el) {
-    const item = el.parentElement;
-    const wasOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item.open').forEach(i => {
-        i.classList.remove('open');
-        i.querySelector('.faq-toggle').textContent = '+';
-    });
-    if (!wasOpen) {
-        item.classList.add('open');
-        el.querySelector('.faq-toggle').textContent = '×';
-    }
-}
+/* ─ PHILOSOPHY ─ */
+gsap.timeline({ scrollTrigger: { trigger: '#philosophy', start: 'top 76%', toggleActions: 'play none none none' } })
+  .from('.philosophy-statement', { y: 40, opacity: 0, duration: 0.9, ease: 'power3.out' })
+  .from('.phil-card', { y: 45, opacity: 0, stagger: 0.14, duration: 0.7, ease: 'power3.out' }, '-=0.4');
 
-/* ══════ MODAL ══════ */
-const modal = document.getElementById('modal');
-function openModal(title, body) {
-    document.getElementById('modal-label').textContent = 'Ashford Capital';
-    document.getElementById('modal-title').textContent = title;
-    document.getElementById('modal-body').textContent = body;
-    modal.classList.add('show');
-}
-function closeModal() { modal.classList.remove('show'); }
-modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+/* ─ TESTIMONIALS ─ */
+gsap.timeline({ scrollTrigger: { trigger: '#testimonials', start: 'top 76%', toggleActions: 'play none none none' } })
+  .from('#testimonials .s-label', { y: 16, opacity: 0, duration: 0.4 })
+  .from('#testimonials .s-h2',    { y: 28, opacity: 0, duration: 0.55 }, '-=0.2')
+  .from('.testi-card', { y: 45, opacity: 0, scale: 0.96, stagger: 0.15, duration: 0.75, ease: 'back.out(1.3)' }, '-=0.1');
 
-/* ══════ NEWSLETTER ══════ */
-function handleNewsletter(e) {
-    e.preventDefault();
-    openModal('Subscribed', 'Thank you — you will receive your first market dispatch shortly. Welcome to the Ashford orbit.');
-    return false;
-}
+/* ─ FAQ ─ */
+gsap.timeline({ scrollTrigger: { trigger: '#faq', start: 'top 78%', toggleActions: 'play none none none' } })
+  .from('#faq .s-label', { y: 16, opacity: 0, duration: 0.4 })
+  .from('#faq .s-h2',    { y: 28, opacity: 0, duration: 0.55 }, '-=0.2')
+  .from('.faq-row', { x: -35, opacity: 0, stagger: 0.08, duration: 0.5, ease: 'power2.out' }, '-=0.1');
 
-/* ══════ REDIRECT ══════ */
-function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.app/'; }
+/* ─ CTA ─ */
+gsap.timeline({ scrollTrigger: { trigger: '#cta', start: 'top 78%', toggleActions: 'play none none none' } })
+  .from('.cta-h2',  { y: 55, opacity: 0, duration: 0.85, ease: 'power3.out' })
+  .from('.cta-body',{ y: 30, opacity: 0, duration: 0.6 }, '-=0.4')
+  .from('.cta-btns',{ scale: 0.92, opacity: 0, duration: 0.55, ease: 'back.out(1.5)' }, '-=0.25')
+  .from('.nl-box',  { y: 25, opacity: 0, duration: 0.5 }, '-=0.1');
 
-/* ══════ COUNTER ANIMATION ══════ */
+/* ─ FOOTER ─ */
+gsap.timeline({ scrollTrigger: { trigger: 'footer', start: 'top 88%', toggleActions: 'play none none none' } })
+  .from('.footer-brand-logo', { x: -25, opacity: 0, duration: 0.6 })
+  .from('.footer-col-h', { y: 18, opacity: 0, stagger: 0.1, duration: 0.45 }, '-=0.3');
+
+/* ─ COUNTER ─ */
 document.querySelectorAll('[data-count]').forEach(el => {
-    const target = parseInt(el.dataset.count);
-    ScrollTrigger.create({
-        trigger: el,
-        start: 'top 80%',
-        once: true,
-        onEnter() {
-            gsap.to({ v: 0 }, {
-                v: target, duration: 1.5, ease: 'power2.out',
-                onUpdate() { el.textContent = Math.round(this.targets()[0].v) + '+'; }
-            });
-        }
-    });
+  ScrollTrigger.create({
+    trigger: el, start: 'top 80%', once: true,
+    onEnter() {
+      gsap.to({ v: 0 }, {
+        v: +el.dataset.count, duration: 1.6, ease: 'power2.out',
+        onUpdate() { el.textContent = Math.round(this.targets()[0].v); }
+      });
+    }
+  });
 });
-</script>
 
+/* ════════════════════════════════════════
+   NAVBAR — scroll state
+════════════════════════════════════════ */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('solid', window.scrollY > 40);
+});
+
+/* ════════════════════════════════════════
+   MOBILE NAV
+════════════════════════════════════════ */
+const mobToggle = document.getElementById('mob-toggle');
+const navLinks  = document.getElementById('nav-links');
+let mobOpen = false;
+if (mobToggle) {
+  mobToggle.addEventListener('click', () => {
+    mobOpen = !mobOpen;
+    if (mobOpen) {
+      navLinks.style.cssText = `display:flex;flex-direction:column;position:fixed;top:96px;left:0;right:0;background:rgba(2,3,10,0.97);padding:2rem 5%;gap:1.8rem;border-bottom:1px solid rgba(26,107,255,0.15);backdrop-filter:blur(20px);z-index:599;`;
+      mobToggle.textContent = '✕';
+    } else {
+      navLinks.style.display = 'none';
+      mobToggle.textContent = '☰';
+    }
+  });
+}
+
+document.querySelectorAll('.nav-link').forEach(a => {
+  a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      e.preventDefault();
+      if (mobOpen) { mobToggle.click(); }
+      setTimeout(() => lenisTo(href), 50);
+    }
+  });
+});
+
+/* ════════════════════════════════════════
+   VIDEO TOGGLE
+════════════════════════════════════════ */
+const vid = document.getElementById('main-vid');
+const vOverlay = document.getElementById('v-overlay');
+function toggleVideo() {
+  if (!vid) return;
+  if (vid.paused) { vid.play(); if (vOverlay) vOverlay.style.opacity = '0'; }
+  else { vid.pause(); if (vOverlay) vOverlay.style.opacity = '1'; }
+}
+
+/* ════════════════════════════════════════
+   FAQ
+════════════════════════════════════════ */
+function toggleFAQ(el) {
+  const row = el.parentElement;
+  const wasOpen = row.classList.contains('open');
+  document.querySelectorAll('.faq-row.open').forEach(r => {
+    r.classList.remove('open');
+    r.querySelector('.faq-plus').textContent = '+';
+  });
+  if (!wasOpen) {
+    row.classList.add('open');
+    el.querySelector('.faq-plus').textContent = '−';
+  }
+}
+
+/* ════════════════════════════════════════
+   MODAL
+════════════════════════════════════════ */
+function openModal(title, body) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').textContent = body;
+  document.getElementById('modal').classList.add('show');
+}
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+document.getElementById('modal').addEventListener('click', e => { if (e.target === document.getElementById('modal')) closeModal(); });
+
+/* ════════════════════════════════════════
+   NEWSLETTER
+════════════════════════════════════════ */
+function handleNL(e) {
+  e.preventDefault();
+  openModal('Subscribed', 'Thank you — you will receive your first market dispatch shortly. Welcome to the Ashford orbit.');
+}
+
+/* ════════════════════════════════════════
+   CTA REDIRECT
+════════════════════════════════════════ */
+function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.app/'; }
+</script>
 </body>
 </html>
