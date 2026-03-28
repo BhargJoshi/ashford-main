@@ -3,1328 +3,2129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ashford Capital: Live Market Mentorship & Training</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.cdnfonts.com/css/the-seasons" rel="stylesheet">
+    <title>Ashford Capital — Precision. Not Prediction.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<style>
+/* ══════════════════════════════════════════════════
+   ROOT VARIABLES
+══════════════════════════════════════════════════ */
+:root {
+    --c-void:     #03040a;
+    --c-deep:     #070910;
+    --c-surface:  #0c0e17;
+    --c-panel:    #111420;
+    --c-border:   rgba(255,255,255,0.06);
+    --c-wire:     rgba(255,255,255,0.04);
+    --c-gold:     #c8a96e;
+    --c-gold-dim: #8a6f3e;
+    --c-gold-glow:rgba(200,169,110,0.15);
+    --c-ice:      #6eb4ff;
+    --c-ice-dim:  #3a7bbf;
+    --c-text:     #e8e4dc;
+    --c-muted:    rgba(232,228,220,0.45);
+    --c-ghost:    rgba(232,228,220,0.15);
+    --f-head:     'Syne', sans-serif;
+    --f-mono:     'Space Mono', monospace;
+    --f-body:     'DM Mono', monospace;
+    --ease-smooth: cubic-bezier(0.25,0.46,0.45,0.94);
+}
 
-    <style>
-        /* =============================================
-           CSS VARIABLES
-        ============================================= */
-        :root {
-            --color-dark-bg: #0e111a;
-            --color-secondary-bg: #1a1e26;
-            --color-primary-text: #ffffff;
-            --color-blue-accent: #0099ff;
-            --color-blue-hover: #007acc;
-            --color-text-light: rgba(255, 255, 255, 0.7);
-            --color-card-bg: #151820;
-            --color-green-growth: #00ff88;
-            --font-main: 'Montserrat', sans-serif;
-            --font-secondary: 'Inter', sans-serif;
-        }
+/* ══════════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: auto; }
+html.lenis { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
 
-        /* =============================================
-           RESET & BASE
-        ============================================= */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    background: var(--c-void);
+    color: var(--c-text);
+    font-family: var(--f-body);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: none;
+}
 
-        /* Lenis smooth scroll setup */
-        html.lenis { height: auto; }
-        .lenis.lenis-smooth { scroll-behavior: auto !important; }
-        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+a { text-decoration: none; color: inherit; }
+h1,h2,h3,h4 { font-family: var(--f-head); font-weight: 800; letter-spacing: -0.02em; line-height: 1.05; }
+strong { font-weight: 700; color: var(--c-text); }
 
-        body {
-            background-color: var(--color-dark-bg);
-            color: var(--color-primary-text);
-            font-family: var(--font-secondary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+/* ══════════════════════════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════════════════════════ */
+#cursor-dot {
+    width: 6px; height: 6px;
+    background: var(--c-gold);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 99999;
+    transform: translate(-50%,-50%);
+    transition: width 0.15s, height 0.15s, background 0.2s;
+}
+#cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(200,169,110,0.4);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 99998;
+    transform: translate(-50%,-50%);
+    transition: width 0.3s var(--ease-smooth), height 0.3s var(--ease-smooth), border-color 0.3s, opacity 0.3s;
+}
+body.cursor-hover #cursor-dot { width: 10px; height: 10px; background: var(--c-ice); }
+body.cursor-hover #cursor-ring { width: 60px; height: 60px; border-color: rgba(110,180,255,0.4); }
 
-        a { text-decoration: none; color: var(--color-primary-text); }
-        h1, h2, h3 { font-family: var(--font-main); font-weight: 700; }
+/* ══════════════════════════════════════════════════
+   3D CANVAS BACKGROUND
+══════════════════════════════════════════════════ */
+#bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
 
-        /* Inner centering wrapper used INSIDE <section> tags */
-        .inner-wrap {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 5%;
-        }
+/* ══════════════════════════════════════════════════
+   SCROLLING CONTENT LAYER
+══════════════════════════════════════════════════ */
+#scroll-wrapper {
+    position: relative;
+    z-index: 10;
+}
 
-        /* Section spacing — outer <section> only handles bg + padding */
-        .section     { padding: 100px 0; }
-        .section-alt { padding: 100px 0; background-color: var(--color-secondary-bg); }
+/* ══════════════════════════════════════════════════
+   NOISE OVERLAY
+══════════════════════════════════════════════════ */
+#noise-overlay {
+    position: fixed; inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 128px 128px;
+}
 
-        .section-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
+/* ══════════════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════════════ */
+#navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 500;
+    padding: 0 5%;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--c-border);
+    background: rgba(3,4,10,0.7);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    transition: background 0.3s;
+}
+#navbar.opaque { background: rgba(3,4,10,0.95); }
 
-        .tag {
-            color: var(--color-blue-accent);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 10px;
-            display: block;
-        }
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--f-head);
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.04em;
+    color: var(--c-text);
+    cursor: none;
+}
+.nav-logo-mark {
+    width: 32px; height: 32px;
+    border: 1px solid var(--c-gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    font-family: var(--f-mono);
+    color: var(--c-gold);
+    letter-spacing: 0.05em;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+}
+.nav-logo-mark::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(200,169,110,0.1) 0%, transparent 60%);
+}
+.nav-logo:hover .nav-logo-mark { box-shadow: 0 0 20px rgba(200,169,110,0.3); }
 
-        h2 { font-size: 2.5rem; margin-bottom: 15px; }
-        .highlight-blue { color: var(--color-blue-accent); }
+.nav-links {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+}
+.nav-link {
+    font-family: var(--f-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    cursor: none;
+    position: relative;
+    transition: color 0.25s;
+}
+.nav-link::before {
+    content: attr(data-index);
+    position: absolute;
+    left: -16px;
+    font-size: 0.55rem;
+    color: var(--c-gold-dim);
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+.nav-link:hover { color: var(--c-text); }
+.nav-link:hover::before { opacity: 1; }
 
-        /* =============================================
-           BUTTONS
-        ============================================= */
-        .btn-primary, .btn-secondary, .join-button, .newsletter-form button {
-            padding: 1rem 2.5rem;
-            border: none;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            font-family: var(--font-secondary);
-        }
-        .btn-primary, .join-button, .newsletter-form button {
-            background-color: var(--color-blue-accent);
-            color: var(--color-dark-bg);
-        }
-        .btn-primary:hover, .join-button:hover, .newsletter-form button:hover {
-            background-color: var(--color-blue-hover);
-            color: var(--color-primary-text);
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 8px 25px rgba(0,153,255,0.8);
-        }
-        .btn-secondary {
-            background-color: var(--color-secondary-bg);
-            color: var(--color-primary-text);
-            border: 1px solid var(--color-text-light);
-        }
-        .btn-secondary:hover {
-            background-color: var(--color-dark-bg);
-            border-color: var(--color-blue-accent);
-            color: var(--color-blue-accent);
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: 0 8px 25px rgba(255,255,255,0.1);
-        }
+.nav-cta {
+    font-family: var(--f-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-void);
+    background: var(--c-gold);
+    border: none;
+    padding: 0.55rem 1.5rem;
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.3s, transform 0.2s;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+.nav-cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+.nav-cta:hover { box-shadow: 0 0 30px rgba(200,169,110,0.5); transform: translateY(-1px); }
+.nav-cta:hover::before { opacity: 1; }
 
-        /* =============================================
-           NAVBAR
-        ============================================= */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 5%;
-            position: sticky;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            background: var(--color-dark-bg);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-        .logo-image {
-            height: 40px;
-            width: auto;
-            margin-right: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .logo-text {
-            font-family: var(--font-main);
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--color-primary-text);
-            transition: transform 0.3s, text-shadow 0.3s, color 0.3s;
-            line-height: 1;
-            display: inline-block;
-            white-space: nowrap;
-        }
-        .logo:hover .logo-image { transform: scale(1.05); box-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4); }
-        .logo:hover .logo-text  { transform: scale(1.05); text-shadow: 0 0 8px rgba(255,255,255,0.8); color: var(--color-blue-accent); }
+.mobile-toggle { display: none; background: none; border: none; color: var(--c-text); font-size: 1.5rem; cursor: pointer; }
 
-        nav a {
-            display: inline-block;
-            position: relative;
-            opacity: 0.8;
-            margin: 0 15px;
-            font-weight: 600;
-            text-transform: uppercase;
-            transition: opacity 0.3s, color 0.3s, transform 0.3s;
-        }
-        nav a:hover { opacity: 1; color: var(--color-blue-accent); transform: scale(1.05); }
-        nav a::after {
-            content: '';
-            position: absolute;
-            width: 0; height: 3px;
-            bottom: -5px; left: 0;
-            background-color: var(--color-blue-accent);
-            transition: width 0.3s ease-out;
-        }
-        nav a:hover::after, nav a.active::after { width: 100%; }
+/* ══════════════════════════════════════════════════
+   HERO SECTION
+══════════════════════════════════════════════════ */
+#hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 5% 60px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
 
-        /* Navbar right group */
-        .navbar-right {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
+.hero-overline {
+    font-family: var(--f-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--c-gold);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+}
+.hero-overline::before, .hero-overline::after {
+    content: '';
+    width: 40px; height: 1px;
+    background: var(--c-gold-dim);
+}
 
-        /* Hamburger button — always visible */
-        .hamburger-toggle {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 6px;
-            z-index: 1100;
-            width: 38px;
-            height: 38px;
-        }
-        .ham-bar {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background-color: var(--color-primary-text);
-            border-radius: 2px;
-            transition: transform 0.35s ease, opacity 0.25s ease, background-color 0.25s ease;
-            transform-origin: center;
-        }
-        /* X state when active */
-        .hamburger-toggle.open .ham-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-        .hamburger-toggle.open .ham-bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        .hamburger-toggle.open .ham-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.hero-h1 {
+    font-size: clamp(3.5rem, 9vw, 8.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    margin-bottom: 0;
+    max-width: 1100px;
+    opacity: 0;
+    position: relative;
+}
+.hero-h1 .line { display: block; overflow: hidden; }
+.hero-h1 .line-inner { display: block; transform: translateY(100%); }
+.hero-h1 .accent { color: var(--c-gold); }
+.hero-h1 .thin { font-weight: 400; color: var(--c-muted); }
 
-        /* Nav overlay — always hidden, slides in on toggle */
-        #main-nav {
-            position: fixed;
-            top: 0; right: 0;
-            width: min(320px, 80vw);
-            height: 100%;
-            background-color: var(--color-secondary-bg);
-            border-left: 1px solid rgba(255,255,255,0.06);
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 100px 40px 60px;
-            transform: translateX(100%);
-            opacity: 0;
-            pointer-events: none;
-            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
-            display: flex;
-            z-index: 1060;
-            box-shadow: -8px 0 40px rgba(0,0,0,0.5);
-        }
-        #main-nav.active {
-            transform: translateX(0);
-            opacity: 1;
-            pointer-events: auto;
-        }
-        #main-nav a {
-            margin: 14px 0;
-            font-size: 1.4rem;
-            opacity: 1;
-            letter-spacing: 2px;
-            display: inline-block;
-            position: relative;
-            transition: transform 0.25s ease, color 0.25s ease;
-        }
-        #main-nav a::after {
-            content: '';
-            position: absolute;
-            width: 0; height: 2px;
-            bottom: -4px; left: 0;
-            background-color: var(--color-blue-accent);
-            transition: width 0.3s ease-out;
-        }
-        #main-nav a:hover {
-            transform: scale(1.07);
-            color: var(--color-blue-accent);
-            opacity: 1;
-        }
-        #main-nav a:hover::after { width: 100%; }
+.hero-sub {
+    font-family: var(--f-mono);
+    font-size: 0.9rem;
+    color: var(--c-muted);
+    margin-top: 2.5rem;
+    letter-spacing: 0.04em;
+    opacity: 0;
+    max-width: 500px;
+}
 
-        /* Backdrop — only behind the nav panel, not over it */
-        #nav-backdrop {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            z-index: 1050;
-        }
-        #nav-backdrop.active { display: block; }
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+    justify-content: center;
+    opacity: 0;
+}
 
-        .mobile-menu-toggle { display: none; }
+/* BUTTONS */
+.btn-prime {
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--c-void);
+    background: var(--c-gold);
+    border: none;
+    padding: 1rem 2.5rem;
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    transition: box-shadow 0.3s, transform 0.2s;
+}
+.btn-prime::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+}
+.btn-prime:hover { box-shadow: 0 0 40px rgba(200,169,110,0.5); transform: translateY(-2px); }
+.btn-prime:hover::after { transform: translateX(100%); }
 
-        /* =============================================
-           HERO SECTION
-        ============================================= */
-        .hero-section {
-            min-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 8rem 5% 100px;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-bg-layer { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
-        .hero-bg-layer .grid-lines {
-            position: absolute; inset: 0;
-            background-image:
-                linear-gradient(rgba(0,153,255,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,153,255,0.04) 1px, transparent 1px);
-            background-size: 60px 60px;
-        }
-        .hero-glow {
-            position: absolute;
-            width: 600px; height: 600px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0,153,255,0.12) 0%, transparent 70%);
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-        }
-        .hero-content { position: relative; z-index: 1; width: 100%; }
-        .tagline {
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--color-text-light);
-            margin-bottom: 20px;
-            display: block;
-        }
-        .hero-section h1 { line-height: 1; margin-bottom: 0; font-weight: 900; width: 100%; }
-        .hero-brand-name {
-            font-family: 'The Seasons', serif;
-            font-weight: 400;
-            font-size: clamp(2.8rem, 8.5vw, 8rem);
-            line-height: 1.05;
-            letter-spacing: 0.04em;
-            color: var(--color-primary-text);
-            display: block;
-            width: 100%;
-            text-align: center;
-            margin-bottom: 28px;
-            white-space: normal;
-            word-break: break-word;
-            padding: 0 4%;
-            box-sizing: border-box;
-        }
-        .subtitle { font-size: 1.2rem; color: var(--color-text-light); margin-bottom: 40px; }
-        .hero-actions {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 100px;
-            justify-content: center;
-        }
-        .stats-bar {
-            display: flex;
-            justify-content: center;
-            gap: 8rem;
-            width: 100%;
-            position: absolute;
-            bottom: 30px;
-            z-index: 1;
-        }
-        .stat-item { text-align: center; }
-        .stat-number { font-size: 2.5rem; font-weight: 900; color: var(--color-blue-accent); line-height: 1; }
-        .stat-label  { font-size: 0.9rem; color: var(--color-text-light); text-transform: uppercase; letter-spacing: 1px; }
+.btn-ghost {
+    font-family: var(--f-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--c-text);
+    background: transparent;
+    border: 1px solid var(--c-border);
+    padding: 1rem 2.5rem;
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+    transition: border-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+.btn-ghost:hover {
+    border-color: var(--c-gold-dim);
+    color: var(--c-gold);
+    box-shadow: 0 0 20px rgba(200,169,110,0.1), inset 0 0 20px rgba(200,169,110,0.03);
+    transform: translateY(-2px);
+}
 
-        /* =============================================
-           MARQUEE STRIP
-        ============================================= */
-        .marquee-strip {
-            overflow: hidden;
-            background: rgba(0,153,255,0.06);
-            border-top: 1px solid rgba(0,153,255,0.15);
-            border-bottom: 1px solid rgba(0,153,255,0.15);
-            padding: 18px 0;
-            white-space: nowrap;
-        }
-        .marquee-track { display: inline-flex; gap: 3rem; animation: marquee 20s linear infinite; }
-        .marquee-track span { font-size: 0.75rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--color-blue-accent); opacity: 0.7; }
-        .marquee-track .dot { color: rgba(255,255,255,0.2); letter-spacing: 0; }
-        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.hero-stats {
+    display: flex;
+    gap: 5rem;
+    margin-top: 5rem;
+    opacity: 0;
+}
+.hero-stat {}
+.hero-stat-num {
+    font-family: var(--f-head);
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--c-gold);
+    line-height: 1;
+    display: block;
+}
+.hero-stat-label {
+    font-family: var(--f-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    display: block;
+    margin-top: 0.4rem;
+}
 
-        /* =============================================
-           SCROLLYTELLING PINNED SECTION
-        ============================================= */
-        .scrolly-pin-container { min-height: 400vh; }
-        .scrolly-sticky {
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            background: var(--color-dark-bg);
-        }
-        .scrolly-sticky::before {
-            content: '';
-            position: absolute;
-            width: 700px; height: 700px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0,153,255,0.07) 0%, transparent 65%);
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-        }
-        .scrolly-scene {
-            position: absolute; inset: 0;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none;
-        }
-        .scrolly-phrase { text-align: center; padding: 0 5%; max-width: 860px; }
-        .scrolly-phrase .eyebrow {
-            font-size: 0.75rem; letter-spacing: 4px; text-transform: uppercase;
-            color: var(--color-blue-accent); margin-bottom: 1.2rem; display: block;
-        }
-        .scrolly-phrase h2 { font-size: 3.5rem; font-weight: 900; line-height: 1.1; margin-bottom: 0.8rem; }
-        .scrolly-phrase p  { font-size: 1.1rem; color: var(--color-text-light); max-width: 580px; margin: 0.8rem auto 0; }
-        .scrolly-dots {
-            position: absolute; bottom: 40px; left: 50%;
-            transform: translateX(-50%);
-            display: flex; gap: 8px; z-index: 10;
-        }
-        .scrolly-dot {
-            width: 6px; height: 6px; border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            transition: background 0.3s, transform 0.3s;
-        }
-        .scrolly-dot.active { background: var(--color-blue-accent); transform: scale(1.4); }
+/* HERO CORNER MARKS */
+.hero-corner {
+    position: absolute;
+    width: 30px; height: 30px;
+    opacity: 0.25;
+}
+.hero-corner.tl { top: 90px; left: 5%; border-top: 1px solid var(--c-gold); border-left: 1px solid var(--c-gold); }
+.hero-corner.tr { top: 90px; right: 5%; border-top: 1px solid var(--c-gold); border-right: 1px solid var(--c-gold); }
+.hero-corner.bl { bottom: 40px; left: 5%; border-bottom: 1px solid var(--c-gold); border-left: 1px solid var(--c-gold); }
+.hero-corner.br { bottom: 40px; right: 5%; border-bottom: 1px solid var(--c-gold); border-right: 1px solid var(--c-gold); }
 
-        /* =============================================
-           ABOUT SECTION
-        ============================================= */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5rem;
-            align-items: center;
-        }
-        .about-text p { font-size: 1.05rem; margin-bottom: 20px; color: var(--color-text-light); }
-        .execution-card {
-            display: block;
-            border: 2px solid var(--color-blue-accent);
-            background-color: rgba(0,153,255,0.05);
-            padding: 20px 30px;
-            border-radius: 8px;
-            margin: 0 0 28px 0;
-        }
-        .execution-card-text {
-            color: #ffffff;
-            font-family: var(--font-main);
-            font-weight: 800;
-            font-size: 1.3rem;
-            margin: 0;
-        }
-        .feature-list { margin-top: 28px; }
-        .feature-item {
-            display: flex; align-items: flex-start;
-            margin-bottom: 14px; font-size: 0.98rem; font-weight: 600;
-        }
-        .feature-icon {
-            font-size: 1.3rem; color: var(--color-blue-accent);
-            margin-right: 14px; width: 28px; flex-shrink: 0; margin-top: 1px;
-        }
-        .about-visual {
-            width: 100%; background-color: #000;
-            border-radius: 15px; position: relative;
-            box-shadow: 0 0 40px rgba(0,153,255,0.15);
-            overflow: hidden;
-            display: flex; justify-content: center; align-items: center;
-            border: 1px solid rgba(255,255,255,0.1); cursor: pointer;
-        }
-        #about-video { width: 100%; height: 100%; object-fit: contain; display: block; }
-        .play-button-overlay {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px; height: 80px;
-            background-color: rgba(0,153,255,0.8);
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 20; transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(0,153,255,0.5);
-        }
-        .play-button-overlay::after {
-            content: ''; width: 0; height: 0;
-            border-top: 15px solid transparent;
-            border-bottom: 15px solid transparent;
-            border-left: 25px solid white;
-            margin-left: 5px;
-        }
-        .video-playing .play-button-overlay { opacity: 0; pointer-events: none; transform: translate(-50%, -50%) scale(1.2); }
-        .about-visual:hover .play-button-overlay { background-color: var(--color-blue-hover); transform: translate(-50%, -50%) scale(1.1); }
+/* SCAN LINE */
+.hero-scanline {
+    position: absolute;
+    left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200,169,110,0.3), transparent);
+    top: 50%;
+    animation: scanline 4s linear infinite;
+    pointer-events: none;
+}
+@keyframes scanline {
+    0% { top: 80px; opacity: 0; }
+    5% { opacity: 1; }
+    95% { opacity: 0.3; }
+    100% { top: 100%; opacity: 0; }
+}
 
-        /* =============================================
-           ADVANTAGE SECTION
-        ============================================= */
-        .advantage-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem; text-align: center; margin-top: 4rem;
-        }
-        .advantage-item {
-            padding: 2rem; border-radius: 10px;
-            background-color: var(--color-card-bg);
-            cursor: pointer; border: 1px solid transparent;
-            transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
-        }
-        .advantage-item:hover { box-shadow: 0 0 25px var(--color-blue-accent); transform: translateY(-8px); border-color: var(--color-blue-accent); }
-        .advantage-icon {
-            width: 80px; height: 80px; border-radius: 50%;
-            margin: 0 auto 1.5rem;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 2rem;
-            border: 2px solid var(--color-blue-accent);
-            box-shadow: 0 0 10px rgba(0,153,255,0.4);
-            color: var(--color-blue-accent);
-        }
-        .advantage-item h3 { margin-bottom: 10px; }
+/* ══════════════════════════════════════════════════
+   MARQUEE STRIP
+══════════════════════════════════════════════════ */
+.marquee-strip {
+    position: relative; z-index: 10;
+    overflow: hidden;
+    border-top: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--c-border);
+    background: rgba(7,9,16,0.8);
+    padding: 14px 0;
+    white-space: nowrap;
+}
+.marquee-track { display: inline-flex; gap: 3rem; animation: mscroll 28s linear infinite; }
+.marquee-track span {
+    font-family: var(--f-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+}
+.marquee-track .sep { color: var(--c-gold); opacity: 0.5; }
+@keyframes mscroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        /* =============================================
-           SERVICES SECTION
-        ============================================= */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem; margin-top: 40px;
-        }
-        .service-card {
-            background-color: var(--color-card-bg);
-            border-radius: 10px; padding: 30px;
-            text-align: left; position: relative;
-            border: 1px solid transparent;
-            display: flex; flex-direction: column; align-items: flex-start;
-            transition: border-color 0.3s;
-        }
-        .service-card:hover { border-color: var(--color-blue-accent); }
-        .card-icon { font-size: 2rem; color: var(--color-blue-accent); margin-bottom: 15px; }
-        .service-card h3 { font-size: 1.5rem; margin-bottom: 10px; }
-        .price { font-size: 2rem; font-weight: 700; color: var(--color-green-growth); margin-bottom: 20px; }
-        .description { color: var(--color-text-light); margin-bottom: 20px; flex-grow: 1; }
-        .service-card ul { list-style: none; padding-left: 0; margin-bottom: 30px; }
-        .service-card li {
-            color: var(--color-text-light); margin-bottom: 5px;
-            display: flex; align-items: center; font-size: 0.95rem;
-        }
-        .service-card li::before {
-            content: "•"; color: var(--color-green-growth);
-            font-weight: 900; display: inline-block;
-            width: 1em; margin-left: -1em;
-        }
-        .service-card .btn-primary, .service-card .btn-secondary { width: 100%; text-align: center; margin-top: auto; }
-        .popular { background-color: var(--color-secondary-bg); border: 2px solid var(--color-blue-accent) !important; }
-        .popular-tag {
-            position: absolute; top: -15px; left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--color-blue-accent);
-            color: var(--color-dark-bg);
-            padding: 5px 15px; border-radius: 20px;
-            font-size: 0.75rem; font-weight: 700;
-            letter-spacing: 1px; text-transform: uppercase;
-        }
+/* ══════════════════════════════════════════════════
+   SECTION BASE
+══════════════════════════════════════════════════ */
+.section { padding: 120px 0; position: relative; }
+.section-inner { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
 
-        /* =============================================
-           TESTIMONIALS
-        ============================================= */
-        .testimonial-card {
-            background-color: var(--color-card-bg);
-            border-radius: 15px; padding: 50px;
-            max-width: 800px; margin: 0 auto 30px;
-            position: relative; text-align: center;
-        }
-        .quote-icon { font-size: 4rem; color: var(--color-blue-accent); opacity: 0.2; position: absolute; top: 10px; left: 20px; }
-        .testimonial-text { font-size: 1.3rem; font-style: italic; margin-bottom: 30px; color: var(--color-primary-text); transition: opacity 0.3s; }
-        .trader-info { display: flex; justify-content: center; align-items: center; gap: 15px; }
-        .trader-initials {
-            width: 50px; height: 50px; border-radius: 50%;
-            background-color: var(--color-blue-accent);
-            color: var(--color-dark-bg);
-            display: flex; justify-content: center; align-items: center;
-            font-weight: 700; font-size: 1.2rem;
-        }
-        .trader-name { font-weight: 700; font-size: 1.1rem; }
-        .trader-type { color: var(--color-text-light); font-size: 0.9rem; }
-        .slider-dot {
-            height: 10px; width: 10px; margin: 0 5px;
-            background-color: var(--color-text-light);
-            border-radius: 50%; display: inline-block;
-            cursor: pointer; transition: background-color 0.3s, transform 0.3s; font-size: 0;
-        }
-        .slider-dot.active, .slider-dot:hover { background-color: var(--color-blue-accent); transform: scale(1.2); }
+.section-label {
+    font-family: var(--f-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--c-gold);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+.section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--c-gold-dim), transparent);
+    max-width: 80px;
+}
 
-        /* =============================================
-           FAQ
-        ============================================= */
-        .faq-list { max-width: 900px; margin: 0 auto; }
-        .faq-item {
-            background-color: var(--color-card-bg);
-            margin-bottom: 10px; border-radius: 8px;
-            overflow: hidden; border: 1px solid transparent;
-            transition: border-color 0.3s;
-        }
-        .faq-item.active { border-color: var(--color-blue-accent); }
-        .faq-question {
-            padding: 20px 25px; font-size: 1.1rem; font-weight: 600;
-            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-        }
-        .faq-answer {
-            padding: 0 25px; background-color: var(--color-secondary-bg);
-            max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out;
-        }
-        .faq-answer p { padding: 15px 0 20px 0; color: var(--color-text-light); font-size: 1rem; }
-        .arrow {
-            width: 0; height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 5px solid var(--color-primary-text);
-            transition: transform 0.3s; flex-shrink: 0;
-        }
-        .faq-item.active .arrow { transform: rotate(180deg); }
+.section-h2 {
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    margin-bottom: 1.5rem;
+    max-width: 700px;
+}
 
-        /* =============================================
-           CTA SECTION
-        ============================================= */
-        .cta-section { text-align: center; padding: 80px 5%; background-color: var(--color-secondary-bg); }
-        .cta-section h2 { font-size: 3rem; margin-bottom: 15px; }
-        .newsletter-form {
-            display: flex; justify-content: center; gap: 10px;
-            margin-top: 20px; max-width: 600px;
-            margin-left: auto; margin-right: auto;
-        }
-        .newsletter-form input {
-            padding: 1rem; border-radius: 5px; border: none;
-            background-color: var(--color-card-bg);
-            color: var(--color-primary-text); width: 70%; font-size: 1rem;
-        }
+/* ══════════════════════════════════════════════════
+   SCROLLYTELLING — PINNED CINEMATIC
+══════════════════════════════════════════════════ */
+#scrolly-wrap { min-height: 500vh; position: relative; }
+#scrolly-pin {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
 
-        /* =============================================
-           FOOTER
-        ============================================= */
-        .footer {
-            display: flex; justify-content: space-between;
-            background-color: var(--color-dark-bg);
-            border-top: 1px solid rgba(255,255,255,0.05);
-            max-width: 1200px; margin: 0 auto; padding: 0 5%;
-        }
-        .footer-logo { max-width: 300px; }
-        .footer-logo p { color: var(--color-text-light); font-size: 0.9rem; }
-        .footer h3 { font-size: 1.2rem; margin-bottom: 20px; color: var(--color-blue-accent); }
-        .footer a, .footer p { display: block; color: var(--color-text-light); margin-bottom: 10px; font-size: 0.95rem; transition: color 0.3s; }
-        .footer a:hover { color: var(--color-blue-accent); }
-        .icon { margin-right: 5px; color: var(--color-blue-accent); }
+.scrolly-scene {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    flex-direction: column;
+    text-align: center;
+    padding: 0 5%;
+}
+.scrolly-eyebrow {
+    font-family: var(--f-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--c-gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+.scrolly-eyebrow::before, .scrolly-eyebrow::after {
+    content: '';
+    width: 30px; height: 1px;
+    background: var(--c-gold-dim);
+}
+.scrolly-h2 {
+    font-size: clamp(2.8rem, 7vw, 6.5rem);
+    font-weight: 800;
+    max-width: 900px;
+    line-height: 1.0;
+}
+.scrolly-h2 .gold { color: var(--c-gold); }
+.scrolly-h2 .mute { color: var(--c-muted); font-weight: 400; }
+.scrolly-body {
+    font-family: var(--f-mono);
+    font-size: 0.9rem;
+    color: var(--c-muted);
+    margin-top: 1.8rem;
+    max-width: 520px;
+    letter-spacing: 0.02em;
+}
 
-        /* =============================================
-           RESPONSIVE
-        ============================================= */
-        @media (max-width: 900px) {
-            h2 { font-size: 2rem; }
-            .section, .section-alt { padding: 80px 0; }
-            .join-button { padding: 0.7rem 1.5rem; font-size: 0.9rem; }
-            .logo-text { font-size: 1rem; }
-            .logo-image { height: 35px; }
-            .hero-section h1 { font-size: 3rem; }
-            .stats-bar { gap: 4rem; }
-            .about-content { grid-template-columns: 1fr; gap: 3rem; }
-            .about-visual { max-height: none; }
-            .about-text { order: 2; }
-            #video-container { order: 1; }
-            .advantage-grid { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-            .services-grid { grid-template-columns: 1fr; }
-            .scrolly-phrase h2 { font-size: 2.4rem; }
-            .footer { flex-wrap: wrap; justify-content: flex-start; gap: 30px; padding: 40px 5%; }
-            .footer-logo { width: 100%; margin-bottom: 20px; }
-            .footer-links, .footer-contact { min-width: 150px; }
-        }
-        @media (max-width: 600px) {
-            .section, .section-alt { padding: 60px 0; }
-            h2 { font-size: 1.8rem; }
-            .logo-text { font-size: 1rem; }
-            .logo-image { height: 30px; margin-right: 5px; }
-            .hero-section h1 { font-size: 2.2rem; }
-            .hero-actions { flex-direction: column; gap: 1rem; }
-            .btn-primary, .btn-secondary { width: 100%; padding: 0.8rem 1.5rem; }
-            .stats-bar { flex-wrap: wrap; gap: 2rem 1rem; position: relative; bottom: auto; margin-top: 50px; }
-            .stat-item { width: 45%; }
-            .stat-number { font-size: 2rem; }
-            .stat-label { font-size: 0.8rem; }
-            .cta-section h2 { font-size: 2.2rem; }
-            .newsletter-form { flex-direction: column; }
-            .newsletter-form input { width: 100%; }
-            .newsletter-form button { width: 100%; }
-            .footer-links, .footer-contact { width: 100%; margin-top: 20px; }
-            .scrolly-phrase h2 { font-size: 1.8rem; }
-            .scrolly-phrase p { font-size: 0.95rem; }
-            .advantage-grid { grid-template-columns: 1fr; }
-            .testimonial-card { padding: 30px 20px; }
-        }
-    </style>
+.scrolly-progress {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 20;
+}
+.scrolly-pip {
+    width: 1px;
+    height: 30px;
+    background: rgba(255,255,255,0.1);
+    position: relative;
+    overflow: hidden;
+}
+.scrolly-pip.active { background: rgba(200,169,110,0.4); }
+.scrolly-pip.active::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--c-gold);
+    animation: pipfill 0.4s forwards;
+}
+@keyframes pipfill { from { transform: scaleY(0); transform-origin: top; } to { transform: scaleY(1); } }
+
+/* ══════════════════════════════════════════════════
+   ABOUT SECTION
+══════════════════════════════════════════════════ */
+#about { background: rgba(7,9,16,0.85); backdrop-filter: blur(2px); }
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.about-manifesto {
+    background: linear-gradient(135deg, rgba(200,169,110,0.06) 0%, rgba(200,169,110,0.02) 100%);
+    border: 1px solid rgba(200,169,110,0.15);
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+}
+.about-manifesto::before {
+    content: '"';
+    font-family: var(--f-head);
+    font-size: 5rem;
+    color: var(--c-gold);
+    opacity: 0.15;
+    position: absolute;
+    top: -10px; left: 20px;
+    line-height: 1;
+}
+.about-manifesto p {
+    font-family: var(--f-head);
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--c-text);
+}
+.about-manifesto .highlight { color: var(--c-gold); }
+
+.about-body { color: var(--c-muted); margin-bottom: 1.2rem; font-size: 0.9rem; }
+
+.feature-items { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+.feature-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--c-border);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, background 0.3s;
+    cursor: none;
+}
+.feature-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--c-gold);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s;
+}
+.feature-item:hover { border-color: rgba(200,169,110,0.2); background: rgba(200,169,110,0.03); }
+.feature-item:hover::before { transform: scaleY(1); }
+.feature-icon {
+    font-family: var(--f-mono);
+    font-size: 0.65rem;
+    color: var(--c-gold);
+    min-width: 30px;
+    padding-top: 0.15rem;
+    letter-spacing: 0.05em;
+}
+.feature-text { font-size: 0.85rem; color: var(--c-muted); }
+.feature-text strong { color: var(--c-text); }
+
+/* VIDEO PANEL */
+.about-video-panel {
+    position: relative;
+    background: var(--c-panel);
+    border: 1px solid var(--c-border);
+    aspect-ratio: 9/10;
+    overflow: hidden;
+    cursor: none;
+}
+.about-video-panel::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(3,4,10,0.9) 100%);
+    z-index: 2;
+    pointer-events: none;
+}
+.about-video-panel video {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.video-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 3;
+    transition: opacity 0.3s;
+}
+.play-ring {
+    width: 72px; height: 72px;
+    border: 1px solid rgba(200,169,110,0.5);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(8px);
+    background: rgba(3,4,10,0.4);
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    cursor: none;
+}
+.play-ring::after {
+    content: '';
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 10px 0 10px 18px;
+    border-color: transparent transparent transparent var(--c-gold);
+    margin-left: 4px;
+}
+.about-video-panel:hover .play-ring { transform: scale(1.1); box-shadow: 0 0 30px rgba(200,169,110,0.3); border-color: rgba(200,169,110,0.8); }
+.video-panel-label {
+    position: absolute;
+    bottom: 1.5rem; left: 1.5rem;
+    z-index: 4;
+    font-family: var(--f-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+}
+
+/* CORNER ACCENTS */
+.corner-accent {
+    position: absolute;
+    width: 20px; height: 20px;
+    z-index: 5;
+}
+.corner-accent.tl { top: 10px; left: 10px; border-top: 1px solid var(--c-gold); border-left: 1px solid var(--c-gold); }
+.corner-accent.tr { top: 10px; right: 10px; border-top: 1px solid var(--c-gold); border-right: 1px solid var(--c-gold); }
+.corner-accent.bl { bottom: 10px; left: 10px; border-bottom: 1px solid var(--c-gold); border-left: 1px solid var(--c-gold); }
+.corner-accent.br { bottom: 10px; right: 10px; border-bottom: 1px solid var(--c-gold); border-right: 1px solid var(--c-gold); }
+
+/* ══════════════════════════════════════════════════
+   ADVANTAGE SECTION
+══════════════════════════════════════════════════ */
+#advantage { background: var(--c-void); }
+
+.advantage-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--c-border);
+    border: 1px solid var(--c-border);
+    margin-top: 3rem;
+}
+.adv-card {
+    background: var(--c-void);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    transition: background 0.4s;
+}
+.adv-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(200,169,110,0.08) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+.adv-card:hover { background: rgba(200,169,110,0.03); }
+.adv-card:hover::before { opacity: 1; }
+
+.adv-number {
+    font-family: var(--f-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    color: var(--c-gold-dim);
+    margin-bottom: 1.5rem;
+    display: block;
+}
+.adv-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+    display: block;
+    filter: grayscale(0.3);
+    transition: transform 0.3s;
+}
+.adv-card:hover .adv-icon { transform: scale(1.15) rotate(-5deg); }
+.adv-title {
+    font-family: var(--f-head);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.7rem;
+    color: var(--c-text);
+}
+.adv-desc { font-size: 0.82rem; color: var(--c-muted); line-height: 1.6; }
+
+.adv-card-line {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--c-gold-dim), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+}
+.adv-card:hover .adv-card-line { transform: scaleX(1); }
+
+/* ══════════════════════════════════════════════════
+   SERVICES SECTION
+══════════════════════════════════════════════════ */
+#services { background: rgba(7,9,16,0.9); }
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--c-border);
+    border: 1px solid var(--c-border);
+    margin-top: 3rem;
+}
+.svc-card {
+    background: var(--c-void);
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    transition: background 0.4s;
+}
+.svc-card.featured { background: rgba(200,169,110,0.04); }
+.svc-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--c-gold), transparent);
+    transform: scaleX(0);
+    transition: transform 0.5s;
+}
+.svc-card:hover::before, .svc-card.featured::before { transform: scaleX(1); }
+.svc-card:hover { background: rgba(200,169,110,0.03); }
+.svc-card.featured:hover { background: rgba(200,169,110,0.06); }
+
+.svc-badge {
+    font-family: var(--f-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-void);
+    background: var(--c-gold);
+    display: inline-block;
+    padding: 0.25rem 0.7rem;
+    margin-bottom: 1.5rem;
+    align-self: flex-start;
+    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+}
+.svc-icon {
+    font-size: 2.2rem;
+    margin-bottom: 1.2rem;
+    display: block;
+}
+.svc-title {
+    font-family: var(--f-head);
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+.svc-price {
+    font-family: var(--f-mono);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--c-gold);
+    line-height: 1;
+    margin-bottom: 1.2rem;
+}
+.svc-price span { font-size: 0.8rem; color: var(--c-muted); vertical-align: middle; }
+.svc-desc { font-size: 0.82rem; color: var(--c-muted); margin-bottom: 1.5rem; line-height: 1.7; }
+.svc-list { list-style: none; margin-bottom: 2rem; flex: 1; }
+.svc-list li {
+    font-family: var(--f-mono);
+    font-size: 0.75rem;
+    color: var(--c-muted);
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--c-wire);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    letter-spacing: 0.03em;
+}
+.svc-list li::before {
+    content: '→';
+    color: var(--c-gold);
+    font-size: 0.7rem;
+    flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════════
+   PHILOSOPHY / MANIFESTO SECTION
+══════════════════════════════════════════════════ */
+#philosophy {
+    background: var(--c-void);
+    padding: 140px 0;
+    overflow: hidden;
+    position: relative;
+}
+.philosophy-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+.philosophy-statement {
+    font-family: var(--f-head);
+    font-size: clamp(1.8rem, 4vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    max-width: 900px;
+}
+.philosophy-statement .gold { color: var(--c-gold); }
+.philosophy-statement .ghost { color: var(--c-ghost); }
+
+.philosophy-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--c-border);
+    margin-top: 80px;
+    border: 1px solid var(--c-border);
+}
+.pillar {
+    background: var(--c-void);
+    padding: 3rem 2.5rem;
+    position: relative;
+    cursor: none;
+    transition: background 0.3s;
+}
+.pillar:hover { background: rgba(200,169,110,0.02); }
+.pillar-num {
+    font-family: var(--f-mono);
+    font-size: 3rem;
+    font-weight: 700;
+    color: rgba(200,169,110,0.1);
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    line-height: 1;
+    transition: color 0.3s;
+}
+.pillar:hover .pillar-num { color: rgba(200,169,110,0.2); }
+.pillar-title {
+    font-family: var(--f-head);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--c-text);
+}
+.pillar-body { font-size: 0.82rem; color: var(--c-muted); line-height: 1.8; }
+
+/* ══════════════════════════════════════════════════
+   TESTIMONIALS
+══════════════════════════════════════════════════ */
+#testimonials { background: rgba(7,9,16,0.9); }
+
+.testi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: var(--c-border); border: 1px solid var(--c-border); margin-top: 3rem; }
+.testi-card {
+    background: var(--c-void);
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+    transition: background 0.3s;
+}
+.testi-card:hover { background: rgba(200,169,110,0.02); }
+.testi-quote-mark {
+    font-family: var(--f-head);
+    font-size: 4rem;
+    color: var(--c-gold);
+    opacity: 0.2;
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+.testi-text {
+    font-family: var(--f-head);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--c-text);
+    margin-bottom: 2rem;
+}
+.testi-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.testi-avatar {
+    width: 40px; height: 40px;
+    background: rgba(200,169,110,0.1);
+    border: 1px solid rgba(200,169,110,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--f-mono);
+    font-size: 0.7rem;
+    color: var(--c-gold);
+    letter-spacing: 0.05em;
+    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+}
+.testi-name { font-family: var(--f-head); font-size: 0.9rem; font-weight: 700; }
+.testi-role { font-family: var(--f-mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--c-muted); text-transform: uppercase; }
+
+/* ══════════════════════════════════════════════════
+   FAQ
+══════════════════════════════════════════════════ */
+#faq { background: var(--c-void); }
+
+.faq-list { margin-top: 3rem; border: 1px solid var(--c-border); }
+.faq-item {
+    border-bottom: 1px solid var(--c-border);
+    cursor: none;
+    transition: background 0.3s;
+}
+.faq-item:last-child { border-bottom: none; }
+.faq-item:hover { background: rgba(200,169,110,0.02); }
+.faq-q {
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    font-family: var(--f-head);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--c-text);
+    user-select: none;
+}
+.faq-q-text { flex: 1; }
+.faq-toggle {
+    width: 24px; height: 24px;
+    border: 1px solid var(--c-border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-family: var(--f-mono);
+    font-size: 1rem;
+    color: var(--c-gold);
+    transition: transform 0.3s, border-color 0.3s, background 0.3s;
+    clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 5px 100%, 0 calc(100% - 5px));
+}
+.faq-item.open .faq-toggle { transform: rotate(45deg); border-color: rgba(200,169,110,0.4); background: rgba(200,169,110,0.08); }
+.faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s var(--ease-smooth);
+}
+.faq-a-inner {
+    padding: 0 2rem 1.5rem;
+    font-size: 0.85rem;
+    color: var(--c-muted);
+    line-height: 1.8;
+    border-left: 2px solid rgba(200,169,110,0.2);
+    margin-left: 2rem;
+}
+.faq-item.open .faq-a { max-height: 300px; }
+
+/* ══════════════════════════════════════════════════
+   CTA SECTION
+══════════════════════════════════════════════════ */
+#cta {
+    background: var(--c-void);
+    padding: 160px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+#cta::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,169,110,0.06) 0%, transparent 70%);
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+.cta-inner { max-width: 900px; margin: 0 auto; padding: 0 5%; }
+.cta-h2 {
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    line-height: 1.0;
+}
+.cta-h2 .gold { color: var(--c-gold); }
+.cta-h2 .mute { color: var(--c-muted); font-weight: 400; }
+.cta-sub {
+    font-family: var(--f-mono);
+    font-size: 0.9rem;
+    color: var(--c-muted);
+    margin-bottom: 3rem;
+    letter-spacing: 0.04em;
+}
+.cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+.newsletter-box {
+    margin-top: 5rem;
+    padding-top: 4rem;
+    border-top: 1px solid var(--c-border);
+}
+.newsletter-label {
+    font-family: var(--f-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-muted);
+    margin-bottom: 1.5rem;
+}
+.newsletter-form {
+    display: flex;
+    gap: 0;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.newsletter-input {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--c-border);
+    border-right: none;
+    padding: 0.9rem 1.2rem;
+    color: var(--c-text);
+    font-family: var(--f-mono);
+    font-size: 0.8rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+.newsletter-input:focus { border-color: rgba(200,169,110,0.3); }
+.newsletter-input::placeholder { color: var(--c-ghost); }
+.newsletter-btn {
+    background: var(--c-gold);
+    border: 1px solid var(--c-gold);
+    color: var(--c-void);
+    font-family: var(--f-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.9rem 1.5rem;
+    cursor: none;
+    transition: box-shadow 0.3s, background 0.3s;
+}
+.newsletter-btn:hover { box-shadow: 0 0 20px rgba(200,169,110,0.4); }
+
+/* ══════════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════════ */
+footer {
+    background: var(--c-deep);
+    border-top: 1px solid var(--c-border);
+    padding: 60px 5%;
+}
+.footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+.footer-brand { }
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--f-head);
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+    cursor: none;
+}
+.footer-logo-mark {
+    width: 28px; height: 28px;
+    border: 1px solid var(--c-gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem;
+    font-family: var(--f-mono);
+    color: var(--c-gold);
+}
+.footer-tagline {
+    font-family: var(--f-mono);
+    font-size: 0.75rem;
+    color: var(--c-muted);
+    line-height: 1.8;
+    letter-spacing: 0.03em;
+    max-width: 280px;
+}
+.footer-col-title {
+    font-family: var(--f-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--c-gold);
+    margin-bottom: 1.2rem;
+}
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 0.7rem; }
+.footer-links a {
+    font-family: var(--f-mono);
+    font-size: 0.78rem;
+    color: var(--c-muted);
+    cursor: none;
+    transition: color 0.2s;
+    letter-spacing: 0.03em;
+}
+.footer-links a:hover { color: var(--c-gold); }
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 3rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--c-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.footer-copy {
+    font-family: var(--f-mono);
+    font-size: 0.65rem;
+    color: var(--c-ghost);
+    letter-spacing: 0.08em;
+}
+
+/* ══════════════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════════════ */
+#modal {
+    display: none;
+    position: fixed; inset: 0;
+    z-index: 1000;
+    background: rgba(3,4,10,0.85);
+    backdrop-filter: blur(12px);
+    align-items: center;
+    justify-content: center;
+}
+#modal.show { display: flex; }
+.modal-box {
+    background: var(--c-panel);
+    border: 1px solid var(--c-border);
+    padding: 3rem;
+    max-width: 460px;
+    width: 90%;
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.3s var(--ease-smooth);
+}
+#modal.show .modal-box { transform: scale(1) translateY(0); }
+.modal-close {
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    background: none; border: none;
+    color: var(--c-muted);
+    font-size: 1rem;
+    cursor: none;
+    transition: color 0.2s;
+    font-family: var(--f-mono);
+}
+.modal-close:hover { color: var(--c-text); }
+.modal-title {
+    font-family: var(--f-head);
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
+    color: var(--c-text);
+}
+.modal-label {
+    font-family: var(--f-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    color: var(--c-gold);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+.modal-body { font-size: 0.85rem; color: var(--c-muted); line-height: 1.8; margin-bottom: 2rem; }
+.modal-corner { position: absolute; width: 16px; height: 16px; }
+.modal-corner.tl { top: 10px; left: 10px; border-top: 1px solid var(--c-gold); border-left: 1px solid var(--c-gold); }
+.modal-corner.br { bottom: 10px; right: 10px; border-bottom: 1px solid var(--c-gold); border-right: 1px solid var(--c-gold); }
+
+/* ══════════════════════════════════════════════════
+   SCROLLBAR
+══════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--c-void); }
+::-webkit-scrollbar-thumb { background: var(--c-gold-dim); }
+
+/* ══════════════════════════════════════════════════
+   GLITCH TEXT EFFECT
+══════════════════════════════════════════════════ */
+.glitch {
+    position: relative;
+}
+.glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+}
+.glitch:hover::before {
+    opacity: 0.7;
+    color: var(--c-ice);
+    clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+    transform: translateX(-2px);
+    animation: glitch1 0.3s step-end;
+}
+.glitch:hover::after {
+    opacity: 0.7;
+    color: var(--c-gold);
+    clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+    transform: translateX(2px);
+    animation: glitch2 0.3s step-end;
+}
+@keyframes glitch1 { 0%,100% { transform:translateX(-2px); } 50% { transform:translateX(3px); } }
+@keyframes glitch2 { 0%,100% { transform:translateX(2px);  } 50% { transform:translateX(-3px); } }
+
+/* ══════════════════════════════════════════════════
+   UTILITY
+══════════════════════════════════════════════════ */
+.reveal { opacity: 0; transform: translateY(30px); }
+.reveal.in { opacity: 1; transform: translateY(0); transition: opacity 0.7s var(--ease-smooth), transform 0.7s var(--ease-smooth); }
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+    .nav-links { display: none; }
+    .mobile-toggle { display: block; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .advantage-grid { grid-template-columns: 1fr 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .philosophy-pillars { grid-template-columns: 1fr; }
+    .testi-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .hero-stats { gap: 3rem; }
+    .scrolly-h2 { font-size: clamp(2.2rem,8vw,3.5rem); }
+}
+@media (max-width: 600px) {
+    .advantage-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; gap: 30px; }
+    .hero-actions { flex-direction: column; align-items: center; }
+    .hero-stats { flex-direction: column; gap: 1.5rem; align-items: center; }
+    .newsletter-form { flex-direction: column; }
+    .newsletter-input { border-right: 1px solid var(--c-border); border-bottom: none; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    .philosophy-pillars { grid-template-columns: 1fr; }
+}
+</style>
 </head>
 <body>
 
-    <!-- ============ NAVBAR ============ -->
-    <header class="navbar">
-        <div class="logo">
-            <img src="asfcm.webp" alt="Ashford Capital Logo" class="logo-image">
-            <span class="logo-text">ASHFORD CAPITAL</span>
-        </div>
-        <div class="navbar-right">
-            <button class="join-button" onclick="redirectToCTA()">JOIN US</button>
-            <button class="hamburger-toggle" aria-label="Toggle navigation menu" id="mobile-menu-toggle">
-                <span class="ham-bar"></span>
-                <span class="ham-bar"></span>
-                <span class="ham-bar"></span>
-            </button>
-        </div>
-        <nav id="main-nav">
-            <a href="#home"     class="nav-link active">Home</a>
-            <a href="#about"    class="nav-link">About</a>
-            <a href="#services" class="nav-link">Services</a>
-            <a href="#contact"  class="nav-link">Contact</a>
-        </nav>
-    </header>
-    <div id="nav-backdrop"></div>
-    <section id="home" class="hero-section">
-        <div class="hero-bg-layer">
-            <div class="grid-lines"></div>
-            <div class="hero-glow" id="hero-glow"></div>
-        </div>
-        <div class="hero-content">
-            <span class="tagline" id="hero-tagline">WHERE TRADERS THRIVE ON PRECISION NOT PREDICTION</span>
-            <h1>
-                <span class="hero-brand-name hero-line">ASHFORD CAPITAL</span>
-            </h1>
-            <p class="subtitle" id="hero-subtitle">Clarity in Concepts &amp; Precision in their Execution.</p>
-            <div class="hero-actions" id="hero-actions">
-                <button class="btn-primary" onclick="redirectToCTA()">Let's Start &rarr;</button>
-                <button class="btn-secondary" onclick="document.getElementById('about').scrollIntoView({ behavior: 'smooth' });">Let Me See</button>
-            </div>
-        </div>
-        <div class="stats-bar">
-            <div class="stat-item" id="stat-1">
-                <p class="stat-number">3+</p>
-                <p class="stat-label">Years Experience</p>
-            </div>
-            <div class="stat-item" id="stat-2">
-                <p class="stat-number">ALL</p>
-                <p class="stat-label">Market Types</p>
-            </div>
-        </div>
-    </section>
+<!-- CURSORS -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
 
-    <!-- ============ MARQUEE STRIP ============ -->
-    <div class="marquee-strip" id="marquee-strip">
-        <div class="marquee-track">
-            <span>Precision Trading</span><span class="dot">&#9670;</span>
-            <span>Live Mentorship</span><span class="dot">&#9670;</span>
-            <span>Market Clarity</span><span class="dot">&#9670;</span>
-            <span>Execution Mastery</span><span class="dot">&#9670;</span>
-            <span>Capital Intelligence</span><span class="dot">&#9670;</span>
-            <span>Structured Decisions</span><span class="dot">&#9670;</span>
-            <span>Precision Trading</span><span class="dot">&#9670;</span>
-            <span>Live Mentorship</span><span class="dot">&#9670;</span>
-            <span>Market Clarity</span><span class="dot">&#9670;</span>
-            <span>Execution Mastery</span><span class="dot">&#9670;</span>
-            <span>Capital Intelligence</span><span class="dot">&#9670;</span>
-            <span>Structured Decisions</span><span class="dot">&#9670;</span>
-        </div>
+<!-- 3D BACKGROUND CANVAS -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- NOISE OVERLAY -->
+<div id="noise-overlay"></div>
+
+<!-- MODAL -->
+<div id="modal">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <div class="modal-corner tl"></div>
+        <div class="modal-corner br"></div>
+        <span class="modal-label" id="modal-label">Ashford Capital</span>
+        <h3 class="modal-title" id="modal-title">Title</h3>
+        <p class="modal-body" id="modal-body">Body</p>
+        <button class="btn-prime" onclick="redirectToCTA()">Join Now →</button>
+    </div>
+</div>
+
+<!-- ══════ NAVBAR ══════ -->
+<header id="navbar">
+    <div class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <div class="nav-logo-mark">AC</div>
+        <span>ASHFORD CAPITAL</span>
+    </div>
+    <nav class="nav-links">
+        <a href="#about"     class="nav-link" data-index="01">About</a>
+        <a href="#services"  class="nav-link" data-index="02">Services</a>
+        <a href="#philosophy" class="nav-link" data-index="03">Philosophy</a>
+        <a href="#faq"       class="nav-link" data-index="04">FAQ</a>
+    </nav>
+    <button class="nav-cta" onclick="redirectToCTA()">Join Now</button>
+    <button class="mobile-toggle" id="mob-toggle">☰</button>
+</header>
+
+<!-- ══════ SCROLL WRAPPER ══════ -->
+<div id="scroll-wrapper">
+
+<!-- ══════ HERO ══════ -->
+<section id="hero" id="home">
+    <div class="hero-corner tl"></div>
+    <div class="hero-corner tr"></div>
+    <div class="hero-corner bl"></div>
+    <div class="hero-corner br"></div>
+    <div class="hero-scanline"></div>
+
+    <div class="hero-overline" id="hero-overline">
+        Live Market Mentorship &amp; Training
     </div>
 
-    <!-- ============ SCROLLYTELLING ============ -->
-    <div id="scrolly-wrapper">
-        <div class="scrolly-pin-container" id="scrolly-pin">
-            <div class="scrolly-sticky" id="scrolly-sticky">
+    <h1 class="hero-h1" id="hero-h1">
+        <span class="line"><span class="line-inner">WHERE TRADERS</span></span>
+        <span class="line"><span class="line-inner accent">THRIVE ON</span></span>
+        <span class="line"><span class="line-inner thin">precision.</span></span>
+        <span class="line"><span class="line-inner">NOT PREDICTION.</span></span>
+    </h1>
 
-                <div class="scrolly-scene" id="scene-1">
-                    <div class="scrolly-phrase">
-                        <span class="eyebrow">The Problem</span>
-                        <h2>Most traders<br><span class="highlight-blue">know the theory.</span></h2>
-                        <p>They've read the books. Watched the videos. Know all the terms.</p>
+    <p class="hero-sub" id="hero-sub">
+        Clarity in Concepts. Precision in Execution.<br>Ashford Capital — where markets become readable.
+    </p>
+
+    <div class="hero-actions" id="hero-actions">
+        <button class="btn-prime" onclick="redirectToCTA()">Begin Your Edge →</button>
+        <button class="btn-ghost" onclick="lenisScrollTo('#about')">Explore ↓</button>
+    </div>
+
+    <div class="hero-stats" id="hero-stats">
+        <div class="hero-stat">
+            <span class="hero-stat-num" data-count="3">0</span>
+            <span class="hero-stat-label">+ Years Mastery</span>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-stat-num">ALL</span>
+            <span class="hero-stat-label">Market Types</span>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-stat-num">100%</span>
+            <span class="hero-stat-label">Live Execution</span>
+        </div>
+    </div>
+</section>
+
+<!-- ══════ MARQUEE ══════ -->
+<div class="marquee-strip">
+    <div class="marquee-track">
+        <span>Precision Trading</span><span class="sep">◆</span>
+        <span>Live Mentorship</span><span class="sep">◆</span>
+        <span>Market Clarity</span><span class="sep">◆</span>
+        <span>Execution Mastery</span><span class="sep">◆</span>
+        <span>Capital Intelligence</span><span class="sep">◆</span>
+        <span>Structured Decisions</span><span class="sep">◆</span>
+        <span>Ashford Capital</span><span class="sep">◆</span>
+        <span>Precision Trading</span><span class="sep">◆</span>
+        <span>Live Mentorship</span><span class="sep">◆</span>
+        <span>Market Clarity</span><span class="sep">◆</span>
+        <span>Execution Mastery</span><span class="sep">◆</span>
+        <span>Capital Intelligence</span><span class="sep">◆</span>
+        <span>Structured Decisions</span><span class="sep">◆</span>
+        <span>Ashford Capital</span><span class="sep">◆</span>
+    </div>
+</div>
+
+<!-- ══════ SCROLLYTELLING ══════ -->
+<div id="scrolly-wrap">
+    <div id="scrolly-pin">
+
+        <div class="scrolly-scene" id="sc-1">
+            <div class="scrolly-eyebrow">The Problem</div>
+            <h2 class="scrolly-h2">Most traders<br><span class="gold">know the theory.</span><br><span class="mute">But freeze.</span></h2>
+            <p class="scrolly-body">They've read the books. Watched the videos. Know every term. Yet markets still feel alien when real capital is on the line.</p>
+        </div>
+
+        <div class="scrolly-scene" id="sc-2">
+            <div class="scrolly-eyebrow">The Gap</div>
+            <h2 class="scrolly-h2">Real money.<br><span class="gold">Real pressure.</span><br><span class="mute">No script.</span></h2>
+            <p class="scrolly-body">Live markets are psychologically different. Emotions override logic every single time — until you've been trained otherwise.</p>
+        </div>
+
+        <div class="scrolly-scene" id="sc-3">
+            <div class="scrolly-eyebrow">The Solution</div>
+            <h2 class="scrolly-h2">We train<br><span class="gold">execution.</span><br><span class="mute">Not theory.</span></h2>
+            <p class="scrolly-body">Real trades. Real pressure. Real decisions — systematically built through structured practice until execution becomes instinct.</p>
+        </div>
+
+        <div class="scrolly-scene" id="sc-4">
+            <div class="scrolly-eyebrow">The Outcome</div>
+            <h2 class="scrolly-h2">Precision.<br><span class="mute">Not</span> <span class="gold">prediction.</span></h2>
+            <p class="scrolly-body">Stop guessing. Start operating like a professional market participant. That is the Ashford standard.</p>
+        </div>
+
+        <div class="scrolly-progress">
+            <div class="scrolly-pip active" id="pip-0"></div>
+            <div class="scrolly-pip" id="pip-1"></div>
+            <div class="scrolly-pip" id="pip-2"></div>
+            <div class="scrolly-pip" id="pip-3"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════ ABOUT ══════ -->
+<section id="about" class="section">
+    <div class="section-inner">
+        <div class="about-grid">
+            <div id="about-left">
+                <div class="section-label">About Ashford</div>
+                <h2 class="section-h2">So what exactly is <span style="color:var(--c-gold)">Ashford?</span></h2>
+
+                <div class="about-manifesto">
+                    <p>Most learn the concepts but fail at real-time execution…<span class="highlight"> We fix that.</span></p>
+                </div>
+
+                <p class="about-body">Ashford Capital prioritizes <strong>executional clarity</strong> of concepts you learn. We train how to see markets beyond ordinary, operate within them strategically, and think in systems — not just trades.</p>
+                <p class="about-body">We don't sell strategies, tips, or signals. We train on how the market operates in itself, so traders stop predicting and start making structured decisions.</p>
+
+                <div class="feature-items">
+                    <div class="feature-item">
+                        <span class="feature-icon">[ MK ]</span>
+                        <span class="feature-text"><strong>Market Clarity</strong> — Understand what the market is doing and why, without indicators or opinions.</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">[ EP ]</span>
+                        <span class="feature-text"><strong>Execution Practice</strong> — Execute decisions consistently in live markets, even under maximum pressure.</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">[ CI ]</span>
+                        <span class="feature-text"><strong>Capital Intelligence</strong> — Manage capital professionally. Preservation, positioning, longevity.</span>
                     </div>
                 </div>
+            </div>
 
-                <div class="scrolly-scene" id="scene-2">
-                    <div class="scrolly-phrase">
-                        <span class="eyebrow">The Gap</span>
-                        <h2>But freeze when<br>it's <span class="highlight-blue">real money.</span></h2>
-                        <p>Live markets are different. Emotions override logic every time.</p>
-                    </div>
+            <div class="about-video-panel" id="video-container" onclick="toggleVideo()">
+                <div class="corner-accent tl"></div>
+                <div class="corner-accent tr"></div>
+                <div class="corner-accent bl"></div>
+                <div class="corner-accent br"></div>
+                <video id="about-video" playsinline>
+                    <source src="int reel.mp4" type="video/mp4">
+                </video>
+                <div class="video-overlay" id="video-overlay">
+                    <div class="play-ring"></div>
                 </div>
-
-                <div class="scrolly-scene" id="scene-3">
-                    <div class="scrolly-phrase">
-                        <span class="eyebrow">The Solution</span>
-                        <h2>We train<br><span class="highlight-blue">execution.</span><br>Not theory.</h2>
-                        <p>Real trades. Real pressure. Real decisions &mdash; built through practice.</p>
-                    </div>
-                </div>
-
-                <div class="scrolly-scene" id="scene-4">
-                    <div class="scrolly-phrase">
-                        <span class="eyebrow">The Outcome</span>
-                        <h2>Precision.<br>Not <span class="highlight-blue">prediction.</span></h2>
-                        <p>Stop guessing. Start operating like a professional market participant.</p>
-                    </div>
-                </div>
-
-                <div class="scrolly-dots">
-                    <div class="scrolly-dot active" id="sdot-0"></div>
-                    <div class="scrolly-dot" id="sdot-1"></div>
-                    <div class="scrolly-dot" id="sdot-2"></div>
-                    <div class="scrolly-dot" id="sdot-3"></div>
-                </div>
+                <span class="video-panel-label">[ Ashford Capital — Intro Reel ]</span>
             </div>
         </div>
     </div>
+</section>
 
-    <!-- ============ ABOUT ============ -->
-    <section id="about" class="section">
-        <div class="inner-wrap">
-            <div class="section-header">
-                <span class="tag" id="about-tag">ABOUT US</span>
-                <h2 id="about-h2">SO WHAT EXACTLY IS <span class="highlight-blue">ASHFORD?</span></h2>
+<!-- ══════ ADVANTAGE ══════ -->
+<section id="advantage" class="section">
+    <div class="section-inner">
+        <div class="section-label">The Edge</div>
+        <h2 class="section-h2">The Ashford <span style="color:var(--c-gold)">Advantage</span></h2>
+        <p style="color:var(--c-muted); font-size:0.85rem; margin-top:0.5rem; font-family:var(--f-mono);">What sets us apart from every other trading education platform.</p>
+
+        <div class="advantage-grid" id="adv-grid">
+            <div class="adv-card" onclick="openModal('Clarity', 'Our Clarity framework cuts through market noise — no indicators, no opinions. Pure price logic. This is what separates systematic traders from gamblers.')">
+                <span class="adv-number">[ 01 ]</span>
+                <span class="adv-icon">◉</span>
+                <h3 class="adv-title">Clarity</h3>
+                <p class="adv-desc">Cutting through market noise to focus on what truly matters.</p>
+                <div class="adv-card-line"></div>
             </div>
-            <div class="about-content">
-                <div class="about-text" id="about-text">
-                    <div class="execution-card" id="exec-card">
-                        <p class="execution-card-text">
-                            Most Learn The Concepts But Fail At Real Time Execution&hellip;<span class="highlight-blue"> WE FIX THAT</span>
-                        </p>
-                    </div>
-                    <p id="about-p1">
-                        Ashford Capital prioritizes <span class="highlight-blue">EXECUTIONAL CLARITY</span> of concepts you learn. We train how to see markets beyond ordinary, operate within them strategically, and think in systems &mdash; not just trades.
-                    </p>
-                    <p id="about-p2">
-                        We don't sell strategies, tips, or signals. We train on how the market operates in itself, so traders stop predicting and start making structured decisions.
-                    </p>
-                    <div class="feature-list">
-                        <div class="feature-item" id="fi-1">
-                            <span class="feature-icon">&#9678;</span>
-                            <span><strong>Market Clarity</strong> &mdash; Understand what the market is doing and why, without indicators or opinions.</span>
-                        </div>
-                        <div class="feature-item" id="fi-2">
-                            <span class="feature-icon">&#9889;</span>
-                            <span><strong>Execution Practice</strong> &mdash; Execute decisions consistently in live markets, even under pressure.</span>
-                        </div>
-                        <div class="feature-item" id="fi-3">
-                            <span class="feature-icon">&#8599;</span>
-                            <span><strong>Capital Intelligence</strong> &mdash; Manage capital professionally. Preservation, positioning, longevity.</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="about-visual" id="video-container" onclick="toggleVideo()">
-                    <video id="about-video" playsinline>
-                        <source src="int reel.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    <div class="play-button-overlay" id="play-button"></div>
-                </div>
+            <div class="adv-card" onclick="openModal('Growth', 'Better concepts executed in live markets — making you a more skilful participant every session. Growth is not motivation. It is compounding skill.')">
+                <span class="adv-number">[ 02 ]</span>
+                <span class="adv-icon">↗</span>
+                <h3 class="adv-title">Growth</h3>
+                <p class="adv-desc">Better concepts executed in live markets — making you a more skilful participant.</p>
+                <div class="adv-card-line"></div>
+            </div>
+            <div class="adv-card" onclick="openModal('Precision', 'Precise entries and exits, not vague predictions. When you see the same setups repeatedly, execution becomes mechanical. Mechanical is profitable.')">
+                <span class="adv-number">[ 03 ]</span>
+                <span class="adv-icon">⊕</span>
+                <h3 class="adv-title">Precision</h3>
+                <p class="adv-desc">Precise entries and exits, not vague predictions.</p>
+                <div class="adv-card-line"></div>
+            </div>
+            <div class="adv-card" onclick="openModal('Practice', 'Consistent improvement through regular practice and constant learning support. Perfection is the enemy of progress. Practice compounds into mastery.')">
+                <span class="adv-number">[ 04 ]</span>
+                <span class="adv-icon">↺</span>
+                <h3 class="adv-title">Practice</h3>
+                <p class="adv-desc">Consistent improvement through regular practice and constant learning support.</p>
+                <div class="adv-card-line"></div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- ============ ADVANTAGE ============ -->
-    <section class="section-alt" id="advantage-section">
-        <div class="inner-wrap">
-            <div class="section-header">
-                <span class="tag" id="adv-tag">ADVANTAGE</span>
-                <h2 id="adv-h2">THE ASHFORD <span class="highlight-blue">ADVANTAGE</span></h2>
-                <p class="subtitle" id="adv-sub" style="font-size:1rem; color:var(--color-text-light);">What sets us apart from every other trading education platform.</p>
+<!-- ══════ SERVICES ══════ -->
+<section id="services" class="section">
+    <div class="section-inner">
+        <div class="section-label">Programs</div>
+        <h2 class="section-h2">Our <span style="color:var(--c-gold)">Services</span></h2>
+        <p style="color:var(--c-muted); font-size:0.85rem; margin-top:0.5rem; font-family:var(--f-mono);">Choose the program that fits your trading journey.</p>
+
+        <div class="services-grid" id="svc-grid">
+            <div class="svc-card" id="svc-1">
+                <span class="svc-icon">📊</span>
+                <h3 class="svc-title">Advanced Chart Analysis</h3>
+                <div class="svc-price">₹1,999 <span>/ program</span></div>
+                <p class="svc-desc">Master technical analysis and market structure to identify high-probability setups with surgical accuracy.</p>
+                <ul class="svc-list">
+                    <li>Price Action Mastery</li>
+                    <li>Support &amp; Resistance</li>
+                    <li>Volume Analysis</li>
+                </ul>
+                <button class="btn-prime" onclick="redirectToCTA()">Enroll Now →</button>
             </div>
-            <div class="advantage-grid" id="advantage-grid">
-                <div class="advantage-item" id="adv-1" onclick="showPopup('advantage', 'Clarity')">
-                    <div class="advantage-icon">&#9682;</div>
-                    <h3>Clarity</h3>
-                    <p>Cutting through market noise to focus on what truly matters.</p>
-                </div>
-                <div class="advantage-item" id="adv-2" onclick="showPopup('advantage', 'Growth')">
-                    <div class="advantage-icon">&#127807;</div>
-                    <h3>Growth</h3>
-                    <p>Better concepts executed in live markets &mdash; making you a more skilful participant.</p>
-                </div>
-                <div class="advantage-item" id="adv-3" onclick="showPopup('advantage', 'Precision')">
-                    <div class="advantage-icon">&#9678;</div>
-                    <h3>Precision</h3>
-                    <p>Precise entries and exits, not vague predictions.</p>
-                </div>
-                <div class="advantage-item" id="adv-4" onclick="showPopup('advantage', 'Practice Over Perfection')">
-                    <div class="advantage-icon">&#8635;</div>
-                    <h3>Practice Over Perfection</h3>
-                    <p>Consistent improvement through regular practice and constant learning support.</p>
-                </div>
+            <div class="svc-card featured" id="svc-2">
+                <span class="svc-badge">Most Popular</span>
+                <span class="svc-icon">↗</span>
+                <h3 class="svc-title">Swing Trading</h3>
+                <div class="svc-price">₹1,999 <span>/ program</span></div>
+                <p class="svc-desc">Learn to identify trends early and capture multi-day moves with precision and disciplined risk management.</p>
+                <ul class="svc-list">
+                    <li>Trend Identification</li>
+                    <li>Entry &amp; Exit Timing</li>
+                    <li>Risk Management</li>
+                </ul>
+                <button class="btn-prime" onclick="redirectToCTA()">Enroll Now →</button>
+            </div>
+            <div class="svc-card" id="svc-3">
+                <span class="svc-icon">💎</span>
+                <h3 class="svc-title">Investing</h3>
+                <div class="svc-price">₹1,999 <span>/ program</span></div>
+                <p class="svc-desc">Build long-term wealth through strategic investment principles and professional portfolio management.</p>
+                <ul class="svc-list">
+                    <li>Portfolio Building</li>
+                    <li>Fundamental Analysis</li>
+                    <li>Wealth Preservation</li>
+                </ul>
+                <button class="btn-prime" onclick="redirectToCTA()">Enroll Now →</button>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- ============ SERVICES ============ -->
-    <section id="services" class="section">
-        <div class="inner-wrap">
-            <div class="section-header">
-                <h2 id="svc-h2">OUR <span class="highlight-blue">SERVICES</span></h2>
-                <p class="subtitle" id="svc-sub" style="font-size:1rem; color:var(--color-text-light);">Choose the program that fits your trading journey and start mastering the markets today.</p>
+<!-- ══════ PHILOSOPHY ══════ -->
+<section id="philosophy" class="section">
+    <div class="philosophy-inner">
+        <div class="section-label">Our Philosophy</div>
+        <div class="philosophy-statement" id="philosophy-text">
+            Markets are not random. They are <span class="gold">structured.</span><br>
+            They are not unpredictable. They are <span class="gold">systematic.</span><br>
+            The edge is not secret. It is <span class="ghost">simply unseen</span><br>
+            by those who haven't trained their perception.
+        </div>
+
+        <div class="philosophy-pillars">
+            <div class="pillar">
+                <span class="pillar-num">01</span>
+                <h4 class="pillar-title">See Beyond Noise</h4>
+                <p class="pillar-body">We train perception first. Before any strategy, traders must learn to see what the market is actually communicating — not what they want it to say.</p>
             </div>
-            <div class="services-grid" id="services-grid">
-                <div class="service-card" id="svc-1">
-                    <span class="card-icon">&#128200;</span>
-                    <h3>Advanced Chart Analysis</h3>
-                    <p class="price">&#8377;1999<span style="font-size:1rem;">/-</span></p>
-                    <p class="description">Master technical analysis and market structure to identify high-probability setups.</p>
-                    <ul>
-                        <li>Price Action Mastery</li>
-                        <li>Support &amp; Resistance</li>
-                        <li>Volume Analysis</li>
-                    </ul>
-                    <button class="btn-primary" onclick="redirectToCTA()">Enroll Now &rarr;</button>
-                </div>
-                <div class="service-card popular" id="svc-2">
-                    <div class="popular-tag">POPULAR</div>
-                    <span class="card-icon">&#8599;</span>
-                    <h3>Swing Trading</h3>
-                    <p class="price">&#8377;1999<span style="font-size:1rem;">/-</span></p>
-                    <p class="description">Learn to identify trends early and capture multi-day moves with precision.</p>
-                    <ul>
-                        <li>Trend Identification</li>
-                        <li>Entry &amp; Exit Timing</li>
-                        <li>Risk Management</li>
-                    </ul>
-                    <button class="btn-primary" onclick="redirectToCTA()">Enroll Now &rarr;</button>
-                </div>
-                <div class="service-card" id="svc-3">
-                    <span class="card-icon">&#128176;</span>
-                    <h3>Investing</h3>
-                    <p class="price">&#8377;1999<span style="font-size:1rem;">/-</span></p>
-                    <p class="description">Build long-term wealth through strategic investment principles and portfolio management.</p>
-                    <ul>
-                        <li>Portfolio Building</li>
-                        <li>Fundamental Analysis</li>
-                        <li>Wealth Preservation</li>
-                    </ul>
-                    <button class="btn-primary" onclick="redirectToCTA()">Enroll Now &rarr;</button>
-                </div>
+            <div class="pillar">
+                <span class="pillar-num">02</span>
+                <h4 class="pillar-title">Systems Over Emotion</h4>
+                <p class="pillar-body">Every losing streak has psychology at its core. We build systems that remove guesswork and replace impulse with structured, repeatable decision trees.</p>
+            </div>
+            <div class="pillar">
+                <span class="pillar-num">03</span>
+                <h4 class="pillar-title">Longevity as Strategy</h4>
+                <p class="pillar-body">Winning big once is gambling. Winning consistently is craft. Capital preservation, position sizing, and patience are the real alpha generators.</p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- ============ TESTIMONIALS ============ -->
-    <section class="section-alt" id="testimonials-section">
-        <div class="inner-wrap">
-            <div class="section-header">
-                <span class="tag" id="test-tag">TESTIMONIALS</span>
-                <h2 id="test-h2">WHAT OUR <span class="highlight-blue">TRADERS</span> SAY</h2>
-            </div>
-            <div class="testimonial-card" id="testimonial-card">
-                <span class="quote-icon">&#10075;</span>
-                <p class="testimonial-text" id="testimonial-text">"Ashford Capital transformed my approach to trading. The emotional mastery techniques alone have saved me from countless impulsive trades."</p>
-                <div class="trader-info">
-                    <div class="trader-initials" id="trader-initials">NS</div>
+<!-- ══════ TESTIMONIALS ══════ -->
+<section id="testimonials" class="section">
+    <div class="section-inner">
+        <div class="section-label">Results</div>
+        <h2 class="section-h2">From the <span style="color:var(--c-gold)">field</span></h2>
+
+        <div class="testi-grid">
+            <div class="testi-card">
+                <div class="testi-quote-mark">"</div>
+                <p class="testi-text">Ashford Capital transformed my approach to trading. The emotional mastery techniques alone have saved me from countless impulsive trades.</p>
+                <div class="testi-author">
+                    <div class="testi-avatar">NS</div>
                     <div>
-                        <div class="trader-name" id="trader-name">Niyati S</div>
-                        <div class="trader-type" id="trader-type">Swing Trader</div>
+                        <div class="testi-name">Niyati S.</div>
+                        <div class="testi-role">Swing Trader</div>
                     </div>
                 </div>
-                <div style="text-align:center; margin-top:2rem;">
-                    <span class="slider-dot active" onclick="showTestimonial(0)">&#8226;</span>
-                    <span class="slider-dot"        onclick="showTestimonial(1)">&#8226;</span>
+            </div>
+            <div class="testi-card">
+                <div class="testi-quote-mark">"</div>
+                <p class="testi-text">The clarity I gained from the advanced chart analysis module is incredible. I finally understand the why behind market movements.</p>
+                <div class="testi-author">
+                    <div class="testi-avatar">AM</div>
+                    <div>
+                        <div class="testi-name">Arjun M.</div>
+                        <div class="testi-role">Intraday Specialist</div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- ============ FAQ ============ -->
-    <section class="section" id="faq-section">
-        <div class="inner-wrap">
-            <div class="section-header">
-                <h2 id="faq-h2">FREQUENTLY <span class="highlight-blue">ASKED</span></h2>
-                <p class="subtitle" id="faq-sub" style="font-size:1rem; color:var(--color-text-light);">Got questions? We've got answers.</p>
-            </div>
-            <div class="faq-list" id="faq-list">
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">What trading experience do I need to join? <span class="arrow"></span></div>
-                    <div class="faq-answer"><p>Our programs cater to all levels, from absolute beginners to intermediate traders looking to refine their strategy. We focus on building fundamental precision first.</p></div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">How is the mentorship delivered? <span class="arrow"></span></div>
-                    <div class="faq-answer"><p>Mentorship is delivered through a combination of live weekly webinars, recorded video modules, direct one-on-one strategy sessions, and a private community chat for real-time support.</p></div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">What markets do you cover? <span class="arrow"></span></div>
-                    <div class="faq-answer"><p>Our core principles are universally applicable. While we primarily use Indian equity and commodity markets for examples, the techniques can be applied to Forex, Crypto, and US Stocks.</p></div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">Is there a refund policy? <span class="arrow"></span></div>
-                    <div class="faq-answer"><p>We offer a conditional 7-day refund policy, provided the student has completed less than 10% of the core content and provides a valid reason. Please read the full terms before enrolling.</p></div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFAQ(this)">Can you make me rich overnight? <span class="arrow"></span></div>
-                    <div class="faq-answer"><p>No. Trading is a skill that requires discipline, practice, and time. We focus on consistent, sustainable growth, not quick predictions or high-risk gambling.</p></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============ CTA ============ -->
-    <section class="cta-section" id="cta-section">
-        <h2 id="cta-h2">READY TO <span class="highlight-blue">START?</span></h2>
-        <p class="subtitle" id="cta-sub" style="margin-bottom:2rem;">Join hundreds of traders who have transformed their approach to the markets.</p>
-        <button class="btn-primary" id="cta-btn" onclick="redirectToCTA()">Join Ashford Capital &rarr;</button>
-        <h3 id="cta-newsletter-h" style="margin-top:5rem; font-weight:700;">Stay In The Know</h3>
-        <form class="newsletter-form" id="newsletter-form" onsubmit="return handleNewsletter(event)">
-            <input type="email" placeholder="Enter your email" required>
-            <button type="submit">Subscribe</button>
-        </form>
-    </section>
-
-    <!-- ============ FOOTER ============ -->
-    <footer id="contact" style="padding:60px 0;">
-        <div class="footer">
-            <div class="footer-logo" id="footer-logo">
-                <div class="logo" style="margin-bottom:0.5rem;">
-                    <img src="asfcm.webp" alt="Ashford Capital Logo" class="logo-image">
-                    <span class="logo-text">ASHFORD CAPITAL</span>
-                </div>
-                <p>Financial education and trading mentorship platform. Where traders thrive on precision, not prediction.</p>
-            </div>
-            <div class="footer-links" id="footer-links">
-                <h3>Quick Links</h3>
-                <a href="#home"     class="scroll-link">Home</a>
-                <a href="#about"    class="scroll-link">About</a>
-                <a href="#services" class="scroll-link">Services</a>
-                <a href="#contact"  class="scroll-link">Contact</a>
-            </div>
-            <div class="footer-contact" id="footer-contact">
-                <h3>Contact</h3>
-                <a href="/cdn-cgi/l/email-protection#5a393574343f222f292d352831291a3d373b333674393537"><span class="icon">&#9993;</span> <span class="__cf_email__" data-cfemail="02616d2c6c677a7771756d70697142656f636b6e2c616d6f">[email&#160;protected]</span></a>
-                <p><span class="icon">&#128222;</span> +91 9624887241</p>
-                <p><span class="icon">&#128248;</span> @ashfordcapital_</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- ============ POPUP MODAL ============ -->
-    <div id="popup-modal" style="position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.8);z-index:9999;display:none;justify-content:center;align-items:center;opacity:0;transition:opacity 0.3s;">
-        <div style="background-color:var(--color-card-bg);padding:30px;border-radius:10px;max-width:500px;width:90%;text-align:center;box-shadow:0 10px 30px rgba(0,153,255,0.5);transform:scale(0.9);transition:transform 0.3s;">
-            <h3 id="popup-title"   style="color:var(--color-blue-accent);margin-bottom:15px;font-size:1.5rem;"></h3>
-            <p  id="popup-message" style="color:var(--color-text-light);margin-bottom:20px;"></p>
-            <div style="width:100%;height:150px;background:linear-gradient(45deg,var(--color-blue-accent),var(--color-dark-bg));border-radius:5px;margin-bottom:20px;display:flex;justify-content:center;align-items:center;color:white;font-weight:600;">[Virtual Action Completed]</div>
-            <button onclick="closePopup()" class="btn-primary" style="padding:0.7rem 2rem;">Close</button>
         </div>
     </div>
+</section>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-    <script>
-        // ============================================================
-        // ORIGINAL FUNCTIONS — FULLY PRESERVED
-        // ============================================================
-        function redirectToCTA() { window.location.href = "https://ashford-cta.vercel.app/"; }
+<!-- ══════ FAQ ══════ -->
+<section id="faq" class="section">
+    <div class="section-inner">
+        <div class="section-label">FAQ</div>
+        <h2 class="section-h2">Common <span style="color:var(--c-gold)">Questions</span></h2>
 
-        const menuToggle = document.getElementById('mobile-menu-toggle');
-        const mainNav    = document.getElementById('main-nav');
-        const navBackdrop = document.getElementById('nav-backdrop');
+        <div class="faq-list" id="faq-list">
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFAQ(this)">
+                    <span class="faq-q-text">Who is Ashford Capital for?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-a">
+                    <div class="faq-a-inner">For anyone serious about markets — whether you're just starting or have been trading for years and still feel like something is missing. If you want structured thinking over luck, this is for you.</div>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFAQ(this)">
+                    <span class="faq-q-text">Do I need prior trading experience?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-a">
+                    <div class="faq-a-inner">No. Our programs are built from first principles. Whether you're a beginner or intermediate, the curriculum adapts to build your understanding layer by layer.</div>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFAQ(this)">
+                    <span class="faq-q-text">What markets do you cover?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-a">
+                    <div class="faq-a-inner">All market types — equities, derivatives, commodities, and more. Market structure principles apply universally. Once you understand the language, you can read any chart.</div>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFAQ(this)">
+                    <span class="faq-q-text">Is this live training or recorded content?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-a">
+                    <div class="faq-a-inner">Primarily live. We believe recorded theory without live application is incomplete. Sessions are conducted in real-time market environments so you train with actual stakes and pressure.</div>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q" onclick="toggleFAQ(this)">
+                    <span class="faq-q-text">What makes Ashford different from other programs?</span>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-a">
+                    <div class="faq-a-inner">Most programs sell strategies. We sell perception. We train you to see what others can't — which means the setups find you, not the other way around. No signals, no shortcuts. Pure systematic mastery.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-        function openNav() {
-            mainNav.classList.add('active');
-            navBackdrop.classList.add('active');
-            menuToggle.classList.add('open');
+<!-- ══════ CTA ══════ -->
+<section id="cta" class="section">
+    <div class="cta-inner">
+        <div class="section-label" style="justify-content:center">Ready to Begin</div>
+        <h2 class="cta-h2">
+            Stop <span class="mute">guessing.</span><br>
+            Start <span class="gold">operating.</span>
+        </h2>
+        <p class="cta-sub">Join traders who see what others miss. The edge is trainable. The market is readable. Your move.</p>
+        <div class="cta-actions">
+            <button class="btn-prime" onclick="redirectToCTA()">Claim Your Edge →</button>
+            <button class="btn-ghost" onclick="lenisScrollTo('#services')">View Programs</button>
+        </div>
+
+        <div class="newsletter-box">
+            <p class="newsletter-label">Market Insights — Weekly Dispatch</p>
+            <form class="newsletter-form" onsubmit="handleNewsletter(event)">
+                <input type="email" class="newsletter-input" placeholder="your@email.com" required>
+                <button type="submit" class="newsletter-btn">Subscribe</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <div class="footer-logo-mark">AC</div>
+                <span>ASHFORD CAPITAL</span>
+            </div>
+            <p class="footer-tagline">Precision in every decision. Clarity in every market. Execution as a discipline.</p>
+        </div>
+        <div>
+            <p class="footer-col-title">Navigate</p>
+            <ul class="footer-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#philosophy">Philosophy</a></li>
+                <li><a href="#testimonials">Results</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+        </div>
+        <div id="footer-contact">
+            <p class="footer-col-title">Connect</p>
+            <ul class="footer-links">
+                <li><a href="https://ashford-cta.vercel.app/" target="_blank">Join Now</a></li>
+                <li><a href="#">Instagram</a></li>
+                <li><a href="#">Telegram</a></li>
+                <li><a href="#">YouTube</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span class="footer-copy">© 2025 Ashford Capital. All rights reserved.</span>
+        <span class="footer-copy">Precision. Not Prediction.</span>
+    </div>
+</footer>
+
+</div><!-- /scroll-wrapper -->
+
+<script>
+/* ══════════════════════════════════════════════════
+   THREE.JS — CINEMATIC 3D BACKGROUND
+══════════════════════════════════════════════════ */
+(function() {
+    const canvas = document.getElementById('bg-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, 28);
+
+    /* — GRID PLANE — */
+    const gridGeo = new THREE.PlaneGeometry(120, 120, 60, 60);
+    const gridMat = new THREE.MeshBasicMaterial({
+        color: 0x1a1200,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.18
+    });
+    const gridMesh = new THREE.Mesh(gridGeo, gridMat);
+    gridMesh.rotation.x = -Math.PI / 2.2;
+    gridMesh.position.y = -14;
+    scene.add(gridMesh);
+
+    /* — PARTICLES — */
+    const particleCount = 800;
+    const pGeo = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const sizes = new Float32Array(particleCount);
+    for (let i = 0; i < particleCount; i++) {
+        positions[i*3]   = (Math.random() - 0.5) * 80;
+        positions[i*3+1] = (Math.random() - 0.5) * 80;
+        positions[i*3+2] = (Math.random() - 0.5) * 40 - 10;
+        sizes[i] = Math.random() * 2 + 0.5;
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    pGeo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+    const pMat = new THREE.PointsMaterial({
+        color: 0xc8a96e,
+        size: 0.12,
+        transparent: true,
+        opacity: 0.35,
+        sizeAttenuation: true
+    });
+    const particles = new THREE.Points(pGeo, pMat);
+    scene.add(particles);
+
+    /* — FLOATING GEOMETRIC RINGS — */
+    const ringGroup = new THREE.Group();
+    scene.add(ringGroup);
+
+    function makeRing(r, segments, color, opacity, y, z) {
+        const geo = new THREE.TorusGeometry(r, 0.015, 8, segments);
+        const mat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity });
+        const m = new THREE.Mesh(geo, mat);
+        m.position.set(0, y, z);
+        return m;
+    }
+    const ring1 = makeRing(8, 80, 0xc8a96e, 0.12, 0, -5);
+    const ring2 = makeRing(14, 80, 0x6eb4ff, 0.06, 0, -10);
+    const ring3 = makeRing(5, 60, 0xc8a96e, 0.08, 0, -3);
+    ringGroup.add(ring1, ring2, ring3);
+
+    /* — AXIS LINES — */
+    function makeLine(from, to, color, opacity) {
+        const geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(...from), new THREE.Vector3(...to)]);
+        const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
+        return new THREE.Line(geo, mat);
+    }
+    scene.add(makeLine([-60, 0, 0], [60, 0, 0], 0xc8a96e, 0.06));
+    scene.add(makeLine([0, -60, 0], [0, 60, 0], 0xc8a96e, 0.06));
+
+    /* — SCROLL PROGRESS & CAMERA — */
+    let scrollProgress = 0;
+    let targetScroll   = 0;
+    let time = 0;
+
+    window.addEventListener('scroll', () => {
+        const max = document.body.scrollHeight - window.innerHeight;
+        targetScroll = window.scrollY / max;
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+        time += 0.004;
+        scrollProgress += (targetScroll - scrollProgress) * 0.04;
+
+        // Camera cinematic movement
+        camera.position.x = Math.sin(time * 0.3) * 2;
+        camera.position.y = Math.cos(time * 0.2) * 1.5 - scrollProgress * 12;
+        camera.position.z = 28 - scrollProgress * 10;
+        camera.rotation.z = scrollProgress * 0.3;
+        camera.lookAt(0, -scrollProgress * 8, 0);
+
+        // Rings
+        ring1.rotation.x = time * 0.2 + scrollProgress * 2;
+        ring1.rotation.y = time * 0.15;
+        ring2.rotation.x = -time * 0.12;
+        ring2.rotation.z = time * 0.08 + scrollProgress * 1.5;
+        ring3.rotation.y = time * 0.3;
+        ring3.rotation.x = scrollProgress * 3;
+
+        // Grid depth
+        gridMesh.position.y = -14 + scrollProgress * 6;
+        gridMesh.rotation.x = -Math.PI / 2.2 + scrollProgress * 0.3;
+        gridMat.opacity = 0.18 - scrollProgress * 0.1;
+
+        // Particles drift
+        particles.rotation.y = time * 0.05 + scrollProgress * 0.5;
+        particles.rotation.x = scrollProgress * 0.2;
+        pMat.opacity = 0.35 - scrollProgress * 0.15;
+
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    /* — MOUSE PARALLAX — */
+    let mx = 0, my = 0;
+    window.addEventListener('mousemove', e => {
+        mx = (e.clientX / window.innerWidth  - 0.5) * 2;
+        my = (e.clientY / window.innerHeight - 0.5) * 2;
+        ringGroup.rotation.x += (my * 0.02 - ringGroup.rotation.x) * 0.03;
+        ringGroup.rotation.y += (mx * 0.02 - ringGroup.rotation.y) * 0.03;
+    });
+})();
+
+/* ══════════════════════════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════════════════════════ */
+const dot  = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let cx = 0, cy = 0, rx = 0, ry = 0;
+
+window.addEventListener('mousemove', e => {
+    cx = e.clientX; cy = e.clientY;
+    dot.style.left  = cx + 'px';
+    dot.style.top   = cy + 'px';
+});
+
+(function trackRing() {
+    rx += (cx - rx) * 0.1;
+    ry += (cy - ry) * 0.1;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(trackRing);
+})();
+
+document.querySelectorAll('button, a, .adv-card, .svc-card, .feature-item, .testi-card, .pillar, .faq-item').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+});
+
+/* ══════════════════════════════════════════════════
+   LENIS SMOOTH SCROLL
+══════════════════════════════════════════════════ */
+const lenis = new Lenis({
+    duration: 1.8,
+    easing: t => 1 - Math.pow(1 - t, 4),
+    smoothWheel: true,
+    wheelMultiplier: 0.8,
+    touchMultiplier: 1.4,
+});
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(time => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+
+function lenisScrollTo(sel) {
+    const el = document.querySelector(sel);
+    if (el) lenis.scrollTo(el, { offset: -72, duration: 1.6 });
+}
+
+/* ══════════════════════════════════════════════════
+   GSAP — REGISTER PLUGIN
+══════════════════════════════════════════════════ */
+gsap.registerPlugin(ScrollTrigger);
+
+/* ══════ HERO ANIMATION ══════ */
+const heroTl = gsap.timeline({ delay: 0.2 });
+heroTl
+    .to('#hero-overline', { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' })
+    .to('#hero-h1', { opacity: 1, duration: 0 }, '-=0.3')
+    .to('#hero-h1 .line-inner', {
+        y: 0, opacity: 1, duration: 0.8, ease: 'power4.out', stagger: 0.12
+    }, '-=0.2')
+    .to('#hero-sub',    { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.3')
+    .to('#hero-actions',{ opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '-=0.25')
+    .to('#hero-stats',  { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, '-=0.2');
+
+gsap.set('#hero-overline,#hero-sub,#hero-actions,#hero-stats', { opacity: 0, y: 30 });
+gsap.set('#hero-h1 .line-inner', { y: '100%', opacity: 0 });
+
+/* ══════ SCROLLY CINEMATIC ══════ */
+const scenes = ['#sc-1','#sc-2','#sc-3','#sc-4'];
+const pips = document.querySelectorAll('.scrolly-pip');
+gsap.set(scenes, { opacity: 0 });
+
+const scrollyTl = gsap.timeline({
+    scrollTrigger: {
+        trigger: '#scrolly-wrap',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.8,
+        pin: '#scrolly-pin',
+        pinSpacing: false,
+        onUpdate(self) {
+            const idx = Math.min(3, Math.floor(self.progress * 4));
+            pips.forEach((p,i) => p.classList.toggle('active', i === idx));
         }
-        function closeNav() {
-            mainNav.classList.remove('active');
-            navBackdrop.classList.remove('active');
-            menuToggle.classList.remove('open');
+    }
+});
+const step = 0.25;
+scenes.forEach((sel, i) => {
+    const el = document.querySelector(sel);
+    const inStart = i * step;
+    const fadeOut = inStart + step * 0.7;
+    scrollyTl.to(el, { opacity: 1, y: 0, duration: step * 0.2, ease: 'power2.out' }, inStart);
+    if (el) {
+        const eyebrow = el.querySelector('.scrolly-eyebrow');
+        const h2 = el.querySelector('.scrolly-h2');
+        const body = el.querySelector('.scrolly-body');
+        if (eyebrow) scrollyTl.fromTo(eyebrow, { y:20, opacity:0 }, { y:0, opacity:1, duration:step*0.15 }, inStart+step*0.05);
+        if (h2)      scrollyTl.fromTo(h2,      { y:40, opacity:0 }, { y:0, opacity:1, duration:step*0.2  }, inStart+step*0.08);
+        if (body)    scrollyTl.fromTo(body,     { y:20, opacity:0 }, { y:0, opacity:1, duration:step*0.15 }, inStart+step*0.14);
+    }
+    if (i < 3) scrollyTl.to(el, { opacity: 0, y: -30, duration: step*0.2 }, fadeOut);
+});
+
+/* ══════ ABOUT ══════ */
+gsap.timeline({ scrollTrigger: { trigger: '#about', start: 'top 75%', toggleActions: 'play none none none' } })
+    .from('#about-left .section-label', { y:20, opacity:0, duration:0.5, ease:'power2.out' })
+    .from('#about-left .section-h2',   { y:30, opacity:0, duration:0.6, ease:'power3.out' }, '-=0.2')
+    .from('.about-manifesto',          { y:30, opacity:0, duration:0.6, ease:'power3.out' }, '-=0.3')
+    .from('.about-body',               { y:20, opacity:0, duration:0.5, stagger:0.15, ease:'power2.out' }, '-=0.2')
+    .from('.feature-item',             { x:-30, opacity:0, stagger:0.12, duration:0.5, ease:'power2.out' }, '-=0.2')
+    .from('#video-container',          { x:60, opacity:0, duration:0.9, ease:'power3.out' }, '<');
+
+/* ══════ ADVANTAGE ══════ */
+gsap.timeline({ scrollTrigger: { trigger: '#advantage', start: 'top 75%', toggleActions: 'play none none none' } })
+    .from('#advantage .section-label', { y:20, opacity:0, duration:0.4 })
+    .from('#advantage .section-h2',   { y:30, opacity:0, duration:0.55, ease:'power3.out' }, '-=0.2')
+    .from('.adv-card', { y:60, opacity:0, scale:0.92, stagger:0.1, duration:0.7, ease:'back.out(1.5)' }, '-=0.1');
+
+/* ══════ SERVICES ══════ */
+gsap.timeline({ scrollTrigger: { trigger: '#services', start: 'top 75%', toggleActions: 'play none none none' } })
+    .from('#services .section-label', { y:20, opacity:0, duration:0.4 })
+    .from('#services .section-h2',   { y:30, opacity:0, duration:0.55, ease:'power3.out' }, '-=0.2')
+    .from('.svc-card', { y:70, opacity:0, stagger:0.15, duration:0.75, ease:'power3.out' }, '-=0.1');
+
+/* ══════ PHILOSOPHY ══════ */
+gsap.timeline({ scrollTrigger: { trigger: '#philosophy', start: 'top 75%', toggleActions: 'play none none none' } })
+    .from('.philosophy-statement', { y:40, opacity:0, duration:0.9, ease:'power3.out' })
+    .from('.pillar', { y:50, opacity:0, stagger:0.15, duration:0.7, ease:'power3.out' }, '-=0.4');
+
+/* ══════ TESTIMONIALS ══════ */
+gsap.timeline({ scrollTrigger: { trigger: '#testimonials', start: 'top 75%', toggleActions: 'play none none none' } })
+    .from('#testimonials .section-label', { y:20, opacity:0, duration:0.4 })
+    .from('#testimonials .section-h2',   { y:30, opacity:0, duration:0.55 }, '-=0.2')
+    .from('.testi-card', { y:50, opacity:0, scale:0.94, stagger:0.15, duration:0.75, ease:'back.out(1.4)' }, '-=0.1');
+
+/* ══════ FAQ ══════ */
+gsap.timeline({ scrollTrigger: { trigger: '#faq', start: 'top 80%', toggleActions: 'play none none none' } })
+    .from('#faq .section-label', { y:20, opacity:0, duration:0.4 })
+    .from('#faq .section-h2',   { y:30, opacity:0, duration:0.55 }, '-=0.2')
+    .from('.faq-item', { x:-40, opacity:0, stagger:0.08, duration:0.55, ease:'power2.out' }, '-=0.1');
+
+/* ══════ CTA ══════ */
+gsap.timeline({ scrollTrigger: { trigger: '#cta', start: 'top 80%', toggleActions: 'play none none none' } })
+    .from('.cta-h2',       { y:60, opacity:0, duration:0.8, ease:'power3.out' })
+    .from('.cta-sub',      { y:30, opacity:0, duration:0.6 }, '-=0.4')
+    .from('.cta-actions',  { scale:0.9, opacity:0, duration:0.55, ease:'back.out(1.5)' }, '-=0.25')
+    .from('.newsletter-box',{ y:30, opacity:0, duration:0.5 }, '-=0.1');
+
+/* ══════ FOOTER ══════ */
+gsap.timeline({ scrollTrigger: { trigger: 'footer', start: 'top 90%', toggleActions: 'play none none none' } })
+    .from('.footer-brand', { x:-30, opacity:0, duration:0.6, ease:'power2.out' })
+    .from('footer .footer-col-title', { y:20, opacity:0, stagger:0.1, duration:0.45 }, '-=0.3');
+
+/* ══════ NAVBAR SCROLL BEHAVIOR ══════ */
+let lastScroll = 0;
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y > 60) navbar.classList.add('opaque');
+    else navbar.classList.remove('opaque');
+    lastScroll = y;
+});
+
+/* ══════ NAV LINK SMOOTH SCROLL ══════ */
+document.querySelectorAll('.nav-link').forEach(a => {
+    a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (href && href.startsWith('#')) {
+            e.preventDefault();
+            lenisScrollTo(href);
         }
+    });
+});
 
-        menuToggle.addEventListener('click', () => {
-            mainNav.classList.contains('active') ? closeNav() : openNav();
-        });
-        navBackdrop.addEventListener('click', closeNav);
+/* ══════ MOBILE NAV ══════ */
+const mobToggle = document.getElementById('mob-toggle');
+const navLinks = document.querySelector('.nav-links');
+if (mobToggle) {
+    mobToggle.addEventListener('click', () => {
+        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        navLinks.style.flexDirection = 'column';
+        navLinks.style.position = 'fixed';
+        navLinks.style.top = '72px';
+        navLinks.style.left = '0';
+        navLinks.style.right = '0';
+        navLinks.style.background = 'rgba(3,4,10,0.98)';
+        navLinks.style.padding = '2rem';
+        navLinks.style.gap = '2rem';
+        navLinks.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
+    });
+}
 
-        document.querySelectorAll('.nav-link, .scroll-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                const href = link.getAttribute('href');
-                if (href && href.startsWith('#')) {
-                    e.preventDefault();
-                    const target = document.querySelector(href);
-                    if (target) {
-                        closeNav();
-                        target.scrollIntoView({ behavior: 'smooth' });
-                        document.querySelectorAll('.nav-link').forEach(nl => nl.classList.remove('active'));
-                        if (link.classList.contains('nav-link')) link.classList.add('active');
-                    }
-                }
+/* ══════ VIDEO TOGGLE ══════ */
+const video = document.getElementById('about-video');
+const vOverlay = document.getElementById('video-overlay');
+function toggleVideo() {
+    if (!video) return;
+    if (video.paused) {
+        video.play();
+        if (vOverlay) vOverlay.style.opacity = '0';
+    } else {
+        video.pause();
+        if (vOverlay) vOverlay.style.opacity = '1';
+    }
+}
+
+/* ══════ FAQ TOGGLE ══════ */
+function toggleFAQ(el) {
+    const item = el.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.faq-toggle').textContent = '+';
+    });
+    if (!wasOpen) {
+        item.classList.add('open');
+        el.querySelector('.faq-toggle').textContent = '×';
+    }
+}
+
+/* ══════ MODAL ══════ */
+const modal = document.getElementById('modal');
+function openModal(title, body) {
+    document.getElementById('modal-label').textContent = 'Ashford Capital';
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-body').textContent = body;
+    modal.classList.add('show');
+}
+function closeModal() { modal.classList.remove('show'); }
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+/* ══════ NEWSLETTER ══════ */
+function handleNewsletter(e) {
+    e.preventDefault();
+    openModal('Subscribed', 'Thank you — you will receive your first market dispatch shortly. Welcome to the Ashford orbit.');
+    return false;
+}
+
+/* ══════ REDIRECT ══════ */
+function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.app/'; }
+
+/* ══════ COUNTER ANIMATION ══════ */
+document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count);
+    ScrollTrigger.create({
+        trigger: el,
+        start: 'top 80%',
+        once: true,
+        onEnter() {
+            gsap.to({ v: 0 }, {
+                v: target, duration: 1.5, ease: 'power2.out',
+                onUpdate() { el.textContent = Math.round(this.targets()[0].v) + '+'; }
             });
-        });
-
-        const video          = document.getElementById('about-video');
-        const videoContainer = document.getElementById('video-container');
-        function toggleVideo() {
-            if (video.paused) { video.play(); videoContainer.classList.add('video-playing'); }
-            else              { video.pause(); videoContainer.classList.remove('video-playing'); }
         }
+    });
+});
+</script>
 
-        const testimonials = [
-            { text: '"Ashford Capital transformed my approach to trading. The emotional mastery techniques alone have saved me from countless impulsive trades."', name: 'Niyati S', initials: 'NS', type: 'Swing Trader' },
-            { text: '"The clarity I gained from the advanced chart analysis module is incredible. I finally understand the \'why\' behind market movements."',       name: 'Arjun M',  initials: 'AM', type: 'Intraday Specialist' }
-        ];
-        let currentTestimonial = 0;
-        function showTestimonial(index) {
-            currentTestimonial = index;
-            const textEl = document.getElementById('testimonial-text');
-            const dots   = document.querySelectorAll('.slider-dot');
-            textEl.style.opacity = '0';
-            setTimeout(() => {
-                textEl.textContent = testimonials[index].text;
-                document.getElementById('trader-name').textContent     = testimonials[index].name;
-                document.getElementById('trader-initials').textContent = testimonials[index].initials;
-                document.getElementById('trader-type').textContent     = testimonials[index].type;
-                textEl.style.opacity = '1';
-                dots.forEach((d, i) => d.classList.toggle('active', i === index));
-            }, 300);
-        }
-
-        function toggleFAQ(element) {
-            const item   = element.parentElement;
-            item.classList.toggle('active');
-            const answer = item.querySelector('.faq-answer');
-            answer.style.maxHeight = item.classList.contains('active') ? answer.scrollHeight + "px" : "0";
-        }
-
-        const modal = document.getElementById('popup-modal');
-        function showPopup(type, title) {
-            document.getElementById('popup-title').textContent   = title;
-            document.getElementById('popup-message').textContent = type === 'advantage'
-                ? `Our ${title} framework is designed to give you an institutional edge in retail markets.`
-                : `Thank you for your interest in our ${title} program. A consultant will reach out shortly.`;
-            modal.style.display = 'flex';
-            setTimeout(() => { modal.style.opacity = '1'; modal.querySelector('div').style.transform = 'scale(1)'; }, 10);
-        }
-        function closePopup() {
-            modal.style.opacity = '0';
-            modal.querySelector('div').style.transform = 'scale(0.9)';
-            setTimeout(() => modal.style.display = 'none', 300);
-        }
-        function handleNewsletter(e) { e.preventDefault(); showPopup('newsletter', 'Newsletter'); return false; }
-
-
-        // ============================================================
-        // LENIS SMOOTH SCROLL — wired into GSAP ScrollTrigger
-        // ============================================================
-        const lenis = new Lenis({
-            duration:        2.0,          // longer glide = more inertia feel
-            easing:          t => 1 - Math.pow(1 - t, 4), // quartic ease-out — slower tail-off
-            orientation:     'vertical',
-            gestureOrientation: 'vertical',
-            smoothWheel:     true,
-            wheelMultiplier: 0.75,         // each wheel tick moves less distance
-            touchMultiplier: 1.5,
-            infinite:        false,
-        });
-
-        // Feed Lenis scroll position into GSAP ScrollTrigger
-        lenis.on('scroll', ScrollTrigger.update);
-
-        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-        gsap.ticker.lagSmoothing(0);
-
-        // Override every native scrollIntoView / anchor click so Lenis handles them
-        document.querySelectorAll('a[href^="#"], button[onclick*="scrollIntoView"]').forEach(el => {
-            // anchor links
-            if (el.tagName === 'A') {
-                el.addEventListener('click', (e) => {
-                    const href = el.getAttribute('href');
-                    if (href && href.startsWith('#')) {
-                        const target = document.querySelector(href);
-                        if (target) { e.preventDefault(); lenis.scrollTo(target, { offset: 0, duration: 1.4 }); }
-                    }
-                }, { capture: true });
-            }
-        });
-        // Patch the "Let Me See" button that uses scrollIntoView inline
-        document.querySelectorAll('[onclick*="scrollIntoView"]').forEach(btn => {
-            const match = btn.getAttribute('onclick').match(/#([\w-]+)/);
-            if (match) {
-                btn.addEventListener('click', (e) => {
-                    const target = document.getElementById(match[1]);
-                    if (target) { e.preventDefault(); e.stopImmediatePropagation(); lenis.scrollTo(target, { offset: 0, duration: 1.4 }); }
-                }, { capture: true });
-            }
-        });
-
-        // ============================================================
-        // GSAP SCROLLTRIGGER — CLEAN, ID-BASED, ZERO CONFLICTS
-        // ============================================================
-        gsap.registerPlugin(ScrollTrigger);
-
-        // ============================================================
-        // 1. HERO — staggered on-load reveal
-        // ============================================================
-        // Use gsap.set so elements stay visible if JS is slow / GSAP errors later
-        gsap.set(['#hero-tagline', '.hero-line', '#hero-subtitle', '#hero-actions', '#stat-1', '#stat-2'],
-            { opacity: 0, y: 40 });
-
-        gsap.timeline({ delay: 0.15 })
-            .to('#hero-tagline',         { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' })
-            .to('.hero-line',            { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out', stagger: 0.14 }, '-=0.3')
-            .to('#hero-subtitle',        { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, '-=0.3')
-            .to('#hero-actions',         { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }, '-=0.25')
-            .to(['#stat-1', '#stat-2'],  { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out', stagger: 0.1 }, '-=0.2');
-
-        // ============================================================
-        // 2. HERO PARALLAX — bg layers drift at different speeds
-        // ============================================================
-        // Parallax depth: grid (far) → glow (mid) → content (near)
-        gsap.to('.grid-lines',   { y: -160, ease: 'none', scrollTrigger: { trigger: '.hero-section', start: 'top top', end: 'bottom top', scrub: 1.5 } });
-        gsap.to('#hero-glow',    { y: -220, scale: 1.4, ease: 'none', scrollTrigger: { trigger: '.hero-section', start: 'top top', end: 'bottom top', scrub: 2 } });
-        gsap.to('.hero-content', { y: -80,  ease: 'none', scrollTrigger: { trigger: '.hero-section', start: 'top top', end: 'bottom top', scrub: true } });
-        gsap.to('.stats-bar',    { y: -30,  ease: 'none', scrollTrigger: { trigger: '.hero-section', start: 'top top', end: 'bottom top', scrub: 1 } });
-
-        // ============================================================
-        // 3. MARQUEE — fade in on scroll
-        // ============================================================
-        gsap.from('#marquee-strip', { opacity: 0, duration: 0.7, ease: 'power2.out',
-            scrollTrigger: { trigger: '#marquee-strip', start: 'top 98%', toggleActions: 'play none none none' } });
-
-        // ============================================================
-        // 4. SCROLLYTELLING — PINNED SCENES
-        // ============================================================
-        const sceneIds    = ['#scene-1', '#scene-2', '#scene-3', '#scene-4'];
-        const totalScenes = sceneIds.length;
-        const sdots       = document.querySelectorAll('.scrolly-dot');
-
-        // Start all scenes invisible
-        gsap.set(sceneIds, { opacity: 0 });
-
-        const scrollyTl = gsap.timeline({
-            scrollTrigger: {
-                trigger:       '#scrolly-pin',
-                start:         'top top',
-                end:           'bottom bottom',
-                scrub:         0.8,
-                pin:           '#scrolly-sticky',
-                pinSpacing:    false,
-                anticipatePin: 1,
-                onUpdate: (self) => {
-                    const idx = Math.min(totalScenes - 1, Math.floor(self.progress * totalScenes));
-                    sdots.forEach((d, i) => d.classList.toggle('active', i === idx));
-                }
-            }
-        });
-
-        const step = 1 / totalScenes;
-        sceneIds.forEach((sel, i) => {
-            const el = document.querySelector(sel);
-            if (!el) return;
-            const eyebrow = el.querySelector('.eyebrow');
-            const heading = el.querySelector('h2');
-            const para    = el.querySelector('p');
-            const inStart = i * step;
-            const childIn = inStart + step * 0.18;
-            const fadeOut = inStart + step * 0.72;
-
-            scrollyTl.to(el, { opacity: 1, duration: step * 0.18, ease: 'power2.out' }, inStart);
-            if (eyebrow) scrollyTl.fromTo(eyebrow, { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: step * 0.16, ease: 'power2.out' }, childIn);
-            if (heading)  scrollyTl.fromTo(heading,  { y: 38, opacity: 0 }, { y: 0, opacity: 1, duration: step * 0.18, ease: 'power2.out' }, childIn + step * 0.04);
-            if (para)     scrollyTl.fromTo(para,     { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: step * 0.14, ease: 'power2.out' }, childIn + step * 0.10);
-            if (i < totalScenes - 1) scrollyTl.to(el, { opacity: 0, y: -28, duration: step * 0.18, ease: 'power2.in' }, fadeOut);
-        });
-
-        // Subtle parallax on scrolly background pseudo-element via a helper div
-        gsap.to('#scrolly-sticky', { backgroundPositionY: '30%', ease: 'none', scrollTrigger: { trigger: '#scrolly-pin', start: 'top top', end: 'bottom bottom', scrub: 1 } });
-
-        // ============================================================
-        // 5. ABOUT — left side & right side fly in, features stagger up
-        // ============================================================
-        gsap.timeline({ scrollTrigger: { trigger: '#about', start: 'top 78%', toggleActions: 'play none none none' } })
-            .from('#about-tag', { y: 16,  opacity: 0, duration: 0.45, ease: 'power2.out' })
-            .from('#about-h2',  { y: 28,  opacity: 0, duration: 0.6,  ease: 'power3.out' }, '-=0.2')
-            .from('#about-text',      { x: -70, opacity: 0, duration: 0.85, ease: 'power3.out' }, '-=0.3')
-            .from('#video-container', { x:  70, opacity: 0, duration: 0.85, ease: 'power3.out' }, '<')
-            .from('#exec-card',       { y: 22,  opacity: 0, duration: 0.55, ease: 'power2.out' }, '-=0.5')
-            .from('#about-p1',        { y: 18,  opacity: 0, duration: 0.5,  ease: 'power2.out' }, '-=0.3')
-            .from('#about-p2',        { y: 18,  opacity: 0, duration: 0.5,  ease: 'power2.out' }, '-=0.3')
-            .from(['#fi-1', '#fi-2', '#fi-3'], { x: -30, opacity: 0, stagger: 0.14, duration: 0.5, ease: 'power2.out' }, '-=0.25');
-
-        // ============================================================
-        // 6. ADVANTAGE — header drops, cards assemble from below with bounce
-        // ============================================================
-        gsap.timeline({ scrollTrigger: { trigger: '#advantage-section', start: 'top 78%', toggleActions: 'play none none none' } })
-            .from('#adv-tag', { y: 16, opacity: 0, duration: 0.4,  ease: 'power2.out' })
-            .from('#adv-h2',  { y: 28, opacity: 0, duration: 0.55, ease: 'power3.out' }, '-=0.2')
-            .from('#adv-sub', { y: 16, opacity: 0, duration: 0.4,  ease: 'power2.out' }, '-=0.2')
-            .from(['#adv-1', '#adv-2', '#adv-3', '#adv-4'], {
-                y: 70, opacity: 0, scale: 0.88,
-                stagger: { each: 0.12, from: 'start' },
-                duration: 0.75, ease: 'back.out(1.5)'
-            }, '-=0.1');
-
-        // ============================================================
-        // 7. SERVICES — header, then cards fly from alternating sides
-        //    left card from left, center card from below, right from right
-        // ============================================================
-        gsap.timeline({ scrollTrigger: { trigger: '#services', start: 'top 78%', toggleActions: 'play none none none' } })
-            .from('#svc-h2',  { y: 30, opacity: 0, duration: 0.6,  ease: 'power3.out' })
-            .from('#svc-sub', { y: 18, opacity: 0, duration: 0.45 }, '-=0.25')
-            .from('#svc-1',   { x: -80, opacity: 0, duration: 0.75, ease: 'power3.out' }, '-=0.1')
-            .from('#svc-2',   { y:  80, opacity: 0, scale: 0.9, duration: 0.75, ease: 'back.out(1.4)' }, '-=0.55')
-            .from('#svc-3',   { x:  80, opacity: 0, duration: 0.75, ease: 'power3.out' }, '-=0.55');
-
-        // ============================================================
-        // 8. TESTIMONIALS — tag + heading drop, card scales up
-        // ============================================================
-        gsap.timeline({ scrollTrigger: { trigger: '#testimonials-section', start: 'top 78%', toggleActions: 'play none none none' } })
-            .from('#test-tag',         { y: 16, opacity: 0, duration: 0.4,  ease: 'power2.out' })
-            .from('#test-h2',          { y: 28, opacity: 0, duration: 0.55, ease: 'power3.out' }, '-=0.2')
-            .from('#testimonial-card', { y: 50, opacity: 0, scale: 0.92, duration: 0.85, ease: 'back.out(1.4)' }, '-=0.2');
-
-        // ============================================================
-        // 9. FAQ — heading, then items slide in from the left like a list assembling
-        // ============================================================
-        gsap.timeline({ scrollTrigger: { trigger: '#faq-section', start: 'top 78%', toggleActions: 'play none none none' } })
-            .from('#faq-h2',  { y: 28, opacity: 0, duration: 0.6,  ease: 'power3.out' })
-            .from('#faq-sub', { y: 16, opacity: 0, duration: 0.4 }, '-=0.25')
-            .from('#faq-list .faq-item', {
-                x: -50, opacity: 0,
-                stagger: { each: 0.1, from: 'start' },
-                duration: 0.55, ease: 'power2.out'
-            }, '-=0.1');
-
-        // ============================================================
-        // 10. CTA — punchy sequential pop
-        // ============================================================
-        gsap.timeline({ scrollTrigger: { trigger: '#cta-section', start: 'top 78%', toggleActions: 'play none none none' } })
-            .from('#cta-h2',           { y: 50, opacity: 0, duration: 0.7,  ease: 'power3.out' })
-            .from('#cta-sub',          { y: 30, opacity: 0, duration: 0.55 }, '-=0.35')
-            .from('#cta-btn',          { scale: 0.85, opacity: 0, duration: 0.55, ease: 'back.out(2)' }, '-=0.25')
-            .from('#cta-newsletter-h', { y: 22, opacity: 0, duration: 0.45 }, '-=0.1')
-            .from('#newsletter-form',  { y: 18, opacity: 0, duration: 0.45 }, '-=0.25');
-
-        // ============================================================
-        // 11. FOOTER — slides in left/center/right
-        // ============================================================
-        gsap.timeline({ scrollTrigger: { trigger: 'footer', start: 'top 92%', toggleActions: 'play none none none' } })
-            .from('#footer-logo',    { x: -40, opacity: 0, duration: 0.65, ease: 'power2.out' })
-            .from('#footer-links',   { y:  30, opacity: 0, duration: 0.55, ease: 'power2.out' }, '-=0.4')
-            .from('#footer-contact', { x:  40, opacity: 0, duration: 0.65, ease: 'power2.out' }, '-=0.5');
-
-    </script>
 </body>
 </html>
