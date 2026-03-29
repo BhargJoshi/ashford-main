@@ -31,10 +31,10 @@
   --blue-glow: rgba(26, 107, 255, 0.22);
 
   /* Green — rare, precious, highlight only */
-  --green:     #1a6644;
-  --green-dim: #0f4a2e;
-  --green-ghost: rgba(26, 102, 68, 0.09);
-  --green-glow:  rgba(26, 102, 68, 0.22);
+  --green:     #00c853;
+  --green-dim: #007a33;
+  --green-ghost: rgba(0, 200, 83, 0.08);
+  --green-glow:  rgba(0, 200, 83, 0.25);
 
   /* Text hierarchy */
   --t-primary: #eef0f7;
@@ -46,7 +46,7 @@
   --b-faint:  rgba(255,255,255,0.05);
   --b-soft:   rgba(255,255,255,0.08);
   --b-blue:   rgba(26, 107, 255, 0.18);
-  --b-green:  rgba(26, 102, 68, 0.25);
+  --b-green:  rgba(0, 200, 83, 0.22);
 
   /* Typography */
   --f-serif:  'Cormorant Garamond', serif;
@@ -112,7 +112,7 @@ h1, h2, h3, h4 {
 }
 #c-ring.expanded {
   width: 56px; height: 56px;
-  border-color: rgba(26,102,68,0.5);
+  border-color: rgba(0,200,83,0.5);
 }
 #c-dot.green-mode { background: var(--green); }
 
@@ -330,6 +330,7 @@ h1, h2, h3, h4 {
   letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--green);
+  text-shadow: 0 0 14px rgba(0,200,83,0.5);
   display: flex; align-items: center; gap: 1rem;
   justify-content: center;
   margin-bottom: 2.2rem;
@@ -436,7 +437,7 @@ h1, h2, h3, h4 {
   display: block;
 }
 .h-metric-val .accent { color: var(--blue-bright); }
-.h-metric-val .green-accent { color: var(--green); }
+.h-metric-val .green-accent { color: var(--green); text-shadow: 0 0 18px rgba(0,200,83,0.5); }
 .h-metric-label {
   font-family: var(--f-mono);
   font-size: 0.58rem;
@@ -534,7 +535,7 @@ h1, h2, h3, h4 {
   margin-bottom: 1rem;
 }
 .s-h2 .blue { color: var(--blue-bright); font-style: italic; }
-.s-h2 .green { color: var(--green); }
+.s-h2 .green { color: var(--green); text-shadow: 0 0 18px rgba(0,200,83,0.45); }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    SCROLLYTELLING
@@ -582,7 +583,7 @@ h1, h2, h3, h4 {
   max-width: 960px;
 }
 .sy-h2 .blue { color: var(--blue-bright); font-style: italic; }
-.sy-h2 .green { color: var(--green); }
+.sy-h2 .green { color: var(--green); text-shadow: 0 0 22px rgba(0,200,83,0.45); }
 .sy-h2 .ghost { color: var(--t-tertiary); }
 
 .sy-sub {
@@ -639,7 +640,7 @@ h1, h2, h3, h4 {
   margin-bottom: 2.5rem;
   position: relative;
 }
-.about-pull-quote .green { color: var(--green); font-style: italic; }
+.about-pull-quote .green { color: var(--green); font-style: italic; text-shadow: 0 0 14px rgba(0,200,83,0.4); }
 
 .about-body-text {
   font-size: 0.88rem;
@@ -861,6 +862,8 @@ h1, h2, h3, h4 {
   margin-bottom: 1.5rem;
   align-self: flex-start;
   background: var(--green-ghost);
+  text-shadow: 0 0 10px rgba(0,200,83,0.4);
+  box-shadow: 0 0 12px rgba(0,200,83,0.08);
 }
 .svc-icon { font-size: 2.2rem; display: block; margin-bottom: 1.2rem; }
 .svc-name {
@@ -907,7 +910,7 @@ h1, h2, h3, h4 {
   margin-bottom: 80px;
 }
 .philosophy-statement .blue { color: var(--blue-bright); font-style: italic; }
-.philosophy-statement .green { color: var(--green); }
+.philosophy-statement .green { color: var(--green); text-shadow: 0 0 16px rgba(0,200,83,0.4); }
 .philosophy-statement .ghost { color: var(--t-tertiary); }
 
 .phil-grid {
@@ -1074,7 +1077,7 @@ h1, h2, h3, h4 {
   content: '';
   position: absolute;
   width: 400px; height: 400px;
-  background: radial-gradient(ellipse, rgba(26,102,68,0.05) 0%, transparent 65%);
+  background: radial-gradient(ellipse, rgba(0,200,83,0.06) 0%, transparent 65%);
   left: 60%; top: 40%; transform: translate(-50%,-50%);
   pointer-events: none;
 }
@@ -1088,7 +1091,7 @@ h1, h2, h3, h4 {
   margin-bottom: 1.5rem;
 }
 .cta-h2 .blue { color: var(--blue-bright); font-style: italic; }
-.cta-h2 .green { color: var(--green); }
+.cta-h2 .green { color: var(--green); text-shadow: 0 0 20px rgba(0,200,83,0.45); }
 .cta-h2 .ghost { color: var(--t-tertiary); }
 .cta-body {
   font-size: 0.9rem;
@@ -1302,7 +1305,7 @@ footer {
   color: var(--t-tertiary);
   display: flex; align-items: center; gap: .5rem;
 }
-.ticker-item .up   { color: var(--green); }
+.ticker-item .up   { color: var(--green); text-shadow: 0 0 8px rgba(0,200,83,0.5); }
 .ticker-item .down { color: #ff4d6d; }
 .ticker-sep { color: var(--b-soft); }
 @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -1885,7 +1888,7 @@ footer {
     pPos[i*3+2] = (Math.random() - 0.5) * 50 - 10;
     const isGreen = Math.random() < 0.06; // 6% chance — green is rare
     if (isGreen) {
-      pCol[i*3] = 0.1; pCol[i*3+1] = 0.4; pCol[i*3+2] = 0.26;
+      pCol[i*3] = 0.0; pCol[i*3+1] = 0.78; pCol[i*3+2] = 0.33;
     } else {
       const bright = 0.15 + Math.random() * 0.4;
       pCol[i*3] = bright * 0.2; pCol[i*3+1] = bright * 0.45; pCol[i*3+2] = bright;
@@ -1913,7 +1916,7 @@ footer {
   const rings = new THREE.Group();
   const r1 = makeRing(9,  100, 0x1a6bff, 0.10);
   const r2 = makeRing(16, 100, 0x0e3d99, 0.06);
-  const r3 = makeRing(5,  80,  0x1a6644, 0.10); // green ring — rare accent
+  const r3 = makeRing(5,  80,  0x00c853, 0.12); // green ring — rare accent
   const r4 = makeRing(22, 100, 0x0a2255, 0.04);
   rings.add(r1, r2, r3, r4);
   scene.add(rings);
