@@ -31,10 +31,10 @@
   --blue-glow: rgba(26, 107, 255, 0.22);
 
   /* Green — rare, precious, highlight only */
-  --green:     #00e676;
-  --green-dim: #00994d;
-  --green-ghost: rgba(0, 230, 118, 0.07);
-  --green-glow:  rgba(0, 230, 118, 0.18);
+  --green:     #1a6644;
+  --green-dim: #0f4a2e;
+  --green-ghost: rgba(26, 102, 68, 0.09);
+  --green-glow:  rgba(26, 102, 68, 0.22);
 
   /* Text hierarchy */
   --t-primary: #eef0f7;
@@ -46,7 +46,7 @@
   --b-faint:  rgba(255,255,255,0.05);
   --b-soft:   rgba(255,255,255,0.08);
   --b-blue:   rgba(26, 107, 255, 0.18);
-  --b-green:  rgba(0, 230, 118, 0.15);
+  --b-green:  rgba(26, 102, 68, 0.25);
 
   /* Typography */
   --f-serif:  'Cormorant Garamond', serif;
@@ -112,7 +112,7 @@ h1, h2, h3, h4 {
 }
 #c-ring.expanded {
   width: 56px; height: 56px;
-  border-color: rgba(0,230,118,0.4);
+  border-color: rgba(26,102,68,0.5);
 }
 #c-dot.green-mode { background: var(--green); }
 
@@ -209,6 +209,11 @@ h1, h2, h3, h4 {
 .nav-link:hover { color: var(--t-primary); }
 .nav-link:hover::after { width: 100%; }
 
+/* Right-side nav group */
+.nav-right {
+  display: flex; align-items: center; gap: 1rem;
+}
+
 .nav-join {
   font-family: var(--f-mono);
   font-size: 0.65rem;
@@ -230,7 +235,72 @@ h1, h2, h3, h4 {
 .nav-join:hover { box-shadow: 0 0 32px var(--blue-glow); transform: translateY(-1px); }
 .nav-join:hover::before { left: 100%; }
 
-.mob-toggle { display: none; background: none; border: none; color: var(--t-primary); font-size: 1.3rem; cursor: pointer; }
+/* Hamburger toggle — always visible beside JOIN NOW */
+.mob-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 36px; height: 36px;
+  background: none;
+  border: 1px solid var(--b-soft);
+  color: var(--t-primary);
+  cursor: pointer;
+  padding: 0;
+  transition: border-color .25s;
+  flex-shrink: 0;
+}
+.mob-toggle:hover { border-color: var(--b-blue); }
+.mob-toggle .bar {
+  display: block;
+  width: 16px; height: 1px;
+  background: var(--t-secondary);
+  transition: all .3s var(--ease-expo);
+}
+.mob-toggle.open .bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.mob-toggle.open .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.mob-toggle.open .bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* Dropdown menu */
+#nav-links {
+  display: none;
+  position: fixed;
+  top: calc(28px + 68px);
+  right: 0;
+  width: 220px;
+  background: rgba(5,7,16,0.97);
+  border: 1px solid var(--b-blue);
+  border-top: none;
+  border-right: none;
+  backdrop-filter: blur(24px);
+  z-index: 599;
+  padding: 1.4rem 0;
+  flex-direction: column;
+  gap: 0;
+}
+#nav-links.open { display: flex; }
+
+.nav-link {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--t-secondary);
+  cursor: pointer; position: relative;
+  transition: color .25s, background .25s;
+  padding: 0.85rem 1.8rem;
+  display: block;
+}
+.nav-link::after {
+  content: '';
+  position: absolute; bottom: 0; left: 1.8rem;
+  width: 0; height: 1px;
+  background: var(--blue-bright);
+  transition: width .35s var(--ease-expo);
+}
+.nav-link:hover { color: var(--t-primary); background: var(--blue-ghost); }
+.nav-link:hover::after { width: calc(100% - 3.6rem); }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    HERO
@@ -1004,7 +1074,7 @@ h1, h2, h3, h4 {
   content: '';
   position: absolute;
   width: 400px; height: 400px;
-  background: radial-gradient(ellipse, rgba(0,230,118,0.04) 0%, transparent 65%);
+  background: radial-gradient(ellipse, rgba(26,102,68,0.05) 0%, transparent 65%);
   left: 60%; top: 40%; transform: translate(-50%,-50%);
   pointer-events: none;
 }
@@ -1244,8 +1314,6 @@ footer {
    RESPONSIVE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @media (max-width: 960px) {
-  .nav-links { display: none; }
-  .mob-toggle { display: block; }
   .about-layout { grid-template-columns: 1fr; gap: 50px; }
   .adv-grid { grid-template-columns: 1fr 1fr; }
   .svc-grid { grid-template-columns: 1fr; }
@@ -1257,6 +1325,7 @@ footer {
 @media (max-width: 600px) {
   #ticker { display: none; }
   #nav { top: 0; }
+  #nav-links { top: 68px; }
   .adv-grid { grid-template-columns: 1fr; }
   .footer-wrap { grid-template-columns: 1fr; gap: 30px; }
   .hero-actions { flex-direction: column; align-items: center; }
@@ -1327,14 +1396,20 @@ footer {
     </div>
     <span class="nav-wordmark">Ashford Capital</span>
   </div>
-  <nav class="nav-links" id="nav-links">
+  <div class="nav-right">
+    <button class="nav-join" onclick="redirectToCTA()">Join Now</button>
+    <button class="mob-toggle" id="mob-toggle" aria-label="Toggle menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </div>
+  <nav id="nav-links">
     <a class="nav-link" href="#about">About</a>
     <a class="nav-link" href="#services">Services</a>
     <a class="nav-link" href="#philosophy">Philosophy</a>
     <a class="nav-link" href="#faq">FAQ</a>
   </nav>
-  <button class="nav-join" onclick="redirectToCTA()">Join Now</button>
-  <button class="mob-toggle" id="mob-toggle">☰</button>
 </header>
 
 <!-- ── HERO ── -->
@@ -1810,7 +1885,7 @@ footer {
     pPos[i*3+2] = (Math.random() - 0.5) * 50 - 10;
     const isGreen = Math.random() < 0.06; // 6% chance — green is rare
     if (isGreen) {
-      pCol[i*3] = 0.0; pCol[i*3+1] = 0.9; pCol[i*3+2] = 0.46;
+      pCol[i*3] = 0.1; pCol[i*3+1] = 0.4; pCol[i*3+2] = 0.26;
     } else {
       const bright = 0.15 + Math.random() * 0.4;
       pCol[i*3] = bright * 0.2; pCol[i*3+1] = bright * 0.45; pCol[i*3+2] = bright;
@@ -1838,7 +1913,7 @@ footer {
   const rings = new THREE.Group();
   const r1 = makeRing(9,  100, 0x1a6bff, 0.10);
   const r2 = makeRing(16, 100, 0x0e3d99, 0.06);
-  const r3 = makeRing(5,  80,  0x00e676, 0.08); // green ring — rare accent
+  const r3 = makeRing(5,  80,  0x1a6644, 0.10); // green ring — rare accent
   const r4 = makeRing(22, 100, 0x0a2255, 0.04);
   rings.add(r1, r2, r3, r4);
   scene.add(rings);
@@ -2095,7 +2170,7 @@ window.addEventListener('scroll', () => {
 });
 
 /* ════════════════════════════════════════
-   MOBILE NAV
+   HAMBURGER NAV TOGGLE
 ════════════════════════════════════════ */
 const mobToggle = document.getElementById('mob-toggle');
 const navLinks  = document.getElementById('nav-links');
@@ -2104,11 +2179,11 @@ if (mobToggle) {
   mobToggle.addEventListener('click', () => {
     mobOpen = !mobOpen;
     if (mobOpen) {
-      navLinks.style.cssText = `display:flex;flex-direction:column;position:fixed;top:96px;left:0;right:0;background:rgba(2,3,10,0.97);padding:2rem 5%;gap:1.8rem;border-bottom:1px solid rgba(26,107,255,0.15);backdrop-filter:blur(20px);z-index:599;`;
-      mobToggle.textContent = '✕';
+      navLinks.classList.add('open');
+      mobToggle.classList.add('open');
     } else {
-      navLinks.style.display = 'none';
-      mobToggle.textContent = '☰';
+      navLinks.classList.remove('open');
+      mobToggle.classList.remove('open');
     }
   });
 }
@@ -2118,7 +2193,11 @@ document.querySelectorAll('.nav-link').forEach(a => {
     const href = a.getAttribute('href');
     if (href && href.startsWith('#')) {
       e.preventDefault();
-      if (mobOpen) { mobToggle.click(); }
+      if (mobOpen) {
+        navLinks.classList.remove('open');
+        mobToggle.classList.remove('open');
+        mobOpen = false;
+      }
       setTimeout(() => lenisTo(href), 50);
     }
   });
