@@ -161,19 +161,18 @@ h1, h2, h3, h4 {
   cursor: none;
 }
 .nav-logo-gem {
-  width: 34px; height: 34px;
-  background: linear-gradient(135deg, var(--blue-dim) 0%, var(--blue) 100%);
+  width: 40px; height: 40px;
   display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden;
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   transition: filter .3s;
+  background: none;
 }
-.nav-logo-gem::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, transparent 60%);
+.nav-logo-gem img {
+  width: 40px; height: 40px;
+  object-fit: contain;
+  display: block;
+  filter: brightness(1.05);
 }
-.nav-logo-gem svg { width: 14px; fill: white; position: relative; z-index: 1; }
 .nav-logo:hover .nav-logo-gem { filter: drop-shadow(0 0 10px var(--blue-glow)); }
 
 .nav-wordmark {
@@ -1216,9 +1215,13 @@ footer {
   cursor: none;
 }
 .footer-gem {
-  width: 28px; height: 28px;
-  background: linear-gradient(135deg, var(--blue-dim), var(--blue));
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+}
+.footer-gem img {
+  width: 32px; height: 32px;
+  object-fit: contain;
+  filter: brightness(1.05);
 }
 .footer-brand-name {
   font-family: var(--f-serif);
@@ -1367,8 +1370,10 @@ footer {
 #nav { top: 28px; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   RESPONSIVE
+   RESPONSIVE — FULL MOBILE / TABLET SUPPORT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* ── Tablet (≤960px) ── */
 @media (max-width: 960px) {
   .about-layout { grid-template-columns: 1fr; gap: 50px; }
   .adv-grid { grid-template-columns: 1fr 1fr; }
@@ -1377,19 +1382,171 @@ footer {
   .testi-grid { grid-template-columns: 1fr; }
   .footer-wrap { grid-template-columns: 1fr 1fr; gap: 40px; }
   .hero-metrics { gap: 3rem; flex-wrap: wrap; }
+
+  /* Scrollytelling on tablet */
+  .sy-h2 { font-size: clamp(2.2rem, 6vw, 5rem); }
+  .sy-rail { right: 2%; }
 }
-@media (max-width: 600px) {
-  #ticker { display: none; }
-  #nav { top: 0; }
-  #nav-links { top: 68px; }
+
+/* ── Mobile (≤768px) ── */
+@media (max-width: 768px) {
+  /* Disable custom cursor on touch devices */
+  body { cursor: auto; }
+  #c-dot, #c-ring { display: none; }
+  button, a, [onclick] { cursor: pointer; }
+
+  /* NAV */
+  #nav { padding: 0 5%; height: 60px; }
+  .nav-wordmark { font-size: 0.95rem; letter-spacing: 0.08em; }
+  .nav-logo-gem img { width: 32px; height: 32px; }
+  .nav-logo-gem { width: 32px; height: 32px; }
+  .nav-join { padding: .5rem 1.1rem; font-size: 0.6rem; }
+  #nav-links { top: 60px; }
+
+  /* HERO — full mobile layout */
+  #hero { min-height: 100dvh; }
+  .hero-stage { height: 100dvh; }
+
+  /* Logo fills mobile hero centered, smaller */
+  #hero-logo-wrap {
+    left: 50% !important;
+    top: 42% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+  #hero-logo-img {
+    width: clamp(220px, 72vw, 340px);
+  }
+
+  /* Text block below logo */
+  #hero-text {
+    left: 50% !important;
+    top: 78% !important;
+    transform: translate(-50%, -50%) !important;
+    max-width: 90vw;
+    text-align: center;
+    pointer-events: auto;
+  }
+  .hero-wordmark { font-size: clamp(2rem, 10vw, 3.2rem); }
+  .hero-tagline { font-size: clamp(0.48rem, 2.2vw, 0.65rem); letter-spacing: 0.18em; }
+  .hero-tagline-rule { margin: 1.2rem 0 1rem; }
+  .hero-actions {
+    margin-top: 1.6rem;
+    flex-direction: column;
+    align-items: center;
+    gap: .75rem;
+  }
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary { width: 100%; max-width: 280px; text-align: center; }
+
+  /* Metrics — bottom strip on mobile */
+  .hero-metrics {
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 1.8rem;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 90vw;
+  }
+  .h-metric-val { font-size: 1.8rem; }
+  .h-metric-label { font-size: 0.46rem; letter-spacing: 0.12em; }
+
+  #hero-divider { display: none; }
+
+  /* Corner marks */
+  .hc.tl, .hc.tr { top: 70px; }
+  .hc.bl, .hc.br { bottom: 20px; }
+
+  /* Scroll cue */
+  .scroll-cue { bottom: 18px; }
+
+  /* MARQUEE */
+  .marquee-inner { gap: 2rem; }
+
+  /* SECTIONS */
+  .s { padding: 70px 0; }
+  .s-inner { padding: 0 5%; }
+  .s-h2 { font-size: clamp(1.9rem, 8vw, 3rem); }
+
+  /* Scrollytelling */
+  #scrolly { min-height: 400vh; }
+  .sy-h2 { font-size: clamp(1.8rem, 8vw, 3.5rem); padding: 0 4%; }
+  .sy-sub { font-size: 0.82rem; padding: 0 4%; }
+  .sy-rail { right: 1rem; gap: 6px; }
+  .sy-tick { height: 20px; }
+
+  /* ABOUT */
+  .about-pull-quote { padding: 1.6rem; font-size: clamp(1.15rem, 4vw, 1.6rem); }
+  .about-video-wrap { aspect-ratio: 16/12; }
+
+  /* ADVANTAGE */
   .adv-grid { grid-template-columns: 1fr; }
-  .footer-wrap { grid-template-columns: 1fr; gap: 30px; }
-  .hero-actions { flex-direction: column; align-items: center; }
-  .hero-metrics { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
-  .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+  .adv-cell { padding: 2rem 1.5rem; }
+
+  /* SERVICES */
+  .svc-card { padding: 2rem 1.8rem; }
+
+  /* PHILOSOPHY */
+  .philosophy-statement { font-size: clamp(1.4rem, 5vw, 2rem); margin-bottom: 50px; }
+  .phil-card { padding: 2rem; }
+
+  /* TESTIMONIALS */
+  .testi-card { padding: 2.2rem 1.8rem; }
+
+  /* FAQ */
+  .faq-q { padding: 1.3rem 1.4rem; }
+  .faq-a-body { padding: 0 1.4rem 1.4rem 1.4rem; }
+  .faq-q-text { font-size: 0.95rem; }
+
+  /* CTA */
+  #cta { padding: 100px 0; }
+  .cta-h2 { font-size: clamp(2.2rem, 9vw, 4rem); }
+  .cta-btns { flex-direction: column; align-items: center; gap: .75rem; }
+  .cta-btns .btn-primary, .cta-btns .btn-secondary { width: 100%; max-width: 300px; text-align: center; }
   .nl-form { flex-direction: column; }
   .nl-input { border-right: 1px solid var(--b-soft); border-bottom: none; }
-  .cta-btns { flex-direction: column; align-items: center; }
+
+  /* FOOTER */
+  .footer-wrap { grid-template-columns: 1fr; gap: 30px; }
+  .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+
+  /* MODAL */
+  .modal-box { padding: 2.2rem 1.8rem; }
+}
+
+/* ── Small mobile (≤480px) ── */
+@media (max-width: 480px) {
+  #ticker { display: none; }
+  #nav { top: 0; }
+  #nav-links { top: 60px; }
+
+  #hero-logo-img { width: clamp(180px, 80vw, 280px); }
+  #hero-text { top: 80% !important; }
+
+  .hero-wordmark { font-size: clamp(1.8rem, 11vw, 2.8rem); }
+  .hero-metrics { gap: 1.2rem; }
+  .h-metric-val { font-size: 1.5rem; }
+
+  .sy-h2 { font-size: clamp(1.6rem, 9vw, 2.8rem); }
+
+  .s { padding: 55px 0; }
+  .s-h2 { font-size: clamp(1.7rem, 9vw, 2.5rem); }
+
+  .adv-grid { grid-template-columns: 1fr; }
+  .adv-cell { padding: 1.6rem 1.2rem; }
+
+  .testi-card { padding: 1.8rem 1.4rem; }
+  .testi-text { font-size: 1rem; }
+
+  .cta-h2 { font-size: clamp(1.9rem, 10vw, 3rem); }
+  .philosophy-statement { font-size: clamp(1.2rem, 5.5vw, 1.7rem); }
+}
+
+/* ── Very small (≤375px) ── */
+@media (max-width: 375px) {
+  .nav-wordmark { font-size: 0.82rem; }
+  #hero-logo-img { width: 75vw; }
+  .hero-metrics { flex-wrap: wrap; justify-content: flex-start; gap: 1rem 2rem; }
 }
 </style>
 </head>
@@ -1448,7 +1605,7 @@ footer {
 <header id="nav">
   <div class="nav-logo" onclick="lenisTop()">
     <div class="nav-logo-gem">
-      <svg viewBox="0 0 16 16"><path d="M8 1L15 5V11L8 15L1 11V5L8 1Z"/></svg>
+      <img src="asfcm.png" alt="Ashford Capital">
     </div>
     <span class="nav-wordmark">Ashford Capital</span>
   </div>
@@ -1874,7 +2031,7 @@ footer {
   <div class="footer-wrap">
     <div>
       <div class="footer-brand-logo" onclick="lenisTop()">
-        <div class="footer-gem"></div>
+        <div class="footer-gem"><img src="asfcm.png" alt="Ashford Capital"></div>
         <span class="footer-brand-name">Ashford Capital</span>
       </div>
       <p class="footer-tagline">Precision in every decision. Clarity in every market. Execution as a discipline — not a hope.</p>
@@ -2131,9 +2288,13 @@ gsap.set('#h-metrics',  { opacity: 0 });
 gsap.set('#scroll-cue', { opacity: 0 });
 gsap.set('#hero-divider', { opacity: 0, scaleY: 0 });
 
-// Final positions (pixel offsets from CSS left:50% / top:50%)
-const logoFinalLeft  = () =>  window.innerWidth  * 0.72 - window.innerWidth  * 0.5;  // 72% of vw
-const textFinalLeft  = () =>  window.innerWidth  * 0.26 - window.innerWidth  * 0.5;  // 26% of vw — left side
+const isMobile = () => window.innerWidth <= 768;
+
+// Final positions — desktop: side by side; mobile: stacked vertically
+const logoFinalLeft  = () => isMobile() ? 0 : window.innerWidth * 0.72 - window.innerWidth * 0.5;
+const logoFinalTop   = () => isMobile() ? window.innerHeight * 0.42 - window.innerHeight * 0.5 : 0;
+const textFinalLeft  = () => isMobile() ? 0 : window.innerWidth * 0.26 - window.innerWidth * 0.5;
+const textFinalTop   = () => isMobile() ? window.innerHeight * 0.78 - window.innerHeight * 0.5 : 0;
 
 const heroTL = gsap.timeline({ delay: 0.25 });
 
@@ -2145,17 +2306,18 @@ heroTL
   })
   .add(() => document.getElementById('hero-logo-wrap').classList.add('glowing'), '-=0.15')
 
-  // PHASE 2 — Logo shoots RIGHT, text shoots LEFT simultaneously
+  // PHASE 2 — Logo shoots to final position, text slides in simultaneously
   .to('#hero-logo-wrap', {
     x: () => logoFinalLeft(),
+    y: () => logoFinalTop(),
     duration: 1.1, ease: 'expo.inOut'
   }, '+=0.3')
-  // Text becomes visible and flies left at the exact same time
   .to('#hero-text', {
     opacity: 1,
     x: () => textFinalLeft(),
+    y: () => textFinalTop(),
     duration: 1.1, ease: 'expo.inOut'
-  }, '<')                        // "<" = same start time as logo move
+  }, '<')
 
   // PHASE 3 — Divider line, rule, buttons, metrics appear after settle
   .to('#hero-divider', {
@@ -2169,8 +2331,8 @@ heroTL
 // Reposition on resize after animation ends
 window.addEventListener('resize', () => {
   if (heroTL.progress() >= 0.85) {
-    gsap.set('#hero-logo-wrap', { x: logoFinalLeft() });
-    gsap.set('#hero-text',      { x: textFinalLeft() });
+    gsap.set('#hero-logo-wrap', { x: logoFinalLeft(), y: logoFinalTop() });
+    gsap.set('#hero-text',      { x: textFinalLeft(), y: textFinalTop() });
   }
 });
 
