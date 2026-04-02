@@ -338,7 +338,7 @@ h1, h2, h3, h4 {
 }
 
 #hero-logo-img {
-  width: clamp(390px, 48vw, 660px);
+  width: clamp(351px, 43.2vw, 594px);
   height: auto;
   display: block;
   filter: brightness(1.05) drop-shadow(0 0 80px rgba(26,107,255,0.35));
@@ -745,6 +745,177 @@ h1, h2, h3, h4 {
   color: var(--t-secondary);
   font-weight: 300;
   line-height: 1.7;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   WHAT YOU GET — PILLAR CARDS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.wyg-section {
+  margin-top: 100px;
+  padding-top: 70px;
+  border-top: 1px solid var(--b-faint);
+  position: relative;
+}
+.wyg-header {
+  display: flex; align-items: center; gap: 1.2rem;
+  margin-bottom: 2.8rem;
+}
+.wyg-title {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+  position: relative;
+}
+.wyg-title::after {
+  content: '';
+  position: absolute; bottom: -8px; left: 0;
+  width: 36px; height: 1px;
+  background: linear-gradient(to right, var(--green), transparent);
+}
+.wyg-rule { flex: 1; height: 1px; background: var(--b-faint); }
+
+.wyg-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  position: relative;
+}
+
+/* Blur siblings on hover */
+.wyg-grid:has(.wyg-card:hover) .wyg-card:not(:hover) {
+  filter: blur(2.5px) brightness(0.6);
+  transform: scale(0.97);
+}
+
+.wyg-card {
+  background: rgba(15, 18, 34, 0.55);
+  border: 1px solid var(--b-faint);
+  padding: 2rem 1.5rem 2rem;
+  position: relative;
+  overflow: hidden;
+  cursor: none;
+  transition:
+    transform 0.42s var(--ease-expo),
+    box-shadow 0.42s var(--ease-expo),
+    background 0.42s,
+    border-color 0.42s,
+    filter 0.42s;
+  will-change: transform, filter;
+}
+
+/* Glass fill on hover */
+.wyg-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    145deg,
+    rgba(26, 107, 255, 0.12) 0%,
+    rgba(0, 200, 83, 0.06) 50%,
+    rgba(26, 107, 255, 0.05) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Top shimmer line */
+.wyg-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green), var(--blue-bright), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s var(--ease-expo);
+}
+
+.wyg-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  background: rgba(15, 18, 34, 0.82);
+  border-color: rgba(26, 107, 255, 0.28);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(26, 107, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  z-index: 10;
+}
+
+.wyg-card:hover::before { opacity: 1; }
+.wyg-card:hover::after { transform: scaleX(1); }
+
+/* Backdrop blur shimmer */
+.wyg-card-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; gap: 0.9rem;
+}
+
+.wyg-code {
+  font-family: var(--f-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  color: var(--blue-pale);
+  opacity: 0.7;
+  transition: opacity 0.3s, color 0.3s;
+}
+.wyg-card:hover .wyg-code { opacity: 1; color: var(--green); }
+
+.wyg-glyph {
+  font-size: 1.55rem;
+  line-height: 1;
+  display: block;
+  transition: transform 0.4s var(--ease-back), filter 0.4s;
+}
+.wyg-card:hover .wyg-glyph {
+  transform: scale(1.18) translateY(-2px);
+  filter: drop-shadow(0 0 10px rgba(26, 107, 255, 0.5));
+}
+
+.wyg-card-title {
+  font-family: var(--f-serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--t-primary);
+  line-height: 1.25;
+  transition: color 0.3s;
+}
+.wyg-card:hover .wyg-card-title { color: #fff; }
+
+.wyg-card-desc {
+  font-family: var(--f-sans);
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: var(--t-secondary);
+  line-height: 1.75;
+  transition: color 0.3s;
+}
+.wyg-card:hover .wyg-card-desc { color: rgba(220, 225, 240, 0.82); }
+
+/* Corner accent on hover */
+.wyg-corner {
+  position: absolute;
+  bottom: 1rem; right: 1rem;
+  width: 16px; height: 16px;
+  border-bottom: 1px solid var(--b-faint);
+  border-right: 1px solid var(--b-faint);
+  transition: border-color 0.4s, width 0.3s, height 0.3s;
+}
+.wyg-card:hover .wyg-corner {
+  border-color: var(--green-dim);
+  width: 20px; height: 20px;
+}
+
+@media (max-width: 960px) {
+  .wyg-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .wyg-grid { grid-template-columns: repeat(2, 1fr); }
+  .wyg-section { margin-top: 60px; padding-top: 50px; }
+}
+@media (max-width: 480px) {
+  .wyg-grid { grid-template-columns: 1fr; }
 }
 
 /* VIDEO */
@@ -1757,30 +1928,6 @@ footer {
 
         <p class="about-body-text">Ashford Capital prioritizes <strong>executional clarity</strong> of concepts you learn. We train how to see markets beyond ordinary, operate within them strategically, and think in systems — not just trades.</p>
         <p class="about-body-text">We don't sell strategies, tips, or signals. We train on how the market operates in itself, so traders stop predicting and start making structured decisions.</p>
-
-        <div class="pillars">
-          <div class="pillar-row">
-            <span class="pillar-code">MK</span>
-            <div class="pillar-content">
-              <div class="pillar-title">Market Clarity</div>
-              <div class="pillar-desc">Understand what the market is communicating — without indicators or opinions clouding the signal.</div>
-            </div>
-          </div>
-          <div class="pillar-row">
-            <span class="pillar-code">EP</span>
-            <div class="pillar-content">
-              <div class="pillar-title">Execution Practice</div>
-              <div class="pillar-desc">Execute decisions consistently in live markets, even under maximum psychological pressure.</div>
-            </div>
-          </div>
-          <div class="pillar-row">
-            <span class="pillar-code">CI</span>
-            <div class="pillar-content">
-              <div class="pillar-title">Capital Intelligence</div>
-              <div class="pillar-desc">Manage capital professionally. Preservation, positioning, and longevity over all else.</div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div class="about-video-wrap" id="vid-wrap" onclick="toggleVideo()">
@@ -1795,6 +1942,62 @@ footer {
         <span class="v-label">[ Ashford Capital — Intro Reel ]</span>
       </div>
     </div>
+
+    <!-- WHAT YOU GET -->
+    <div class="wyg-section">
+      <div class="wyg-header">
+        <span class="wyg-title">What You Get ?</span>
+        <div class="wyg-rule"></div>
+      </div>
+      <div class="wyg-grid">
+        <div class="wyg-card">
+          <div class="wyg-card-inner">
+            <span class="wyg-code">[ MK ]</span>
+            <span class="wyg-glyph">◎</span>
+            <div class="wyg-card-title">Market Clarity</div>
+            <div class="wyg-card-desc">Understand what the market is truly communicating — without indicators or opinions clouding the signal.</div>
+          </div>
+          <div class="wyg-corner"></div>
+        </div>
+        <div class="wyg-card">
+          <div class="wyg-card-inner">
+            <span class="wyg-code">[ EP ]</span>
+            <span class="wyg-glyph">⊕</span>
+            <div class="wyg-card-title">Executional Practice</div>
+            <div class="wyg-card-desc">Execute decisions consistently in live markets, even under maximum psychological pressure.</div>
+          </div>
+          <div class="wyg-corner"></div>
+        </div>
+        <div class="wyg-card">
+          <div class="wyg-card-inner">
+            <span class="wyg-code">[ CI ]</span>
+            <span class="wyg-glyph">◈</span>
+            <div class="wyg-card-title">Capital Intelligence</div>
+            <div class="wyg-card-desc">Manage capital professionally. Preservation, positioning, and longevity above all else.</div>
+          </div>
+          <div class="wyg-corner"></div>
+        </div>
+        <div class="wyg-card">
+          <div class="wyg-card-inner">
+            <span class="wyg-code">[ PS ]</span>
+            <span class="wyg-glyph">◬</span>
+            <div class="wyg-card-title">Psychological Mastery</div>
+            <div class="wyg-card-desc">Break the emotional cycles that cost traders their capital. Build the mindset of a systematic market operator.</div>
+          </div>
+          <div class="wyg-corner"></div>
+        </div>
+        <div class="wyg-card">
+          <div class="wyg-card-inner">
+            <span class="wyg-code">[ LM ]</span>
+            <span class="wyg-glyph">↗</span>
+            <div class="wyg-card-title">Live Mentorship</div>
+            <div class="wyg-card-desc">Direct guidance from experienced market operators — in real sessions, under real conditions, with real accountability.</div>
+          </div>
+          <div class="wyg-corner"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
