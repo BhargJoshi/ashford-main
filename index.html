@@ -1719,6 +1719,822 @@ footer {
   #hero-logo-img { width: 75vw; }
   .hero-metrics { flex-wrap: wrap; justify-content: flex-start; gap: 1rem 2rem; }
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 01 — PSYCHOLOGY OF A TRADE
+   Scroll-locked candlestick story
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#psych-trade {
+  position: relative;
+  background: var(--ink);
+  overflow: hidden;
+}
+#psych-pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--ink-deep);
+}
+#psych-pin::before {
+  content: '';
+  position: absolute;
+  width: 900px; height: 900px;
+  background: radial-gradient(circle, rgba(26,107,255,0.04) 0%, transparent 60%);
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+#psych-canvas-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 80px;
+}
+#psych-chart {
+  width: 100%;
+  height: 55vh;
+  display: block;
+}
+#psych-copy {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+  width: 90%;
+  max-width: 700px;
+}
+.psych-scene-text {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 90%; max-width: 680px;
+  opacity: 0;
+  transition: opacity 0.55s var(--ease-silk);
+  pointer-events: none;
+}
+.psych-scene-text.active { opacity: 1; }
+.psych-beat-label {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+  margin-bottom: 1.4rem;
+}
+.psych-beat-h {
+  font-family: var(--f-serif);
+  font-size: clamp(2.2rem, 6vw, 5.5rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--t-primary);
+}
+.psych-beat-h .red-word { color: #ff4d6d; font-style: italic; text-shadow: 0 0 20px rgba(255,77,109,0.35); }
+.psych-beat-h .blue { color: var(--blue-bright); font-style: italic; }
+.psych-beat-h .green { color: var(--green); text-shadow: 0 0 18px rgba(0,200,83,0.4); }
+.psych-beat-h .ghost { color: var(--t-tertiary); }
+.psych-beat-sub {
+  font-family: var(--f-sans);
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--t-secondary);
+  margin-top: 1.4rem;
+  line-height: 1.9;
+  max-width: 440px;
+  margin-left: auto; margin-right: auto;
+}
+.psych-progress-rail {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.psych-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--b-soft);
+  transition: background 0.4s, transform 0.4s;
+}
+.psych-dot.active {
+  background: var(--blue-bright);
+  transform: scale(1.8);
+  box-shadow: 0 0 8px var(--blue-glow);
+}
+#psych-missed-zone {
+  position: absolute;
+  bottom: 80px;
+  left: 0; right: 0;
+  height: 0;
+  background: rgba(255,77,109,0.07);
+  border-top: 1px solid rgba(255,77,109,0.18);
+  transition: height 0.8s var(--ease-expo), opacity 0.5s;
+  opacity: 0;
+  pointer-events: none;
+}
+#psych-ghost-line {
+  position: absolute;
+  bottom: 80px;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent 10%, var(--green) 35%, var(--green) 70%, transparent 90%);
+  opacity: 0;
+  transition: opacity 0.7s 0.3s;
+  pointer-events: none;
+}
+.psych-cta-scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 02 — NOISE VS SIGNAL
+   Drag-to-reveal split chart
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#noise-signal {
+  background: var(--ink-deep);
+  padding: 0;
+  overflow: hidden;
+}
+.ns-header {
+  padding: 90px 5% 60px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.ns-intro-label {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--blue-pale);
+  display: flex; align-items: center; gap: .8rem;
+  margin-bottom: 1.2rem;
+}
+.ns-intro-label::before { content: ''; width: 24px; height: 1px; background: var(--blue-dim); }
+.ns-intro-h {
+  font-family: var(--f-serif);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 300;
+  line-height: 1.1;
+  max-width: 700px;
+}
+.ns-intro-h .blue { color: var(--blue-bright); font-style: italic; }
+.ns-intro-sub {
+  font-size: 0.85rem;
+  color: var(--t-secondary);
+  font-weight: 300;
+  margin-top: 0.8rem;
+  line-height: 1.9;
+  max-width: 560px;
+}
+.ns-stage {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  min-height: 420px;
+  overflow: hidden;
+  user-select: none;
+  cursor: col-resize;
+}
+.ns-side {
+  position: absolute;
+  top: 0; bottom: 0;
+  overflow: hidden;
+}
+#ns-noisy {
+  left: 0; right: 0;
+  background: var(--ink-panel);
+}
+#ns-clean {
+  left: 0;
+  width: 50%;
+  background: var(--ink-deep);
+  overflow: hidden;
+}
+#ns-clean .ns-chart-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100% !important;
+  min-width: var(--ns-full-width, 100%);
+}
+#ns-divider {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, transparent, var(--blue-bright) 30%, var(--blue-bright) 70%, transparent);
+  cursor: col-resize;
+  z-index: 20;
+  transform: translateX(-50%);
+  box-shadow: 0 0 16px var(--blue-glow);
+  transition: box-shadow 0.3s;
+}
+#ns-divider-handle {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  color: var(--blue-bright);
+  font-size: 1.1rem;
+  background: var(--ink-panel);
+  width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--b-blue);
+  letter-spacing: -0.05em;
+  pointer-events: none;
+  user-select: none;
+}
+#ns-divider:hover { box-shadow: 0 0 28px var(--blue-glow); }
+
+.ns-label-overlay {
+  position: absolute;
+  top: 2rem;
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  z-index: 15;
+  padding: 0.4rem 1rem;
+  border: 1px solid;
+  pointer-events: none;
+}
+#ns-noisy-label {
+  right: 2rem;
+  color: rgba(255,77,109,0.7);
+  border-color: rgba(255,77,109,0.25);
+  background: rgba(255,77,109,0.06);
+}
+#ns-clean-label {
+  left: 2rem;
+  color: var(--green);
+  border-color: var(--b-green);
+  background: var(--green-ghost);
+  text-shadow: 0 0 8px rgba(0,200,83,0.35);
+}
+.ns-chart-canvas {
+  width: 100%; height: 100%;
+  display: block;
+}
+.ns-hint {
+  position: absolute;
+  bottom: 1.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+  pointer-events: none;
+  z-index: 25;
+  transition: opacity 0.6s;
+  white-space: nowrap;
+}
+.ns-footer {
+  padding: 40px 5% 80px;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.ns-footer-quote {
+  font-family: var(--f-serif);
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  font-weight: 300;
+  color: var(--t-secondary);
+  max-width: 580px;
+  line-height: 1.5;
+  font-style: italic;
+}
+.ns-footer-quote strong { color: var(--t-primary); font-weight: 400; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 03 — THE ASHFORD CLOCK
+   Live market mission-control ambient
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#ashford-clock {
+  background: var(--ink-deep);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+#clock-particle-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  opacity: 0.45;
+}
+.clock-inner {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+.clock-headline {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+  text-align: center;
+}
+.clock-face-wrap {
+  position: relative;
+  width: clamp(260px, 36vw, 420px);
+  height: clamp(260px, 36vw, 420px);
+}
+#clock-svg {
+  width: 100%; height: 100%;
+}
+/* Orbital data nodes */
+.clock-orbital-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  border: 1px dashed rgba(26,107,255,0.12);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.clock-node {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: none;
+  transition: opacity 0.3s;
+}
+.clock-node:hover { opacity: 0.85; }
+.clock-node-val {
+  font-family: var(--f-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+.clock-node-val.up { color: var(--green); text-shadow: 0 0 10px rgba(0,200,83,0.4); }
+.clock-node-val.down { color: #ff4d6d; }
+.clock-node-val.neutral { color: var(--blue-pale); }
+.clock-node-label {
+  font-family: var(--f-mono);
+  font-size: 0.48rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+}
+.clock-node-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--blue-dim);
+  margin-top: 2px;
+}
+.clock-session-badge {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 0.4rem 1.2rem;
+  border: 1px solid var(--b-green);
+  color: var(--green);
+  background: var(--green-ghost);
+  text-shadow: 0 0 8px rgba(0,200,83,0.3);
+}
+.clock-session-badge.closed {
+  border-color: var(--b-soft);
+  color: var(--t-tertiary);
+  background: none;
+  text-shadow: none;
+}
+.clock-tagline {
+  font-family: var(--f-serif);
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  font-weight: 300;
+  text-align: center;
+  color: var(--t-primary);
+  line-height: 1.3;
+  max-width: 560px;
+}
+.clock-tagline .blue { color: var(--blue-bright); font-style: italic; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 04 — THE TRADER'S ARC
+   Horizontal scroll narrative
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#traders-arc {
+  position: relative;
+}
+#arc-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+#arc-track {
+  display: flex;
+  width: 500%;
+  height: 100%;
+  will-change: transform;
+}
+.arc-chapter {
+  width: 20%;
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: 0 8%;
+  transition: background 1.2s ease;
+}
+.arc-chapter::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s;
+}
+.arc-chapter.ch-1 { background: linear-gradient(160deg, #0a0d1a 0%, #110208 100%); }
+.arc-chapter.ch-2 { background: linear-gradient(160deg, #0d0608 0%, #060a18 100%); }
+.arc-chapter.ch-3 { background: linear-gradient(160deg, #100304 0%, #03070f 100%); }
+.arc-chapter.ch-4 { background: linear-gradient(160deg, #03070f 0%, #040c10 100%); }
+.arc-chapter.ch-5 { background: linear-gradient(160deg, #04090e 0%, #0a0d1a 100%); }
+
+/* Glow behind each chapter */
+.arc-chapter::after {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+.arc-chapter.ch-1::after { background: radial-gradient(circle, rgba(255,77,109,0.05) 0%, transparent 65%); }
+.arc-chapter.ch-2::after { background: radial-gradient(circle, rgba(255,77,109,0.08) 0%, transparent 65%); }
+.arc-chapter.ch-3::after { background: radial-gradient(circle, rgba(255,77,109,0.04) 0%, transparent 65%); }
+.arc-chapter.ch-4::after { background: radial-gradient(circle, rgba(26,107,255,0.06) 0%, transparent 65%); }
+.arc-chapter.ch-5::after { background: radial-gradient(circle, rgba(0,200,83,0.07) 0%, transparent 65%); }
+
+.arc-content {
+  position: relative;
+  z-index: 2;
+  max-width: 620px;
+}
+.arc-ch-label {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.arc-ch-label::before { content: ''; width: 20px; height: 1px; background: currentColor; }
+.arc-ch-num {
+  font-family: var(--f-serif);
+  font-size: clamp(3rem, 9vw, 8rem);
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+.ch-1 .arc-ch-num { color: rgba(255,255,255,0.08); -webkit-text-stroke: 1px rgba(255,77,109,0.25); }
+.ch-2 .arc-ch-num { color: rgba(255,255,255,0.06); -webkit-text-stroke: 1px rgba(255,77,109,0.35); }
+.ch-3 .arc-ch-num { color: rgba(255,255,255,0.06); -webkit-text-stroke: 1px rgba(255,77,109,0.2); }
+.ch-4 .arc-ch-num { color: rgba(255,255,255,0.06); -webkit-text-stroke: 1px rgba(26,107,255,0.3); }
+.ch-5 .arc-ch-num { color: rgba(255,255,255,0.06); -webkit-text-stroke: 1px rgba(0,200,83,0.4); }
+
+.arc-ch-title {
+  font-family: var(--f-serif);
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 300;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  color: var(--t-primary);
+}
+.ch-1 .arc-ch-title .accent { color: rgba(255,77,109,0.85); }
+.ch-2 .arc-ch-title .accent { color: rgba(255,77,109,0.9); font-style: italic; }
+.ch-3 .arc-ch-title .accent { color: rgba(255,77,109,0.7); font-style: italic; }
+.ch-4 .arc-ch-title .accent { color: var(--blue-bright); font-style: italic; }
+.ch-5 .arc-ch-title .accent { color: var(--green); text-shadow: 0 0 14px rgba(0,200,83,0.4); }
+.arc-ch-body {
+  font-size: 0.85rem;
+  color: var(--t-secondary);
+  font-weight: 300;
+  line-height: 2;
+  max-width: 480px;
+  margin-bottom: 2.5rem;
+}
+.arc-equity-wrap {
+  height: 80px;
+  margin-top: 0.5rem;
+  position: relative;
+}
+.arc-equity-svg {
+  width: 100%; height: 100%;
+}
+
+/* Chapter navigation dots */
+#arc-nav {
+  position: absolute;
+  top: 2rem;
+  right: 3rem;
+  display: flex;
+  gap: 8px;
+  z-index: 30;
+}
+.arc-nav-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--b-soft);
+  transition: background 0.4s, transform 0.4s, box-shadow 0.4s;
+}
+.arc-nav-dot.active {
+  background: var(--blue-bright);
+  transform: scale(1.5);
+  box-shadow: 0 0 8px var(--blue-glow);
+}
+.arc-scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  z-index: 30;
+}
+.arc-scroll-hint::before, .arc-scroll-hint::after {
+  content: ''; width: 20px; height: 1px; background: var(--b-soft);
+}
+@media (max-width: 768px) {
+  #arc-track { width: 500%; }
+  .arc-ch-title { font-size: clamp(1.7rem, 7vw, 2.8rem); }
+  .arc-ch-label { font-size: 0.52rem; }
+  .arc-ch-body { font-size: 0.78rem; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 05 — THE PERCEPTION TEST
+   Live market quiz / challenge
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#perception-test {
+  background: var(--ink);
+  padding: 0;
+}
+.pt-header {
+  padding: 100px 5% 70px;
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.pt-intro-label {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--blue-pale);
+  display: flex; align-items: center; gap: .8rem;
+  margin-bottom: 1.2rem;
+}
+.pt-intro-label::before { content: ''; width: 24px; height: 1px; background: var(--blue-dim); }
+.pt-intro-h {
+  font-family: var(--f-serif);
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+  font-weight: 300;
+  line-height: 1.1;
+}
+.pt-intro-h .blue { color: var(--blue-bright); font-style: italic; }
+.pt-intro-sub {
+  font-size: 0.82rem;
+  color: var(--t-secondary);
+  font-weight: 300;
+  margin-top: 0.8rem;
+  line-height: 1.9;
+  max-width: 420px;
+}
+.pt-round-counter {
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+  text-align: right;
+}
+.pt-round-counter span {
+  font-size: 1.8rem;
+  font-family: var(--f-serif);
+  color: var(--t-primary);
+  display: block;
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+
+/* Game arena */
+.pt-arena {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 5% 100px;
+}
+.pt-game-wrap {
+  border: 1px solid var(--b-faint);
+  background: var(--ink-panel);
+  overflow: hidden;
+  position: relative;
+}
+.pt-game-wrap::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue-bright), transparent);
+}
+.pt-chart-area {
+  padding: 2rem 2rem 1rem;
+  position: relative;
+}
+.pt-question-bar {
+  padding: 1.4rem 2rem;
+  border-top: 1px solid var(--b-faint);
+  border-bottom: 1px solid var(--b-faint);
+  background: rgba(10,13,26,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.pt-question-text {
+  font-family: var(--f-serif);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--t-primary);
+}
+.pt-round-pips {
+  display: flex;
+  gap: 8px;
+}
+.pt-round-pip {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--b-blue);
+  transition: background 0.4s;
+}
+.pt-round-pip.done { background: var(--green); border-color: var(--b-green); box-shadow: 0 0 6px rgba(0,200,83,0.4); }
+.pt-round-pip.wrong { background: #ff4d6d; border-color: rgba(255,77,109,0.4); }
+.pt-round-pip.active { background: var(--blue-bright); border-color: var(--blue); box-shadow: 0 0 6px var(--blue-glow); }
+
+.pt-choices {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1px;
+  background: var(--b-faint);
+}
+.pt-choice-btn {
+  background: var(--ink-panel);
+  border: none;
+  padding: 1.8rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: none;
+  transition: background 0.3s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.pt-choice-btn::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.4s var(--ease-expo);
+}
+.pt-choice-btn.up::before { background: var(--green); }
+.pt-choice-btn.down::before { background: #ff4d6d; }
+.pt-choice-btn.side::before { background: var(--blue-bright); }
+.pt-choice-btn:hover::before { transform: scaleX(1); }
+.pt-choice-btn:hover { background: rgba(26,107,255,0.06); transform: translateY(-2px); }
+.pt-choice-btn:disabled { cursor: default; transform: none; }
+
+.pt-choice-icon {
+  font-size: 1.8rem;
+  display: block;
+  transition: transform 0.3s var(--ease-back);
+}
+.pt-choice-btn:hover .pt-choice-icon { transform: scale(1.2); }
+.pt-choice-label {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--t-secondary);
+  transition: color 0.3s;
+}
+.pt-choice-btn:hover .pt-choice-label { color: var(--t-primary); }
+
+/* Feedback states */
+.pt-choice-btn.correct { background: rgba(0,200,83,0.08); }
+.pt-choice-btn.correct::before { transform: scaleX(1); background: var(--green); }
+.pt-choice-btn.correct .pt-choice-label { color: var(--green); }
+.pt-choice-btn.incorrect { background: rgba(255,77,109,0.06); }
+.pt-choice-btn.incorrect::before { transform: scaleX(1); background: #ff4d6d; }
+.pt-choice-btn.incorrect .pt-choice-label { color: rgba(255,77,109,0.8); }
+
+/* Score screen */
+#pt-score-screen {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  text-align: center;
+  min-height: 420px;
+  position: relative;
+}
+#pt-score-screen::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(26,107,255,0.06) 0%, transparent 60%);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+.pt-score-num {
+  font-family: var(--f-serif);
+  font-size: clamp(5rem, 14vw, 10rem);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--t-primary);
+  position: relative;
+  z-index: 1;
+}
+.pt-score-num .score-slash { color: var(--t-tertiary); font-weight: 300; }
+.pt-score-verdict {
+  font-family: var(--f-serif);
+  font-size: clamp(1.5rem, 4vw, 2.6rem);
+  font-weight: 300;
+  line-height: 1.2;
+  max-width: 560px;
+  margin: 1.5rem 0;
+  position: relative; z-index: 1;
+}
+.pt-score-verdict .green { color: var(--green); font-style: italic; }
+.pt-score-verdict .blue { color: var(--blue-bright); font-style: italic; }
+.pt-score-body {
+  font-size: 0.85rem;
+  color: var(--t-secondary);
+  font-weight: 300;
+  max-width: 440px;
+  line-height: 2;
+  margin-bottom: 2.5rem;
+  position: relative; z-index: 1;
+}
+.pt-score-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative; z-index: 1;
+}
+@media (max-width: 768px) {
+  .pt-choices { grid-template-columns: 1fr; }
+  .pt-header { padding: 70px 5% 50px; }
+  .pt-question-bar { padding: 1.2rem 1.4rem; }
+  .pt-chart-area { padding: 1.2rem 1.2rem 0.5rem; }
+}
 </style>
 </head>
 <body>
@@ -1876,6 +2692,54 @@ footer {
   </div>
 </div>
 
+<!-- ── SECTION 01: PSYCHOLOGY OF A TRADE ── -->
+<div id="psych-trade" style="min-height:600vh; position:relative;">
+  <div id="psych-pin">
+    <!-- Missed zone overlay -->
+    <div id="psych-missed-zone"></div>
+    <!-- Ghost "correct entry" line -->
+    <div id="psych-ghost-line"></div>
+    <!-- Chart canvas -->
+    <div id="psych-canvas-wrap">
+      <canvas id="psych-chart"></canvas>
+    </div>
+    <!-- Beat 1 -->
+    <div class="psych-scene-text active" id="pb1">
+      <div class="psych-beat-label">01 / The Setup</div>
+      <h2 class="psych-beat-h">You see the<br><span class="blue">setup clearly.</span></h2>
+      <p class="psych-beat-sub">The structure is there. The levels are defined. Everything aligns — exactly as you've studied.</p>
+    </div>
+    <!-- Beat 2 -->
+    <div class="psych-scene-text" id="pb2">
+      <div class="psych-beat-label">02 / The Hesitation</div>
+      <h2 class="psych-beat-h">Your hand<br><span class="red-word">hesitates.</span></h2>
+      <p class="psych-beat-sub">The entry is right there. But something stops you. "What if it breaks down?" Fear overrides the system.</p>
+    </div>
+    <!-- Beat 3 -->
+    <div class="psych-scene-text" id="pb3">
+      <div class="psych-beat-label">03 / The Mistake</div>
+      <h2 class="psych-beat-h">You enter<br><span class="red-word">late.</span> <span class="ghost">Out of fear.</span></h2>
+      <p class="psych-beat-sub">The move was already 60% done. You chased it. The trade fails — not because the setup was wrong, but because execution was.</p>
+    </div>
+    <!-- Beat 4 -->
+    <div class="psych-scene-text" id="pb4">
+      <div class="psych-beat-label">04 / The Revelation</div>
+      <h2 class="psych-beat-h">The correct entry<br><span class="green">was always there.</span></h2>
+      <p class="psych-beat-sub">The system worked. You didn't. This is the gap Ashford closes — through live training, under real pressure, until execution becomes reflex.</p>
+      <div class="psych-cta-scene">
+        <button class="btn-primary" onclick="redirectToCTA()">We fix this →</button>
+      </div>
+    </div>
+    <!-- Progress dots -->
+    <div class="psych-progress-rail">
+      <div class="psych-dot active" id="pd0"></div>
+      <div class="psych-dot" id="pd1"></div>
+      <div class="psych-dot" id="pd2"></div>
+      <div class="psych-dot" id="pd3"></div>
+    </div>
+  </div>
+</div>
+
 <!-- ── SCROLLYTELLING ── -->
 <div id="scrolly">
   <div id="scrolly-pin">
@@ -2001,6 +2865,35 @@ footer {
   </div>
 </section>
 
+<!-- ── SECTION 02: NOISE VS SIGNAL ── -->
+<section id="noise-signal">
+  <div class="ns-header">
+    <div class="ns-intro-label">The Ashford Method</div>
+    <h2 class="ns-intro-h">Drag to see through the <span class="blue">noise.</span></h2>
+    <p class="ns-intro-sub">Most traders see the same chart buried under layers of indicators. Ashford trains you to see only what matters. Drag the line to experience the difference.</p>
+  </div>
+  <div class="ns-stage" id="ns-stage">
+    <!-- Noisy side (full width base) -->
+    <div class="ns-side" id="ns-noisy">
+      <span class="ns-label-overlay" id="ns-noisy-label">How most traders see it</span>
+      <canvas class="ns-chart-canvas" id="ns-noisy-canvas"></canvas>
+    </div>
+    <!-- Clean side (clips from left) -->
+    <div class="ns-side" id="ns-clean">
+      <span class="ns-label-overlay" id="ns-clean-label">The Ashford way</span>
+      <canvas class="ns-chart-canvas" id="ns-clean-canvas"></canvas>
+    </div>
+    <!-- Divider handle -->
+    <div id="ns-divider"><div id="ns-divider-handle">⇄</div></div>
+    <!-- Hint -->
+    <div class="ns-hint" id="ns-hint">← Drag to reveal →</div>
+  </div>
+  <div class="ns-footer">
+    <p class="ns-footer-quote">"Clarity isn't about adding more. <strong>It's about removing what blinds you.</strong>"</p>
+    <button class="btn-primary" onclick="redirectToCTA()">Train Your Perception →</button>
+  </div>
+</section>
+
 <!-- ── ADVANTAGE ── -->
 <section id="advantage" class="s">
   <div class="s-inner">
@@ -2038,6 +2931,137 @@ footer {
         <div class="adv-cell-foot"></div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ── SECTION 03: THE ASHFORD CLOCK ── -->
+<section id="ashford-clock">
+  <canvas id="clock-particle-canvas"></canvas>
+  <div class="clock-inner">
+    <div class="clock-headline">Market Intelligence — Live</div>
+
+    <!-- Orbital rings + clock face -->
+    <div class="clock-face-wrap" id="clock-face-wrap">
+      <!-- Outer orbital ring with nodes -->
+      <div class="clock-orbital-ring" id="clock-ring-outer" style="width:140%;height:140%;"></div>
+      <div class="clock-orbital-ring" id="clock-ring-inner" style="width:115%;height:115%;"></div>
+
+      <!-- Floating orbital data nodes (positioned via JS) -->
+      <div class="clock-node" id="cn-nifty" style="position:absolute;">
+        <span class="clock-node-val up" id="cn-nifty-val">+0.42%</span>
+        <span class="clock-node-label">Nifty 50</span>
+        <div class="clock-node-dot"></div>
+      </div>
+      <div class="clock-node" id="cn-sensex" style="position:absolute;">
+        <span class="clock-node-val up" id="cn-sensex-val">+0.38%</span>
+        <span class="clock-node-label">Sensex</span>
+        <div class="clock-node-dot"></div>
+      </div>
+      <div class="clock-node" id="cn-vix" style="position:absolute;">
+        <span class="clock-node-val down" id="cn-vix-val">−2.10%</span>
+        <span class="clock-node-label">Vix</span>
+        <div class="clock-node-dot"></div>
+      </div>
+      <div class="clock-node" id="cn-gold" style="position:absolute;">
+        <span class="clock-node-val up" id="cn-gold-val">+0.55%</span>
+        <span class="clock-node-label">Gold</span>
+        <div class="clock-node-dot"></div>
+      </div>
+      <div class="clock-node" id="cn-crude" style="position:absolute;">
+        <span class="clock-node-val up" id="cn-crude-val">+1.12%</span>
+        <span class="clock-node-label">Crude</span>
+        <div class="clock-node-dot"></div>
+      </div>
+
+      <!-- Clock SVG face -->
+      <svg id="clock-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer ring -->
+        <circle cx="100" cy="100" r="94" fill="none" stroke="rgba(26,107,255,0.12)" stroke-width="1"/>
+        <circle cx="100" cy="100" r="88" fill="rgba(5,7,16,0.7)" stroke="rgba(26,107,255,0.18)" stroke-width="0.5"/>
+        <!-- Minute ticks -->
+        <g stroke="rgba(255,255,255,0.06)" stroke-width="0.5">
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(0 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(6 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(12 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(18 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(24 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(36 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(42 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(48 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(54 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(66 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(72 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(78 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(84 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(96 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(102 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(108 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(114 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(126 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(132 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(138 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(144 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(156 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(162 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(168 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(174 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(186 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(192 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(198 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(204 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(216 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(222 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(228 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(234 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(246 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(252 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(258 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(264 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(276 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(282 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(288 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(294 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(306 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(312 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(318 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(324 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(336 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(342 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(348 100 100)"/>
+          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(354 100 100)"/>
+        </g>
+        <!-- Hour ticks -->
+        <g stroke="rgba(26,107,255,0.35)" stroke-width="1">
+          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(0 100 100)"/>
+          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(30 100 100)"/>
+          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(60 100 100)"/>
+          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(90 100 100)"/>
+          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(120 100 100)"/>
+          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(150 100 100)"/>
+          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(180 100 100)"/>
+          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(210 100 100)"/>
+          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(240 100 100)"/>
+          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(270 100 100)"/>
+          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(300 100 100)"/>
+          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(330 100 100)"/>
+        </g>
+        <!-- Hour hand -->
+        <line id="clock-hour" x1="100" y1="100" x2="100" y2="45" stroke="rgba(220,225,240,0.7)" stroke-width="2" stroke-linecap="round"/>
+        <!-- Minute hand -->
+        <line id="clock-min" x1="100" y1="100" x2="100" y2="32" stroke="rgba(220,225,240,0.85)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Second hand (gold) -->
+        <line id="clock-sec" x1="100" y1="108" x2="100" y2="26" stroke="#1a6bff" stroke-width="0.8" stroke-linecap="round"/>
+        <!-- Center dot -->
+        <circle cx="100" cy="100" r="3.5" fill="var(--blue-bright)"/>
+        <circle cx="100" cy="100" r="1.5" fill="var(--ink)"/>
+      </svg>
+    </div><!-- /clock-face-wrap -->
+
+    <div class="clock-session-badge" id="clock-session-badge">● Market Hours Active</div>
+
+    <h2 class="clock-tagline">Every second is <span class="blue">structured.</span><br>Are you?</h2>
+
+    <button class="btn-primary" onclick="redirectToCTA()" style="margin-top:0.5rem;">Begin Structured Training →</button>
   </div>
 </section>
 
@@ -2092,6 +3116,98 @@ footer {
   </div>
 </section>
 
+<!-- ── SECTION 04: THE TRADER'S ARC ── -->
+<div id="traders-arc" style="height:600vh; position:relative;">
+  <div id="arc-sticky">
+    <!-- Chapter navigation dots -->
+    <div id="arc-nav">
+      <div class="arc-nav-dot active" id="and0"></div>
+      <div class="arc-nav-dot" id="and1"></div>
+      <div class="arc-nav-dot" id="and2"></div>
+      <div class="arc-nav-dot" id="and3"></div>
+      <div class="arc-nav-dot" id="and4"></div>
+    </div>
+
+    <div id="arc-track">
+      <!-- Chapter 1 -->
+      <div class="arc-chapter ch-1" id="arc-ch1">
+        <div class="arc-content">
+          <div class="arc-ch-label">Day One</div>
+          <span class="arc-ch-num">01</span>
+          <h2 class="arc-ch-title"><span class="accent">Confidence.</span></h2>
+          <p class="arc-ch-body">You open your first account. The charts seem readable. You've done the research, watched the videos. You feel ready. You place your first trade with conviction.</p>
+          <div class="arc-equity-wrap">
+            <svg class="arc-equity-svg" id="arc-eq1" viewBox="0 0 400 80" preserveAspectRatio="none">
+              <polyline id="arc-line1" points="" fill="none" stroke="rgba(255,77,109,0.5)" stroke-width="1.5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <!-- Chapter 2 -->
+      <div class="arc-chapter ch-2" id="arc-ch2">
+        <div class="arc-content">
+          <div class="arc-ch-label">Week Three</div>
+          <span class="arc-ch-num">02</span>
+          <h2 class="arc-ch-title">The <span class="accent">First Loss.</span></h2>
+          <p class="arc-ch-body">The market moves against you. You hold on — "it will recover." It doesn't. You exit with a loss larger than planned. The confidence fractures. Doubt creeps in.</p>
+          <div class="arc-equity-wrap">
+            <svg class="arc-equity-svg" id="arc-eq2" viewBox="0 0 400 80" preserveAspectRatio="none">
+              <polyline id="arc-line2" points="" fill="none" stroke="rgba(255,77,109,0.65)" stroke-width="1.5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <!-- Chapter 3 -->
+      <div class="arc-chapter ch-3" id="arc-ch3">
+        <div class="arc-content">
+          <div class="arc-ch-label">Month Two</div>
+          <span class="arc-ch-num">03</span>
+          <h2 class="arc-ch-title">The <span class="accent">Spiral.</span></h2>
+          <p class="arc-ch-body">Revenge trading. Doubling down. Ignoring stops. Each loss triggers the next. The theory you know becomes useless under emotional pressure. The account bleeds.</p>
+          <div class="arc-equity-wrap">
+            <svg class="arc-equity-svg" id="arc-eq3" viewBox="0 0 400 80" preserveAspectRatio="none">
+              <polyline id="arc-line3" points="" fill="none" stroke="rgba(255,77,109,0.45)" stroke-width="1.5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <!-- Chapter 4 -->
+      <div class="arc-chapter ch-4" id="arc-ch4">
+        <div class="arc-content">
+          <div class="arc-ch-label">Month Four — Ashford</div>
+          <span class="arc-ch-num">04</span>
+          <h2 class="arc-ch-title">The <span class="accent">System.</span></h2>
+          <p class="arc-ch-body">Live sessions. Real trades. Real accountability. You stop guessing and start seeing structure. Execution becomes deliberate. The emotional cycles begin to break. Slowly, steadily.</p>
+          <div class="arc-equity-wrap">
+            <svg class="arc-equity-svg" id="arc-eq4" viewBox="0 0 400 80" preserveAspectRatio="none">
+              <polyline id="arc-line4" points="" fill="none" stroke="rgba(26,107,255,0.7)" stroke-width="1.5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <!-- Chapter 5 -->
+      <div class="arc-chapter ch-5" id="arc-ch5">
+        <div class="arc-content">
+          <div class="arc-ch-label">Today — The Standard</div>
+          <span class="arc-ch-num">05</span>
+          <h2 class="arc-ch-title"><span class="accent">Precision.</span></h2>
+          <p class="arc-ch-body">Consistent. Systematic. Calm under pressure. You see what others miss. Setups find you. Capital grows — not from luck, but from trained perception and structured execution. This is the Ashford standard.</p>
+          <div class="arc-equity-wrap">
+            <svg class="arc-equity-svg" id="arc-eq5" viewBox="0 0 400 80" preserveAspectRatio="none">
+              <polyline id="arc-line5" points="" fill="none" stroke="rgba(0,200,83,0.75)" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div style="margin-top:2rem;">
+            <button class="btn-primary" onclick="redirectToCTA()">Begin Your Arc →</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- /arc-track -->
+
+    <div class="arc-scroll-hint" id="arc-scroll-hint">Scroll to continue</div>
+  </div>
+</div>
+
 <!-- ── PHILOSOPHY ── -->
 <section id="philosophy" class="s">
   <div class="s-inner">
@@ -2122,6 +3238,67 @@ footer {
         <h4 class="phil-title">Longevity as Strategy</h4>
         <p class="phil-body">Winning big once is gambling. Winning consistently is craft. Capital preservation, position sizing, and patience are the real alpha generators.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 05: THE PERCEPTION TEST ── -->
+<section id="perception-test">
+  <div class="pt-header">
+    <div>
+      <div class="pt-intro-label">The Challenge</div>
+      <h2 class="pt-intro-h">Can you read<br>the <span class="blue">market?</span></h2>
+      <p class="pt-intro-sub">Three real market structures. No indicators. No context. Your instinct vs. the chart. See where you stand — before training, and after.</p>
+    </div>
+    <div class="pt-round-counter">
+      <span id="pt-round-display">1</span>
+      Round
+    </div>
+  </div>
+
+  <div class="pt-arena">
+    <div class="pt-game-wrap" id="pt-game-wrap">
+
+      <!-- Active game state -->
+      <div id="pt-game-state">
+        <div class="pt-chart-area">
+          <canvas id="pt-chart-canvas" style="width:100%; height:260px; display:block;"></canvas>
+        </div>
+        <div class="pt-question-bar">
+          <span class="pt-question-text" id="pt-question-text">Where does this move next?</span>
+          <div class="pt-round-pips">
+            <div class="pt-round-pip active" id="prp0"></div>
+            <div class="pt-round-pip" id="prp1"></div>
+            <div class="pt-round-pip" id="prp2"></div>
+          </div>
+        </div>
+        <div class="pt-choices">
+          <button class="pt-choice-btn up" onclick="ptAnswer('up')" id="pt-up">
+            <span class="pt-choice-icon">↑</span>
+            <span class="pt-choice-label">Up</span>
+          </button>
+          <button class="pt-choice-btn side" onclick="ptAnswer('side')" id="pt-side">
+            <span class="pt-choice-icon">→</span>
+            <span class="pt-choice-label">Sideways</span>
+          </button>
+          <button class="pt-choice-btn down" onclick="ptAnswer('down')" id="pt-down">
+            <span class="pt-choice-icon">↓</span>
+            <span class="pt-choice-label">Down</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Score screen (hidden until game over) -->
+      <div id="pt-score-screen">
+        <div class="pt-score-num"><span id="pt-final-score">0</span><span class="score-slash">/3</span></div>
+        <h3 class="pt-score-verdict" id="pt-score-verdict"></h3>
+        <p class="pt-score-body" id="pt-score-body"></p>
+        <div class="pt-score-actions">
+          <button class="btn-primary" onclick="redirectToCTA()">Claim Your Edge →</button>
+          <button class="btn-secondary" onclick="ptReset()">Try Again</button>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -2728,6 +3905,698 @@ function handleNL(e) {
    CTA REDIRECT
 ════════════════════════════════════════ */
 function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.app/'; }
+
+/* ════════════════════════════════════════
+   SECTION 01 — PSYCHOLOGY OF A TRADE
+════════════════════════════════════════ */
+(function() {
+  const canvas = document.getElementById('psych-chart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const beats = ['pb1','pb2','pb3','pb4'];
+  const dots  = ['pd0','pd1','pd2','pd3'];
+  let currentBeat = -1;
+  let missedVisible = false;
+  let ghostVisible = false;
+
+  function seededRand(seed) {
+    let s = seed;
+    return function() { s = (s * 16807 + 0) % 2147483647; return (s - 1) / 2147483646; };
+  }
+  const rng = seededRand(42);
+  const candles = [];
+  let price = 220;
+  for (let i = 0; i < 48; i++) {
+    const open = price;
+    const move = (rng() - 0.49) * 12;
+    const close = open + move;
+    const high = Math.max(open, close) + rng() * 6;
+    const low  = Math.min(open, close) - rng() * 5;
+    candles.push({ open, close, high, low });
+    price = close;
+  }
+
+  function resizeCanvas() {
+    const pin = document.getElementById('psych-pin');
+    canvas.width  = pin ? pin.offsetWidth : window.innerWidth;
+    canvas.height = pin ? pin.offsetHeight * 0.55 : window.innerHeight * 0.55;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  function drawCandles(count, showMissed, showGhost) {
+    if (!canvas.width || !count) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const W = canvas.width, H = canvas.height;
+    const pl = 30, pr = 30, pt = 24, pb = 24;
+    const drawW = W - pl - pr, drawH = H - pt - pb;
+    const total = Math.min(count, candles.length);
+    const cw = drawW / 48;
+    const bw = Math.max(2, cw * 0.65);
+    const gp = (cw - bw) / 2;
+
+    const slice = candles.slice(0, total);
+    const minV = Math.min(...slice.map(c => c.low));
+    const maxV = Math.max(...slice.map(c => c.high));
+    const range = maxV - minV || 1;
+    const toY = v => pt + drawH * (1 - (v - minV) / range);
+
+    // Missed zone highlight (candles 18-28)
+    if (showMissed && total > 18) {
+      const x1 = pl + 18 * cw;
+      const x2 = pl + Math.min(total, 28) * cw;
+      ctx.fillStyle = 'rgba(255,77,109,0.06)';
+      ctx.fillRect(x1, pt, x2 - x1, drawH);
+      ctx.strokeStyle = 'rgba(255,77,109,0.22)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4,4]);
+      ctx.beginPath(); ctx.moveTo(x1, pt); ctx.lineTo(x1, pt + drawH); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(255,77,109,0.5)';
+      ctx.font = '9px Geist Mono, monospace';
+      ctx.fillText('LATE ENTRY ZONE', x1 + 6, pt + 14);
+    }
+
+    // Ghost correct entry line (horizontal at candle 16 price)
+    if (showGhost && total > 16) {
+      const entryPrice = (candles[16].open + candles[16].close) / 2;
+      const gy = toY(entryPrice);
+      ctx.strokeStyle = 'rgba(0,200,83,0.45)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([6,4]);
+      ctx.beginPath(); ctx.moveTo(pl, gy); ctx.lineTo(W - pr, gy); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'rgba(0,200,83,0.55)';
+      ctx.font = '9px Geist Mono, monospace';
+      ctx.fillText('CORRECT ENTRY ↗', pl + 4, gy - 6);
+    }
+
+    // Draw candles
+    for (let i = 0; i < total; i++) {
+      const c = candles[i];
+      const x = pl + i * cw + gp;
+      const bull = c.close >= c.open;
+      const inMissed = showMissed && i >= 18 && i < 28;
+      const a = inMissed ? 0.3 : (i === total - 1 ? 0.92 : 0.62);
+      const col = bull ? `rgba(0,200,83,${a})` : `rgba(255,77,109,${a})`;
+      ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(x + bw/2, toY(c.high)); ctx.lineTo(x + bw/2, toY(c.low)); ctx.stroke();
+      ctx.fillRect(x, toY(Math.max(c.open, c.close)), bw, Math.max(1.5, Math.abs(toY(c.open) - toY(c.close))));
+    }
+
+    // Current candle pulse
+    if (total > 0 && total < candles.length) {
+      const lc = candles[total - 1];
+      const lx = pl + (total - 1) * cw + gp;
+      ctx.shadowColor = 'rgba(26,107,255,0.6)';
+      ctx.shadowBlur = 8;
+      ctx.strokeStyle = 'rgba(26,107,255,0.8)';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(lx - 1, toY(Math.max(lc.open, lc.close)) - 1, bw + 2, Math.max(2, Math.abs(toY(lc.open) - toY(lc.close))) + 2);
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  function update(progress) {
+    const totalCandles = Math.max(1, Math.floor(progress * candles.length));
+    const beat = Math.min(3, Math.floor(progress * 4.2));
+    const showMissed = progress > 0.42;
+    const showGhost  = progress > 0.63;
+
+    if (beat !== currentBeat) {
+      if (currentBeat >= 0) document.getElementById(beats[currentBeat])?.classList.remove('active');
+      currentBeat = beat;
+      document.getElementById(beats[currentBeat])?.classList.add('active');
+      dots.forEach((d, i) => document.getElementById(d)?.classList.toggle('active', i === currentBeat));
+    }
+    missedVisible = showMissed;
+    ghostVisible  = showGhost;
+    drawCandles(totalCandles, showMissed, showGhost);
+  }
+
+  ScrollTrigger.create({
+    trigger: '#psych-trade',
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 1.0,
+    pin: '#psych-pin',
+    pinSpacing: false,
+    onUpdate(self) { update(self.progress); }
+  });
+
+  // Entrance anim
+  gsap.timeline({ scrollTrigger: { trigger: '#psych-trade', start: 'top 80%', toggleActions: 'play none none none' } })
+    .from('#psych-pin', { opacity: 0, duration: 0.6, ease: 'power2.out' });
+})();
+
+/* ════════════════════════════════════════
+   SECTION 02 — NOISE VS SIGNAL
+════════════════════════════════════════ */
+(function() {
+  const stage      = document.getElementById('ns-stage');
+  const divider    = document.getElementById('ns-divider');
+  const cleanSide  = document.getElementById('ns-clean');
+  const hint       = document.getElementById('ns-hint');
+  const noisyC     = document.getElementById('ns-noisy-canvas');
+  const cleanC     = document.getElementById('ns-clean-canvas');
+  if (!stage || !divider || !noisyC || !cleanC) return;
+
+  let isDragging = false;
+  let dividerPct = 50;
+  let hintHidden = false;
+  let stageW = 0, stageH = 0;
+
+  function seededR(seed) {
+    let s = seed;
+    return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+  }
+  const rn = seededR(7);
+  const nsC = [];
+  let p = 200;
+  for (let i = 0; i < 60; i++) {
+    const o = p, m = (rn() - 0.48) * 14, c = o + m;
+    nsC.push({ o, c, h: Math.max(o,c)+rn()*7, l: Math.min(o,c)-rn()*6 });
+    p = c;
+  }
+
+  function resize() {
+    stageW = stage.offsetWidth; stageH = stage.offsetHeight;
+    noisyC.width = stageW; noisyC.height = stageH;
+    cleanC.width = stageW; cleanC.height = stageH;
+    // Set CSS var for clean canvas min-width
+    stage.style.setProperty('--ns-full-width', stageW + 'px');
+    drawBoth();
+    setDivider(dividerPct);
+  }
+
+  function baseCandles(canvas, alpha) {
+    const cx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const n = nsC.length, cw = W / n;
+    const bw = Math.max(2, cw * 0.62), gp = (cw - bw) / 2;
+    const vals = nsC.flatMap(c => [c.h, c.l]);
+    const mn = Math.min(...vals), mx = Math.max(...vals), rng = mx - mn || 1;
+    const pt = 22, pb = 22, dH = H - pt - pb;
+    const toY = v => pt + dH * (1 - (v - mn) / rng);
+    nsC.forEach((c, i) => {
+      const bull = c.c >= c.o;
+      const col = bull ? `rgba(0,200,83,${alpha})` : `rgba(255,77,109,${alpha})`;
+      cx.strokeStyle = col; cx.fillStyle = col; cx.lineWidth = 1;
+      const x = i * cw + gp;
+      cx.beginPath(); cx.moveTo(x+bw/2,toY(c.h)); cx.lineTo(x+bw/2,toY(c.l)); cx.stroke();
+      cx.fillRect(x, toY(Math.max(c.o,c.c)), bw, Math.max(1.5, Math.abs(toY(c.o)-toY(c.c))));
+    });
+    return { toY, cw, pt, dH, mn, mx, rng };
+  }
+
+  function drawNoisy() {
+    const cx = noisyC.getContext('2d');
+    const W = noisyC.width, H = noisyC.height;
+    cx.clearRect(0,0,W,H);
+    // Background
+    cx.fillStyle = 'rgba(5,7,16,0.95)'; cx.fillRect(0,0,W,H);
+    const { toY, cw } = baseCandles(noisyC, 0.22);
+    const n = nsC.length;
+
+    // 3 MAs
+    [[5,'rgba(26,107,255,0.4)'],[13,'rgba(255,200,0,0.28)'],[26,'rgba(255,77,109,0.22)']].forEach(([per, col]) => {
+      cx.strokeStyle = col; cx.lineWidth = 1; cx.beginPath(); let s = false;
+      for (let i = per-1; i < n; i++) {
+        const avg = nsC.slice(i-per+1,i+1).reduce((a,c)=>a+(c.o+c.c)/2,0)/per;
+        const x = (i+0.5)*cw;
+        s ? cx.lineTo(x,toY(avg)) : (cx.moveTo(x,toY(avg)), s=true);
+      }
+      cx.stroke();
+    });
+
+    // Bollinger
+    cx.setLineDash([3,4]); cx.lineWidth = 0.8;
+    [1,-1].forEach(dir => {
+      cx.strokeStyle = 'rgba(100,160,255,0.18)'; cx.beginPath(); let s = false;
+      for (let i = 19; i < n; i++) {
+        const sl = nsC.slice(i-19,i+1).map(c=>(c.o+c.c)/2);
+        const mean = sl.reduce((a,v)=>a+v,0)/20;
+        const std = Math.sqrt(sl.reduce((a,v)=>a+(v-mean)**2,0)/20);
+        const x = (i+0.5)*cw, y = toY(mean + dir * 2 * std);
+        s ? cx.lineTo(x,y) : (cx.moveTo(x,y), s=true);
+      }
+      cx.stroke();
+    });
+    cx.setLineDash([]);
+
+    // RSI strip
+    const rH = H * 0.16;
+    cx.fillStyle = 'rgba(26,107,255,0.04)'; cx.fillRect(0, H-rH-4, W, rH);
+    cx.strokeStyle = 'rgba(26,107,255,0.3)'; cx.lineWidth = 0.8; cx.beginPath(); let rs = false;
+    for (let i = 14; i < n; i++) {
+      let g=0, l=0;
+      for (let j=i-13;j<=i;j++) { const d=nsC[j].c - (j>0?nsC[j-1].c:nsC[j].o); d>0?g+=d:l-=d; }
+      const rsi = 100 - 100/(1+(g/14)/(l/14||0.001));
+      const x=(i+0.5)*cw, y=H-4-rH*(rsi/100);
+      rs ? cx.lineTo(x,y) : (cx.moveTo(x,y), rs=true);
+    }
+    cx.stroke();
+
+    // MACD ghost lines (extra noise)
+    cx.strokeStyle='rgba(200,100,255,0.12)'; cx.lineWidth=0.7; cx.beginPath(); let ms=false;
+    for (let i=25;i<n;i++){
+      const s1=nsC.slice(i-11,i+1).reduce((a,c)=>a+(c.o+c.c)/2,0)/12;
+      const s2=nsC.slice(i-24,i+1).reduce((a,c)=>a+(c.o+c.c)/2,0)/26;
+      const x=(i+0.5)*cw;
+      ms?cx.lineTo(x,toY(s1+(s1-s2)*8)):( cx.moveTo(x,toY(s1+(s1-s2)*8)),ms=true);
+    } cx.stroke();
+
+    // Redraw candles on top
+    baseCandles(noisyC, 0.48);
+  }
+
+  function drawClean() {
+    const cx = cleanC.getContext('2d');
+    const W = cleanC.width, H = cleanC.height;
+    cx.clearRect(0,0,W,H);
+    cx.fillStyle = 'rgba(5,7,16,0.97)'; cx.fillRect(0,0,W,H);
+    const { toY, cw, pt, dH } = baseCandles(cleanC, 0.65);
+    const n = nsC.length;
+
+    // Support / resistance zones
+    const vals = nsC.flatMap(c=>[c.h,c.l]);
+    const mn = Math.min(...vals), mx = Math.max(...vals), rng = mx - mn;
+    const sup = mn + rng * 0.27;
+    const res = mn + rng * 0.70;
+
+    cx.fillStyle = 'rgba(0,200,83,0.04)';
+    cx.fillRect(0, toY(res), W, toY(sup) - toY(res));
+    cx.strokeStyle = 'rgba(0,200,83,0.25)'; cx.lineWidth = 1; cx.setLineDash([6,5]);
+    cx.beginPath(); cx.moveTo(0,toY(sup)); cx.lineTo(W,toY(sup)); cx.stroke();
+    cx.strokeStyle = 'rgba(0,200,83,0.18)';
+    cx.beginPath(); cx.moveTo(0,toY(res)); cx.lineTo(W,toY(res)); cx.stroke();
+    cx.setLineDash([]);
+    cx.fillStyle = 'rgba(0,200,83,0.55)';
+    cx.font = '10px Geist Mono, monospace';
+    cx.fillText('SUPPORT', 10, toY(sup) - 6);
+    cx.fillText('RESISTANCE', 10, toY(res) - 6);
+
+    // Clean trend line (last 30 candles)
+    const tSlice = nsC.slice(30);
+    cx.strokeStyle = 'rgba(26,107,255,0.25)'; cx.lineWidth = 1; cx.setLineDash([8,6]);
+    cx.beginPath();
+    tSlice.forEach((c, i) => {
+      const x = (30+i+0.5)*cw, y = toY((c.o+c.c)/2);
+      i===0 ? cx.moveTo(x,y) : cx.lineTo(x,y);
+    }); cx.stroke(); cx.setLineDash([]);
+
+    // Entry marker
+    const ei = Math.floor(n * 0.64);
+    const eiC = nsC[ei];
+    if (eiC) {
+      const eix = (ei+0.5)*cw, eiy = toY((eiC.o+eiC.c)/2);
+      cx.strokeStyle = 'rgba(255,200,0,0.8)'; cx.lineWidth = 1.5;
+      cx.beginPath(); cx.moveTo(eix-10,eiy); cx.lineTo(eix+10,eiy); cx.moveTo(eix,eiy-8); cx.lineTo(eix,eiy+8); cx.stroke();
+      cx.fillStyle = 'rgba(255,200,0,0.7)'; cx.font = '9px Geist Mono, monospace';
+      cx.fillText('ENTRY', eix+8, eiy-7);
+    }
+  }
+
+  function drawBoth() { drawNoisy(); drawClean(); }
+
+  function setDivider(pct) {
+    dividerPct = Math.max(4, Math.min(96, pct));
+    const px = (dividerPct / 100) * stageW;
+    divider.style.left = px + 'px';
+    cleanSide.style.width = px + 'px';
+    // Shift clean canvas so it always shows the full chart aligned
+    cleanC.style.position = 'absolute';
+    cleanC.style.top = '0';
+    cleanC.style.left = '0';
+    cleanC.style.width = stageW + 'px';
+    cleanC.style.height = stageH + 'px';
+  }
+
+  function getClientX(e) { return e.touches ? e.touches[0].clientX : e.clientX; }
+
+  stage.addEventListener('mousedown', () => { isDragging = true; });
+  window.addEventListener('mouseup',  () => { isDragging = false; });
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const rect = stage.getBoundingClientRect();
+    setDivider((e.clientX - rect.left) / rect.width * 100);
+    if (!hintHidden) { hint.style.opacity = '0'; hintHidden = true; }
+  });
+  stage.addEventListener('touchstart', () => { isDragging = true; }, { passive: true });
+  window.addEventListener('touchend',  () => { isDragging = false; });
+  window.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    const rect = stage.getBoundingClientRect();
+    setDivider((e.touches[0].clientX - rect.left) / rect.width * 100);
+    if (!hintHidden) { hint.style.opacity = '0'; hintHidden = true; }
+  }, { passive: true });
+
+  setTimeout(() => { resize(); }, 150);
+  window.addEventListener('resize', resize);
+
+  // Entrance animation
+  gsap.timeline({ scrollTrigger: { trigger: '#noise-signal', start: 'top 75%', toggleActions: 'play none none none' } })
+    .from('.ns-header', { y: 40, opacity: 0, duration: 0.7, ease: 'power3.out' })
+    .from('#ns-stage', { opacity: 0, duration: 0.5 }, '-=0.2');
+})();
+
+/* ════════════════════════════════════════
+   SECTION 03 — ASHFORD CLOCK
+════════════════════════════════════════ */
+(function() {
+  const canvas = document.getElementById('clock-particle-canvas');
+  if (!canvas) return;
+
+  function resizePC() {
+    canvas.width  = canvas.offsetWidth  || window.innerWidth;
+    canvas.height = canvas.offsetHeight || window.innerHeight;
+  }
+  resizePC();
+  window.addEventListener('resize', resizePC);
+
+  const pts = Array.from({ length: 55 }, () => ({
+    x: Math.random(), y: Math.random(),
+    vx: (Math.random() - 0.5) * 0.00018,
+    vy: (Math.random() - 0.5) * 0.00018,
+    r: Math.random() * 1.6 + 0.3,
+    a: Math.random() * 0.35 + 0.05,
+  }));
+
+  function drawParticles() {
+    if (!canvas.width) { requestAnimationFrame(drawParticles); return; }
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p => { p.x=(p.x+p.vx+1)%1; p.y=(p.y+p.vy+1)%1; });
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i+1; j < pts.length; j++) {
+        const dx=(pts[i].x-pts[j].x)*W, dy=(pts[i].y-pts[j].y)*H;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if (d < 115) {
+          ctx.beginPath(); ctx.moveTo(pts[i].x*W,pts[i].y*H); ctx.lineTo(pts[j].x*W,pts[j].y*H);
+          ctx.strokeStyle=`rgba(26,107,255,${0.06*(1-d/115)})`; ctx.lineWidth=0.5; ctx.stroke();
+        }
+      }
+    }
+    pts.forEach(p => {
+      ctx.beginPath(); ctx.arc(p.x*W, p.y*H, p.r, 0, Math.PI*2);
+      ctx.fillStyle=`rgba(26,107,255,${p.a})`; ctx.fill();
+    });
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+
+  function updateClock() {
+    const now = new Date();
+    const s = now.getSeconds() + now.getMilliseconds()/1000;
+    const m = now.getMinutes() + s/60;
+    const h = (now.getHours()%12) + m/60;
+    const r = (d) => `rotate(${d} 100 100)`;
+    document.getElementById('clock-hour')?.setAttribute('transform', r(h*30));
+    document.getElementById('clock-min')?.setAttribute('transform',  r(m*6));
+    document.getElementById('clock-sec')?.setAttribute('transform',  r(s*6));
+    setTimeout(updateClock, 50);
+  }
+  updateClock();
+
+  function positionNodes() {
+    const wrap = document.getElementById('clock-face-wrap');
+    if (!wrap) return;
+    const sz = wrap.offsetWidth;
+    const cx = sz/2, cy = sz/2, r = sz * 0.73;
+    [
+      { id:'cn-nifty',  deg:-75 },
+      { id:'cn-sensex', deg:-20 },
+      { id:'cn-vix',    deg: 45 },
+      { id:'cn-gold',   deg:120 },
+      { id:'cn-crude',  deg:190 },
+    ].forEach(({ id, deg }) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const rad = (deg - 90) * Math.PI / 180;
+      el.style.left = (cx + r * Math.cos(rad) - el.offsetWidth/2)  + 'px';
+      el.style.top  = (cy + r * Math.sin(rad) - el.offsetHeight/2) + 'px';
+    });
+  }
+  setTimeout(positionNodes, 250);
+  window.addEventListener('resize', positionNodes);
+
+  function updateSession() {
+    const badge = document.getElementById('clock-session-badge');
+    if (!badge) return;
+    const IST = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+    const mins = IST.getHours()*60 + IST.getMinutes();
+    const open = mins >= 555 && mins <= 930;
+    badge.textContent = open ? '● Market Hours Active' : '○ Market Closed';
+    badge.className   = 'clock-session-badge' + (open ? '' : ' closed');
+  }
+  updateSession(); setInterval(updateSession, 60000);
+
+  // Entrance animation
+  gsap.timeline({ scrollTrigger: { trigger: '#ashford-clock', start: 'top 70%', toggleActions: 'play none none none' } })
+    .from('.clock-headline',     { y: 24, opacity: 0, duration: 0.5 })
+    .from('.clock-face-wrap',    { scale: 0.88, opacity: 0, duration: 0.9, ease: 'back.out(1.4)' }, '-=0.2')
+    .from('.clock-session-badge',{ y: 16, opacity: 0, duration: 0.4 }, '-=0.2')
+    .from('.clock-tagline',      { y: 20, opacity: 0, duration: 0.55 }, '-=0.15')
+    .from('#ashford-clock .btn-primary', { y: 12, opacity: 0, duration: 0.4 }, '-=0.1');
+})();
+
+/* ════════════════════════════════════════
+   SECTION 04 — TRADER'S ARC
+════════════════════════════════════════ */
+(function() {
+  const track = document.getElementById('arc-track');
+  if (!track) return;
+
+  // Equity curve data: [y values] low = top of SVG (good), high = bottom (bad) — inverted for visual
+  const curves = [
+    // ch1: initial confidence — slight rise with small pullback
+    '0,60 40,52 80,44 120,38 160,45 200,35 240,28 280,33 320,25 360,20 400,22',
+    // ch2: rise then sharp drop
+    '0,50 50,42 100,35 150,28 200,22 220,30 250,42 280,55 320,62 360,68 400,72',
+    // ch3: spiral down with bounces
+    '0,30 40,35 80,50 100,42 140,58 160,50 200,65 220,55 260,70 300,60 340,75 400,78',
+    // ch4: volatile stabilising
+    '0,72 50,65 80,70 120,60 160,65 200,55 240,58 280,48 320,45 360,38 400,32',
+    // ch5: clean uptrend
+    '0,70 60,60 120,50 180,40 240,30 300,22 360,14 400,8',
+  ];
+
+  curves.forEach((pts, i) => {
+    const line = document.getElementById('arc-line'+(i+1));
+    if (!line) return;
+    line.setAttribute('points', pts);
+    // Set up for draw-on animation
+    const totalLen = pts.split(' ').length * 22;
+    line.style.strokeDasharray = totalLen;
+    line.style.strokeDashoffset = totalLen;
+    line.style.transition = 'stroke-dashoffset 1s ease';
+  });
+
+  let lastChapter = -1;
+  function triggerLineAnim(ch) {
+    const line = document.getElementById('arc-line'+(ch+1));
+    if (line) line.style.strokeDashoffset = '0';
+  }
+
+  ScrollTrigger.create({
+    trigger: '#traders-arc',
+    start: 'top top',
+    end: 'bottom bottom',
+    scrub: 0.7,
+    pin: '#arc-sticky',
+    pinSpacing: false,
+    onUpdate(self) {
+      const p = self.progress;
+      // 5 chapters: translate from 0% to 80% of track (each chapter is 20vw)
+      const shift = p * (100 * 4 / 5); // shift by 4 chapter-widths total
+      track.style.transform = `translateX(-${shift}%)`;
+
+      const chF = p * 5;
+      const ch  = Math.min(4, Math.floor(chF));
+
+      // Nav dots
+      for (let i = 0; i < 5; i++) {
+        document.getElementById('and'+i)?.classList.toggle('active', i === ch);
+      }
+      // Hint
+      const hint = document.getElementById('arc-scroll-hint');
+      if (hint) hint.style.opacity = p > 0.04 ? '0' : '1';
+
+      // Trigger line anim on chapter change
+      if (ch !== lastChapter) {
+        lastChapter = ch;
+        // Reset all lines except current
+        for (let i = 0; i < 5; i++) {
+          const l = document.getElementById('arc-line'+(i+1));
+          if (!l) continue;
+          if (i < ch) { l.style.transition='none'; l.style.strokeDashoffset='0'; }
+          else if (i > ch) { l.style.transition='none'; const tl=parseFloat(l.style.strokeDasharray)||400; l.style.strokeDashoffset=tl; }
+        }
+        setTimeout(() => triggerLineAnim(ch), 80);
+      }
+    }
+  });
+
+  gsap.timeline({ scrollTrigger: { trigger: '#traders-arc', start: 'top 80%', toggleActions: 'play none none none' } })
+    .from('#arc-sticky', { opacity: 0, duration: 0.5, ease: 'power2.out' });
+})();
+
+/* ════════════════════════════════════════
+   SECTION 05 — PERCEPTION TEST
+════════════════════════════════════════ */
+(function() {
+  const ptCanvas = document.getElementById('pt-chart-canvas');
+  if (!ptCanvas) return;
+
+  const rounds = [
+    { answer:'up',   seed:101, preCount:30 },
+    { answer:'down', seed:202, preCount:28 },
+    { answer:'side', seed:303, preCount:32 },
+  ];
+
+  let curRound = 0, score = 0, answered = false;
+  let baseC = [], animFrame = null;
+
+  function rng(seed) {
+    let s = seed;
+    return () => { s=(s*16807+0)%2147483647; return (s-1)/2147483646; };
+  }
+
+  function makeCandles(seed, count, bias) {
+    const r = rng(seed);
+    const ca = []; let px = 100 + r()*40;
+    for (let i=0;i<count;i++){
+      const trend = bias==='up'?0.57:bias==='down'?0.43:0.5;
+      const o=px, m=(r()-( 1-trend))*9, c=o+m;
+      ca.push({o,c,h:Math.max(o,c)+r()*4.5,l:Math.min(o,c)-r()*3.5});
+      px=c;
+    }
+    return ca;
+  }
+
+  function drawChart(allC, pivot, answered) {
+    const W = ptCanvas.width = ptCanvas.offsetWidth;
+    const H = ptCanvas.height = ptCanvas.offsetHeight || 260;
+    const ctx = ptCanvas.getContext('2d');
+    ctx.clearRect(0,0,W,H);
+    if (!allC.length) return;
+
+    const vals = allC.flatMap(c=>[c.h,c.l]);
+    const mn=Math.min(...vals), mx=Math.max(...vals), rg=mx-mn||1;
+    const pt=18,pb=18,dH=H-pt-pb;
+    const toY = v => pt + dH*(1-(v-mn)/rg);
+    const n = Math.max(allC.length, 40);
+    const cw = W/n, bw=Math.max(2,cw*0.6), gp=(cw-bw)/2;
+
+    // Question zone bg
+    if (!answered) {
+      ctx.fillStyle='rgba(26,107,255,0.04)';
+      ctx.fillRect(pivot*cw, pt, W-pivot*cw, dH);
+      ctx.strokeStyle='rgba(26,107,255,0.25)'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+      ctx.beginPath(); ctx.moveTo(pivot*cw,pt); ctx.lineTo(pivot*cw,pt+dH); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.font='13px Geist Mono, monospace';
+      ctx.fillStyle='rgba(26,107,255,0.3)'; ctx.textAlign='center';
+      ctx.fillText('?', pivot*cw+(W-pivot*cw)/2, pt+dH/2+5);
+      ctx.textAlign='start';
+    }
+
+    // Draw candles
+    allC.forEach((c,i) => {
+      const isReveal = i >= pivot;
+      const bull = c.c >= c.o;
+      const a = isReveal ? 0.88 : 0.6;
+      const col = bull?`rgba(0,200,83,${a})`:`rgba(255,77,109,${a})`;
+      if (isReveal) { ctx.shadowColor=bull?'rgba(0,200,83,0.25)':'rgba(255,77,109,0.25)'; ctx.shadowBlur=5; }
+      ctx.strokeStyle=col; ctx.fillStyle=col; ctx.lineWidth=1;
+      const x=i*cw+gp;
+      ctx.beginPath(); ctx.moveTo(x+bw/2,toY(c.h)); ctx.lineTo(x+bw/2,toY(c.l)); ctx.stroke();
+      ctx.fillRect(x, toY(Math.max(c.o,c.c)), bw, Math.max(1.5,Math.abs(toY(c.o)-toY(c.c))));
+      ctx.shadowBlur=0;
+    });
+  }
+
+  function loadRound(r) {
+    curRound = r; answered = false;
+    if (animFrame) cancelAnimationFrame(animFrame);
+    baseC = makeCandles(rounds[r].seed, rounds[r].preCount, null);
+    for (let i=0;i<3;i++) {
+      const pip = document.getElementById('prp'+i);
+      if (pip) pip.className='pt-round-pip'+(i<r?' done':i===r?' active':'');
+    }
+    const rd=document.getElementById('pt-round-display');
+    if(rd) rd.textContent = r+1;
+    ['pt-up','pt-side','pt-down'].forEach(id => {
+      const b=document.getElementById(id);
+      if(b){ b.disabled=false; b.className=['pt-choice-btn',id.replace('pt-','')].join(' '); }
+    });
+    drawChart(baseC, baseC.length, false);
+  }
+
+  function animReveal(revC, idx) {
+    if (idx > revC.length) return;
+    drawChart([...baseC, ...revC.slice(0,idx)], baseC.length, true);
+    animFrame = requestAnimationFrame(() => setTimeout(()=>animReveal(revC, idx+1), 55));
+  }
+
+  window.ptAnswer = function(choice) {
+    if (answered) return;
+    answered = true;
+    const round = rounds[curRound];
+    const correct = choice === round.answer;
+    if (correct) score++;
+
+    ['pt-up','pt-side','pt-down'].forEach(id => {
+      const b=document.getElementById(id); if(!b) return;
+      b.disabled=true;
+      const dir=id.replace('pt-','');
+      if (dir===round.answer) b.classList.add('correct');
+      else if (dir===choice && !correct) b.classList.add('incorrect');
+    });
+    const pip=document.getElementById('prp'+curRound);
+    if(pip){ pip.classList.remove('active'); pip.classList.add(correct?'done':'wrong'); }
+
+    const revC = makeCandles(round.seed+500, 14, round.answer);
+    setTimeout(()=>animReveal(revC,0), 180);
+    setTimeout(()=>{
+      curRound++;
+      if(curRound < rounds.length) loadRound(curRound);
+      else showScore();
+    }, 2600);
+  };
+
+  function showScore() {
+    document.getElementById('pt-game-state').style.display='none';
+    const ss=document.getElementById('pt-score-screen');
+    ss.style.display='flex';
+    document.getElementById('pt-final-score').textContent=score;
+    const data=[
+      { v:'The market <span class="blue">humbled you.</span>', b:'It humbles everyone — before training. The edge is built, not born. This is exactly where Ashford begins: closing the gap between theory and live execution.' },
+      { v:'You have <span class="blue">instinct.</span>',       b:'Ashford takes that instinct and builds it into system. What you feel intuitively, we make repeatable — consistently, under real capital pressure, in live markets.' },
+      { v:'You <span class="green">see it.</span>',            b:'Now imagine doing this consistently, under maximum pressure, without hesitation. That\'s what live execution training at Ashford builds. Your perception is ready.' },
+    ][score]||{ v:'Interesting result.', b:'Your next move is to train live, under real conditions. That\'s the Ashford way.' };
+    document.getElementById('pt-score-verdict').innerHTML=data.v;
+    document.getElementById('pt-score-body').textContent=data.b;
+    gsap.from('#pt-score-screen > *', { y:28, opacity:0, stagger:0.14, duration:0.7, ease:'power3.out' });
+  }
+
+  window.ptReset = function() {
+    score=0; curRound=0; answered=false;
+    document.getElementById('pt-game-state').style.display='block';
+    document.getElementById('pt-score-screen').style.display='none';
+    loadRound(0);
+  };
+
+  setTimeout(()=>loadRound(0), 250);
+  window.addEventListener('resize', ()=>{ if(!answered) drawChart(baseC, baseC.length, false); });
+
+  gsap.timeline({ scrollTrigger:{ trigger:'#perception-test', start:'top 75%', toggleActions:'play none none none' }})
+    .from('.pt-header', { y:40, opacity:0, duration:0.6, ease:'power3.out' })
+    .from('#pt-game-wrap', { y:50, opacity:0, duration:0.7, ease:'power3.out' }, '-=0.2');
+})();
+
+
 </script>
 </body>
 </html>
