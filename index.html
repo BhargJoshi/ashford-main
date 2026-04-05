@@ -153,6 +153,8 @@ h1, h2, h3, h4 {
   backdrop-filter: blur(28px) saturate(1.6);
   -webkit-backdrop-filter: blur(28px) saturate(1.6);
   transition: background .4s, border-color .4s;
+  will-change: transform;
+  contain: layout style;
 }
 #nav.solid { background: rgba(5,7,16,0.95); border-color: var(--b-blue); }
 
@@ -1268,7 +1270,14 @@ h1, h2, h3, h4 {
 }
 .faq-row.open .faq-plus { transform: rotate(45deg); background: var(--blue-ghost); border-color: var(--blue); }
 
-.faq-a { max-height: 0; overflow: hidden; transition: max-height .45s var(--ease-silk); }
+.faq-a {
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .38s var(--ease-silk);
+}
+.faq-a > .faq-a-body { min-height: 0; overflow: hidden; }
+.faq-row.open .faq-a { grid-template-rows: 1fr; }
 .faq-a-body {
   padding: 0 2rem 1.8rem 4rem;
   font-size: 0.85rem;
@@ -1277,7 +1286,6 @@ h1, h2, h3, h4 {
   line-height: 2;
   letter-spacing: 0.01em;
 }
-.faq-row.open .faq-a { max-height: 300px; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    CTA
@@ -1728,6 +1736,7 @@ footer {
   position: relative;
   background: var(--ink);
   overflow: hidden;
+  contain: layout;
 }
 #psych-pin {
   position: sticky;
@@ -1867,6 +1876,7 @@ footer {
   background: var(--ink-deep);
   padding: 0;
   overflow: hidden;
+  contain: layout;
 }
 .ns-header {
   padding: 90px 5% 60px;
@@ -2152,6 +2162,7 @@ footer {
   width: 500%;
   height: 100%;
   will-change: transform;
+  backface-visibility: hidden;
 }
 .arc-chapter {
   width: 20%;
@@ -3552,19 +3563,33 @@ footer {
   /* ─ ANIMATE ─ */
   let scrollP = 0, targetP = 0, t = 0;
   let mx = 0, my = 0;
+  let _latestScroll = 0;
+  let _scrollTicking = false;
 
-  window.addEventListener('scroll', () => {
-    targetP = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-  });
+  // Passive scroll listener — just records value, never blocks
+  window.addEventListener('scroll', () => { _latestScroll = window.scrollY; }, { passive: true });
   window.addEventListener('mousemove', e => {
     mx = (e.clientX / window.innerWidth  - 0.5);
     my = (e.clientY / window.innerHeight - 0.5);
-  });
+  }, { passive: true });
+
+  // Three.js visibility — only render when canvas is near viewport
+  let threeVisible = true;
+  const threeObs = new IntersectionObserver(
+    entries => { threeVisible = entries[0].isIntersecting; },
+    { rootMargin: '200px' }
+  );
+  threeObs.observe(document.getElementById('bg-canvas'));
 
   (function tick() {
     requestAnimationFrame(tick);
+    // Read latest passive scroll value
+    targetP = _latestScroll / Math.max(1, document.body.scrollHeight - window.innerHeight);
     t += 0.003;
     scrollP += (targetP - scrollP) * 0.035;
+
+    // Skip WebGL render if canvas is off-screen (saves ~8ms/frame)
+    if (!threeVisible) return;
 
     // Camera — cinematic, elegant drift
     camera.position.x  = mx * 3 + Math.sin(t * 0.4) * 1.5;
@@ -3634,11 +3659,11 @@ hoverEls.forEach(el => {
    LENIS SMOOTH SCROLL
 ════════════════════════════════════════ */
 const lenis = new Lenis({
-  duration: 1.9,
-  easing: t => 1 - Math.pow(1 - t, 4),
+  duration: 1.1,
+  easing: t => 1 - Math.pow(1 - t, 3),
   smoothWheel: true,
-  wheelMultiplier: 0.75,
-  touchMultiplier: 1.5,
+  wheelMultiplier: 0.9,
+  touchMultiplier: 1.8,
 });
 lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add(time => lenis.raf(time * 1000));
@@ -3815,11 +3840,17 @@ document.querySelectorAll('[data-count]').forEach(el => {
 });
 
 /* ════════════════════════════════════════
-   NAVBAR — scroll state
+   NAVBAR — scroll state (RAF-throttled)
 ════════════════════════════════════════ */
+let _navScrollPending = false;
 window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('solid', window.scrollY > 40);
-});
+  if (_navScrollPending) return;
+  _navScrollPending = true;
+  requestAnimationFrame(() => {
+    document.getElementById('nav').classList.toggle('solid', window.scrollY > 40);
+    _navScrollPending = false;
+  });
+}, { passive: true });
 
 /* ════════════════════════════════════════
    HAMBURGER NAV TOGGLE
@@ -4004,16 +4035,17 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
       ctx.fillRect(x, toY(Math.max(c.open, c.close)), bw, Math.max(1.5, Math.abs(toY(c.open) - toY(c.close))));
     }
 
-    // Current candle pulse
+    // Current candle pulse — save/restore prevents shadow bleed
     if (total > 0 && total < candles.length) {
       const lc = candles[total - 1];
       const lx = pl + (total - 1) * cw + gp;
-      ctx.shadowColor = 'rgba(26,107,255,0.6)';
-      ctx.shadowBlur = 8;
-      ctx.strokeStyle = 'rgba(26,107,255,0.8)';
+      ctx.save();
+      ctx.shadowColor = 'rgba(26,107,255,0.5)';
+      ctx.shadowBlur = 6;
+      ctx.strokeStyle = 'rgba(26,107,255,0.75)';
       ctx.lineWidth = 1.5;
       ctx.strokeRect(lx - 1, toY(Math.max(lc.open, lc.close)) - 1, bw + 2, Math.max(2, Math.abs(toY(lc.open) - toY(lc.close))) + 2);
-      ctx.shadowBlur = 0;
+      ctx.restore();
     }
   }
 
@@ -4034,6 +4066,13 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
     drawCandles(totalCandles, showMissed, showGhost);
   }
 
+  let psychVisible = false;
+  const psychObs = new IntersectionObserver(
+    entries => { psychVisible = entries[0].isIntersecting; },
+    { rootMargin: '100px' }
+  );
+  psychObs.observe(document.getElementById('psych-trade'));
+
   ScrollTrigger.create({
     trigger: '#psych-trade',
     start: 'top top',
@@ -4041,7 +4080,7 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
     scrub: 1.0,
     pin: '#psych-pin',
     pinSpacing: false,
-    onUpdate(self) { update(self.progress); }
+    onUpdate(self) { if (psychVisible) update(self.progress); }
   });
 
   // Entrance anim
@@ -4241,9 +4280,9 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
     const rect = stage.getBoundingClientRect();
     setDivider((e.clientX - rect.left) / rect.width * 100);
     if (!hintHidden) { hint.style.opacity = '0'; hintHidden = true; }
-  });
+  }, { passive: true });
   stage.addEventListener('touchstart', () => { isDragging = true; }, { passive: true });
-  window.addEventListener('touchend',  () => { isDragging = false; });
+  window.addEventListener('touchend',  () => { isDragging = false; }, { passive: true });
   window.addEventListener('touchmove', e => {
     if (!isDragging) return;
     const rect = stage.getBoundingClientRect();
@@ -4274,35 +4313,64 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
   resizePC();
   window.addEventListener('resize', resizePC);
 
-  const pts = Array.from({ length: 55 }, () => ({
+  const pts = Array.from({ length: 38 }, () => ({
     x: Math.random(), y: Math.random(),
-    vx: (Math.random() - 0.5) * 0.00018,
-    vy: (Math.random() - 0.5) * 0.00018,
-    r: Math.random() * 1.6 + 0.3,
-    a: Math.random() * 0.35 + 0.05,
+    vx: (Math.random() - 0.5) * 0.00015,
+    vy: (Math.random() - 0.5) * 0.00015,
+    r: Math.random() * 1.4 + 0.3,
+    a: Math.random() * 0.3 + 0.05,
   }));
 
+  // Pause RAF when clock section is off-screen
+  let clockVisible = false;
+  const clockObs = new IntersectionObserver(
+    entries => { clockVisible = entries[0].isIntersecting; },
+    { rootMargin: '100px' }
+  );
+  clockObs.observe(document.getElementById('ashford-clock'));
+
   function drawParticles() {
-    if (!canvas.width) { requestAnimationFrame(drawParticles); return; }
+    requestAnimationFrame(drawParticles);
+    if (!clockVisible || !canvas.width) return;
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
-    ctx.clearRect(0,0,W,H);
-    pts.forEach(p => { p.x=(p.x+p.vx+1)%1; p.y=(p.y+p.vy+1)%1; });
+    ctx.clearRect(0, 0, W, H);
+
+    // Update positions
+    pts.forEach(p => { p.x = (p.x + p.vx + 1) % 1; p.y = (p.y + p.vy + 1) % 1; });
+
+    // Constellation lines — one batched path per opacity bucket to minimise state changes
+    ctx.lineWidth = 0.5;
+    // Group by distance range into 3 alpha buckets
+    const buckets = [
+      { maxD: 40,  alpha: 0.055, path: new Path2D() },
+      { maxD: 80,  alpha: 0.032, path: new Path2D() },
+      { maxD: 115, alpha: 0.012, path: new Path2D() },
+    ];
     for (let i = 0; i < pts.length; i++) {
-      for (let j = i+1; j < pts.length; j++) {
-        const dx=(pts[i].x-pts[j].x)*W, dy=(pts[i].y-pts[j].y)*H;
-        const d=Math.sqrt(dx*dx+dy*dy);
-        if (d < 115) {
-          ctx.beginPath(); ctx.moveTo(pts[i].x*W,pts[i].y*H); ctx.lineTo(pts[j].x*W,pts[j].y*H);
-          ctx.strokeStyle=`rgba(26,107,255,${0.06*(1-d/115)})`; ctx.lineWidth=0.5; ctx.stroke();
-        }
+      for (let j = i + 1; j < pts.length; j++) {
+        const dx = (pts[i].x - pts[j].x) * W;
+        const dy = (pts[i].y - pts[j].y) * H;
+        const d2 = dx * dx + dy * dy;
+        if (d2 > 115 * 115) continue;
+        const d = Math.sqrt(d2);
+        const bucket = d < 40 ? buckets[0] : d < 80 ? buckets[1] : buckets[2];
+        bucket.path.moveTo(pts[i].x * W, pts[i].y * H);
+        bucket.path.lineTo(pts[j].x * W, pts[j].y * H);
       }
     }
-    pts.forEach(p => {
-      ctx.beginPath(); ctx.arc(p.x*W, p.y*H, p.r, 0, Math.PI*2);
-      ctx.fillStyle=`rgba(26,107,255,${p.a})`; ctx.fill();
+    buckets.forEach(b => {
+      ctx.strokeStyle = `rgba(26,107,255,${b.alpha})`;
+      ctx.stroke(b.path);
     });
-    requestAnimationFrame(drawParticles);
+
+    // Dots — one fill style, one batch
+    ctx.fillStyle = 'rgba(26,107,255,0.18)';
+    pts.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x * W, p.y * H, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    });
   }
   drawParticles();
 
@@ -4503,18 +4571,32 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
     }
 
     // Draw candles
+    // Base candles (no shadow)
     allC.forEach((c,i) => {
-      const isReveal = i >= pivot;
+      if (i >= pivot) return;
       const bull = c.c >= c.o;
-      const a = isReveal ? 0.88 : 0.6;
-      const col = bull?`rgba(0,200,83,${a})`:`rgba(255,77,109,${a})`;
-      if (isReveal) { ctx.shadowColor=bull?'rgba(0,200,83,0.25)':'rgba(255,77,109,0.25)'; ctx.shadowBlur=5; }
+      const col = bull ? `rgba(0,200,83,0.6)` : `rgba(255,77,109,0.6)`;
       ctx.strokeStyle=col; ctx.fillStyle=col; ctx.lineWidth=1;
       const x=i*cw+gp;
       ctx.beginPath(); ctx.moveTo(x+bw/2,toY(c.h)); ctx.lineTo(x+bw/2,toY(c.l)); ctx.stroke();
       ctx.fillRect(x, toY(Math.max(c.o,c.c)), bw, Math.max(1.5,Math.abs(toY(c.o)-toY(c.c))));
-      ctx.shadowBlur=0;
     });
+    // Reveal candles (with glow — isolated in save/restore)
+    if (allC.length > pivot) {
+      ctx.save();
+      allC.slice(pivot).forEach((c,ri) => {
+        const i = pivot + ri;
+        const bull = c.c >= c.o;
+        const col = bull ? 'rgba(0,200,83,0.88)' : 'rgba(255,77,109,0.88)';
+        ctx.shadowColor = bull ? 'rgba(0,200,83,0.2)' : 'rgba(255,77,109,0.2)';
+        ctx.shadowBlur = 4;
+        ctx.strokeStyle=col; ctx.fillStyle=col; ctx.lineWidth=1;
+        const x=i*cw+gp;
+        ctx.beginPath(); ctx.moveTo(x+bw/2,toY(c.h)); ctx.lineTo(x+bw/2,toY(c.l)); ctx.stroke();
+        ctx.fillRect(x, toY(Math.max(c.o,c.c)), bw, Math.max(1.5,Math.abs(toY(c.o)-toY(c.c))));
+      });
+      ctx.restore();
+    }
   }
 
   function loadRound(r) {
