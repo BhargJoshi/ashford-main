@@ -587,6 +587,9 @@ h1, h2, h3, h4 {
   margin-bottom: 1rem;
 }
 .s-h2 .blue { color: var(--blue-bright); font-style: italic; }
+.s-h2 .ghost { color: var(--t-tertiary); }
+.ghost { color: var(--t-tertiary); }
+
 .s-h2 .green { color: var(--green); text-shadow: 0 0 18px rgba(0,200,83,0.45); }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2535,6 +2538,651 @@ footer {
   .pt-question-bar { padding: 1.2rem 1.4rem; }
   .pt-chart-area { padding: 1.2rem 1.2rem 0.5rem; }
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 06 — THE OPERATOR'S CODEX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#codex { background: var(--ink-deep); }
+.codex-deck-wrap {
+  max-width: 520px; margin: 60px auto 0;
+  position: relative;
+}
+.codex-counter {
+  position: absolute; top: 0; right: 0;
+  font-family: var(--f-mono); font-size: 0.58rem;
+  letter-spacing: 0.2em; color: var(--t-tertiary);
+  z-index: 2;
+}
+.codex-card-scene {
+  perspective: 1000px;
+  width: 100%; max-width: 460px;
+  height: 280px; cursor: none;
+  margin: 0 auto;
+}
+.codex-card-inner {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.65s var(--ease-silk);
+  will-change: transform;
+}
+.codex-card-inner.flipped { transform: rotateY(180deg); }
+.codex-card-front, .codex-card-back {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  padding: 2rem 2.2rem;
+  display: flex; flex-direction: column; justify-content: center;
+  overflow: hidden;
+}
+.codex-card-front {
+  background: var(--ink-panel);
+  border: 1px solid var(--b-blue);
+}
+.codex-card-front::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,215,100,0.18), transparent);
+}
+.codex-card-back {
+  transform: rotateY(180deg);
+  background: rgba(15,18,34,0.95);
+  border: 1px solid rgba(26,107,255,0.22);
+}
+.codex-card-back::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,200,83,0.18), transparent);
+}
+.codex-roman {
+  font-family: var(--f-serif); font-size: 4rem; font-weight: 300;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(26,107,255,0.2);
+  position: absolute; top: 1.2rem; right: 1.8rem; line-height: 1;
+  pointer-events: none; backface-visibility: hidden;
+}
+.codex-rule {
+  width: 32px; height: 1px;
+  background: linear-gradient(to right, var(--blue), transparent);
+  margin: 0 0 1.2rem;
+  flex-shrink: 0;
+}
+.codex-principle {
+  font-family: var(--f-serif); font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+  font-weight: 300; color: var(--t-primary); line-height: 1.4;
+  max-width: 340px;
+}
+.codex-hint {
+  font-family: var(--f-mono); font-size: 0.52rem;
+  letter-spacing: 0.2em; color: var(--t-tertiary);
+  position: absolute; bottom: 1.4rem; left: 50%;
+  transform: translateX(-50%); white-space: nowrap;
+  transition: opacity 0.4s;
+}
+.codex-hint.hidden { opacity: 0; pointer-events: none; }
+.codex-back-text {
+  font-family: var(--f-sans); font-size: 0.82rem;
+  font-weight: 300; color: var(--t-secondary);
+  line-height: 1.95;
+}
+.codex-kicker {
+  font-family: var(--f-serif); font-style: italic;
+  font-size: 0.95rem; color: var(--green);
+  text-shadow: 0 0 14px rgba(0,200,83,0.35);
+  display: block; margin-top: 1rem;
+}
+.codex-nav {
+  display: flex; align-items: center;
+  justify-content: center; gap: 2rem;
+  margin-top: 2rem;
+}
+.codex-arrow {
+  width: 44px; height: 44px;
+  border: 1px solid var(--b-soft);
+  background: transparent; color: var(--t-tertiary);
+  cursor: none; font-family: var(--f-sans); font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.25s, color 0.25s;
+  outline: none;
+}
+.codex-arrow:hover { border-color: var(--b-blue); color: var(--t-primary); }
+.codex-dots {
+  display: flex; gap: 8px; align-items: center;
+}
+.codex-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--b-soft);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.codex-dot.active {
+  background: var(--blue-bright);
+  transform: scale(1.6);
+  box-shadow: 0 0 8px var(--blue-glow);
+}
+.codex-finale {
+  margin-top: 2.5rem; text-align: center;
+  opacity: 0; pointer-events: none;
+  max-height: 0; overflow: hidden;
+  transition: opacity 0.6s var(--ease-expo), max-height 0.6s var(--ease-expo);
+}
+.codex-finale.visible { opacity: 1; pointer-events: auto; max-height: 300px; }
+.codex-finale-sep {
+  width: 100%; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(0,200,83,0.3), transparent);
+  margin-bottom: 2rem;
+}
+.codex-finale-line {
+  font-family: var(--f-serif); font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 300; color: var(--t-primary);
+  text-align: center; margin: 0 0 1.5rem;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity 0.5s, transform 0.5s var(--ease-expo);
+}
+.codex-finale-line.in { opacity: 1; transform: translateY(0); }
+.codex-finale-cta {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s var(--ease-expo), transform 0.6s var(--ease-expo);
+}
+.codex-finale-cta.in { opacity: 1; transform: translateY(0); }
+@media (max-width: 768px) {
+  .codex-card-scene { height: 300px; }
+  .codex-principle { font-size: 1.05rem; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 07 — THE LIVE SESSION ROOM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#session-room { background: var(--ink); }
+.session-ui {
+  max-width: 1100px; margin: 50px auto 0;
+  padding: 0 5%;
+}
+.session-container {
+  border: 1px solid var(--b-blue);
+  background: var(--ink-panel);
+  position: relative; overflow: hidden;
+}
+.session-container::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue-bright), transparent);
+}
+.session-topbar {
+  height: 42px; border-bottom: 1px solid var(--b-faint);
+  display: flex; align-items: center;
+  padding: 0 1.2rem; gap: 1rem;
+}
+.session-live-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green-glow);
+  flex-shrink: 0;
+  animation: pulse-live 1.4s ease-in-out infinite;
+}
+@keyframes pulse-live {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.6; transform:scale(0.85); }
+}
+.session-live-label {
+  font-family: var(--f-mono); font-size: 0.58rem;
+  letter-spacing: 0.18em; color: var(--green);
+  text-shadow: 0 0 8px rgba(0,200,83,0.35);
+}
+.session-sep {
+  width: 1px; height: 18px;
+  background: var(--b-faint); margin: 0 0.5rem;
+  flex-shrink: 0;
+}
+.session-info {
+  font-family: var(--f-mono); font-size: 0.55rem;
+  color: var(--t-tertiary); letter-spacing: 0.12em;
+  flex: 1;
+}
+.session-timer {
+  font-family: var(--f-mono); font-size: 0.6rem;
+  color: var(--t-tertiary); margin-left: auto;
+}
+.session-body {
+  display: grid; grid-template-columns: 1fr 280px;
+  height: 360px;
+}
+.session-chart-panel {
+  border-right: 1px solid var(--b-faint);
+  position: relative; overflow: hidden;
+  background: rgba(5,7,16,0.8);
+  min-height: 200px;
+}
+#session-chart-canvas {
+  width: 100%; height: 100%; display: block;
+}
+.session-annotation-svg {
+  position: absolute; inset: 0;
+  pointer-events: none; overflow: visible;
+}
+.ann-label {
+  font-family: var(--f-mono); font-size: 0.52rem;
+  letter-spacing: 0.12em; opacity: 0;
+  transition: opacity 0.4s;
+}
+.ann-label.visible { opacity: 1; }
+.session-mentor-cursor {
+  width: 12px; height: 12px;
+  border: 2px solid var(--blue-bright);
+  border-radius: 50%; position: absolute;
+  pointer-events: none; z-index: 5;
+  transition: left 1.2s var(--ease-silk), top 1.2s var(--ease-silk);
+}
+.session-chat-panel {
+  overflow: hidden; display: flex; flex-direction: column;
+}
+.session-chat-header {
+  padding: 0.8rem 1rem; border-bottom: 1px solid var(--b-faint);
+  font-family: var(--f-mono); font-size: 0.55rem;
+  letter-spacing: 0.15em; color: var(--t-tertiary);
+  flex-shrink: 0;
+}
+.session-chat-messages {
+  flex: 1; overflow: hidden;
+  padding: 0.8rem; display: flex;
+  flex-direction: column; gap: 0.6rem;
+  position: relative;
+}
+.chat-msg {
+  display: flex; gap: 0.6rem; align-items: flex-start;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 0.35s, transform 0.35s;
+  flex-shrink: 0;
+}
+.chat-msg.shown { opacity: 1; transform: translateY(0); }
+.chat-msg.fading { opacity: 0; transform: translateY(-8px); }
+.chat-av {
+  width: 26px; height: 26px;
+  clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  background: linear-gradient(135deg, var(--blue-dim), var(--blue));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--f-mono); font-size: 0.48rem; color: white;
+  flex-shrink: 0;
+}
+.chat-text {
+  font-family: var(--f-sans); font-size: 0.72rem;
+  color: var(--t-secondary); font-weight: 300; line-height: 1.5;
+}
+.session-gate {
+  position: absolute; right: 0; top: 0; bottom: 0;
+  width: 38%;
+  background: linear-gradient(to left, rgba(2,3,10,0.95) 0%, rgba(2,3,10,0.82) 60%, transparent 100%);
+  z-index: 10; display: flex; align-items: center;
+  justify-content: flex-end; padding-right: 3rem;
+}
+.session-gate-card {
+  background: rgba(13,17,26,0.8);
+  border: 1px solid var(--b-blue);
+  padding: 1.8rem 1.6rem; max-width: 200px;
+}
+.session-gate-label {
+  font-family: var(--f-mono); font-size: 0.52rem;
+  letter-spacing: 0.18em; color: var(--t-tertiary);
+  margin-bottom: 0.8rem;
+}
+.session-gate-text {
+  font-family: var(--f-serif); font-size: 1.1rem;
+  font-weight: 300; color: var(--t-primary);
+  line-height: 1.4; margin-bottom: 1.2rem;
+}
+@media (max-width: 768px) {
+  .session-body { grid-template-columns: 1fr; height: auto; }
+  .session-chart-panel { min-height: 240px; }
+  .session-chat-panel { height: 180px; }
+  .session-gate { width: 55%; padding-right: 1.2rem; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 08 — EMOTION VS SYSTEM SIMULATOR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#emo-sim { background: var(--ink); }
+.emo-sim-stage {
+  max-width: 1200px; margin: 50px auto 0; padding: 0 5%;
+}
+.emo-sim-grid {
+  display: grid; grid-template-columns: 1fr 1px 1fr;
+  gap: 0; border: 1px solid var(--b-faint);
+}
+.emo-divider-line {
+  background: var(--b-faint); width: 1px;
+}
+.emo-panel {
+  position: relative; overflow: hidden;
+}
+.emo-panel.left {
+  background: linear-gradient(180deg, rgba(255,77,109,0.03) 0%, transparent 40%);
+}
+.emo-panel.right {
+  background: linear-gradient(180deg, rgba(26,107,255,0.03) 0%, transparent 40%);
+}
+.emo-panel-label {
+  font-family: var(--f-mono); font-size: 0.58rem;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  padding: 1rem 1.5rem 0.5rem;
+}
+.emo-panel.left .emo-panel-label {
+  color: rgba(255,77,109,0.6);
+  border-bottom: 1px solid rgba(255,77,109,0.1);
+}
+.emo-panel.right .emo-panel-label {
+  color: var(--blue-pale);
+  border-bottom: 1px solid var(--b-blue);
+}
+.emo-chart-area {
+  height: 180px; min-height: 180px; position: relative; padding: 0 0.5rem;
+}
+.emo-chart-canvas { width: 100%; height: 100%; display: block; min-height: 160px; }
+.emo-narration {
+  min-height: 90px; padding: 1rem 1.5rem;
+}
+.emo-panel.left .emo-narration {
+  font-family: var(--f-serif); font-style: italic;
+  font-size: 0.95rem; font-weight: 300;
+  color: var(--t-secondary); line-height: 1.7;
+}
+.emo-panel.right .emo-narration {
+  font-family: var(--f-mono); font-size: 0.72rem;
+  color: var(--t-secondary); line-height: 1.75;
+  letter-spacing: 0.02em;
+}
+.emo-pnl-strip {
+  height: 48px; padding: 0 1.5rem;
+  border-top: 1px solid var(--b-faint);
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.emo-pnl-label {
+  font-family: var(--f-mono); font-size: 0.52rem;
+  letter-spacing: 0.12em; color: var(--t-tertiary);
+  flex-shrink: 0;
+}
+.emo-pnl-val {
+  font-family: var(--f-mono); font-size: 1.1rem;
+  letter-spacing: -0.02em; color: var(--t-tertiary);
+  transition: color 0.4s, transform 0.2s;
+}
+.emo-pnl-val.positive { color: var(--green); }
+.emo-pnl-val.negative { color: rgba(255,77,109,0.85); }
+.emo-sparkline { height: 28px; flex: 1; }
+.emo-controls {
+  padding: 1.5rem; border-top: 1px solid var(--b-faint);
+  grid-column: 1 / -1; text-align: center;
+}
+.emo-progress-bar {
+  height: 2px; background: var(--b-faint);
+  margin-bottom: 0.8rem; position: relative; overflow: hidden;
+}
+.emo-progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--blue), var(--blue-bright));
+  width: 0%; transition: width 0.5s var(--ease-expo);
+}
+.emo-step-label {
+  font-family: var(--f-mono); font-size: 0.55rem;
+  color: var(--t-tertiary); text-align: center;
+  letter-spacing: 0.15em; margin-bottom: 1rem;
+}
+.emo-verdict-row {
+  display: none; padding: 1.5rem;
+  grid-column: 1 / -1; border-top: 1px solid var(--b-faint);
+  text-align: center;
+}
+.emo-verdict-cols {
+  display: flex; gap: 2rem; justify-content: center;
+  margin-bottom: 1.5rem; flex-wrap: wrap;
+}
+.emo-verdict-left {
+  font-family: var(--f-mono); font-size: 1rem;
+  color: rgba(255,77,109,0.8);
+}
+.emo-verdict-right {
+  font-family: var(--f-mono); font-size: 1rem;
+  color: var(--green);
+}
+.emo-verdict-gap {
+  font-family: var(--f-serif);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-weight: 300; color: var(--t-primary);
+  text-align: center; margin: 0 0 2rem;
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
+}
+.shake-anim { animation: shake 0.4s ease both; }
+@keyframes bubble-float {
+  0% { opacity: 0; transform: translateY(-20px); }
+  20% { opacity: 0.35; }
+  100% { opacity: 0; transform: translateY(-55px); }
+}
+.thought-bubble {
+  position: absolute; font-size: 0.65rem;
+  color: rgba(255,77,109,0.5); font-style: italic;
+  pointer-events: none; z-index: 3;
+  animation: bubble-float 2s ease forwards;
+}
+@media (max-width: 768px) {
+  .emo-sim-grid { grid-template-columns: 1fr; }
+  .emo-divider-line { display: none; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 09 — THE ASHFORD GLOSSARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#glossary { background: var(--ink); }
+.gloss-pills {
+  display: flex; gap: 8px;
+  flex-wrap: wrap; margin-bottom: 3rem;
+}
+.gloss-pill {
+  font-family: var(--f-mono); font-size: 0.6rem;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 0.5rem 1.1rem;
+  border: 1px solid var(--b-faint);
+  color: var(--t-tertiary); cursor: none;
+  transition: border-color 0.25s, color 0.25s, background 0.25s;
+}
+.gloss-pill:hover {
+  border-color: var(--b-soft); color: var(--t-secondary);
+}
+.gloss-pill.active {
+  border-color: var(--b-blue); color: var(--blue-pale);
+  background: var(--blue-ghost);
+}
+.gloss-cards {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--b-faint);
+  border: 1px solid var(--b-faint);
+  transition: opacity 0.2s, transform 0.2s;
+  will-change: opacity, transform;
+}
+.gloss-card-text { background: rgba(12,10,8,0.6); padding: 2.5rem; }
+.gloss-card-ashford {
+  background: var(--ink-panel); padding: 2.5rem;
+  position: relative; overflow: hidden;
+}
+.gloss-card-ashford::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue-bright), var(--green), transparent);
+}
+.gloss-card-label {
+  font-family: var(--f-mono); font-size: 0.52rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+.gloss-card-text .gloss-card-label { color: var(--t-tertiary); opacity: 0.6; }
+.gloss-card-ashford .gloss-card-label { color: var(--blue-pale); }
+.gloss-def {
+  font-family: var(--f-sans); font-size: 0.85rem;
+  font-weight: 300; line-height: 2; letter-spacing: 0.01em;
+}
+.gloss-card-text .gloss-def { color: var(--t-tertiary); }
+.gloss-card-ashford .gloss-def { color: var(--t-primary); }
+.gloss-kicker {
+  font-family: var(--f-serif); font-style: italic;
+  font-size: 0.95rem; color: var(--green);
+  text-shadow: 0 0 12px rgba(0,200,83,0.3);
+  margin-top: 1.4rem; display: block;
+  padding-top: 1rem; border-top: 1px solid var(--b-faint);
+}
+.glossary-footer {
+  margin-top: 3rem; display: flex;
+  align-items: center; justify-content: space-between;
+  gap: 2rem; flex-wrap: wrap;
+  padding-top: 2rem; border-top: 1px solid var(--b-faint);
+}
+.glossary-footer p {
+  font-family: var(--f-serif);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  font-weight: 300; font-style: italic;
+  color: var(--t-secondary);
+}
+@media (max-width: 768px) {
+  .gloss-cards { grid-template-columns: 1fr; }
+  .gloss-card-text { display: none; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 10 — THE READINESS PROFILER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#profiler { background: var(--ink-deep); }
+.profiler-wrap { max-width: 680px; margin: 0 auto; }
+.profiler-progress {
+  height: 2px; background: var(--b-faint); margin-bottom: 3rem;
+  overflow: hidden;
+}
+.profiler-progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--blue), var(--blue-bright));
+  width: 20%; transition: width 0.5s var(--ease-expo);
+}
+.profiler-q-counter {
+  font-family: var(--f-mono); font-size: 0.55rem;
+  letter-spacing: 0.2em; color: var(--t-tertiary);
+  text-align: center; margin-bottom: 1rem;
+}
+.profiler-question {
+  font-family: var(--f-serif);
+  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  font-weight: 300; color: var(--t-primary);
+  line-height: 1.3; text-align: center; margin-bottom: 3rem;
+}
+.profiler-options {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.profiler-option {
+  border: 1px solid var(--b-faint);
+  padding: 1.3rem 2rem; cursor: none;
+  transition: border-color 0.25s, background 0.25s, transform 0.2s;
+  position: relative; overflow: hidden; display: flex;
+  align-items: center; gap: 0;
+}
+.profiler-option::before {
+  content: '';
+  position: absolute; left: 0; top: 0;
+  width: 2px; height: 100%;
+  background: var(--blue-bright);
+  transform: scaleY(0); transform-origin: bottom;
+  transition: transform 0.3s var(--ease-expo);
+}
+.profiler-option:hover::before { transform: scaleY(1); }
+.profiler-option:hover {
+  border-color: var(--b-blue);
+  background: var(--blue-ghost);
+  transform: translateX(4px);
+}
+.profiler-option-letter {
+  font-family: var(--f-mono); font-size: 0.55rem;
+  letter-spacing: 0.15em; color: var(--t-tertiary);
+  flex-shrink: 0; width: 2rem;
+}
+.profiler-option-text {
+  font-family: var(--f-sans); font-size: 0.9rem;
+  font-weight: 300; color: var(--t-secondary);
+}
+@keyframes slide-out-left {
+  to { transform: translateX(-40px); opacity: 0; }
+}
+@keyframes slide-in-right {
+  from { transform: translateX(40px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.profiler-q-screen { will-change: transform; }
+.profiler-q-screen.out { animation: slide-out-left 0.3s var(--ease-silk) forwards; }
+.profiler-q-screen.in { animation: slide-in-right 0.3s var(--ease-silk) forwards; }
+.profiler-result {
+  text-align: center;
+  display: none;
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.8s var(--ease-expo), transform 0.8s var(--ease-expo);
+}
+.profiler-result.show { opacity: 1; transform: translateY(0); }
+.profiler-archetype-badge {
+  display: inline-block;
+  font-family: var(--f-mono); font-size: 0.58rem;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  padding: 0.4rem 1.2rem;
+  border: 1px solid var(--b-blue);
+  color: var(--blue-pale); background: var(--blue-ghost);
+  margin-bottom: 1.8rem;
+}
+.profiler-archetype-name {
+  font-family: var(--f-serif);
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 300; color: var(--t-primary);
+  line-height: 1.05; margin-bottom: 2rem;
+}
+.profiler-rule {
+  width: 60px; height: 1px;
+  background: linear-gradient(to right, var(--blue), transparent);
+  margin: 0 auto 2rem;
+}
+.profiler-profile-text {
+  font-family: var(--f-sans); font-size: 0.88rem;
+  font-weight: 300; color: var(--t-secondary);
+  line-height: 2; letter-spacing: 0.01em;
+  margin-bottom: 2.5rem; text-align: left;
+}
+.profiler-rec-box {
+  border: 1px solid var(--b-blue); padding: 1.8rem 2rem;
+  background: linear-gradient(135deg, rgba(26,107,255,0.06) 0%, transparent 60%);
+  text-align: left; margin-bottom: 2rem;
+}
+.profiler-rec-label {
+  font-family: var(--f-mono); font-size: 0.55rem;
+  letter-spacing: 0.2em; color: var(--blue-pale);
+  margin-bottom: 0.6rem;
+}
+.profiler-rec-name {
+  font-family: var(--f-serif); font-size: 1.4rem;
+  font-weight: 300; color: var(--t-primary); margin-bottom: 0.4rem;
+}
+.profiler-rec-price {
+  font-family: var(--f-mono); font-size: 1.2rem;
+  color: var(--blue-bright); letter-spacing: -0.02em;
+}
+.profiler-retake {
+  font-family: var(--f-mono); font-size: 0.58rem;
+  letter-spacing: 0.15em; color: var(--t-tertiary);
+  cursor: none; display: block; margin-top: 1.2rem;
+  transition: color 0.25s; background: none; border: none;
+  width: 100%; text-align: center;
+}
+.profiler-retake:hover { color: var(--blue-pale); }
+@media (max-width: 768px) {
+  .profiler-option { padding: 1rem 1.5rem; }
+}
+
 </style>
 </head>
 <body>
@@ -2894,6 +3542,70 @@ footer {
   </div>
 </section>
 
+
+<!-- ── SECTION 08: THE EMOTION VS SYSTEM SIMULATOR ── -->
+<section id="emo-sim" class="s">
+  <div class="s-inner">
+    <div class="s-label">Two Traders. One Setup.</div>
+    <h2 class="s-h2">Emotion <span class="ghost">vs.</span> <span class="green">System</span></h2>
+    <p style="color:var(--t-secondary);font-size:.85rem;font-weight:300;margin-top:.4rem;">Watch the same market scenario play out through two different minds. Same setup. Different outcomes. You already know which trader you've been.</p>
+  </div>
+
+  <div class="emo-sim-stage">
+    <div class="emo-sim-grid" id="emo-sim-grid">
+      <!-- Left: Emotional Trader -->
+      <div class="emo-panel left" id="emo-left-panel">
+        <div class="emo-panel-label">THE EMOTIONAL TRADER</div>
+        <div class="emo-chart-area">
+          <canvas class="emo-chart-canvas" id="emo-chart"></canvas>
+        </div>
+        <div class="emo-narration" id="emo-left-narration"></div>
+        <div class="emo-pnl-strip">
+          <span class="emo-pnl-label">P&L</span>
+          <span class="emo-pnl-val" id="emo-left-pnl">0.00%</span>
+          <canvas class="emo-sparkline" id="emo-left-spark"></canvas>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="emo-divider-line"></div>
+
+      <!-- Right: System Trader -->
+      <div class="emo-panel right" id="emo-right-panel">
+        <div class="emo-panel-label">THE ASHFORD OPERATOR</div>
+        <div class="emo-chart-area">
+          <canvas class="emo-chart-canvas" id="sys-chart"></canvas>
+        </div>
+        <div class="emo-narration" id="emo-right-narration"></div>
+        <div class="emo-pnl-strip">
+          <span class="emo-pnl-label">P&L</span>
+          <span class="emo-pnl-val" id="emo-right-pnl">0.00%</span>
+          <canvas class="emo-sparkline" id="emo-right-spark"></canvas>
+        </div>
+      </div>
+
+      <!-- Controls (full width row) -->
+      <div class="emo-controls">
+        <div class="emo-progress-bar">
+          <div class="emo-progress-fill" id="emo-progress-fill"></div>
+        </div>
+        <div class="emo-step-label" id="emo-step-label">STEP 0 OF 5</div>
+        <button class="btn-secondary" id="emo-play-btn" onclick="emoPlay()">▶ Run the scenario</button>
+      </div>
+
+      <!-- Verdict row (full width, hidden until step 5) -->
+      <div class="emo-verdict-row" id="emo-verdict-row">
+        <div class="emo-verdict-cols">
+          <div class="emo-verdict-left">The cost of emotion: −1.8%</div>
+          <div class="emo-verdict-right">The return of system: +4.2%</div>
+        </div>
+        <p class="emo-verdict-gap">The gap between these two traders is not talent. It is training.</p>
+        <button class="btn-primary" onclick="redirectToCTA()">Become the Operator →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── ADVANTAGE ── -->
 <section id="advantage" class="s">
   <div class="s-inner">
@@ -2930,6 +3642,44 @@ footer {
         <p class="adv-desc">Consistent improvement through regular practice and continuous learning support.</p>
         <div class="adv-cell-foot"></div>
       </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── SECTION 09: THE ASHFORD GLOSSARY DECODED ── -->
+<section id="glossary" class="s">
+  <div class="s-inner">
+    <div class="s-label">The Language</div>
+    <h2 class="s-h2">Market terms. <span class="blue">Decoded.</span></h2>
+    <p style="color:var(--t-secondary);font-size:.85rem;font-weight:300;margin-top:.4rem;">Every platform teaches you the words. We teach you what they actually mean — and why the difference changes everything about how you trade.</p>
+
+    <div class="gloss-pills" id="gloss-pills" style="margin-top:3rem;">
+      <button class="gloss-pill active" onclick="glossSelect(0)">Support Level</button>
+      <button class="gloss-pill" onclick="glossSelect(1)">Resistance</button>
+      <button class="gloss-pill" onclick="glossSelect(2)">Stop Loss</button>
+      <button class="gloss-pill" onclick="glossSelect(3)">Breakout</button>
+      <button class="gloss-pill" onclick="glossSelect(4)">Trend</button>
+      <button class="gloss-pill" onclick="glossSelect(5)">Liquidity</button>
+      <button class="gloss-pill" onclick="glossSelect(6)">Volume</button>
+      <button class="gloss-pill" onclick="glossSelect(7)">Market Structure</button>
+    </div>
+
+    <div class="gloss-cards" id="gloss-cards">
+      <div class="gloss-card-text">
+        <div class="gloss-card-label">THE TEXTBOOK</div>
+        <p class="gloss-def" id="gloss-textbook-def"></p>
+      </div>
+      <div class="gloss-card-ashford">
+        <div class="gloss-card-label">THE ASHFORD WAY</div>
+        <p class="gloss-def" id="gloss-ashford-def"></p>
+        <span class="gloss-kicker" id="gloss-kicker"></span>
+      </div>
+    </div>
+
+    <div class="glossary-footer">
+      <p>There are 40 more concepts decoded inside our programs.</p>
+      <button class="btn-primary" onclick="redirectToCTA()">Access the Full Curriculum →</button>
     </div>
   </div>
 </section>
@@ -3242,6 +3992,57 @@ footer {
   </div>
 </section>
 
+
+<!-- ── SECTION 06: THE OPERATOR'S CODEX ── -->
+<section id="codex" class="s">
+  <div class="s-inner">
+    <div class="s-label">The Doctrine</div>
+    <h2 class="s-h2">The Operator's <span class="blue">Codex</span></h2>
+    <p style="color:var(--t-secondary);font-size:.85rem;font-weight:300;margin-top:.4rem;">Seven principles. Non-negotiable. Internalized by every Ashford trader.</p>
+
+    <div class="codex-deck-wrap">
+      <div class="codex-counter" id="codex-counter">I / VII</div>
+
+      <div class="codex-card-scene" id="codex-scene" onclick="codexFlip()">
+        <div class="codex-card-inner" id="codex-inner">
+          <div class="codex-card-front" id="codex-front">
+            <span class="codex-roman" id="codex-roman">I</span>
+            <div class="codex-rule"></div>
+            <p class="codex-principle" id="codex-principle">"Capital preservation is the first trade."</p>
+            <span class="codex-hint" id="codex-hint">CLICK TO REVEAL</span>
+          </div>
+          <div class="codex-card-back" id="codex-back">
+            <p class="codex-back-text" id="codex-back-text">Before any entry, any setup, any signal — the first question is always: how much can I lose? Not how much will I make. Every professional trader protects capital above all else. Profit follows preservation, never the other way.</p>
+            <span class="codex-kicker" id="codex-kicker">Protect first. Earn second.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="codex-nav">
+        <button class="codex-arrow" id="codex-prev" onclick="codexNav(-1)">←</button>
+        <div class="codex-dots" id="codex-dots">
+          <div class="codex-dot active"></div>
+          <div class="codex-dot"></div>
+          <div class="codex-dot"></div>
+          <div class="codex-dot"></div>
+          <div class="codex-dot"></div>
+          <div class="codex-dot"></div>
+          <div class="codex-dot"></div>
+        </div>
+        <button class="codex-arrow" id="codex-next" onclick="codexNav(1)">→</button>
+      </div>
+
+      <div class="codex-finale" id="codex-finale">
+        <div class="codex-finale-sep"></div>
+        <p class="codex-finale-line" id="codex-finale-line">This is the Ashford standard.</p>
+        <div class="codex-finale-cta" id="codex-finale-cta">
+          <button class="btn-primary" onclick="redirectToCTA()">Begin Your Training →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── SECTION 05: THE PERCEPTION TEST ── -->
 <section id="perception-test">
   <div class="pt-header">
@@ -3336,6 +4137,52 @@ footer {
   </div>
 </section>
 
+
+<!-- ── SECTION 07: THE LIVE SESSION ROOM ── -->
+<section id="session-room" class="s">
+  <div class="s-inner">
+    <div class="s-label">Inside Ashford</div>
+    <h2 class="s-h2">What a live session <span class="blue">feels like</span></h2>
+    <p style="color:var(--t-secondary);font-size:.85rem;font-weight:300;margin-top:.4rem;">Five days a week, this room is live. Annotations are drawn in real time. Calls are made before the move. This is what you train inside.</p>
+  </div>
+
+  <div class="session-ui">
+    <div class="session-container">
+      <!-- Top bar -->
+      <div class="session-topbar">
+        <div class="session-live-dot"></div>
+        <span class="session-live-label">SESSION 14 — LIVE</span>
+        <div class="session-sep"></div>
+        <span class="session-info">NIFTY STRUCTURE · TODAY 09:25 IST</span>
+        <span class="session-timer" id="session-timer">00:00</span>
+      </div>
+
+      <!-- Main body -->
+      <div class="session-body">
+        <!-- Chart panel -->
+        <div class="session-chart-panel">
+          <canvas id="session-chart-canvas"></canvas>
+          <svg class="session-annotation-svg" id="session-ann-svg"></svg>
+          <div class="session-mentor-cursor" id="session-mentor-cursor" style="left:50%;top:50%;"></div>
+          <div class="session-gate">
+            <div class="session-gate-card">
+              <div class="session-gate-label">LIVE ACCESS</div>
+              <p class="session-gate-text">5 sessions per week. Join to attend live.</p>
+              <button class="btn-primary" onclick="redirectToCTA()" style="font-size:0.6rem;padding:0.7rem 1.4rem;width:100%;">Join Now →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat rail -->
+        <div class="session-chat-panel">
+          <div class="session-chat-header">LIVE CHAT · 12 MEMBERS</div>
+          <div class="session-chat-messages" id="session-chat-messages"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── FAQ ── -->
 <section id="faq" class="s">
   <div class="s-inner">
@@ -3377,6 +4224,44 @@ footer {
           <span class="faq-plus">+</span>
         </div>
         <div class="faq-a"><div class="faq-a-body">Most programs sell strategies. We sell perception. We train you to see what others can't — which means the setups find you, not the other way around. No signals, no shortcuts. Pure systematic mastery.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── SECTION 10: THE READINESS PROFILER ── -->
+<section id="profiler" class="s">
+  <div class="s-inner">
+    <div class="s-label">Know Yourself</div>
+    <h2 class="s-h2">What kind of trader <span class="blue">are you?</span></h2>
+    <p style="color:var(--t-secondary);font-size:.85rem;font-weight:300;margin-top:.4rem;">Five questions. No right answers. A profile that reads like someone already knows you — because the patterns are that universal.</p>
+
+    <div class="profiler-wrap" style="margin-top:3rem;">
+      <div class="profiler-progress">
+        <div class="profiler-progress-fill" id="profiler-progress-fill"></div>
+      </div>
+      <div class="profiler-q-counter" id="profiler-q-counter">QUESTION 1 OF 5</div>
+
+      <!-- Question screen -->
+      <div class="profiler-q-screen" id="profiler-q-screen">
+        <p class="profiler-question" id="profiler-question"></p>
+        <div class="profiler-options" id="profiler-options"></div>
+      </div>
+
+      <!-- Result screen (hidden) -->
+      <div class="profiler-result" id="profiler-result">
+        <div class="profiler-archetype-badge" id="profiler-badge">Your Profile</div>
+        <h3 class="profiler-archetype-name" id="profiler-name"></h3>
+        <div class="profiler-rule"></div>
+        <p class="profiler-profile-text" id="profiler-profile"></p>
+        <div class="profiler-rec-box">
+          <div class="profiler-rec-label">RECOMMENDED FOR YOUR PROFILE</div>
+          <div class="profiler-rec-name" id="profiler-rec-name"></div>
+          <div class="profiler-rec-price">₹1,999</div>
+        </div>
+        <button class="btn-primary" style="width:100%;" onclick="redirectToCTA()" id="profiler-cta-btn">Your program →</button>
+        <button class="profiler-retake" onclick="profilerReset()">← Retake the profiler</button>
       </div>
     </div>
   </div>
@@ -3624,7 +4509,7 @@ document.addEventListener('mousemove', e => {
   requestAnimationFrame(lerpRing);
 })();
 
-const hoverEls = document.querySelectorAll('button, a, .adv-cell, .svc-card, .pillar-row, .testi-card, .faq-row, .phil-card, .nav-logo, .footer-brand-logo');
+const hoverEls = document.querySelectorAll('button, a, .adv-cell, .svc-card, .pillar-row, .testi-card, .faq-row, .phil-card, .nav-logo, .footer-brand-logo, .codex-card-scene, .gloss-pill, .profiler-option, .wyg-card');
 hoverEls.forEach(el => {
   el.addEventListener('mouseenter', () => { cRing.classList.add('expanded'); cDot.classList.add('green-mode'); });
   el.addEventListener('mouseleave', () => { cRing.classList.remove('expanded'); cDot.classList.remove('green-mode'); });
@@ -3753,7 +4638,7 @@ syScenes.forEach((sel, i) => {
 
 /* ─ ABOUT ─ */
 gsap.timeline({ scrollTrigger: { trigger: '#about', start: 'top 76%', toggleActions: 'play none none none' } })
-  .from('.s-label', { y: 16, opacity: 0, duration: 0.5, ease: 'power2.out' })
+  .from('#about .s-label', { y: 16, opacity: 0, duration: 0.5, ease: 'power2.out' })
   .from('#about .s-h2',  { y: 30, opacity: 0, duration: 0.65, ease: 'power3.out' }, '-=0.2')
   .from('.about-pull-quote', { x: -40, opacity: 0, duration: 0.7, ease: 'power3.out' }, '-=0.3')
   .from('.about-body-text',  { y: 20, opacity: 0, stagger: 0.15, duration: 0.55 }, '-=0.2')
@@ -4596,6 +5481,1048 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
     .from('#pt-game-wrap', { y:50, opacity:0, duration:0.7, ease:'power3.out' }, '-=0.2');
 })();
 
+
+
+/* ════════════════════════════════════════
+   SECTION 06 — THE OPERATOR'S CODEX
+════════════════════════════════════════ */
+(function() {
+  const cards = [
+    {
+      roman: 'I',
+      principle: '"Capital preservation is the first trade."',
+      back: 'Before any entry, any setup, any signal — the first question is always: how much can I lose? Not how much will I make. Every professional trader protects capital above all else. Profit follows preservation, never the other way.',
+      kicker: 'Protect first. Earn second.'
+    },
+    {
+      roman: 'II',
+      principle: '"Emotion is information. Act on structure."',
+      back: 'Fear and greed are real. They will always be present. The trained trader does not eliminate emotion — they learn to recognise it as a signal to pause, not to act. Structure provides the entry. Emotion provides the warning.',
+      kicker: 'Feel it. Don't follow it.'
+    },
+    {
+      roman: 'III',
+      principle: '"The setup either exists or it doesn't."',
+      back: 'There is no 'almost.' A setup is either structurally valid or it is a forced trade. Forcing trades is how capital leaves your account one rationalisation at a time. Wait for the structure. The market will offer it again.',
+      kicker: 'Patience is not passivity. It is precision.'
+    },
+    {
+      roman: 'IV',
+      principle: '"Your stop loss is not a loss. It is the cost of information."',
+      back: 'Every stopped trade tells you something. The market did not confirm your read. That is not failure — it is data. Professionals size positions so that stop losses are tuition fees, not catastrophes. Small losses. Large lessons.',
+      kicker: 'Losses are the price of being in the game.'
+    },
+    {
+      roman: 'V',
+      principle: '"Consistency over conviction."',
+      back: 'Strong opinions kill accounts. The trader who is 'certain' takes oversized risk. The trader who is consistent takes calculated risk. The market does not reward being right. It rewards being repeatable.',
+      kicker: 'A system beats a hunch, every session.'
+    },
+    {
+      roman: 'VI',
+      principle: '"The exit is half the trade."',
+      back: 'Most traders obsess over entries. Professionals obsess over exits. Where you get out determines your actual result — not where you got in. Plan the exit before the entry. Execute it without negotiation.',
+      kicker: 'The trade is not over until you're flat.'
+    },
+    {
+      roman: 'VII',
+      principle: '"You are not trading the market. You are trading yourself."',
+      back: 'Every mistake in trading is a psychological event. Impulsive entry, premature exit, chasing, freezing — these are not market problems. They are operator problems. The Ashford standard: know the market, but master yourself first.',
+      kicker: 'The edge is internal.'
+    }
+  ];
+
+  const romans = ['I','II','III','IV','V','VI','VII'];
+  let cur = 0;
+  let isFlipped = false;
+  let hintDismissed = false;
+
+  const inner = document.getElementById('codex-inner');
+  const romanEl = document.getElementById('codex-roman');
+  const principleEl = document.getElementById('codex-principle');
+  const backTextEl = document.getElementById('codex-back-text');
+  const kickerEl = document.getElementById('codex-kicker');
+  const counterEl = document.getElementById('codex-counter');
+  const hintEl = document.getElementById('codex-hint');
+  const dotsEls = document.querySelectorAll('.codex-dot');
+  const finaleEl = document.getElementById('codex-finale');
+  const finaleLineEl = document.getElementById('codex-finale-line');
+  const finaleCTAEl = document.getElementById('codex-finale-cta');
+
+  function updateCard() {
+    const c = cards[cur];
+    romanEl.textContent = c.roman;
+    principleEl.textContent = c.principle;
+    backTextEl.textContent = c.back;
+    kickerEl.textContent = c.kicker;
+    counterEl.textContent = romans[cur] + ' / VII';
+    dotsEls.forEach((d, i) => d.classList.toggle('active', i === cur));
+  }
+
+  function setFlip(flipped) {
+    isFlipped = flipped;
+    inner.classList.toggle('flipped', flipped);
+    if (!hintDismissed) { hintDismissed = true; hintEl.classList.add('hidden'); }
+    if (cur === 6 && flipped) {
+      setTimeout(() => {
+        finaleEl.classList.add('visible');
+        setTimeout(() => finaleLineEl.classList.add('in'), 200);
+        setTimeout(() => finaleCTAEl.classList.add('in'), 700);
+      }, 1400);
+    }
+  }
+
+  window.codexFlip = function() {
+    setFlip(!isFlipped);
+  };
+
+  window.codexNav = function(dir) {
+    const next = cur + dir;
+    if (next < 0 || next > 6) return;
+    if (isFlipped) {
+      inner.style.transition = 'none';
+      inner.classList.remove('flipped');
+      isFlipped = false;
+      void inner.offsetWidth;
+      inner.style.transition = '';
+    }
+    if (next !== 6) {
+      finaleEl.classList.remove('visible');
+      finaleLineEl.classList.remove('in');
+      finaleCTAEl.classList.remove('in');
+    }
+    cur = next;
+    updateCard();
+  };
+
+  // Keyboard support via IntersectionObserver
+  let keyActive = false;
+  function onKey(e) {
+    if (!keyActive) return;
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault();
+      if (!isFlipped) setFlip(true);
+      else codexNav(1);
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      codexNav(-1);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      codexFlip();
+    }
+  }
+
+  const codexObs = new IntersectionObserver(entries => {
+    keyActive = entries[0].isIntersecting;
+    if (keyActive) document.addEventListener('keydown', onKey);
+    else document.removeEventListener('keydown', onKey);
+  }, { threshold: 0.3 });
+
+  const codexSection = document.getElementById('codex');
+  if (codexSection) codexObs.observe(codexSection);
+
+  updateCard();
+
+  // Hover effects on cursor
+  const codexScene = document.getElementById('codex-scene');
+  if (codexScene) {
+    codexScene.addEventListener('mouseenter', () => { try { cRing.classList.add('expanded'); cDot.classList.add('green-mode'); } catch(e){} });
+    codexScene.addEventListener('mouseleave', () => { try { cRing.classList.remove('expanded'); cDot.classList.remove('green-mode'); } catch(e){} });
+  }
+
+  gsap.timeline({ scrollTrigger: { trigger: '#codex', start: 'top 76%', toggleActions: 'play none none none' }})
+    .from('#codex .s-label', { y: 16, opacity: 0, duration: 0.4 })
+    .from('#codex .s-h2',    { y: 28, opacity: 0, duration: 0.55, ease: 'power3.out' }, '-=0.2')
+    .from('.codex-card-scene', { y: 50, opacity: 0, scale: 0.95, duration: 0.8, ease: 'back.out(1.3)' }, '-=0.2')
+    .from('.codex-nav',        { y: 20, opacity: 0, duration: 0.4 }, '-=0.2');
+})();
+
+/* ════════════════════════════════════════
+   SECTION 07 — THE LIVE SESSION ROOM
+════════════════════════════════════════ */
+(function() {
+  const section = document.getElementById('session-room');
+  if (!section) return;
+
+  // ── Draw session chart (static) ──
+  function drawSessionChart() {
+    const canvas = document.getElementById('session-chart-canvas');
+    if (!canvas) return;
+    const panel = canvas.parentElement;
+    canvas.width = panel.offsetWidth || 600;
+    canvas.height = Math.max(panel.offsetHeight, 200) || 200;
+    const W = canvas.width, H = canvas.height;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, W, H);
+
+    function rng(seed) {
+      let s = seed;
+      return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+    }
+    const r = rng(99);
+    const candles = [];
+    let px = 100 + r() * 20;
+    for (let i = 0; i < 45; i++) {
+      const trend = 0.52;
+      const o = px, m = (r() - (1 - trend)) * 7, c = o + m;
+      candles.push({ o, c, h: Math.max(o,c) + r() * 3.5, l: Math.min(o,c) - r() * 2.5 });
+      px = c;
+    }
+
+    const vals = candles.flatMap(c => [c.h, c.l]);
+    const mn = Math.min(...vals), mx = Math.max(...vals), rg = mx - mn || 1;
+    const pt = 16, pb = 16, dH = H - pt - pb;
+    const toY = v => pt + dH * (1 - (v - mn) / rg);
+    const n = candles.length;
+    const cw = W / (n + 4), bw = Math.max(2, cw * 0.62), gp = (cw - bw) / 2;
+
+    candles.forEach((c, i) => {
+      const bull = c.c >= c.o;
+      ctx.save();
+      ctx.strokeStyle = bull ? 'rgba(0,200,83,0.65)' : 'rgba(255,77,109,0.6)';
+      ctx.fillStyle   = bull ? 'rgba(0,200,83,0.65)' : 'rgba(255,77,109,0.6)';
+      ctx.lineWidth = 1;
+      const x = (i + 2) * cw + gp;
+      ctx.beginPath();
+      ctx.moveTo(x + bw/2, toY(c.h));
+      ctx.lineTo(x + bw/2, toY(c.l));
+      ctx.stroke();
+      ctx.fillRect(x, toY(Math.max(c.o, c.c)), bw, Math.max(1.5, Math.abs(toY(c.o) - toY(c.c))));
+      ctx.restore();
+    });
+
+    // Store chart dims for annotations
+    return { candles, mn, mx, rg, cw, bw, W, H, pt, pb, dH, toY };
+  }
+
+  let chartData = null;
+  let sessionTimerInterval = null;
+  let chatInterval = null;
+  let annTimeout = null;
+  let sessionSecs = 0;
+
+  // Timer
+  function startTimer() {
+    const timerEl = document.getElementById('session-timer');
+    if (!timerEl) return;
+    sessionTimerInterval = setInterval(() => {
+      sessionSecs++;
+      const m = String(Math.floor(sessionSecs / 60)).padStart(2, '0');
+      const s = String(sessionSecs % 60).padStart(2, '0');
+      timerEl.textContent = m + ':' + s;
+    }, 1000);
+  }
+
+  // Chat messages
+  const chatMessages = [
+    { user: 'RK', text: 'That compression zone was clean' },
+    { user: 'AP', text: 'Waiting for the retest confirmation' },
+    { user: 'MS', text: 'Entry confirmed at the floor' },
+    { user: 'RK', text: 'Stop placed below structure' },
+    { user: 'VT', text: 'This is exactly what we practiced' },
+    { user: 'AP', text: 'Beautiful. No hesitation on that entry' },
+  ];
+  const chatTimings = [4000, 9000, 14000, 18000, 22000, 28000];
+  let chatMsgIdx = 0;
+  let chatTimeouts = [];
+
+  function addChatMsg(user, text) {
+    const container = document.getElementById('session-chat-messages');
+    if (!container) return;
+    const msgs = container.querySelectorAll('.chat-msg.shown');
+    if (msgs.length >= 4) {
+      msgs[0].classList.add('fading');
+      setTimeout(() => msgs[0].remove(), 350);
+    }
+    const div = document.createElement('div');
+    div.className = 'chat-msg';
+    div.innerHTML = `<div class="chat-av">${user}</div><span class="chat-text">${text}</span>`;
+    container.appendChild(div);
+    void div.offsetWidth;
+    div.classList.add('shown');
+  }
+
+  function startChatLoop() {
+    chatTimeouts.forEach(clearTimeout);
+    chatTimeouts = [];
+    chatMessages.forEach((msg, i) => {
+      const t = setTimeout(() => addChatMsg(msg.user, msg.text), chatTimings[i]);
+      chatTimeouts.push(t);
+    });
+    chatInterval = setInterval(() => {
+      chatMessages.forEach((msg, i) => {
+        const t = setTimeout(() => addChatMsg(msg.user, msg.text), chatTimings[i]);
+        chatTimeouts.push(t);
+      });
+    }, 30000);
+  }
+
+  // Annotations
+  function runAnnotations() {
+    const svg = document.getElementById('session-ann-svg');
+    const cursor = document.getElementById('session-mentor-cursor');
+    if (!svg || !chartData) return;
+
+    const { W, H, pt, dH, rg, mn, cw } = chartData;
+    const supportY = pt + dH * 0.72;
+    const entryX = cw * 28;
+    const entryY = pt + dH * 0.55;
+    const compX1 = cw * 18, compX2 = cw * 22;
+    const compY1 = pt + dH * 0.35, compY2 = pt + dH * 0.65;
+
+    function clearAnns() {
+      svg.innerHTML = '';
+    }
+
+    function moveCursor(x, y) {
+      if (!cursor) return;
+      cursor.style.left = x + 'px';
+      cursor.style.top = y + 'px';
+    }
+
+    function drawSupportLine(onDone) {
+      clearAnns();
+      moveCursor(W * 0.1, supportY);
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', '0'); line.setAttribute('y1', supportY);
+      line.setAttribute('x2', W + ''); line.setAttribute('y2', supportY + '');
+      line.setAttribute('stroke', 'rgba(0,200,83,0.5)');
+      line.setAttribute('stroke-width', '1');
+      line.setAttribute('stroke-dasharray', W + '');
+      line.style.strokeDashoffset = W;
+      line.style.transition = 'stroke-dashoffset 0.8s ease';
+      svg.appendChild(line);
+      const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      lbl.setAttribute('x', (W * 0.05) + ''); lbl.setAttribute('y', (supportY - 6) + '');
+      lbl.setAttribute('fill', 'rgba(0,200,83,0.7)'); lbl.setAttribute('font-size', '9');
+      lbl.setAttribute('font-family', 'Geist Mono, monospace'); lbl.setAttribute('letter-spacing', '1');
+      lbl.textContent = 'STRUCTURE FLOOR →'; lbl.style.opacity = '0'; lbl.style.transition = 'opacity 0.4s 0.9s';
+      svg.appendChild(lbl);
+      setTimeout(() => { line.style.strokeDashoffset = '0'; lbl.style.opacity = '1'; }, 50);
+      setTimeout(onDone, 2000);
+    }
+
+    function drawEntryArrow(onDone) {
+      moveCursor(entryX, entryY);
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      const d = `M ${entryX} ${entryY - 28} L ${entryX} ${entryY - 6}`;
+      path.setAttribute('d', d); path.setAttribute('stroke', 'rgba(26,107,255,0.7)');
+      path.setAttribute('stroke-width', '1.5'); path.setAttribute('fill', 'none');
+      path.setAttribute('marker-end', 'url(#arr)');
+      const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+      const marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+      marker.setAttribute('id', 'arr'); marker.setAttribute('markerWidth', '8');
+      marker.setAttribute('markerHeight', '8'); marker.setAttribute('refX', '4');
+      marker.setAttribute('refY', '4'); marker.setAttribute('orient', 'auto');
+      const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+      poly.setAttribute('points', '0 0, 8 4, 0 8'); poly.setAttribute('fill', 'rgba(26,107,255,0.7)');
+      marker.appendChild(poly); defs.appendChild(marker); svg.appendChild(defs);
+      svg.appendChild(path);
+      const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      lbl.setAttribute('x', (entryX + 8) + ''); lbl.setAttribute('y', (entryY - 15) + '');
+      lbl.setAttribute('fill', 'rgba(26,107,255,0.8)'); lbl.setAttribute('font-size', '9');
+      lbl.setAttribute('font-family', 'Geist Mono, monospace'); lbl.textContent = 'ENTRY ZONE';
+      svg.appendChild(lbl);
+      setTimeout(onDone, 3000);
+    }
+
+    function drawCompression(onDone) {
+      moveCursor((compX1 + compX2) / 2, (compY1 + compY2) / 2);
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('x', compX1 + ''); rect.setAttribute('y', compY1 + '');
+      rect.setAttribute('width', (compX2 - compX1) + ''); rect.setAttribute('height', (compY2 - compY1) + '');
+      rect.setAttribute('fill', 'rgba(255,215,100,0.15)'); rect.setAttribute('stroke', 'rgba(255,215,100,0.35)');
+      rect.setAttribute('stroke-width', '1');
+      svg.appendChild(rect);
+      const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      lbl.setAttribute('x', (compX1 + 4) + ''); lbl.setAttribute('y', (compY1 - 6) + '');
+      lbl.setAttribute('fill', 'rgba(255,215,100,0.7)'); lbl.setAttribute('font-size', '9');
+      lbl.setAttribute('font-family', 'Geist Mono, monospace'); lbl.textContent = 'COMPRESSION';
+      svg.appendChild(lbl);
+      setTimeout(onDone, 4000);
+    }
+
+    function fadeOut(onDone) {
+      svg.style.transition = 'opacity 1.2s'; svg.style.opacity = '0';
+      setTimeout(() => { clearAnns(); svg.style.opacity = '1'; svg.style.transition = ''; onDone(); }, 1400);
+    }
+
+    const support2Y = pt + dH * 0.55;
+    function drawSupport2(onDone) {
+      moveCursor(W * 0.15, support2Y);
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', '0'); line.setAttribute('y1', support2Y + '');
+      line.setAttribute('x2', W + ''); line.setAttribute('y2', support2Y + '');
+      line.setAttribute('stroke', 'rgba(0,200,83,0.5)');
+      line.setAttribute('stroke-width', '1'); line.setAttribute('stroke-dasharray', W + '');
+      line.style.strokeDashoffset = W; line.style.transition = 'stroke-dashoffset 0.8s ease';
+      svg.appendChild(line);
+      setTimeout(() => { line.style.strokeDashoffset = '0'; }, 50);
+      setTimeout(onDone, 2500);
+    }
+
+    let loopTimer;
+    let annStopped = false;
+
+    function runLoop() {
+      if (annStopped) return;
+      drawSupportLine(() => {
+        if (annStopped) return;
+        setTimeout(() => drawEntryArrow(() => {
+          if (annStopped) return;
+          setTimeout(() => drawCompression(() => {
+            if (annStopped) return;
+            setTimeout(() => fadeOut(() => {
+              if (annStopped) return;
+              setTimeout(() => drawSupport2(() => {
+                if (annStopped) return;
+                setTimeout(() => {
+                  if (annStopped) return;
+                  fadeOut(() => {});
+                  loopTimer = setTimeout(runLoop, 2000);
+                }, 4000);
+              }), 100);
+            }), 1000);
+          }), 500);
+        }), 500);
+      });
+    }
+
+    runLoop();
+    return () => { annStopped = true; clearTimeout(loopTimer); clearAnns(); };
+  }
+
+  let annCleanup = null;
+  let sessionStarted = false;
+
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !sessionStarted) {
+      sessionStarted = true;
+      requestAnimationFrame(() => {
+        chartData = drawSessionChart();
+        if (chartData) annCleanup = runAnnotations();
+      });
+      startTimer();
+      startChatLoop();
+    } else if (!entries[0].isIntersecting && sessionStarted) {
+      clearInterval(sessionTimerInterval);
+      clearInterval(chatInterval);
+      chatTimeouts.forEach(clearTimeout);
+      chatTimeouts = [];
+      if (annCleanup) { annCleanup(); annCleanup = null; }
+      sessionSecs = 0;
+      sessionStarted = false;
+    }
+  }, { threshold: 0.2 });
+
+  obs.observe(section);
+
+  window.addEventListener('resize', () => {
+    if (chartData) {
+      requestAnimationFrame(() => { chartData = drawSessionChart(); });
+    }
+  }, { passive: true });
+
+  gsap.timeline({ scrollTrigger: { trigger: '#session-room', start: 'top 76%', toggleActions: 'play none none none' }})
+    .from('#session-room .s-label', { y: 16, opacity: 0, duration: 0.4 })
+    .from('#session-room .s-h2',   { y: 28, opacity: 0, duration: 0.55, ease: 'power3.out' }, '-=0.2')
+    .from('.session-ui',           { y: 60, opacity: 0, duration: 0.9, ease: 'power3.out' }, '-=0.2');
+})();
+
+/* ════════════════════════════════════════
+   SECTION 08 — EMOTION VS SYSTEM SIMULATOR
+════════════════════════════════════════ */
+(function() {
+  const section = document.getElementById('emo-sim');
+  if (!section) return;
+
+  const steps = [
+    {
+      label: 'STEP 1 OF 5 — THE SETUP',
+      candlesExtra: 0,
+      leftText: 'This looks good... but what if it's a trap? Everyone can see this setup. Maybe it's too obvious.',
+      rightText: 'Structure: bull flag confirmed. Support holding. Entry condition met.',
+      leftPnl: '0.00', rightPnl: '0.00'
+    },
+    {
+      label: 'STEP 2 OF 5 — THE SIGNAL',
+      candlesExtra: 3,
+      leftText: 'Okay, entering... wait, it dipped. Is it failing? Maybe I should wait for more confirmation... or is it too late now?',
+      rightText: 'Entry signal triggered. Entering at plan. Stop: 1.2% below structure. Position sized per risk rules.',
+      leftPnl: '-0.30', rightPnl: '0.00'
+    },
+    {
+      label: 'STEP 3 OF 5 — THE HOLD',
+      candlesExtra: 6,
+      leftText: 'Yes! Up 2%. Should I take profit? The pullback is scary. What if it reverses completely? I should move my stop to break even.',
+      rightText: 'Price at +2.1%. Retest within expected range. Stop remains at plan. No action required.',
+      leftPnl: '+0.90', rightPnl: '+2.10'
+    },
+    {
+      label: 'STEP 4 OF 5 — THE STOP',
+      candlesExtra: 9,
+      leftText: 'Stopped out. And now it's going up again. I sold the low. I always do this.',
+      rightText: 'Retest complete. Original stop intact. Position holding. Target zone approaching.',
+      leftPnl: '-1.80', rightPnl: '+3.40',
+      shake: true
+    },
+    {
+      label: 'STEP 5 OF 5 — THE RESULT',
+      candlesExtra: 12,
+      leftText: 'The full move happened. Without me. I knew the setup. I just couldn't hold it.',
+      rightText: 'Target reached. Exit at plan. Trade complete.',
+      leftPnl: '-1.80', rightPnl: '+4.20',
+      verdict: true
+    }
+  ];
+
+  let currentStep = -1;
+  let isPlaying = false;
+  let stepTimeout = null;
+  let leftWordTimeout = null;
+  let rightWordTimeout = null;
+
+  function rng(seed) {
+    let s = seed;
+    return () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+  }
+
+  function makeEmoCandles() {
+    const r = rng(77);
+    const candles = [];
+    let px = 100 + r() * 20;
+    // Base 30 candles (bull flag)
+    for (let i = 0; i < 30; i++) {
+      const trend = i < 18 ? 0.55 : 0.5;
+      const o = px, m = (r() - (1 - trend)) * 5, c = o + m;
+      candles.push({ o, c, h: Math.max(o,c) + r() * 2.5, l: Math.min(o,c) - r() * 2 });
+      px = c;
+    }
+    // Extra candles for steps 2-5: signal, hold, pullback, bounce, target
+    const extras = [
+      // 3 signal candles: dip then strong bull
+      { o: px, c: px - 1.2, h: px + 0.5, l: px - 1.8 },
+      { o: px - 1.2, c: px - 0.5, h: px, l: px - 1.5 },
+      { o: px - 0.5, c: px + 3.5, h: px + 4, l: px - 0.8 },
+      // 3 hold candles: up move
+      { o: px + 3.5, c: px + 5.2, h: px + 5.8, l: px + 3.2 },
+      { o: px + 5.2, c: px + 6.1, h: px + 6.5, l: px + 5.0 },
+      { o: px + 6.1, c: px + 4.8, h: px + 6.3, l: px + 4.2 },
+      // 3 stop candles: pullback hits left stop
+      { o: px + 4.8, c: px + 3.6, h: px + 5.0, l: px + 3.2 },
+      { o: px + 3.6, c: px + 2.9, h: px + 3.8, l: px + 2.5 },
+      { o: px + 2.9, c: px + 5.8, h: px + 6.2, l: px + 2.8 },
+      // 3 result candles: full move to target
+      { o: px + 5.8, c: px + 7.2, h: px + 7.6, l: px + 5.6 },
+      { o: px + 7.2, c: px + 8.5, h: px + 8.9, l: px + 7.0 },
+      { o: px + 8.5, c: px + 9.8, h: px + 10.2, l: px + 8.3 },
+    ];
+    return [...candles, ...extras];
+  }
+
+  const allCandles = makeEmoCandles();
+
+  function drawEmoChart(canvasId, count) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    canvas.width = Math.max(canvas.offsetWidth, 200) || 200;
+    canvas.height = Math.max(canvas.offsetHeight, 160) || 160;
+    const W = canvas.width, H = canvas.height;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, W, H);
+
+    const displayC = allCandles.slice(0, 30 + count);
+    const vals = displayC.flatMap(c => [c.h, c.l]);
+    const mn = Math.min(...vals), mx = Math.max(...vals), rg = mx - mn || 1;
+    const pt = 8, pb = 8, dH = H - pt - pb;
+    const toY = v => pt + dH * (1 - (v - mn) / rg);
+    const n = Math.max(displayC.length, 40);
+    const cw = W / (n + 2), bw = Math.max(1.5, cw * 0.6), gp = (cw - bw) / 2;
+
+    // Support line
+    const supportPx = allCandles[15].l;
+    const sy = toY(supportPx);
+    ctx.save();
+    ctx.strokeStyle = 'rgba(0,200,83,0.35)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.moveTo(0, sy); ctx.lineTo(W, sy); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+
+    displayC.forEach((c, i) => {
+      const bull = c.c >= c.o;
+      ctx.save();
+      const col = bull ? 'rgba(0,200,83,0.7)' : 'rgba(255,77,109,0.65)';
+      ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = 1;
+      const x = (i + 1) * cw + gp;
+      ctx.beginPath(); ctx.moveTo(x + bw/2, toY(c.h)); ctx.lineTo(x + bw/2, toY(c.l)); ctx.stroke();
+      ctx.fillRect(x, toY(Math.max(c.o, c.c)), bw, Math.max(1.5, Math.abs(toY(c.o) - toY(c.c))));
+      ctx.restore();
+    });
+  }
+
+  function drawSparkline(canvasId, values) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas || !values.length) return;
+    canvas.width = Math.max(canvas.offsetWidth, 60) || 60;
+    canvas.height = Math.max(canvas.offsetHeight, 22) || 22;
+    const W = canvas.width, H = canvas.height;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, W, H);
+    if (values.length < 2) return;
+    const mn = Math.min(...values), mx = Math.max(...values);
+    const rg = mx - mn || 1;
+    const toY = v => H * 0.9 - (H * 0.8) * (v - mn) / rg;
+    const dx = W / (values.length - 1);
+    const lastVal = values[values.length - 1];
+    const col = lastVal > 0 ? 'rgba(0,200,83,0.6)' : lastVal < 0 ? 'rgba(255,77,109,0.6)' : 'rgba(180,190,215,0.3)';
+    ctx.save();
+    ctx.strokeStyle = col; ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    values.forEach((v, i) => {
+      if (i === 0) ctx.moveTo(0, toY(v));
+      else ctx.lineTo(i * dx, toY(v));
+    });
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function setPnL(elId, val, sparkId, history) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    const num = parseFloat(val);
+    el.textContent = (num >= 0 ? '+' : '') + num.toFixed(2) + '%';
+    el.className = 'emo-pnl-val' + (num > 0 ? ' positive' : num < 0 ? ' negative' : '');
+    el.style.transform = 'scale(1.15)';
+    setTimeout(() => { el.style.transform = ''; }, 200);
+    drawSparkline(sparkId, history);
+  }
+
+  const leftHistory = [0];
+  const rightHistory = [0];
+
+  function typeWords(el, text, delay, cb) {
+    if (!el) return;
+    clearTimeout(leftWordTimeout);
+    el.textContent = '';
+    const words = text.split(' ');
+    let i = 0;
+    function next() {
+      if (i >= words.length) { if (cb) cb(); return; }
+      el.textContent += (i > 0 ? ' ' : '') + words[i++];
+      const triggers = ['trap', 'late', 'scary', 'reversed'];
+      const w = words[i - 1].toLowerCase().replace(/[^a-z]/g, '');
+      if (triggers.includes(w)) spawnBubble(words[i-1]);
+      leftWordTimeout = setTimeout(next, delay);
+    }
+    next();
+  }
+
+  function typeChars(el, text, delay) {
+    if (!el) return;
+    clearTimeout(rightWordTimeout);
+    el.textContent = '';
+    let i = 0;
+    function next() {
+      if (i >= text.length) return;
+      el.textContent += text[i++];
+      rightWordTimeout = setTimeout(next, delay);
+    }
+    next();
+  }
+
+  function spawnBubble(word) {
+    const area = document.querySelector('#emo-left-panel .emo-chart-area');
+    if (!area) return;
+    const bubble = document.createElement('span');
+    bubble.className = 'thought-bubble';
+    bubble.textContent = word;
+    bubble.style.left = (20 + Math.random() * 60) + '%';
+    bubble.style.top = (20 + Math.random() * 40) + '%';
+    area.appendChild(bubble);
+    setTimeout(() => bubble.remove(), 2100);
+  }
+
+  function runStep(i) {
+    if (i >= steps.length) return;
+    const step = steps[i];
+    const playBtn = document.getElementById('emo-play-btn');
+    const progressFill = document.getElementById('emo-progress-fill');
+    const stepLabel = document.getElementById('emo-step-label');
+
+    if (progressFill) progressFill.style.width = ((i + 1) * 20) + '%';
+    if (stepLabel) stepLabel.textContent = step.label;
+
+    drawEmoChart('emo-chart', step.candlesExtra);
+    drawEmoChart('sys-chart', step.candlesExtra);
+
+    const leftPnlNum = parseFloat(step.leftPnl);
+    const rightPnlNum = parseFloat(step.rightPnl);
+    leftHistory.push(leftPnlNum);
+    rightHistory.push(rightPnlNum);
+
+    setPnL('emo-left-pnl', step.leftPnl, 'emo-left-spark', leftHistory);
+    setPnL('emo-right-pnl', step.rightPnl, 'emo-right-spark', rightHistory);
+
+    if (step.shake) {
+      const panel = document.getElementById('emo-left-panel');
+      if (panel) { panel.classList.add('shake-anim'); setTimeout(() => panel.classList.remove('shake-anim'), 500); }
+    }
+
+    const leftEl = document.getElementById('emo-left-narration');
+    const rightEl = document.getElementById('emo-right-narration');
+    const wordDelay = i === 3 ? 60 : i === 4 ? 70 : 40;
+    typeWords(leftEl, step.leftText, wordDelay, null);
+    typeChars(rightEl, step.rightText, 18);
+
+    if (step.verdict) {
+      setTimeout(() => {
+        const vRow = document.getElementById('emo-verdict-row');
+        if (vRow) vRow.style.display = 'block';
+        if (playBtn) playBtn.style.display = 'none';
+      }, 1500);
+    } else if (isPlaying) {
+      if (playBtn) playBtn.textContent = 'Auto-advancing — click to skip →';
+      stepTimeout = setTimeout(() => runStep(i + 1), 3500);
+    }
+    currentStep = i;
+  }
+
+  window.emoPlay = function() {
+    const playBtn = document.getElementById('emo-play-btn');
+    if (!isPlaying) {
+      isPlaying = true;
+      runStep(0);
+    } else {
+      clearTimeout(stepTimeout);
+      clearTimeout(leftWordTimeout);
+      clearTimeout(rightWordTimeout);
+      if (currentStep < steps.length - 1) runStep(currentStep + 1);
+    }
+  };
+
+  const obs = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting) {
+      clearTimeout(stepTimeout);
+      clearTimeout(leftWordTimeout);
+      clearTimeout(rightWordTimeout);
+    }
+  }, { threshold: 0.1 });
+  obs.observe(section);
+
+  // Initial chart draw - use rAF to ensure layout is settled
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      drawEmoChart('emo-chart', 0);
+      drawEmoChart('sys-chart', 0);
+    });
+  });
+
+  window.addEventListener('resize', () => {
+    const step = currentStep >= 0 ? steps[currentStep] : steps[0];
+    drawEmoChart('emo-chart', step.candlesExtra);
+    drawEmoChart('sys-chart', step.candlesExtra);
+  }, { passive: true });
+
+  gsap.timeline({ scrollTrigger: { trigger: '#emo-sim', start: 'top 76%', toggleActions: 'play none none none' }})
+    .from('#emo-sim .s-label', { y: 16, opacity: 0, duration: 0.4 })
+    .from('#emo-sim .s-h2',   { y: 28, opacity: 0, duration: 0.55 }, '-=0.2')
+    .from('.emo-sim-stage',   { y: 50, opacity: 0, duration: 0.75, ease: 'power3.out' }, '-=0.15');
+})();
+
+/* ════════════════════════════════════════
+   SECTION 09 — ASHFORD GLOSSARY DECODED
+════════════════════════════════════════ */
+(function() {
+  const glossTerms = [
+    {
+      pill: 'Support Level',
+      textbook: 'A price level where buying pressure is expected to be strong enough to prevent further price decline.',
+      ashford: 'The floor where structured, institutional traders have already placed their resting orders. When you trade a support level, you are not guessing — you are reading the footprint of professional capital.',
+      kicker: 'You're not predicting. You're reading.'
+    },
+    {
+      pill: 'Resistance',
+      textbook: 'A price level where selling pressure is expected to overcome buying pressure and halt price advance.',
+      ashford: 'The ceiling built by traders who bought higher and are waiting to exit at breakeven. Every resistance level is someone else's regret. Understanding who is trapped and where makes resistance readable.',
+      kicker: 'Someone is waiting to exit. Know who.'
+    },
+    {
+      pill: 'Stop Loss',
+      textbook: 'An order placed to sell a security when it reaches a certain price, limiting the trader's loss.',
+      ashford: 'The price at which your thesis is proven wrong. Not a loss — a boundary. Professional traders do not fear stop losses. They fear trades without them. A stop loss is the only honest statement you can make about a trade.',
+      kicker: 'It's not a loss. It's a limit on being wrong.'
+    },
+    {
+      pill: 'Breakout',
+      textbook: 'When price moves outside a defined support or resistance level with increased volume.',
+      ashford: 'A breakout is a conversation between buyers and sellers — and one side just ran out of ammunition. The real breakout is not the candle that crosses the level. It is the candle that closes and holds above it. One is noise. The other is structure.',
+      kicker: 'Cross ≠ breakout. Close and hold = breakout.'
+    },
+    {
+      pill: 'Trend',
+      textbook: 'The general direction in which a market or the price of an asset is moving.',
+      ashford: 'A trend is a sequence of decisions made by thousands of participants pointing the same direction. You do not trade against a trend because you have a feeling. You trade with it because the evidence of collective behaviour is undeniable. Trend is not prediction. It is observation.',
+      kicker: 'Don't forecast the trend. Follow the evidence.'
+    },
+    {
+      pill: 'Liquidity',
+      textbook: 'The degree to which an asset can be quickly bought or sold in the market without affecting its price.',
+      ashford: 'Liquidity is where the orders live. Price moves toward liquidity before moving away from it — because institutional participants need it to fill their positions. When you understand where liquidity sits, you stop being surprised by 'fake' moves. They are not fake. They are intentional.',
+      kicker: 'Price hunts liquidity. Always.'
+    },
+    {
+      pill: 'Volume',
+      textbook: 'The number of shares or contracts traded in a security or market during a given period.',
+      ashford: 'Volume is the conviction behind the price move. High price movement on low volume is an actor with no audience. High price movement on high volume is a statement. Ashford traders do not read candles in isolation — they read the conviction behind them.',
+      kicker: 'The candle shows direction. Volume shows intent.'
+    },
+    {
+      pill: 'Market Structure',
+      textbook: 'The overall arrangement of price action, including trends, ranges, and key levels, that defines the market environment.',
+      ashford: 'Structure is the grammar of the market. Without understanding it, every setup is a guess. With it, every chart becomes a sentence you can read. Higher highs and higher lows are not just patterns — they are the market announcing its current intent to anyone trained to listen.',
+      kicker: 'Structure is the market speaking. Are you trained to listen?'
+    }
+  ];
+
+  let activeGloss = 0;
+  let glossAnimating = false;
+
+  const tbDef = document.getElementById('gloss-textbook-def');
+  const ashDef = document.getElementById('gloss-ashford-def');
+  const kickerEl = document.getElementById('gloss-kicker');
+  const cardsEl = document.getElementById('gloss-cards');
+
+  function setGlossContent(idx) {
+    const t = glossTerms[idx];
+    if (tbDef) tbDef.textContent = t.textbook;
+    if (ashDef) ashDef.textContent = t.ashford;
+    if (kickerEl) kickerEl.textContent = t.kicker;
+  }
+
+  window.glossSelect = function(idx) {
+    if (glossAnimating || idx === activeGloss) return;
+    glossAnimating = true;
+    const pills = document.querySelectorAll('.gloss-pill');
+    pills.forEach((p, i) => p.classList.toggle('active', i === idx));
+
+    if (cardsEl) {
+      cardsEl.style.opacity = '0';
+      cardsEl.style.transform = 'translateY(-12px)';
+      setTimeout(() => {
+        setGlossContent(idx);
+        activeGloss = idx;
+        cardsEl.style.transition = 'none';
+        cardsEl.style.transform = 'translateY(12px)';
+        cardsEl.style.opacity = '0';
+        void cardsEl.offsetWidth;
+        cardsEl.style.transition = 'opacity 0.35s, transform 0.35s';
+        cardsEl.style.opacity = '1';
+        cardsEl.style.transform = 'translateY(0)';
+        setTimeout(() => { glossAnimating = false; }, 400);
+      }, 220);
+      cardsEl.style.transition = 'opacity 0.2s, transform 0.2s';
+    }
+  };
+
+  // Init
+  setGlossContent(0);
+  if (cardsEl) cardsEl.style.transition = 'opacity 0.2s, transform 0.2s';
+
+  gsap.timeline({ scrollTrigger: { trigger: '#glossary', start: 'top 76%', toggleActions: 'play none none none' }})
+    .from('#glossary .s-label', { y: 16, opacity: 0, duration: 0.4 })
+    .from('#glossary .s-h2',   { y: 28, opacity: 0, duration: 0.55 }, '-=0.2')
+    .from('.gloss-pills',      { y: 20, opacity: 0, duration: 0.5 }, '-=0.15')
+    .from('.gloss-cards',      { y: 40, opacity: 0, duration: 0.65, ease: 'power3.out' }, '-=0.2');
+})();
+
+/* ════════════════════════════════════════
+   SECTION 10 — THE READINESS PROFILER
+════════════════════════════════════════ */
+(function() {
+  const questions = [
+    {
+      q: 'How long have you been trading?',
+      opts: [
+        { label: 'A', text: 'Less than 6 months — I'm just starting', weight: { raw: 3 } },
+        { label: 'B', text: '6 months to 2 years — I've had some wins and losses', weight: { chase: 1, freeze: 1 } },
+        { label: 'C', text: 'More than 2 years — still not consistent', weight: { freeze: 1, over: 1, raw: -1 } }
+      ]
+    },
+    {
+      q: 'What happens right before your biggest losses?',
+      opts: [
+        { label: 'A', text: 'I enter without a clear plan, following a feeling', weight: { chase: 2 } },
+        { label: 'B', text: 'I see the setup but hesitate, then enter late chasing', weight: { freeze: 2 } },
+        { label: 'C', text: 'I overanalyse and miss the entry entirely', weight: { over: 2 } }
+      ]
+    },
+    {
+      q: 'What describes your most common mistake?',
+      opts: [
+        { label: 'A', text: 'Exiting winning trades too early out of fear', weight: { freeze: 2 } },
+        { label: 'B', text: 'Holding losing trades hoping they recover', weight: { chase: 2 } },
+        { label: 'C', text: 'Adding too many indicators hoping one will confirm', weight: { over: 2 } }
+      ]
+    },
+    {
+      q: 'When you take a loss, what's your immediate reaction?',
+      opts: [
+        { label: 'A', text: 'Frustration — I try to make it back immediately', weight: { chase: 2 } },
+        { label: 'B', text: 'Doubt — I question everything about my approach', weight: { over: 2 } },
+        { label: 'C', text: 'Shame — I feel like I should have known better', weight: { freeze: 2 } }
+      ]
+    },
+    {
+      q: 'What is your primary goal with trading?',
+      opts: [
+        { label: 'A', text: 'Consistent income that I can rely on', weight: {} },
+        { label: 'B', text: 'Financial independence — replace my salary', weight: {} },
+        { label: 'C', text: 'Prove to myself that I can master something difficult', weight: {} }
+      ]
+    }
+  ];
+
+  const archetypes = {
+    freeze: {
+      badge: 'Your Profile',
+      name: 'The Knowledgeable Freezer',
+      profile: 'You've done the reading. You understand the concepts. But when real capital is on the line, something paralyses you. You enter late, exit early, move your stops. The knowledge is there — the execution is blocked. This is the most common profile among traders who've been at it for a while. You are not lacking information. You are lacking the live, pressurised execution training that bridges the gap between knowing and doing. That is exactly what Ashford is built for.',
+      program: 'Swing Trading',
+      cta: 'Your program: Swing Trading →'
+    },
+    chase: {
+      badge: 'Your Profile',
+      name: 'The Impulsive Chaser',
+      profile: 'You act on instinct — which means you act on emotion. Your best trades happen when you enter decisively. Your worst trades happen when you enter the same way. The problem is not your instinct. It is that you haven't built the system filter that tells you when instinct is aligned with structure and when it isn't. Ashford teaches you to channel that decisiveness — not suppress it — into structured, repeatable entries.',
+      program: 'Advanced Chart Analysis',
+      cta: 'Your program: Chart Analysis →'
+    },
+    over: {
+      badge: 'Your Profile',
+      name: 'The Overthinker',
+      profile: 'You've built a tower of analysis. RSI, MACD, three moving averages, Fibonacci — and the more indicators you add, the less clear things become. Somewhere underneath all of that, you don't fully trust your own eye. Ashford's approach does not add more information. It removes the noise and builds your trust in reading pure structure. Once you see price action clearly, you stop needing confirmation from twelve indicators.',
+      program: 'Advanced Chart Analysis',
+      cta: 'Your program: Chart Analysis →'
+    },
+    raw: {
+      badge: 'Your Profile',
+      name: 'The Raw Beginner',
+      profile: 'You haven't built bad habits yet. That is a significant advantage. Most traders spend years unlearning the wrong approaches before they can learn the right ones. You have the rare opportunity to build your trading foundation correctly from the first brick. Ashford's curriculum is designed for this — not as a shortcut, but as the right path from day one. Build the structure before you build the habit of bypassing it.',
+      program: 'Advanced Chart Analysis',
+      cta: 'Your program: Chart Analysis →'
+    }
+  };
+
+  let scores = { freeze: 0, chase: 0, over: 0, raw: 0 };
+  let curQ = 0;
+  const progressEl = document.getElementById('profiler-progress-fill');
+  const counterEl = document.getElementById('profiler-q-counter');
+  const qScreen = document.getElementById('profiler-q-screen');
+  const qEl = document.getElementById('profiler-question');
+  const optsEl = document.getElementById('profiler-options');
+  const resultEl = document.getElementById('profiler-result');
+
+  function renderQuestion() {
+    if (!qEl || !optsEl) return;
+    const data = questions[curQ];
+    qEl.textContent = data.q;
+    optsEl.innerHTML = '';
+    data.opts.forEach((opt, i) => {
+      const btn = document.createElement('div');
+      btn.className = 'profiler-option';
+      btn.setAttribute('role', 'button');
+      btn.setAttribute('tabindex', '0');
+      btn.innerHTML = `<span class="profiler-option-letter">${opt.label}</span><span class="profiler-option-text">${opt.text}</span>`;
+      btn.onclick = () => selectOption(opt.weight);
+      btn.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectOption(opt.weight); } };
+      optsEl.appendChild(btn);
+    });
+    if (counterEl) counterEl.textContent = 'QUESTION ' + (curQ + 1) + ' OF 5';
+    if (progressEl) progressEl.style.width = ((curQ + 1) * 20) + '%';
+  }
+
+  function selectOption(weight) {
+    Object.entries(weight).forEach(([k, v]) => { if (scores[k] !== undefined) scores[k] += v; });
+    if (curQ < questions.length - 1) {
+      if (qScreen) qScreen.classList.add('out');
+      setTimeout(() => {
+        curQ++;
+        renderQuestion();
+        if (qScreen) {
+          qScreen.classList.remove('out');
+          qScreen.classList.add('in');
+          void qScreen.offsetWidth;
+          setTimeout(() => qScreen.classList.remove('in'), 350);
+        }
+      }, 300);
+    } else {
+      if (qScreen) qScreen.classList.add('out');
+      setTimeout(() => { showResult(); }, 320);
+    }
+  }
+
+  function showResult() {
+    if (qScreen) qScreen.style.display = 'none';
+    if (counterEl) counterEl.style.display = 'none';
+    if (progressEl) progressEl.style.width = '100%';
+
+    const order = ['freeze', 'chase', 'over', 'raw'];
+    let best = order[0];
+    order.forEach(k => { if (scores[k] > scores[best]) best = k; });
+
+    const arch = archetypes[best];
+    const badgeEl = document.getElementById('profiler-badge');
+    const nameEl = document.getElementById('profiler-name');
+    const profileEl = document.getElementById('profiler-profile');
+    const recNameEl = document.getElementById('profiler-rec-name');
+    const ctaBtn = document.getElementById('profiler-cta-btn');
+
+    if (badgeEl) badgeEl.textContent = arch.badge;
+    if (nameEl) nameEl.textContent = arch.name;
+    if (profileEl) profileEl.textContent = arch.profile;
+    if (recNameEl) recNameEl.textContent = arch.program;
+    if (ctaBtn) ctaBtn.textContent = arch.cta;
+
+    if (resultEl) {
+      resultEl.style.display = 'block';
+      resultEl.style.opacity = '0';
+      resultEl.style.transform = 'translateY(30px)';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          resultEl.classList.add('show');
+        });
+      });
+    }
+  }
+
+  window.profilerReset = function() {
+    scores = { freeze: 0, chase: 0, over: 0, raw: 0 };
+    curQ = 0;
+    if (resultEl) {
+      resultEl.classList.remove('show');
+      resultEl.style.display = 'none';
+      resultEl.style.opacity = '0';
+      resultEl.style.transform = 'translateY(30px)';
+    }
+    if (qScreen) {
+      qScreen.style.display = 'block';
+      qScreen.classList.remove('out', 'in');
+    }
+    if (counterEl) counterEl.style.display = 'block';
+    if (progressEl) progressEl.style.width = '20%';
+    renderQuestion();
+  };
+
+  // Init
+  renderQuestion();
+
+  gsap.timeline({ scrollTrigger: { trigger: '#profiler', start: 'top 76%', toggleActions: 'play none none none' }})
+    .from('#profiler .s-label', { y: 16, opacity: 0, duration: 0.4 })
+    .from('#profiler .s-h2',   { y: 28, opacity: 0, duration: 0.55 }, '-=0.2')
+    .from('.profiler-wrap',    { y: 50, opacity: 0, duration: 0.75, ease: 'power3.out' }, '-=0.2');
+})();
 
 </script>
 </body>
