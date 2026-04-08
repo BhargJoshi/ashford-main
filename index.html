@@ -2535,6 +2535,208 @@ footer {
   .pt-question-bar { padding: 1.2rem 1.4rem; }
   .pt-chart-area { padding: 1.2rem 1.2rem 0.5rem; }
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 06 — THE OPERATOR'S CODEX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#codex {
+  background: var(--ink-deep);
+  padding: 120px 0;
+  overflow: hidden;
+}
+
+.codex-deck-wrap {
+  max-width: 520px;
+  margin: 60px auto 0;
+  position: relative;
+}
+
+.codex-counter {
+  position: absolute;
+  top: 0; right: 0;
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  color: var(--t-tertiary);
+  z-index: 5;
+}
+
+/* Card scene */
+.codex-card-scene {
+  perspective: 1000px;
+  width: 100%;
+  max-width: 460px;
+  height: 280px;
+  cursor: none;
+  margin: 0 auto;
+}
+.codex-card-inner {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.65s var(--ease-silk);
+}
+.codex-card-inner.flipped { transform: rotateY(180deg); }
+
+.codex-card-front,
+.codex-card-back {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  padding: 2rem 2.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Front face */
+.codex-card-front {
+  background: var(--ink-panel);
+  border: 1px solid var(--b-blue);
+  overflow: hidden;
+}
+.codex-front-shimmer {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,215,100,0.18), transparent);
+  pointer-events: none;
+}
+.codex-roman {
+  font-family: var(--f-serif);
+  font-size: 4rem;
+  font-weight: 300;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(26,107,255,0.2);
+  position: absolute;
+  top: 1.2rem; right: 1.8rem;
+  line-height: 1;
+  pointer-events: none;
+}
+.codex-rule {
+  width: 32px; height: 1px;
+  background: linear-gradient(to right, var(--blue), transparent);
+  margin: 0 0 1.2rem;
+  flex-shrink: 0;
+}
+.codex-principle {
+  font-family: var(--f-serif);
+  font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+  font-weight: 300;
+  color: var(--t-primary);
+  line-height: 1.4;
+  max-width: 340px;
+}
+.codex-hint {
+  font-family: var(--f-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.2em;
+  color: var(--t-tertiary);
+  position: absolute;
+  bottom: 1.4rem; left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  transition: opacity 0.4s;
+}
+.codex-hint.hidden { opacity: 0; pointer-events: none; }
+
+/* Back face */
+.codex-card-back {
+  background: rgba(15,18,34,0.95);
+  border: 1px solid rgba(26,107,255,0.22);
+  transform: rotateY(180deg);
+  overflow: hidden;
+}
+.codex-back-shimmer {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,200,83,0.18), transparent);
+  pointer-events: none;
+}
+.codex-back-text {
+  font-family: var(--f-sans);
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--t-secondary);
+  line-height: 1.95;
+  padding: 0 0 0.4rem;
+}
+.codex-kicker {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--green);
+  text-shadow: 0 0 14px rgba(0,200,83,0.35);
+  display: block;
+  margin-top: 1rem;
+}
+
+/* Navigation */
+.codex-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.codex-arrow {
+  width: 44px; height: 44px;
+  border: 1px solid var(--b-soft);
+  background: transparent;
+  color: var(--t-tertiary);
+  cursor: none;
+  font-family: var(--f-sans);
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.25s, color 0.25s;
+}
+.codex-arrow:hover { border-color: var(--b-blue); color: var(--t-primary); }
+
+.codex-dots {
+  display: flex; gap: 8px; align-items: center;
+}
+.codex-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--b-soft);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  cursor: none;
+}
+.codex-dot.active {
+  background: var(--blue-bright);
+  transform: scale(1.6);
+  box-shadow: 0 0 8px var(--blue-glow);
+}
+
+/* Card VII reveal */
+.codex-finale {
+  text-align: center;
+  margin-top: 2.8rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s;
+}
+.codex-finale.visible { opacity: 1; pointer-events: auto; }
+.codex-finale-sep {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--green), transparent);
+  margin-bottom: 2rem;
+}
+.codex-finale-text {
+  font-family: var(--f-serif);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-weight: 300;
+  color: var(--t-primary);
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .codex-card-scene { height: 300px; }
+  .codex-principle { font-size: clamp(1rem, 4vw, 1.3rem); }
+  .codex-back-text { font-size: 0.78rem; line-height: 1.8; }
+}
 </style>
 </head>
 <body>
@@ -3242,6 +3444,56 @@ footer {
   </div>
 </section>
 
+<!-- ── SECTION 06: THE OPERATOR'S CODEX ── -->
+<section id="codex" class="s">
+  <div class="s-inner">
+    <div class="s-label">The Doctrine</div>
+    <h2 class="s-h2">The Operator's <span class="blue">Codex</span></h2>
+    <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.4rem;">"Seven principles. Non-negotiable. Internalized by every Ashford trader."</p>
+
+    <div class="codex-deck-wrap">
+      <div class="codex-counter" id="codex-counter">I / VII</div>
+
+      <div class="codex-card-scene" id="codex-scene" onclick="codexFlip()">
+        <div class="codex-card-inner" id="codex-inner">
+          <div class="codex-card-front">
+            <div class="codex-front-shimmer"></div>
+            <span class="codex-roman" id="codex-roman">I</span>
+            <div class="codex-rule"></div>
+            <p class="codex-principle" id="codex-principle">"Capital preservation is the first trade."</p>
+            <span class="codex-hint" id="codex-hint">CLICK TO REVEAL</span>
+          </div>
+          <div class="codex-card-back">
+            <div class="codex-back-shimmer"></div>
+            <p class="codex-back-text" id="codex-back-text"></p>
+            <span class="codex-kicker" id="codex-kicker"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="codex-nav" id="codex-nav-wrap">
+        <button class="codex-arrow" id="codex-prev" onclick="codexNav(-1)">←</button>
+        <div class="codex-dots" id="codex-dots">
+          <div class="codex-dot active" data-i="0"></div>
+          <div class="codex-dot" data-i="1"></div>
+          <div class="codex-dot" data-i="2"></div>
+          <div class="codex-dot" data-i="3"></div>
+          <div class="codex-dot" data-i="4"></div>
+          <div class="codex-dot" data-i="5"></div>
+          <div class="codex-dot" data-i="6"></div>
+        </div>
+        <button class="codex-arrow" id="codex-next" onclick="codexNav(1)">→</button>
+      </div>
+
+      <div class="codex-finale" id="codex-finale">
+        <div class="codex-finale-sep"></div>
+        <p class="codex-finale-text">This is the Ashford standard.</p>
+        <button class="btn-primary" onclick="redirectToCTA()">Begin Your Training →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── SECTION 05: THE PERCEPTION TEST ── -->
 <section id="perception-test">
   <div class="pt-header">
@@ -3422,6 +3674,7 @@ footer {
         <li><a href="#about">About</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#philosophy">Philosophy</a></li>
+        <li><a href="#codex">The Codex</a></li>
         <li><a href="#testimonials">Results</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
@@ -4440,6 +4693,177 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
 
   gsap.timeline({ scrollTrigger: { trigger: '#traders-arc', start: 'top 80%', toggleActions: 'play none none none' } })
     .from('#arc-sticky', { opacity: 0, duration: 0.5, ease: 'power2.out' });
+})();
+
+/* ════════════════════════════════════════
+   SECTION 06 — THE OPERATOR'S CODEX
+════════════════════════════════════════ */
+(function() {
+  const romans = ['I','II','III','IV','V','VI','VII'];
+  const cards = [
+    {
+      front: '"Capital preservation is the first trade."',
+      back:  'Before any entry, any setup, any signal — the first question is always: how much can I lose? Not how much will I make. Every professional trader protects capital above all else. Profit follows preservation, never the other way.',
+      kicker:'Protect first. Earn second.'
+    },
+    {
+      front: '"Emotion is information. Act on structure."',
+      back:  'Fear and greed are real. They will always be present. The trained trader does not eliminate emotion — they learn to recognise it as a signal to pause, not to act. Structure provides the entry. Emotion provides the warning.',
+      kicker:'Feel it. Don\'t follow it.'
+    },
+    {
+      front: '"The setup either exists or it doesn\'t."',
+      back:  'There is no \'almost.\' A setup is either structurally valid or it is a forced trade. Forcing trades is how capital leaves your account one rationalisation at a time. Wait for the structure. The market will offer it again.',
+      kicker:'Patience is not passivity. It is precision.'
+    },
+    {
+      front: '"Your stop loss is not a loss. It is the cost of information."',
+      back:  'Every stopped trade tells you something. The market did not confirm your read. That is not failure — it is data. Professionals size positions so that stop losses are tuition fees, not catastrophes. Small losses. Large lessons.',
+      kicker:'Losses are the price of being in the game.'
+    },
+    {
+      front: '"Consistency over conviction."',
+      back:  'Strong opinions kill accounts. The trader who is \'certain\' takes oversized risk. The trader who is consistent takes calculated risk. The market does not reward being right. It rewards being repeatable.',
+      kicker:'A system beats a hunch, every session.'
+    },
+    {
+      front: '"The exit is half the trade."',
+      back:  'Most traders obsess over entries. Professionals obsess over exits. Where you get out determines your actual result — not where you got in. Plan the exit before the entry. Execute it without negotiation.',
+      kicker:'The trade is not over until you\'re flat.'
+    },
+    {
+      front: '"You are not trading the market. You are trading yourself."',
+      back:  'Every mistake in trading is a psychological event. Impulsive entry, premature exit, chasing, freezing — these are not market problems. They are operator problems. The Ashford standard: know the market, but master yourself first.',
+      kicker:'The edge is internal.'
+    }
+  ];
+
+  let current = 0;
+  let isFlipped = false;
+  let hintShown = false;
+  let viiRevealed = false;
+  let viiTimer = null;
+
+  const inner    = document.getElementById('codex-inner');
+  const roman    = document.getElementById('codex-roman');
+  const principle= document.getElementById('codex-principle');
+  const backText = document.getElementById('codex-back-text');
+  const kicker   = document.getElementById('codex-kicker');
+  const counter  = document.getElementById('codex-counter');
+  const hint     = document.getElementById('codex-hint');
+  const finale   = document.getElementById('codex-finale');
+  const dots     = document.querySelectorAll('.codex-dot');
+
+  function updateCard(idx, flip) {
+    const c = cards[idx];
+    roman.textContent     = romans[idx];
+    principle.textContent = c.front;
+    backText.textContent  = c.back;
+    kicker.textContent    = c.kicker;
+    counter.textContent   = romans[idx] + ' / VII';
+
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+
+    if (flip) {
+      inner.classList.toggle('flipped', isFlipped);
+    }
+
+    // Hide finale if user navigates away from VII
+    if (idx !== 6) {
+      finale.classList.remove('visible');
+      if (viiTimer) clearTimeout(viiTimer);
+      viiRevealed = false;
+    }
+  }
+
+  window.codexFlip = function() {
+    isFlipped = !isFlipped;
+    inner.classList.toggle('flipped', isFlipped);
+
+    if (!hintShown) {
+      hintShown = true;
+      hint.classList.add('hidden');
+    }
+
+    // Card VII: after flipping back, wait 1.4s then show finale
+    if (current === 6 && !isFlipped && !viiRevealed) {
+      viiRevealed = true;
+      viiTimer = setTimeout(() => {
+        finale.classList.add('visible');
+      }, 1400);
+    }
+    // If flipping card VII to front again, hide finale
+    if (current === 6 && isFlipped) {
+      finale.classList.remove('visible');
+      if (viiTimer) clearTimeout(viiTimer);
+      viiRevealed = false;
+    }
+  };
+
+  window.codexNav = function(dir) {
+    const next = current + dir;
+    if (next < 0 || next > 6) return;
+    current = next;
+    isFlipped = false;
+    updateCard(current, true);
+    // Reset flip state visually
+    inner.classList.remove('flipped');
+  };
+
+  // Keyboard support when section in viewport
+  let codexVisible = false;
+  const obs = new IntersectionObserver(entries => {
+    codexVisible = entries[0].isIntersecting;
+  }, { threshold: 0.3 });
+  const codexSection = document.getElementById('codex');
+  if (codexSection) obs.observe(codexSection);
+
+  document.addEventListener('keydown', e => {
+    if (!codexVisible) return;
+    if (e.key === 'ArrowLeft')  { if (current > 0) window.codexNav(-1); }
+    if (e.key === 'ArrowRight') { window.codexNav(1); }
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.codexFlip(); }
+  });
+
+  // Dot click navigation
+  dots.forEach((d, i) => {
+    d.addEventListener('click', e => {
+      e.stopPropagation();
+      current = i;
+      isFlipped = false;
+      inner.classList.remove('flipped');
+      updateCard(current, false);
+    });
+  });
+
+  // Cursor expand on card
+  const scene = document.getElementById('codex-scene');
+  if (scene) {
+    scene.addEventListener('mouseenter', () => {
+      const ring = document.getElementById('c-ring');
+      const dot  = document.getElementById('c-dot');
+      if (ring) ring.classList.add('expanded');
+      if (dot)  dot.classList.add('green-mode');
+    });
+    scene.addEventListener('mouseleave', () => {
+      const ring = document.getElementById('c-ring');
+      const dot  = document.getElementById('c-dot');
+      if (ring) ring.classList.remove('expanded');
+      if (dot)  dot.classList.remove('green-mode');
+    });
+  }
+
+  // Init back content
+  updateCard(0, false);
+
+  // GSAP entrance
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.timeline({ scrollTrigger: { trigger: '#codex', start: 'top 76%', toggleActions: 'play none none none' }})
+      .from('#codex .s-label',    { y: 16, opacity: 0, duration: 0.4 })
+      .from('#codex .s-h2',       { y: 28, opacity: 0, duration: 0.55, ease: 'power3.out' }, '-=0.2')
+      .from('.codex-card-scene',  { y: 50, opacity: 0, scale: 0.95, duration: 0.8, ease: 'back.out(1.3)' }, '-=0.2')
+      .from('.codex-nav',         { y: 20, opacity: 0, duration: 0.4 }, '-=0.2');
+  }
 })();
 
 /* ════════════════════════════════════════
