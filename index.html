@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2737,6 +2738,549 @@ footer {
   .codex-principle { font-size: clamp(1rem, 4vw, 1.3rem); }
   .codex-back-text { font-size: 0.78rem; line-height: 1.8; }
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 07 — THE LIVE SESSION ROOM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.live-room-intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+.live-room-left {
+  position: relative;
+}
+.live-room-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.live-card {
+  background: var(--ink-panel);
+  border: 1px solid var(--b-faint);
+  padding: 1.5rem;
+  cursor: none;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s var(--ease-expo), box-shadow 0.3s;
+}
+.live-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--blue), transparent);
+  transform: scaleX(0);
+  transition: transform 0.4s var(--ease-expo);
+}
+.live-card:hover {
+  border-color: var(--b-blue);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+.live-card:hover::before { transform: scaleX(1); }
+.live-card-num {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue-pale);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+.live-card-title {
+  font-family: var(--f-serif);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 300;
+  color: var(--t-primary);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.live-card-desc {
+  font-family: var(--f-sans);
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: var(--t-secondary);
+  line-height: 1.8;
+}
+.live-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+.live-stat {
+  background: var(--ink-panel);
+  border: 1px solid var(--b-faint);
+  padding: 1.25rem;
+  text-align: center;
+}
+.live-stat-val {
+  font-family: var(--f-serif);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 300;
+  color: var(--blue-bright);
+  display: block;
+}
+.live-stat-label {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+  margin-top: 0.35rem;
+  display: block;
+}
+.live-demo-btn {
+  margin-top: 2.5rem;
+  width: 100%;
+}
+@media (max-width: 900px) {
+  .live-room-intro { grid-template-columns: 1fr; }
+  .live-room-cards { grid-template-columns: 1fr; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 08 — EMOTION VS SYSTEM SIMULATOR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#emotion-simulator {
+  background: var(--ink-mid);
+}
+.emotion-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 2.5rem;
+}
+.emotion-stage {
+  position: relative;
+  background: var(--ink-panel);
+  border: 1px solid var(--b-faint);
+  border-radius: 2px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+.emotion-canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background: var(--ink-deep);
+  border: 1px solid var(--b-faint);
+  overflow: hidden;
+}
+#emotion-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.emotion-overlay {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.emotion-mode {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--b-soft);
+  color: var(--t-secondary);
+  cursor: none;
+  transition: border-color 0.25s, background 0.25s;
+}
+.emotion-mode.active {
+  border-color: var(--blue);
+  background: var(--blue-ghost);
+  color: var(--t-primary);
+}
+.emotion-mode:hover { border-color: var(--b-blue); }
+.emotion-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+.emotion-btn {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 1px solid var(--b-soft);
+  color: var(--t-secondary);
+  cursor: none;
+  transition: all 0.25s;
+}
+.emotion-btn:hover {
+  border-color: var(--b-blue);
+  color: var(--t-primary);
+}
+.emotion-btn.active {
+  border-color: var(--blue);
+  background: var(--blue-ghost);
+  color: var(--t-primary);
+}
+.emotion-legend {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+.emotion-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+}
+.emotion-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.emotion-dot.blue { background: var(--blue); box-shadow: 0 0 8px var(--blue-glow); }
+.emotion-dot.red { background: #ff4757; box-shadow: 0 0 8px rgba(255,71,87,0.4); }
+.emotion-dot.green { background: var(--green); box-shadow: 0 0 8px var(--green-glow); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 09 — THE ASHFORD GLOSSARY DECODED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#glossary {
+  background: var(--ink-lift);
+}
+.glossary-intro {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 3rem;
+}
+.glossary-intro p {
+  font-family: var(--f-sans);
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--t-secondary);
+  margin-top: 0.5rem;
+}
+.glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.glossary-card {
+  background: var(--ink-panel);
+  border: 1px solid var(--b-faint);
+  padding: 1.5rem 1.25rem;
+  cursor: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s var(--ease-expo);
+}
+.glossary-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  transform: scaleX(0);
+  transition: transform 0.4s var(--ease-expo);
+}
+.glossary-card:hover {
+  border-color: var(--b-green);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+.glossary-card:hover::before { transform: scaleX(1); }
+.glossary-term {
+  font-family: var(--f-serif);
+  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+  font-weight: 400;
+  color: var(--t-primary);
+  margin-bottom: 0.5rem;
+}
+.glossary-phonetic {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--t-tertiary);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+.glossary-def {
+  font-family: var(--f-sans);
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: var(--t-secondary);
+  line-height: 1.85;
+}
+.glossary-ashford {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--b-faint);
+  font-family: var(--f-sans);
+  font-size: 0.72rem;
+  font-weight: 300;
+  color: var(--blue-pale);
+  line-height: 1.7;
+}
+.glossary-ashford::before {
+  content: 'Ashford: ';
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+@media (max-width: 900px) {
+  .glossary-grid { grid-template-columns: 1fr; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 10 — THE READINESS PROFILER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#readiness {
+  background: var(--ink-deep);
+}
+.readiness-wrap {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.readiness-intro {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.readiness-intro p {
+  font-family: var(--f-sans);
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--t-secondary);
+  margin-top: 0.5rem;
+}
+.profiler-stage {
+  background: var(--ink-panel);
+  border: 1px solid var(--b-faint);
+  padding: 2.5rem;
+  position: relative;
+}
+.profiler-progress {
+  width: 100%;
+  height: 2px;
+  background: var(--b-faint);
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.profiler-progress-bar {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--blue), var(--green));
+  transition: width 0.4s var(--ease-expo);
+}
+.profiler-question {
+  font-family: var(--f-serif);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-weight: 300;
+  color: var(--t-primary);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.profiler-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.profiler-option {
+  background: var(--ink-mid);
+  border: 1px solid var(--b-faint);
+  padding: 1.25rem;
+  text-align: left;
+  cursor: none;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.profiler-option::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, var(--blue-ghost), transparent);
+  transition: left 0.4s;
+}
+.profiler-option:hover {
+  border-color: var(--b-blue);
+  transform: translateX(4px);
+}
+.profiler-option:hover::before { left: 100%; }
+.profiler-option.selected {
+  border-color: var(--blue);
+  background: var(--blue-ghost);
+}
+.profiler-option-label {
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.profiler-option-text {
+  font-family: var(--f-sans);
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--t-primary);
+  line-height: 1.6;
+}
+.profiler-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+.profiler-counter {
+  font-family: var(--f-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+}
+.profiler-next {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.85rem 2rem;
+  background: transparent;
+  border: 1px solid var(--blue);
+  color: var(--t-primary);
+  cursor: none;
+  transition: all 0.3s;
+}
+.profiler-next:hover {
+  background: var(--blue-ghost);
+  box-shadow: 0 0 24px var(--blue-glow);
+}
+.profiler-next:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: var(--b-soft);
+  box-shadow: none;
+}
+/* Results Screen */
+.profiler-results {
+  text-align: center;
+  display: none;
+}
+.profiler-results.visible { display: block; }
+.profiler-score-circle {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 2px solid var(--b-faint);
+  margin: 0 auto 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: var(--ink-mid);
+}
+.profiler-score-circle::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid var(--b-faint);
+}
+.profiler-score-val {
+  font-family: var(--f-serif);
+  font-size: 3.5rem;
+  font-weight: 300;
+  color: var(--t-primary);
+  line-height: 1;
+}
+.profiler-score-label {
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+  margin-top: 0.25rem;
+}
+.profiler-verdict {
+  font-family: var(--f-serif);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 300;
+  color: var(--t-primary);
+  margin-bottom: 1rem;
+}
+.profiler-breakdown {
+  font-family: var(--f-sans);
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--t-secondary);
+  line-height: 1.9;
+  max-width: 520px;
+  margin: 0 auto 2rem;
+}
+.profiler-dimensions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.profiler-dim {
+  background: var(--ink-mid);
+  border: 1px solid var(--b-faint);
+  padding: 1rem;
+  text-align: center;
+}
+.profiler-dim-label {
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+  margin-bottom: 0.5rem;
+}
+.profiler-dim-val {
+  font-family: var(--f-sans);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--t-primary);
+}
+.profiler-dim-bar {
+  height: 3px;
+  background: var(--b-faint);
+  margin-top: 0.75rem;
+  position: relative;
+  overflow: hidden;
+}
+.profiler-dim-fill {
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  background: var(--blue);
+  transition: width 0.6s var(--ease-expo);
+}
+@media (max-width: 768px) {
+  .profiler-options { grid-template-columns: 1fr; }
+  .profiler-dimensions { grid-template-columns: 1fr; }
+  .profiler-stage { padding: 1.5rem; }
+}
 </style>
 </head>
 <body>
@@ -3096,6 +3640,47 @@ footer {
   </div>
 </section>
 
+<!-- ── SECTION 08: EMOTION VS SYSTEM SIMULATOR ── -->
+<section id="emotion-simulator">
+  <div class="s-inner">
+    <div class="s-label">The Simulator</div>
+    <h2 class="s-h2">Emotion vs <span class="blue">System</span></h2>
+    <div class="emotion-header">
+      <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.5rem;">Watch how emotion-driven trading diverges from systematic execution over time. Toggle modes to see the difference.</p>
+    </div>
+
+    <div class="emotion-stage">
+      <div class="emotion-canvas-wrap">
+        <canvas id="emotion-canvas"></canvas>
+        <div class="emotion-overlay">
+          <span class="emotion-mode active" id="emotion-system-mode" onclick="setEmotionMode('system')">System Mode</span>
+          <span class="emotion-mode" id="emotion-emotion-mode" onclick="setEmotionMode('emotion')">Emotion Mode</span>
+        </div>
+      </div>
+
+      <div class="emotion-controls">
+        <button class="emotion-btn active" id="emotion-start" onclick="startEmotionSim()">Start Simulation</button>
+        <button class="emotion-btn" id="emotion-reset" onclick="resetEmotionSim()">Reset</button>
+      </div>
+
+      <div class="emotion-legend">
+        <div class="emotion-legend-item">
+          <div class="emotion-dot blue"></div>
+          <span>Systematic P&L</span>
+        </div>
+        <div class="emotion-legend-item">
+          <div class="emotion-dot red"></div>
+          <span>Emotional P&L</span>
+        </div>
+        <div class="emotion-legend-item">
+          <div class="emotion-dot green"></div>
+          <span>Break-even</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── ADVANTAGE ── -->
 <section id="advantage" class="s">
   <div class="s-inner">
@@ -3131,6 +3716,74 @@ footer {
         <h3 class="adv-title">Practice</h3>
         <p class="adv-desc">Consistent improvement through regular practice and continuous learning support.</p>
         <div class="adv-cell-foot"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 09: THE ASHFORD GLOSSARY DECODED ── -->
+<section id="glossary" class="s">
+  <div class="s-inner">
+    <div class="s-label">The Language</div>
+    <h2 class="s-h2">The Ashford <span class="blue">Glossary</span></h2>
+    <div class="glossary-intro">
+      <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.5rem;">Market terms redefined through the Ashford lens. This is how we decode the noise.</p>
+    </div>
+
+    <div class="glossary-grid">
+      <div class="glossary-card">
+        <div class="glossary-term">Support</div>
+        <span class="glossary-phonetic">/sə-ˈpȯrt/</span>
+        <p class="glossary-def">A price level where buying pressure historically exceeds selling pressure, causing the price to bounce upward.</p>
+        <p class="glossary-ashford">We don't wait for the bounce. We read the approach structure and enter with evidence, not hope.</p>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">Resistance</div>
+        <span class="glossary-phonetic">/rə-ˈzi-stəns/</span>
+        <p class="glossary-def">A price level where selling pressure historically exceeds buying pressure, causing the price to reverse downward.</p>
+        <p class="glossary-ashford">Resistance isn't a wall — it's a decision zone. Either it breaks with conviction or it rejects. Both are trades.</p>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">Breakout</div>
+        <span class="glossary-phonetic">/ˈbrāk-ˌau̇t/</span>
+        <p class="glossary-def">When price moves beyond a defined support or resistance level with increased volume.</p>
+        <p class="glossary-ashford">Most breakouts fail. We wait for the retest — the second confirmation — before committing capital.</p>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">Pullback</div>
+        <span class="glossary-phonetic">/ˈpu̇l-ˌbak/</span>
+        <p class="glossary-def">A temporary reversal within an ongoing trend, offering a lower-risk entry point.</p>
+        <p class="glossary-ashford">The gift of the trend. We don't chase — we let the trend come to us at predefined zones.</p>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">Stop Loss</div>
+        <span class="glossary-phonetic">/ˈstäp ˌlȯs/</span>
+        <p class="glossary-def">A predetermined exit point that limits losses on a trade that moves against your position.</p>
+        <p class="glossary-ashford">Not a suggestion — a commandment. The stop is your insurance premium for staying in the game.</p>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">Risk-Reward Ratio</div>
+        <span class="glossary-phonetic">/ˈrisk ri-ˈwȯrd ˈrā-ˌshō/</span>
+        <p class="glossary-def">The comparison of potential profit to potential loss on a trade, expressed as a ratio (e.g., 2:1).</p>
+        <p class="glossary-ashford">We don't take trades under 2:1. The math of longevity demands asymmetric bets.</p>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">Liquidity</div>
+        <span class="glossary-phonetic">/li-ˈkwi-də-tē/</span>
+        <p class="glossary-def">The ease with which an asset can be bought or sold without affecting its price.</p>
+        <p class="glossary-ashford">Liquidity pools are where stops cluster. We read them as magnets — not as danger, but as fuel.</p>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">Trend</div>
+        <span class="glossary-phonetic">/ˈtrend/</span>
+        <p class="glossary-def">The general direction in which a market is moving — up, down, or sideways.</p>
+        <p class="glossary-ashford">The trend is your friend until it bends. We don't predict the bend — we structure for it.</p>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">Volatility</div>
+        <span class="glossary-phonetic">/ˌvä-tə-ˈli-tē/</span>
+        <p class="glossary-def">The degree of variation in price over time, often measured by standard deviation.</p>
+        <p class="glossary-ashford">Volatility isn't risk — it's opportunity amplitude. We size for the swing, not the calm.</p>
       </div>
     </div>
   </div>
@@ -3588,6 +4241,58 @@ footer {
   </div>
 </section>
 
+<!-- ── SECTION 07: THE LIVE SESSION ROOM ── -->
+<section id="live-room" class="s">
+  <div class="s-inner">
+    <div class="s-label">The Room</div>
+    <h2 class="s-h2">The Live <span class="blue">Session Room</span></h2>
+    <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.4rem;">Where theory meets pressure. Where you learn to execute under real market conditions.</p>
+
+    <div class="live-room-intro">
+      <div class="live-room-left">
+        <div class="live-room-cards">
+          <div class="live-card">
+            <span class="live-card-num">[ 01 ]</span>
+            <span class="live-card-title">Pre-Market Analysis</span>
+            <p class="live-card-desc">6:30 AM IST — We map the battlefield before the open. Levels, zones, scenarios.</p>
+          </div>
+          <div class="live-card">
+            <span class="live-card-num">[ 02 ]</span>
+            <span class="live-card-title">Live Execution</span>
+            <p class="live-card-desc">9:15 AM — Market opens. We trade together, live, with real capital at stake.</p>
+          </div>
+          <div class="live-card">
+            <span class="live-card-num">[ 03 ]</span>
+            <span class="live-card-title">Post-Market Review</span>
+            <p class="live-card-desc">3:45 PM — Every trade reviewed. What worked, what didn't, why.</p>
+          </div>
+        </div>
+      </div>
+      <div class="live-room-right">
+        <div class="live-stats">
+          <div class="live-stat">
+            <span class="live-stat-val">120+</span>
+            <span class="live-stat-label">Live Sessions</span>
+          </div>
+          <div class="live-stat">
+            <span class="live-stat-val">15:1</span>
+            <span class="live-stat-label">Win Rate Avg</span>
+          </div>
+          <div class="live-stat">
+            <span class="live-stat-val">89%</span>
+            <span class="live-stat-label">Accuracy</span>
+          </div>
+          <div class="live-stat">
+            <span class="live-stat-val">3.2:1</span>
+            <span class="live-stat-label">Reward:Risk</span>
+          </div>
+        </div>
+        <button class="btn-primary live-demo-btn" onclick="redirectToCTA()">Experience a Live Session →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── FAQ ── -->
 <section id="faq" class="s">
   <div class="s-inner">
@@ -3629,6 +4334,92 @@ footer {
           <span class="faq-plus">+</span>
         </div>
         <div class="faq-a"><div class="faq-a-body">Most programs sell strategies. We sell perception. We train you to see what others can't — which means the setups find you, not the other way around. No signals, no shortcuts. Pure systematic mastery.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 10: THE READINESS PROFILER ── -->
+<section id="readiness" class="s">
+  <div class="s-inner">
+    <div class="s-label">The Assessment</div>
+    <h2 class="s-h2">The Readiness <span class="blue">Profiler</span></h2>
+    <div class="readiness-intro">
+      <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.5rem;">Ten questions. Three dimensions. One clear read on where you stand as a trader.</p>
+    </div>
+
+    <div class="readiness-wrap">
+      <div class="profiler-stage">
+        <!-- Quiz State -->
+        <div id="profiler-quiz">
+          <div class="profiler-progress">
+            <div class="profiler-progress-bar" id="profiler-bar"></div>
+          </div>
+
+          <div class="profiler-question" id="profiler-question">
+            When you enter a trade, what percentage of the decision is based on a pre-defined system versus gut feeling?
+          </div>
+
+          <div class="profiler-options" id="profiler-options">
+            <div class="profiler-option" onclick="selectProfilerOption(0)">
+              <span class="profiler-option-label">A</span>
+              <span class="profiler-option-text">Mostly gut feeling — I read the chart and go with what feels right</span>
+            </div>
+            <div class="profiler-option" onclick="selectProfilerOption(1)">
+              <span class="profiler-option-label">B</span>
+              <span class="profiler-option-text">About 50/50 — I have some rules but still rely on instinct</span>
+            </div>
+            <div class="profiler-option" onclick="selectProfilerOption(2)">
+              <span class="profiler-option-label">C</span>
+              <span class="profiler-option-text">Mostly system — I have clear entry/exit rules I follow</span>
+            </div>
+            <div class="profiler-option" onclick="selectProfilerOption(3)">
+              <span class="profiler-option-label">D</span>
+              <span class="profiler-option-text">Entirely system — every decision is predefined and backtested</span>
+            </div>
+          </div>
+
+          <div class="profiler-nav">
+            <span class="profiler-counter" id="profiler-counter">Question 1 of 10</span>
+            <button class="profiler-next" id="profiler-next" onclick="nextProfilerQuestion()" disabled>Next →</button>
+          </div>
+        </div>
+
+        <!-- Results State -->
+        <div class="profiler-results" id="profiler-results">
+          <div class="profiler-score-circle">
+            <span class="profiler-score-val" id="profiler-score-val">0%</span>
+            <span class="profiler-score-label">Readiness Score</span>
+          </div>
+
+          <h3 class="profiler-verdict" id="profiler-verdict">Your Trading Profile</h3>
+          <p class="profiler-breakdown" id="profiler-breakdown">
+            You show strong systematic thinking but may still have gaps in execution under pressure.
+          </p>
+
+          <div class="profiler-dimensions">
+            <div class="profiler-dim">
+              <div class="profiler-dim-label">Psychology</div>
+              <div class="profiler-dim-val" id="profiler-dim-psych">--</div>
+              <div class="profiler-dim-bar"><div class="profiler-dim-fill" id="profiler-fill-psych" style="width:0%"></div></div>
+            </div>
+            <div class="profiler-dim">
+              <div class="profiler-dim-label">Strategy</div>
+              <div class="profiler-dim-val" id="profiler-dim-strategy">--</div>
+              <div class="profiler-dim-bar"><div class="profiler-dim-fill" id="profiler-fill-strategy" style="width:0%"></div></div>
+            </div>
+            <div class="profiler-dim">
+              <div class="profiler-dim-label">Execution</div>
+              <div class="profiler-dim-val" id="profiler-dim-exec">--</div>
+              <div class="profiler-dim-bar"><div class="profiler-dim-fill" id="profiler-fill-exec" style="width:0%"></div></div>
+            </div>
+          </div>
+
+          <div class="cta-btns" style="margin-top:2.5rem;">
+            <button class="btn-primary" onclick="redirectToCTA()">Begin Your Training →</button>
+            <button class="btn-secondary" onclick="profilerReset()">Retake Assessment</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -5018,6 +5809,425 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
   gsap.timeline({ scrollTrigger:{ trigger:'#perception-test', start:'top 75%', toggleActions:'play none none none' }})
     .from('.pt-header', { y:40, opacity:0, duration:0.6, ease:'power3.out' })
     .from('#pt-game-wrap', { y:50, opacity:0, duration:0.7, ease:'power3.out' }, '-=0.2');
+})();
+
+/* ════════════════════════════════════════
+   SECTION 07 — THE LIVE SESSION ROOM
+════════════════════════════════════════ */
+(function() {
+  gsap.timeline({ scrollTrigger: { trigger: '#live-room', start: 'top 76%', toggleActions: 'play none none none' } })
+    .from('.live-card', { y: 40, opacity: 0, stagger: 0.12, duration: 0.7, ease: 'power3.out' })
+    .from('.live-stat', { scale: 0.9, opacity: 0, stagger: 0.08, duration: 0.5, ease: 'back.out(1.3)' }, '-=0.4')
+    .from('.live-demo-btn', { y: 20, opacity: 0, duration: 0.4 }, '-=0.2');
+})();
+
+/* ════════════════════════════════════════
+   SECTION 08 — EMOTION VS SYSTEM SIMULATOR
+════════════════════════════════════════ */
+(function() {
+  const canvas = document.getElementById('emotion-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let animationId = null;
+  let isRunning = false;
+  let mode = 'system'; // 'system' or 'emotion'
+  let tick = 0;
+  let systemPnL = 0;
+  let emotionPnL = 0;
+  const history = [];
+  const maxHistory = 150;
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    canvas.width = rect.width * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function drawGrid(w, h) {
+    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 10; i++) {
+      const y = (h / 10) * i;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+    for (let i = 0; i <= 20; i++) {
+      const x = (w / 20) * i;
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+      ctx.stroke();
+    }
+  }
+
+  function drawLine(data, color, width) {
+    if (data.length < 2) return;
+    const w = canvas.width / window.devicePixelRatio;
+    const h = canvas.height / window.devicePixelRatio;
+    const midY = h / 2;
+    const stepX = w / maxHistory;
+
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+
+    data.forEach((point, i) => {
+      const x = i * stepX;
+      const y = midY - point * h * 0.35;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+  }
+
+  function draw() {
+    const w = canvas.width / window.devicePixelRatio;
+    const h = canvas.height / window.devicePixelRatio;
+
+    ctx.fillStyle = '#0a0d1a';
+    ctx.fillRect(0, 0, w, h);
+
+    drawGrid(w, h);
+
+    // Draw break-even line
+    ctx.strokeStyle = 'rgba(0,200,83,0.3)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([6, 4]);
+    ctx.beginPath();
+    ctx.moveTo(0, h / 2);
+    ctx.lineTo(w, h / 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Draw history
+    const systemHistory = history.map(h => h.system);
+    const emotionHistory = history.map(h => h.emotion);
+
+    drawLine(systemHistory, '#1a6bff', 2.5);
+    drawLine(emotionHistory, '#ff4757', 2.5);
+
+    // Draw current value indicator
+    if (history.length > 0) {
+      const last = history[history.length - 1];
+      ctx.fillStyle = 'rgba(26,107,255,0.15)';
+      ctx.fillRect(w - 120, 10, 110, 50);
+      ctx.fillStyle = '#eef0f7';
+      ctx.font = '11px Geist Mono, monospace';
+      ctx.fillText('System: ' + (last.system * 100).toFixed(1) + '%', w - 110, 32);
+      ctx.fillStyle = '#ff4757';
+      ctx.fillText('Emotion: ' + (last.emotion * 100).toFixed(1) + '%', w - 110, 48);
+    }
+  }
+
+  function simulate() {
+    tick++;
+
+    // System: steady, small variations, positive drift
+    const systemNoise = (Math.random() - 0.45) * 0.02;
+    const systemDrift = 0.0008;
+    systemPnL = Math.max(-0.35, Math.min(0.85, systemPnL + systemDrift + systemNoise));
+
+    // Emotion: volatile, fear/greed cycles
+    const emotionBase = (Math.random() - 0.5) * 0.08;
+    const fearGreed = Math.sin(tick * 0.1) * 0.04;
+    const tiltFactor = tick % 40 > 30 ? -0.03 : 0; // emotional tilt near end of cycles
+    emotionPnL = Math.max(-0.65, Math.min(0.55, emotionPnL + emotionBase + fearGreed + tiltFactor));
+
+    history.push({ system: systemPnL, emotion: emotionPnL });
+    if (history.length > maxHistory) history.shift();
+  }
+
+  function loop() {
+    if (!isRunning) return;
+    simulate();
+    draw();
+    animationId = requestAnimationFrame(loop);
+  }
+
+  window.startEmotionSim = function() {
+    if (isRunning) return;
+    isRunning = true;
+    document.getElementById('emotion-start').classList.add('active');
+    document.getElementById('emotion-reset').classList.remove('active');
+    loop();
+  };
+
+  window.resetEmotionSim = function() {
+    isRunning = false;
+    if (animationId) cancelAnimationFrame(animationId);
+    tick = 0;
+    systemPnL = 0;
+    emotionPnL = 0;
+    history.length = 0;
+    document.getElementById('emotion-start').classList.remove('active');
+    document.getElementById('emotion-reset').classList.add('active');
+    draw();
+  };
+
+  window.setEmotionMode = function(newMode) {
+    mode = newMode;
+    document.getElementById('emotion-system-mode').classList.toggle('active', mode === 'system');
+    document.getElementById('emotion-emotion-mode').classList.toggle('active', mode === 'emotion');
+  };
+
+  // IntersectionObserver to gate the animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) {
+        window.resetEmotionSim();
+      }
+    });
+  }, { threshold: 0.1 });
+
+  observer.observe(canvas.parentElement);
+
+  // Initial draw
+  draw();
+
+  // Entrance animation
+  gsap.timeline({ scrollTrigger: { trigger: '#emotion-simulator', start: 'top 76%', toggleActions: 'play none none none' } })
+    .from('.emotion-stage', { y: 40, opacity: 0, duration: 0.7, ease: 'power3.out' })
+    .from('.emotion-btn', { scale: 0.9, opacity: 0, stagger: 0.1, duration: 0.4 }, '-=0.3');
+})();
+
+/* ════════════════════════════════════════
+   SECTION 09 — THE ASHFORD GLOSSARY DECODED
+════════════════════════════════════════ */
+(function() {
+  gsap.timeline({ scrollTrigger: { trigger: '#glossary', start: 'top 76%', toggleActions: 'play none none none' } })
+    .from('.glossary-card', { y: 50, opacity: 0, stagger: 0.06, duration: 0.6, ease: 'power3.out' });
+})();
+
+/* ════════════════════════════════════════
+   SECTION 10 — THE READINESS PROFILER
+════════════════════════════════════════ */
+(function() {
+  const questions = [
+    {
+      q: "When you enter a trade, what percentage of the decision is based on a pre-defined system versus gut feeling?",
+      options: [
+        { text: "Mostly gut feeling — I read the chart and go with what feels right", dim: "psychology", score: 1 },
+        { text: "About 50/50 — I have some rules but still rely on instinct", dim: "psychology", score: 2 },
+        { text: "Mostly system — I have clear entry/exit rules I follow", dim: "psychology", score: 3 },
+        { text: "Entirely system — every decision is predefined and backtested", dim: "psychology", score: 4 }
+      ]
+    },
+    {
+      q: "How do you handle a trade that moves against you immediately after entry?",
+      options: [
+        { text: "I hold and hope it comes back — markets always reverse eventually", dim: "psychology", score: 1 },
+        { text: "I sometimes exit at stop, sometimes hold depending on how I feel", dim: "psychology", score: 2 },
+        { text: "I exit at my pre-defined stop loss without hesitation", dim: "psychology", score: 4 }
+      ]
+    },
+    {
+      q: "What does your trading journal look like?",
+      options: [
+        { text: "I don't keep one — I know my trades from memory", dim: "strategy", score: 1 },
+        { text: "I log trades occasionally when I remember", dim: "strategy", score: 2 },
+        { text: "I journal every trade with entry/exit rationale and screenshots", dim: "strategy", score: 4 }
+      ]
+    },
+    {
+      q: "How do you determine position size for a new trade?",
+      options: [
+        { text: "I use a consistent size based on account risk percentage", dim: "strategy", score: 4 },
+        { text: "It depends on how confident I feel about the setup", dim: "strategy", score: 1 },
+        { text: "I have a formula but don't always follow it", dim: "strategy", score: 2 }
+      ]
+    },
+    {
+      q: "Describe your approach to waiting for setups:",
+      options: [
+        { text: "I trade frequently — there's always opportunity somewhere", dim: "execution", score: 1 },
+        { text: "I wait for my setups but sometimes force trades out of boredom", dim: "execution", score: 2 },
+        { text: "I wait patiently for my exact criteria to be met — no exceptions", dim: "execution", score: 4 }
+      ]
+    },
+    {
+      q: "After a losing trade, what's your typical next action?",
+      options: [
+        { text: "I immediately look for another trade to make it back", dim: "psychology", score: 1 },
+        { text: "I take a short break, then resume if I feel calm", dim: "psychology", score: 3 },
+        { text: "I review what went wrong before trading again", dim: "psychology", score: 4 }
+      ]
+    },
+    {
+      q: "How do you define your edge in the market?",
+      options: [
+        { text: "I'm still figuring it out — trying different approaches", dim: "strategy", score: 1 },
+        { text: "I have a general approach but it's evolving", dim: "strategy", score: 2 },
+        { text: "My edge is clearly defined and statistically validated", dim: "strategy", score: 4 }
+      ]
+    },
+    {
+      q: "What's your relationship with FOMO (Fear Of Missing Out)?",
+      options: [
+        { text: "I often chase moves I missed — hate feeling left out", dim: "execution", score: 1 },
+        { text: "I sometimes chase, but I'm working on it", dim: "execution", score: 2 },
+        { text: "FOMO doesn't drive my decisions — the system does", dim: "execution", score: 4 }
+      ]
+    },
+    {
+      q: "How do you handle a winning streak?",
+      options: [
+        { text: "I increase size — I'm clearly in the zone", dim: "psychology", score: 1 },
+        { text: "I stay confident but don't change my approach", dim: "psychology", score: 3 },
+        { text: "I remain vigilant — complacency kills accounts", dim: "psychology", score: 4 }
+      ]
+    },
+    {
+      q: "When do you add to a winning position?",
+      options: [
+        { text: "I add when I feel the momentum is strong", dim: "execution", score: 1 },
+        { text: "I have predefined scaling rules I follow exactly", dim: "execution", score: 4 },
+        { text: "I sometimes scale per plan, sometimes based on feel", dim: "execution", score: 2 }
+      ]
+    }
+  ];
+
+  let currentQ = 0;
+  let scores = { psychology: 0, strategy: 0, execution: 0 };
+  let maxScores = { psychology: 0, strategy: 0, execution: 0 };
+  let selectedOption = null;
+
+  function calculateMaxScores() {
+    maxScores = { psychology: 0, strategy: 0, execution: 0 };
+    questions.forEach(q => {
+      q.options.forEach(opt => {
+        maxScores[opt.dim] += 4; // max per question
+      });
+    });
+    // Normalize - each dimension has different question counts
+    maxScores = { psychology: 28, strategy: 20, execution: 20 };
+  }
+  calculateMaxScores();
+
+  function loadQuestion() {
+    const q = questions[currentQ];
+    document.getElementById('profiler-question').textContent = q.q;
+    document.getElementById('profiler-counter').textContent = `Question ${currentQ + 1} of ${questions.length}`;
+
+    const optsContainer = document.getElementById('profiler-options');
+    optsContainer.innerHTML = '';
+
+    const labels = ['A', 'B', 'C', 'D'];
+    q.options.forEach((opt, i) => {
+      const div = document.createElement('div');
+      div.className = 'profiler-option';
+      div.onclick = () => selectProfilerOption(i);
+      div.innerHTML = `
+        <span class="profiler-option-label">${labels[i] || String.fromCharCode(65 + i)}</span>
+        <span class="profiler-option-text">${opt.text}</span>
+      `;
+      optsContainer.appendChild(div);
+    });
+
+    selectedOption = null;
+    document.getElementById('profiler-next').disabled = true;
+    updateProgressBar();
+  }
+
+  function updateProgressBar() {
+    const pct = ((currentQ) / questions.length) * 100;
+    document.getElementById('profiler-bar').style.width = pct + '%';
+  }
+
+  window.selectProfilerOption = function(index) {
+    selectedOption = index;
+    const opts = document.querySelectorAll('.profiler-option');
+    opts.forEach((o, i) => {
+      o.classList.toggle('selected', i === index);
+    });
+    document.getElementById('profiler-next').disabled = false;
+  };
+
+  window.nextProfilerQuestion = function() {
+    if (selectedOption === null) return;
+
+    const q = questions[currentQ];
+    const opt = q.options[selectedOption];
+    scores[opt.dim] += opt.score;
+
+    currentQ++;
+
+    if (currentQ >= questions.length) {
+      showResults();
+    } else {
+      loadQuestion();
+    }
+  };
+
+  function showResults() {
+    document.getElementById('profiler-quiz').style.display = 'none';
+    document.getElementById('profiler-results').classList.add('visible');
+    document.getElementById('profiler-bar').style.width = '100%';
+
+    const totalScore = scores.psychology + scores.strategy + scores.execution;
+    const maxTotal = maxScores.psychology + maxScores.strategy + maxScores.execution;
+    const readinessPct = Math.round((totalScore / maxTotal) * 100);
+
+    // Animate score counter
+    let displayScore = 0;
+    const scoreInterval = setInterval(() => {
+      displayScore++;
+      document.getElementById('profiler-score-val').textContent = displayScore + '%';
+      if (displayScore >= readinessPct) clearInterval(scoreInterval);
+    }, 15);
+
+    // Verdict
+    const verdicts = [
+      { min: 0, text: "Pre-System Trader", desc: "You're operating primarily on instinct and incomplete frameworks. This is where every trader starts — but awareness is the first step. Ashford builds your system from the ground up." },
+      { min: 40, text: "Developing Discipline", desc: "You have pieces of a system but inconsistency in execution. The foundation is there — now it's about building repeatable processes under live pressure." },
+      { min: 65, text: "Systematic Operator", desc: "Strong framework with solid execution. You understand the gap between knowing and doing. Ashford refines your edge through live session training." },
+      { min: 85, text: "Elite Readiness", desc: "You operate with professional-grade discipline. Your system is defined, your psychology is managed, and your execution is consistent. Ashford sharpens what's already working." }
+    ];
+
+    const verdict = verdicts.reduce((a, b) => readinessPct >= b.min ? b : a, verdicts[0]);
+    document.getElementById('profiler-verdict').textContent = verdict.text;
+    document.getElementById('profiler-breakdown').innerHTML = verdict.desc;
+
+    // Dimension scores
+    const psychPct = Math.round((scores.psychology / maxScores.psychology) * 100);
+    const stratPct = Math.round((scores.strategy / maxScores.strategy) * 100);
+    const execPct = Math.round((scores.execution / maxScores.execution) * 100);
+
+    setTimeout(() => {
+      document.getElementById('profiler-dim-psych').textContent = psychPct + '%';
+      document.getElementById('profiler-dim-strategy').textContent = stratPct + '%';
+      document.getElementById('profiler-dim-exec').textContent = execPct + '%';
+
+      document.getElementById('profiler-fill-psych').style.width = psychPct + '%';
+      document.getElementById('profiler-fill-strategy').style.width = stratPct + '%';
+      document.getElementById('profiler-fill-exec').style.width = execPct + '%';
+    }, 800);
+  }
+
+  window.profilerReset = function() {
+    currentQ = 0;
+    scores = { psychology: 0, strategy: 0, execution: 0 };
+    selectedOption = null;
+    document.getElementById('profiler-results').classList.remove('visible');
+    document.getElementById('profiler-quiz').style.display = 'block';
+    loadQuestion();
+  };
+
+  // Entrance animation
+  gsap.timeline({ scrollTrigger: { trigger: '#readiness', start: 'top 76%', toggleActions: 'play none none none' } })
+    .from('.profiler-stage', { y: 50, opacity: 0, duration: 0.7, ease: 'power3.out' })
+    .from('.profiler-question', { y: 20, opacity: 0, duration: 0.5 }, '-=0.4')
+    .from('.profiler-option', { y: 20, opacity: 0, stagger: 0.08, duration: 0.4 }, '-=0.3');
+
+  // Load first question after a short delay
+  setTimeout(loadQuestion, 100);
 })();
 
 
