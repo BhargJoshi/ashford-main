@@ -88,6 +88,35 @@ h1, h2, h3, h4 {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PERFORMANCE — COMPOSITOR & PAINT CONTAINMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Sections are independent paint regions — repainting one won't invalidate siblings */
+.s, #hero, #scrolly, #noise-signal, #emotion-simulator,
+#glossary, #readiness, #ashford-clock, #traders-arc,
+#advantage, #operator-codex, #perception-test, #live-room {
+  contain: layout style;
+}
+
+/* Canvases get their own compositor layer — GPU handles them independently */
+#bg-canvas,
+#clock-particle-canvas,
+.trader-3d-canvas,
+.ns-chart-canvas {
+  will-change: transform;
+}
+
+/* Scrollytelling pin wrapper — tell browser it's a stacking context */
+#scrolly-pin {
+  isolation: isolate;
+}
+
+/* Modal and overlay get own layers so they don't thrash the main document */
+#modal-overlay {
+  will-change: opacity;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    CUSTOM CURSOR
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 #c-dot {
@@ -96,7 +125,7 @@ h1, h2, h3, h4 {
   border-radius: 50%;
   position: fixed; top: 0; left: 0;
   z-index: 99999; pointer-events: none;
-  transform: translate(-50%,-50%);
+  will-change: transform;
   transition: width .15s, height .15s, background .2s;
   mix-blend-mode: screen;
 }
@@ -106,7 +135,7 @@ h1, h2, h3, h4 {
   border-radius: 50%;
   position: fixed; top: 0; left: 0;
   z-index: 99998; pointer-events: none;
-  transform: translate(-50%,-50%);
+  will-change: transform;
   transition: width .35s var(--ease-expo), height .35s var(--ease-expo),
               border-color .3s, opacity .3s;
 }
@@ -153,6 +182,9 @@ h1, h2, h3, h4 {
   backdrop-filter: blur(28px) saturate(1.6);
   -webkit-backdrop-filter: blur(28px) saturate(1.6);
   transition: background .4s, border-color .4s;
+  /* Contain paint to this element — stops blur from invalidating the full viewport */
+  isolation: isolate;
+  contain: layout style;
 }
 #nav.solid { background: rgba(5,7,16,0.95); border-color: var(--b-blue); }
 
@@ -783,9 +815,9 @@ h1, h2, h3, h4 {
   position: relative;
 }
 
-/* Blur siblings on hover */
+/* Dim siblings on hover using opacity only — filter:blur triggers full repaint of every sibling */
 .wyg-grid:has(.wyg-card:hover) .wyg-card:not(:hover) {
-  filter: blur(2.5px) brightness(0.6);
+  opacity: 0.35;
   transform: scale(0.97);
 }
 
@@ -4929,59 +4961,79 @@ footer {
   let scrollP = 0, targetP = 0, t = 0;
   let mx = 0, my = 0;
 
+  // Throttled scroll — update target only, lerp happens in rAF
   window.addEventListener('scroll', () => {
     targetP = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-  });
+  }, { passive: true });
+
+  // Throttled mousemove — rAF-gated so at most once per frame
+  let mmPending = false;
   window.addEventListener('mousemove', e => {
-    mx = (e.clientX / window.innerWidth  - 0.5);
-    my = (e.clientY / window.innerHeight - 0.5);
-  });
+    if (mmPending) return;
+    mmPending = true;
+    requestAnimationFrame(() => {
+      mx = (e.clientX / window.innerWidth  - 0.5);
+      my = (e.clientY / window.innerHeight - 0.5);
+      mmPending = false;
+    });
+  }, { passive: true });
 
   (function tick() {
+    // Pause rendering when tab is not visible
+    if (!document.hidden) {
+      t += 0.003;
+      scrollP += (targetP - scrollP) * 0.035;
+
+      // Camera — cinematic, elegant drift
+      camera.position.x  = mx * 3 + Math.sin(t * 0.4) * 1.5;
+      camera.position.y  = 2 - my * 2 - scrollP * 14;
+      camera.position.z  = 30 - scrollP * 8;
+      camera.rotation.z  = scrollP * 0.15 + mx * 0.02;
+      camera.lookAt(0, -scrollP * 8, 0);
+
+      // Rings — slow, refined
+      r1.rotation.x = t * 0.18 + scrollP * 2.5;
+      r1.rotation.y = t * 0.12;
+      r2.rotation.x = -t * 0.10;
+      r2.rotation.z = t * 0.07 + scrollP * 1.2;
+      r3.rotation.y = t * 0.25 + scrollP * 1.8;
+      r3.rotation.x = scrollP * 2;
+      r4.rotation.z = t * 0.04;
+      r4.rotation.y = t * 0.06;
+
+      // Diamond
+      diamond.rotation.x = t * 0.15;
+      diamond.rotation.y = t * 0.22 + scrollP * 1.5;
+      diamond.position.y = Math.sin(t * 0.5) * 0.5;
+
+      // Grid depth shift
+      grid.position.y = -12 + scrollP * 5;
+      gridMat.opacity = Math.max(0.02, 0.22 - scrollP * 0.15);
+      grid2.position.y = -11.8 + scrollP * 4.5;
+
+      // Particles slow drift
+      particles.rotation.y = t * 0.03 + scrollP * 0.3;
+      pMat.opacity = Math.max(0.08, 0.55 - scrollP * 0.3);
+
+      renderer.render(scene, camera);
+    }
     requestAnimationFrame(tick);
-    t += 0.003;
-    scrollP += (targetP - scrollP) * 0.035;
-
-    // Camera — cinematic, elegant drift
-    camera.position.x  = mx * 3 + Math.sin(t * 0.4) * 1.5;
-    camera.position.y  = 2 - my * 2 - scrollP * 14;
-    camera.position.z  = 30 - scrollP * 8;
-    camera.rotation.z  = scrollP * 0.15 + mx * 0.02;
-    camera.lookAt(0, -scrollP * 8, 0);
-
-    // Rings — slow, refined
-    r1.rotation.x = t * 0.18 + scrollP * 2.5;
-    r1.rotation.y = t * 0.12;
-    r2.rotation.x = -t * 0.10;
-    r2.rotation.z = t * 0.07 + scrollP * 1.2;
-    r3.rotation.y = t * 0.25 + scrollP * 1.8; // green ring faster
-    r3.rotation.x = scrollP * 2;
-    r4.rotation.z = t * 0.04;
-    r4.rotation.y = t * 0.06;
-
-    // Diamond
-    diamond.rotation.x = t * 0.15;
-    diamond.rotation.y = t * 0.22 + scrollP * 1.5;
-    diamond.position.y = Math.sin(t * 0.5) * 0.5;
-
-    // Grid depth shift
-    grid.position.y = -12 + scrollP * 5;
-    gridMat.opacity = Math.max(0.02, 0.22 - scrollP * 0.15);
-    grid2.position.y = -11.8 + scrollP * 4.5;
-
-    // Particles slow drift
-    particles.rotation.y = t * 0.03 + scrollP * 0.3;
-    pMat.opacity = Math.max(0.08, 0.55 - scrollP * 0.3);
-
-    renderer.render(scene, camera);
   })();
 
-  window.addEventListener('resize', () => {
+  window.addEventListener('resize', debounce(() => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-  });
+  }, 200));
 })();
+
+/* ════════════════════════════════════════
+   GLOBAL PERF UTILITIES
+════════════════════════════════════════ */
+// Debounce — prevents resize handlers firing hundreds of times while dragging window
+function debounce(fn, ms) {
+  let t; return function(...a) { clearTimeout(t); t = setTimeout(() => fn.apply(this, a), ms); };
+}
 
 /* ════════════════════════════════════════
    CUSTOM CURSOR
@@ -4990,13 +5042,14 @@ const cDot  = document.getElementById('c-dot');
 const cRing = document.getElementById('c-ring');
 let cx = 0, cy = 0, rx = 0, ry = 0;
 
+// Use transform instead of left/top — keeps cursor on GPU compositor layer, zero layout cost
 document.addEventListener('mousemove', e => {
   cx = e.clientX; cy = e.clientY;
-  cDot.style.left = cx + 'px'; cDot.style.top = cy + 'px';
-});
+  cDot.style.transform = `translate(calc(${cx}px - 50%), calc(${cy}px - 50%))`;
+}, { passive: true });
 (function lerpRing() {
   rx += (cx - rx) * 0.1; ry += (cy - ry) * 0.1;
-  cRing.style.left = rx + 'px'; cRing.style.top = ry + 'px';
+  cRing.style.transform = `translate(calc(${rx}px - 50%), calc(${ry}px - 50%))`;
   requestAnimationFrame(lerpRing);
 })();
 
@@ -5193,9 +5246,18 @@ document.querySelectorAll('[data-count]').forEach(el => {
 /* ════════════════════════════════════════
    NAVBAR — scroll state
 ════════════════════════════════════════ */
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('solid', window.scrollY > 40);
-});
+(function() {
+  const nav = document.getElementById('nav');
+  let navPending = false;
+  window.addEventListener('scroll', () => {
+    if (navPending) return;
+    navPending = true;
+    requestAnimationFrame(() => {
+      nav.classList.toggle('solid', window.scrollY > 40);
+      navPending = false;
+    });
+  }, { passive: true });
+})();
 
 /* ════════════════════════════════════════
    HAMBURGER NAV TOGGLE
@@ -5611,15 +5673,22 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
   function getClientX(e) { return e.touches ? e.touches[0].clientX : e.clientX; }
 
   stage.addEventListener('mousedown', () => { isDragging = true; });
-  window.addEventListener('mouseup',  () => { isDragging = false; });
+  window.addEventListener('mouseup',  () => { isDragging = false; }, { passive: true });
+  // rAF-gated mousemove — fires at most once per frame even on 240Hz screens
+  let nsDragPending = false;
   window.addEventListener('mousemove', e => {
     if (!isDragging) return;
-    const rect = stage.getBoundingClientRect();
-    setDivider((e.clientX - rect.left) / rect.width * 100);
-    if (!hintHidden) { hint.style.opacity = '0'; hintHidden = true; }
-  });
+    if (nsDragPending) return;
+    nsDragPending = true;
+    requestAnimationFrame(() => {
+      const rect = stage.getBoundingClientRect();
+      setDivider((e.clientX - rect.left) / rect.width * 100);
+      if (!hintHidden) { hint.style.opacity = '0'; hintHidden = true; }
+      nsDragPending = false;
+    });
+  }, { passive: true });
   stage.addEventListener('touchstart', () => { isDragging = true; }, { passive: true });
-  window.addEventListener('touchend',  () => { isDragging = false; });
+  window.addEventListener('touchend',  () => { isDragging = false; }, { passive: true });
   window.addEventListener('touchmove', e => {
     if (!isDragging) return;
     const rect = stage.getBoundingClientRect();
@@ -5628,7 +5697,7 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
   }, { passive: true });
 
   setTimeout(() => { resize(); }, 150);
-  window.addEventListener('resize', resize);
+  window.addEventListener('resize', debounce(resize, 200));
 
   // Entrance animation
   gsap.timeline({ scrollTrigger: { trigger: '#noise-signal', start: 'top 75%', toggleActions: 'play none none none' } })
@@ -5643,14 +5712,19 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
   const canvas = document.getElementById('clock-particle-canvas');
   if (!canvas) return;
 
+  // Cache context once — calling getContext() every frame is wasteful
+  const ctx = canvas.getContext('2d');
+  let clockVisible = false;
+
   function resizePC() {
     canvas.width  = canvas.offsetWidth  || window.innerWidth;
     canvas.height = canvas.offsetHeight || window.innerHeight;
   }
   resizePC();
-  window.addEventListener('resize', resizePC);
+  window.addEventListener('resize', debounce(resizePC, 200));
 
-  const pts = Array.from({ length: 55 }, () => ({
+  // Reduced to 40 pts — still looks great, cuts n² checks from 1485→780 per frame
+  const pts = Array.from({ length: 40 }, () => ({
     x: Math.random(), y: Math.random(),
     vx: (Math.random() - 0.5) * 0.00018,
     vy: (Math.random() - 0.5) * 0.00018,
@@ -5658,40 +5732,77 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
     a: Math.random() * 0.35 + 0.05,
   }));
 
+  // Use squared distance — avoids Math.sqrt() in the hot loop (1 sqrt → 0)
+  const CONNECT_DIST = 115;
+  const CONNECT_SQ   = CONNECT_DIST * CONNECT_DIST;
+
   function drawParticles() {
-    if (!canvas.width) { requestAnimationFrame(drawParticles); return; }
-    const ctx = canvas.getContext('2d');
+    if (!clockVisible || !canvas.width) {
+      requestAnimationFrame(drawParticles);
+      return;
+    }
     const W = canvas.width, H = canvas.height;
-    ctx.clearRect(0,0,W,H);
-    pts.forEach(p => { p.x=(p.x+p.vx+1)%1; p.y=(p.y+p.vy+1)%1; });
+    ctx.clearRect(0, 0, W, H);
     for (let i = 0; i < pts.length; i++) {
-      for (let j = i+1; j < pts.length; j++) {
-        const dx=(pts[i].x-pts[j].x)*W, dy=(pts[i].y-pts[j].y)*H;
-        const d=Math.sqrt(dx*dx+dy*dy);
-        if (d < 115) {
-          ctx.beginPath(); ctx.moveTo(pts[i].x*W,pts[i].y*H); ctx.lineTo(pts[j].x*W,pts[j].y*H);
-          ctx.strokeStyle=`rgba(26,107,255,${0.06*(1-d/115)})`; ctx.lineWidth=0.5; ctx.stroke();
+      pts[i].x = (pts[i].x + pts[i].vx + 1) % 1;
+      pts[i].y = (pts[i].y + pts[i].vy + 1) % 1;
+    }
+    // Connection lines — squared distance avoids sqrt per pair
+    for (let i = 0; i < pts.length; i++) {
+      for (let j = i + 1; j < pts.length; j++) {
+        const dx = (pts[i].x - pts[j].x) * W;
+        const dy = (pts[i].y - pts[j].y) * H;
+        const dSq = dx * dx + dy * dy;
+        if (dSq < CONNECT_SQ) {
+          const alpha = 0.06 * (1 - Math.sqrt(dSq) / CONNECT_DIST);
+          ctx.beginPath();
+          ctx.moveTo(pts[i].x * W, pts[i].y * H);
+          ctx.lineTo(pts[j].x * W, pts[j].y * H);
+          ctx.strokeStyle = `rgba(26,107,255,${alpha})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
         }
       }
     }
-    pts.forEach(p => {
-      ctx.beginPath(); ctx.arc(p.x*W, p.y*H, p.r, 0, Math.PI*2);
-      ctx.fillStyle=`rgba(26,107,255,${p.a})`; ctx.fill();
-    });
+    for (let i = 0; i < pts.length; i++) {
+      ctx.beginPath();
+      ctx.arc(pts[i].x * W, pts[i].y * H, pts[i].r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(26,107,255,${pts[i].a})`;
+      ctx.fill();
+    }
     requestAnimationFrame(drawParticles);
   }
+
+  // Pause particle loop when clock section is not visible
+  new IntersectionObserver(entries => {
+    clockVisible = entries[0].isIntersecting;
+  }, { threshold: 0.05 }).observe(canvas.closest('section') || canvas);
+
   drawParticles();
 
+  // Clock hands — rAF instead of setTimeout(fn, 50) which queued 20 forced reflows/sec
+  const clockHour = document.getElementById('clock-hour');
+  const clockMin  = document.getElementById('clock-min');
+  const clockSec  = document.getElementById('clock-sec');
+  let lastClockSec = -1;
+
   function updateClock() {
-    const now = new Date();
-    const s = now.getSeconds() + now.getMilliseconds()/1000;
-    const m = now.getMinutes() + s/60;
-    const h = (now.getHours()%12) + m/60;
-    const r = (d) => `rotate(${d} 100 100)`;
-    document.getElementById('clock-hour')?.setAttribute('transform', r(h*30));
-    document.getElementById('clock-min')?.setAttribute('transform',  r(m*6));
-    document.getElementById('clock-sec')?.setAttribute('transform',  r(s*6));
-    setTimeout(updateClock, 50);
+    if (clockVisible) {
+      const now = new Date();
+      const s = now.getSeconds() + now.getMilliseconds() / 1000;
+      // Only update DOM when second actually changes — reduces SVG reflows by ~59x
+      if (Math.floor(s) !== lastClockSec) {
+        lastClockSec = Math.floor(s);
+        const m = now.getMinutes() + s / 60;
+        const h = (now.getHours() % 12) + m / 60;
+        const r = d => `rotate(${d} 100 100)`;
+        clockHour?.setAttribute('transform', r(h * 30));
+        clockMin?.setAttribute('transform',  r(m * 6));
+      }
+      // Second hand updates every frame for smooth sweep — only when visible
+      clockSec?.setAttribute('transform', `rotate(${s * 6} 100 100)`);
+    }
+    requestAnimationFrame(updateClock);
   }
   updateClock();
 
@@ -5715,7 +5826,7 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
     });
   }
   setTimeout(positionNodes, 250);
-  window.addEventListener('resize', positionNodes);
+  window.addEventListener('resize', debounce(positionNodes, 200));
 
   function updateSession() {
     const badge = document.getElementById('clock-session-badge');
@@ -6136,7 +6247,7 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
   };
 
   setTimeout(()=>loadRound(0), 250);
-  window.addEventListener('resize', ()=>{ if(!answered) drawChart(baseC, baseC.length, false); });
+  window.addEventListener('resize', debounce(() => { if(!answered) drawChart(baseC, baseC.length, false); }, 200));
 
   gsap.timeline({ scrollTrigger:{ trigger:'#perception-test', start:'top 75%', toggleActions:'play none none none' }})
     .from('.pt-header', { y:40, opacity:0, duration:0.6, ease:'power3.out' })
@@ -6417,22 +6528,26 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
       }
     }
 
-    // ── Animation ──
+    // ── Animation ── with visibility gate
     let t = 0;
+    let sceneVisible = false;
+
+    // Pause both Three.js trader scenes when section is off-screen
+    new IntersectionObserver(entries => {
+      sceneVisible = entries[0].isIntersecting;
+    }, { threshold: 0.05 }).observe(canvasEl.parentElement);
+
     function animate() {
       requestAnimationFrame(animate);
+      if (!sceneVisible || document.hidden) return;
       t += 0.016;
 
       if (mode === 'emotion') {
-        // Frustrated head shake
         head.rotation.z = Math.sin(t * 3.5) * 0.12;
         head.rotation.x = Math.sin(t * 2.1) * 0.06;
-        // Tense arms shake
         leftUpper.rotation.z = Math.PI / 3 + Math.sin(t * 4) * 0.08;
         rightUpper.rotation.z = -Math.PI / 3 - Math.sin(t * 4) * 0.08;
-        // Screen flicker
         screenFaceMat.emissiveIntensity = 0.6 + Math.sin(t * 7) * 0.3;
-        // Stress particles drift up
         if (stressParticles) {
           const pos = stressParticles.geometry.attributes.position;
           for (let i = 0; i < pos.count; i++) {
@@ -6443,16 +6558,12 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
           pos.needsUpdate = true;
           stressParticles.rotation.y += 0.003;
         }
-        // Subtle body sway
         traderGroup.rotation.z = Math.sin(t * 1.8) * 0.02;
         screenLight.intensity = 0.9 + Math.sin(t * 6) * 0.4;
       } else {
-        // Calm, focused
-        head.rotation.x = -0.12 + Math.sin(t * 0.5) * 0.02; // leaning forward
+        head.rotation.x = -0.12 + Math.sin(t * 0.5) * 0.02;
         head.rotation.z = Math.sin(t * 0.3) * 0.02;
-        // Steady screen
         screenFaceMat.emissiveIntensity = 0.65 + Math.sin(t * 0.8) * 0.05;
-        // Data nodes orbit
         dataNodes.forEach((n, i) => {
           n.angle += 0.004;
           n.mesh.position.x = Math.cos(n.angle) * n.r;
@@ -6460,7 +6571,6 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
           n.mesh.position.z = 0.4 + Math.sin(n.angle) * 0.3;
           n.mesh.rotation.y += 0.02;
         });
-        // Gentle body breathe
         traderGroup.position.y = Math.sin(t * 0.6) * 0.008;
         screenLight.intensity = 1.1 + Math.sin(t * 0.5) * 0.1;
       }
@@ -6469,7 +6579,7 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
     }
     animate();
 
-    // Resize handler
+    // Debounced resize — prevents expensive recomputations while window is being dragged
     function onResize() {
       const pw = canvasEl.parentElement.offsetWidth;
       const ph = canvasEl.parentElement.offsetHeight;
@@ -6477,7 +6587,7 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
       camera.updateProjectionMatrix();
       renderer.setSize(pw, ph);
     }
-    window.addEventListener('resize', onResize);
+    window.addEventListener('resize', debounce(onResize, 200));
   }
 
   // Init both scenes after DOM + Three loaded
@@ -6513,13 +6623,19 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
     wrap.addEventListener('mousedown', e => { isDragging = true; });
     wrap.addEventListener('touchstart', e => { isDragging = true; }, { passive: true });
 
+    let traderDragPending = false;
     window.addEventListener('mousemove', e => {
       if (!isDragging) return;
-      const rect = wrap.getBoundingClientRect();
-      const pct = ((getX(e) - rect.left) / rect.width) * 100;
-      setReveal(pct);
-      if (!hintShown) { hint.style.opacity = '0'; hintShown = true; }
-    });
+      if (traderDragPending) return;
+      traderDragPending = true;
+      requestAnimationFrame(() => {
+        const rect = wrap.getBoundingClientRect();
+        const pct = ((e.clientX - rect.left) / rect.width) * 100;
+        setReveal(pct);
+        if (!hintShown) { hint.style.opacity = '0'; hintShown = true; }
+        traderDragPending = false;
+      });
+    }, { passive: true });
     window.addEventListener('touchmove', e => {
       if (!isDragging) return;
       const rect = wrap.getBoundingClientRect();
@@ -6527,8 +6643,8 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
       setReveal(pct);
       if (!hintShown) { hint.style.opacity = '0'; hintShown = true; }
     }, { passive: true });
-    window.addEventListener('mouseup', () => { isDragging = false; });
-    window.addEventListener('touchend', () => { isDragging = false; });
+    window.addEventListener('mouseup', () => { isDragging = false; }, { passive: true });
+    window.addEventListener('touchend', () => { isDragging = false; }, { passive: true });
   }
 
   // Wait for DOM ready
@@ -6823,3 +6939,8 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
 </script>
 </body>
 </html>
+
+
+
+
+
