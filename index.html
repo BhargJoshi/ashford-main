@@ -2853,195 +2853,438 @@ footer {
   max-width: 700px;
   margin: 0 auto 2.5rem;
 }
-.emotion-stage {
-  position: relative;
-  background: var(--ink-panel);
-  border: 1px solid var(--b-faint);
-  border-radius: 2px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-}
-.emotion-canvas-wrap {
+
+/* ── Trader 3D Slider ── */
+.trader-slider-wrap {
   position: relative;
   width: 100%;
-  height: 320px;
-  background: var(--ink-deep);
+  height: clamp(420px, 65vh, 600px);
+  overflow: hidden;
   border: 1px solid var(--b-faint);
+  background: var(--ink-deep);
+  cursor: col-resize;
+  user-select: none;
+}
+.trader-panel {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
-#emotion-canvas {
-  width: 100%;
-  height: 100%;
+#trader-panel-emotion {
+  left: 0; right: 0;
+  background: linear-gradient(135deg, #0d0006 0%, #130a1a 50%, #0a0d1a 100%);
+}
+#trader-panel-system {
+  left: 0;
+  width: 50%;
+  background: linear-gradient(135deg, #020812 0%, #050d1f 50%, #02060f 100%);
+  overflow: hidden;
+}
+/* The 3D scene canvases */
+.trader-3d-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   display: block;
 }
-.emotion-overlay {
+/* Labels */
+.trader-panel-label {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
-  right: 1rem;
-  display: flex;
-  justify-content: space-between;
+  top: 1.5rem;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 0.45rem 1.1rem;
+  border: 1px solid;
+  z-index: 10;
   pointer-events: none;
 }
-.emotion-mode {
+.trader-label-emotion {
+  right: 1.5rem;
+  color: rgba(255,77,109,0.85);
+  border-color: rgba(255,77,109,0.28);
+  background: rgba(255,77,109,0.07);
+}
+.trader-label-system {
+  left: 1.5rem;
+  color: var(--green);
+  border-color: var(--b-green);
+  background: var(--green-ghost);
+  text-shadow: 0 0 8px rgba(0,200,83,0.35);
+}
+/* Story captions */
+.trader-caption {
+  position: absolute;
+  bottom: 2.2rem;
+  font-family: var(--f-serif);
+  font-size: clamp(0.9rem, 1.8vw, 1.15rem);
+  font-weight: 300;
+  line-height: 1.5;
+  max-width: 260px;
+  pointer-events: none;
+  z-index: 10;
+}
+.trader-caption-emotion {
+  right: 1.5rem;
+  text-align: right;
+  color: rgba(255,120,140,0.8);
+}
+.trader-caption-system {
+  left: 1.5rem;
+  text-align: left;
+  color: rgba(100, 220, 160, 0.85);
+}
+/* Divider */
+#trader-divider {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: linear-gradient(to bottom, transparent, var(--blue-bright) 30%, var(--blue-bright) 70%, transparent);
+  cursor: col-resize;
+  z-index: 20;
+  transform: translateX(-50%);
+  box-shadow: 0 0 18px var(--blue-glow);
+  transition: box-shadow 0.3s;
+}
+#trader-divider:hover { box-shadow: 0 0 34px var(--blue-glow); }
+#trader-divider-handle {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  color: var(--blue-bright);
+  font-size: 1.1rem;
+  background: var(--ink-panel);
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--b-blue);
+  letter-spacing: -0.05em;
+  pointer-events: none;
+  user-select: none;
+  font-family: var(--f-mono);
+  box-shadow: 0 0 16px var(--blue-glow);
+}
+.trader-hint {
+  position: absolute;
+  bottom: 1.3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--f-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--t-tertiary);
+  pointer-events: none;
+  z-index: 25;
+  white-space: nowrap;
+  animation: trader-hint-fade 2.5s ease-in-out infinite;
+}
+@keyframes trader-hint-fade {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+/* Below-slider stats */
+.trader-stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  margin-top: 1px;
+  border: 1px solid var(--b-faint);
+  border-top: none;
+}
+.trader-stat-col {
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.trader-stat-col.emotion-col {
+  background: rgba(255,50,80,0.04);
+  border-right: 1px solid rgba(255,50,80,0.12);
+}
+.trader-stat-col.system-col {
+  background: rgba(0,200,83,0.04);
+}
+.trader-stat-title {
   font-family: var(--f-mono);
   font-size: 0.58rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  padding: 0.5rem 1rem;
-  border: 1px solid var(--b-soft);
-  color: var(--t-secondary);
-  cursor: none;
-  transition: border-color 0.25s, background 0.25s;
 }
-.emotion-mode.active {
-  border-color: var(--blue);
-  background: var(--blue-ghost);
-  color: var(--t-primary);
-}
-.emotion-mode:hover { border-color: var(--b-blue); }
-.emotion-controls {
+.emotion-col .trader-stat-title { color: rgba(255,100,120,0.7); }
+.system-col .trader-stat-title { color: var(--green-dim); }
+.trader-stat-list {
+  list-style: none;
   display: flex;
-  gap: 1rem;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1.5rem;
+  flex-direction: column;
+  gap: 0.4rem;
 }
-.emotion-btn {
-  font-family: var(--f-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 0.75rem 1.5rem;
-  background: transparent;
-  border: 1px solid var(--b-soft);
-  color: var(--t-secondary);
-  cursor: none;
-  transition: all 0.25s;
-}
-.emotion-btn:hover {
-  border-color: var(--b-blue);
-  color: var(--t-primary);
-}
-.emotion-btn.active {
-  border-color: var(--blue);
-  background: var(--blue-ghost);
-  color: var(--t-primary);
-}
-.emotion-legend {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  margin-top: 1.5rem;
-}
-.emotion-legend-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--f-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--t-tertiary);
-}
-.emotion-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-}
-.emotion-dot.blue { background: var(--blue); box-shadow: 0 0 8px var(--blue-glow); }
-.emotion-dot.red { background: #ff4757; box-shadow: 0 0 8px rgba(255,71,87,0.4); }
-.emotion-dot.green { background: var(--green); box-shadow: 0 0 8px var(--green-glow); }
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SECTION 09 — THE ASHFORD GLOSSARY DECODED
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-#glossary {
-  background: var(--ink-lift);
-}
-.glossary-intro {
-  text-align: center;
-  max-width: 680px;
-  margin: 0 auto 3rem;
-}
-.glossary-intro p {
-  font-family: var(--f-sans);
-  font-size: 0.85rem;
-  font-weight: 300;
-  color: var(--t-secondary);
-  margin-top: 0.5rem;
-}
-.glossary-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-}
-.glossary-card {
-  background: var(--ink-panel);
-  border: 1px solid var(--b-faint);
-  padding: 1.5rem 1.25rem;
-  cursor: none;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s var(--ease-expo);
-}
-.glossary-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--green), transparent);
-  transform: scaleX(0);
-  transition: transform 0.4s var(--ease-expo);
-}
-.glossary-card:hover {
-  border-color: var(--b-green);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-}
-.glossary-card:hover::before { transform: scaleX(1); }
-.glossary-term {
-  font-family: var(--f-serif);
-  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
-  font-weight: 400;
-  color: var(--t-primary);
-  margin-bottom: 0.5rem;
-}
-.glossary-phonetic {
-  font-family: var(--f-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.1em;
-  color: var(--t-tertiary);
-  display: block;
-  margin-bottom: 0.75rem;
-}
-.glossary-def {
+.trader-stat-list li {
   font-family: var(--f-sans);
   font-size: 0.78rem;
   font-weight: 300;
   color: var(--t-secondary);
-  line-height: 1.85;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  line-height: 1.5;
 }
-.glossary-ashford {
-  margin-top: 0.85rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--b-faint);
+.trader-stat-list li::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 0.45rem;
+}
+.emotion-col .trader-stat-list li::before { background: rgba(255,80,100,0.6); }
+.system-col .trader-stat-list li::before { background: rgba(0,200,83,0.5); }
+
+/* old styles kept for nothing to break */
+.emotion-canvas-wrap { display: none; }
+#emotion-canvas { display: none; }
+.emotion-overlay { display: none; }
+.emotion-mode { display: none; }
+.emotion-controls { display: none; }
+.emotion-btn { display: none; }
+.emotion-legend { display: none; }
+.emotion-legend-item { display: none; }
+.emotion-dot { display: none; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SECTION 09 — THE LANGUAGE: AMATEUR vs PROFESSIONAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+#glossary {
+  background: var(--ink-lift);
+  overflow: hidden;
+}
+.language-intro {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 3.5rem;
+}
+.language-intro p {
   font-family: var(--f-sans);
-  font-size: 0.72rem;
+  font-size: 0.88rem;
   font-weight: 300;
-  color: var(--blue-pale);
-  line-height: 1.7;
+  color: var(--t-secondary);
+  margin-top: 0.6rem;
+  line-height: 1.9;
 }
-.glossary-ashford::before {
-  content: 'Ashford: ';
+/* Column headers */
+.language-col-headers {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 0;
+  margin-bottom: 0;
+  max-width: 960px;
+  margin: 0 auto 0;
+}
+.lang-col-head {
+  padding: 0.8rem 1.5rem;
   font-family: var(--f-mono);
-  font-size: 0.55rem;
-  letter-spacing: 0.15em;
+  font-size: 0.58rem;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--blue);
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
 }
-@media (max-width: 900px) {
-  .glossary-grid { grid-template-columns: 1fr; }
+.lang-col-head.amateur-head {
+  color: rgba(255,90,120,0.75);
+  background: rgba(255,50,80,0.05);
+  border: 1px solid rgba(255,50,80,0.14);
+  border-right: none;
+  justify-content: flex-end;
+}
+.lang-col-head.pro-head {
+  color: rgba(0,210,100,0.75);
+  background: rgba(0,200,83,0.05);
+  border: 1px solid rgba(0,200,83,0.16);
+  border-left: none;
+  justify-content: flex-start;
+}
+.lang-col-center {
+  background: var(--ink-deep);
+  border-top: 1px solid var(--b-faint);
+  border-bottom: 1px solid var(--b-faint);
+}
+
+/* Phrase rows */
+.language-table {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.lang-row {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 0;
+  border-bottom: 1px solid var(--b-faint);
+  cursor: none;
+  transition: all 0.3s var(--ease-expo);
+}
+.lang-row:first-child { border-top: none; }
+.lang-row:hover .lang-cell-amateur,
+.lang-row:hover .lang-cell-pro {
+  opacity: 1;
+}
+.lang-row:hover .lang-cell-amateur {
+  background: rgba(255,50,80,0.07);
+  border-color: rgba(255,50,80,0.22);
+}
+.lang-row:hover .lang-cell-pro {
+  background: rgba(0,200,83,0.07);
+  border-color: rgba(0,200,83,0.22);
+}
+
+.lang-cell {
+  padding: 1.5rem 1.8rem;
+  position: relative;
+  transition: background 0.3s, border-color 0.3s;
+}
+.lang-cell-amateur {
+  border-left: 1px solid rgba(255,50,80,0.1);
+  text-align: right;
+}
+.lang-cell-pro {
+  border-right: 1px solid rgba(0,200,83,0.1);
+  text-align: left;
+}
+.lang-cell-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink-deep);
+  border-left: 1px solid var(--b-faint);
+  border-right: 1px solid var(--b-faint);
+  position: relative;
+}
+.lang-divider-icon {
+  font-family: var(--f-mono);
+  font-size: 0.5rem;
+  color: var(--t-ghost);
+  letter-spacing: 0;
+  line-height: 1;
+  writing-mode: vertical-lr;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+
+/* Statement tag */
+.lang-tag {
+  font-family: var(--f-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  margin-bottom: 0.7rem;
+  border: 1px solid;
+}
+.lang-tag-amateur {
+  color: rgba(255,90,120,0.6);
+  border-color: rgba(255,50,80,0.2);
+  background: rgba(255,50,80,0.05);
+}
+.lang-tag-pro {
+  color: rgba(0,210,110,0.7);
+  border-color: rgba(0,200,83,0.2);
+  background: rgba(0,200,83,0.05);
+}
+
+/* The statement text */
+.lang-statement {
+  font-family: var(--f-serif);
+  font-size: clamp(0.9rem, 1.6vw, 1.1rem);
+  font-weight: 300;
+  line-height: 1.55;
+  display: block;
+  margin-bottom: 0.55rem;
+  font-style: italic;
+}
+.lang-statement-amateur {
+  color: rgba(255,130,150,0.82);
+}
+.lang-statement-pro {
+  color: rgba(80,230,155,0.88);
+  text-shadow: 0 0 18px rgba(0,200,83,0.12);
+}
+
+/* Context note */
+.lang-context {
+  font-family: var(--f-sans);
+  font-size: 0.7rem;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--t-tertiary);
+  display: block;
+  font-style: normal;
+}
+
+/* Concept label between rows */
+.lang-concept-label {
+  font-family: var(--f-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--t-ghost);
+  text-align: center;
+  padding: 0.55rem 0;
+  background: var(--ink-deep);
+  border: 1px solid var(--b-faint);
+  border-top: none;
+  max-width: 960px;
+  margin: 0 auto;
+  position: relative;
+}
+.lang-concept-label::before {
+  content: '──';
+  margin-right: 0.8rem;
+  letter-spacing: 0;
+  color: var(--b-faint);
+}
+.lang-concept-label::after {
+  content: '──';
+  margin-left: 0.8rem;
+  letter-spacing: 0;
+  color: var(--b-faint);
+}
+
+/* Bottom CTA nudge */
+.language-cta {
+  text-align: center;
+  margin-top: 3.5rem;
+}
+.language-cta p {
+  font-family: var(--f-sans);
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--t-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.9;
+  max-width: 540px;
+  margin-left: auto; margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .language-col-headers,
+  .lang-row {
+    grid-template-columns: 1fr;
+  }
+  .lang-cell-divider { display: none; }
+  .lang-col-center { display: none; }
+  .lang-col-head.amateur-head { border-right: 1px solid rgba(255,50,80,0.14); }
+  .lang-col-head.pro-head { border-left: 1px solid rgba(0,200,83,0.16); }
+  .lang-cell-amateur { text-align: left; }
+  .lang-row { gap: 2px; }
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -3645,36 +3888,58 @@ footer {
     <div class="s-label">The Simulator</div>
     <h2 class="s-h2">Emotion vs <span class="blue">System</span></h2>
     <div class="emotion-header">
-      <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.5rem;">Watch how emotion-driven trading diverges from systematic execution over time. Toggle modes to see the difference.</p>
+      <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.5rem;">Two traders. Same market. One driven by fear and impulse — the other by structure and clarity. Drag the divider to reveal the difference.</p>
     </div>
 
-    <div class="emotion-stage">
-      <div class="emotion-canvas-wrap">
-        <canvas id="emotion-canvas"></canvas>
-        <div class="emotion-overlay">
-          <span class="emotion-mode active" id="emotion-system-mode" onclick="setEmotionMode('system')">System Mode</span>
-          <span class="emotion-mode" id="emotion-emotion-mode" onclick="setEmotionMode('emotion')">Emotion Mode</span>
+    <!-- 3D Trader Slider -->
+    <div class="trader-slider-wrap" id="trader-slider-wrap">
+      <!-- Emotion panel (behind) -->
+      <div class="trader-panel" id="trader-panel-emotion">
+        <canvas class="trader-3d-canvas" id="trader-canvas-emotion"></canvas>
+        <span class="trader-panel-label trader-label-emotion">Emotion-Driven</span>
+        <div class="trader-caption trader-caption-emotion">
+          Reactive. Impulsive.<br>Trading from fear.
         </div>
       </div>
 
-      <div class="emotion-controls">
-        <button class="emotion-btn active" id="emotion-start" onclick="startEmotionSim()">Start Simulation</button>
-        <button class="emotion-btn" id="emotion-reset" onclick="resetEmotionSim()">Reset</button>
+      <!-- System panel (reveal on top) -->
+      <div class="trader-panel" id="trader-panel-system">
+        <canvas class="trader-3d-canvas" id="trader-canvas-system"></canvas>
+        <span class="trader-panel-label trader-label-system">System Clarity</span>
+        <div class="trader-caption trader-caption-system">
+          Disciplined. Present.<br>Executing the plan.
+        </div>
       </div>
 
-      <div class="emotion-legend">
-        <div class="emotion-legend-item">
-          <div class="emotion-dot blue"></div>
-          <span>Systematic P&L</span>
-        </div>
-        <div class="emotion-legend-item">
-          <div class="emotion-dot red"></div>
-          <span>Emotional P&L</span>
-        </div>
-        <div class="emotion-legend-item">
-          <div class="emotion-dot green"></div>
-          <span>Break-even</span>
-        </div>
+      <!-- Slider divider -->
+      <div id="trader-divider">
+        <div id="trader-divider-handle">⟺</div>
+      </div>
+
+      <div class="trader-hint">← Drag to reveal →</div>
+    </div>
+
+    <!-- Stats comparison row -->
+    <div class="trader-stats-row">
+      <div class="trader-stat-col emotion-col">
+        <div class="trader-stat-title">Operating from Emotion</div>
+        <ul class="trader-stat-list">
+          <li>Revenge trades after every loss</li>
+          <li>Exits winners too early, holds losers too long</li>
+          <li>Position sizes based on gut, not risk rules</li>
+          <li>Checks P&L every 30 seconds — amplifies anxiety</li>
+          <li>FOMO drives entries at the worst possible moments</li>
+        </ul>
+      </div>
+      <div class="trader-stat-col system-col">
+        <div class="trader-stat-title">Operating with System Clarity</div>
+        <ul class="trader-stat-list">
+          <li>Waits for exact setup criteria — no exceptions</li>
+          <li>Pre-defined stops and targets before entry</li>
+          <li>Position sized by risk percentage, not confidence</li>
+          <li>Journals every trade — data drives decisions</li>
+          <li>Losses are feedback. The system evolves.</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -3720,70 +3985,138 @@ footer {
   </div>
 </section>
 
-<!-- ── SECTION 09: THE ASHFORD GLOSSARY DECODED ── -->
+<!-- ── SECTION 09: THE LANGUAGE — DECODED ── -->
 <section id="glossary" class="s">
   <div class="s-inner">
     <div class="s-label">The Language</div>
-    <h2 class="s-h2">The Ashford <span class="blue">Glossary</span></h2>
-    <div class="glossary-intro">
-      <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.5rem;">Market terms redefined through the Ashford lens. This is how we decode the noise.</p>
+    <h2 class="s-h2">How You <span class="blue">Speak</span> About Markets<br>Reveals How You <span class="green">Trade</span> Them</h2>
+    <div class="language-intro">
+      <p>The amateur's vocabulary is built on hope, prediction, and ego. The professional's is built on probability, process, and evidence. Same market. Same chart. Completely different lens.</p>
     </div>
 
-    <div class="glossary-grid">
-      <div class="glossary-card">
-        <div class="glossary-term">Support</div>
-        <span class="glossary-phonetic">/sə-ˈpȯrt/</span>
-        <p class="glossary-def">A price level where buying pressure historically exceeds selling pressure, causing the price to bounce upward.</p>
-        <p class="glossary-ashford">We don't wait for the bounce. We read the approach structure and enter with evidence, not hope.</p>
+    <!-- Column Headers -->
+    <div class="language-col-headers">
+      <div class="lang-col-head amateur-head">
+        <span>The Amateur</span>
+        <span style="font-size:0.9rem;">⚡</span>
       </div>
-      <div class="glossary-card">
-        <div class="glossary-term">Resistance</div>
-        <span class="glossary-phonetic">/rə-ˈzi-stəns/</span>
-        <p class="glossary-def">A price level where selling pressure historically exceeds buying pressure, causing the price to reverse downward.</p>
-        <p class="glossary-ashford">Resistance isn't a wall — it's a decision zone. Either it breaks with conviction or it rejects. Both are trades.</p>
+      <div class="lang-col-center"></div>
+      <div class="lang-col-head pro-head">
+        <span style="font-size:0.9rem;">◎</span>
+        <span>The Professional</span>
       </div>
-      <div class="glossary-card">
-        <div class="glossary-term">Breakout</div>
-        <span class="glossary-phonetic">/ˈbrāk-ˌau̇t/</span>
-        <p class="glossary-def">When price moves beyond a defined support or resistance level with increased volume.</p>
-        <p class="glossary-ashford">Most breakouts fail. We wait for the retest — the second confirmation — before committing capital.</p>
+    </div>
+
+    <!-- Phrase Rows -->
+    <div class="language-table">
+
+      <!-- Row 1 -->
+      <div class="lang-row lang-row-anim">
+        <div class="lang-cell lang-cell-amateur">
+          <span class="lang-tag lang-tag-amateur">On Entry</span>
+          <span class="lang-statement lang-statement-amateur">"I think this is going to go up — it looks strong."</span>
+          <span class="lang-context">Based on feeling, hope, or a hunch. No defined criteria.</span>
+        </div>
+        <div class="lang-cell-divider"><span class="lang-divider-icon">vs</span></div>
+        <div class="lang-cell lang-cell-pro">
+          <span class="lang-tag lang-tag-pro">On Entry</span>
+          <span class="lang-statement lang-statement-pro">"My criteria are met. I'm entering at this level with this stop."</span>
+          <span class="lang-context">Rule-based entry. No ambiguity. The system decides, not the mood.</span>
+        </div>
       </div>
-      <div class="glossary-card">
-        <div class="glossary-term">Pullback</div>
-        <span class="glossary-phonetic">/ˈpu̇l-ˌbak/</span>
-        <p class="glossary-def">A temporary reversal within an ongoing trend, offering a lower-risk entry point.</p>
-        <p class="glossary-ashford">The gift of the trend. We don't chase — we let the trend come to us at predefined zones.</p>
+
+      <div class="lang-concept-label">Concept: Entry Decision</div>
+
+      <!-- Row 2 -->
+      <div class="lang-row lang-row-anim">
+        <div class="lang-cell lang-cell-amateur">
+          <span class="lang-tag lang-tag-amateur">On Loss</span>
+          <span class="lang-statement lang-statement-amateur">"The market just stopped me out to take my money."</span>
+          <span class="lang-context">External blame. The market is seen as the enemy.</span>
+        </div>
+        <div class="lang-cell-divider"><span class="lang-divider-icon">vs</span></div>
+        <div class="lang-cell lang-cell-pro">
+          <span class="lang-tag lang-tag-pro">On Loss</span>
+          <span class="lang-statement lang-statement-pro">"My stop was hit. That was the cost of being wrong this time."</span>
+          <span class="lang-context">Full ownership. Losses are expenses — not failures of character.</span>
+        </div>
       </div>
-      <div class="glossary-card">
-        <div class="glossary-term">Stop Loss</div>
-        <span class="glossary-phonetic">/ˈstäp ˌlȯs/</span>
-        <p class="glossary-def">A predetermined exit point that limits losses on a trade that moves against your position.</p>
-        <p class="glossary-ashford">Not a suggestion — a commandment. The stop is your insurance premium for staying in the game.</p>
+
+      <div class="lang-concept-label">Concept: Accepting Losses</div>
+
+      <!-- Row 3 -->
+      <div class="lang-row lang-row-anim">
+        <div class="lang-cell lang-cell-amateur">
+          <span class="lang-tag lang-tag-amateur">On FOMO</span>
+          <span class="lang-statement lang-statement-amateur">"I missed the move — I need to chase it before I miss more."</span>
+          <span class="lang-context">Fear-driven. Enters late into stretched moves.</span>
+        </div>
+        <div class="lang-cell-divider"><span class="lang-divider-icon">vs</span></div>
+        <div class="lang-cell lang-cell-pro">
+          <span class="lang-tag lang-tag-pro">On FOMO</span>
+          <span class="lang-statement lang-statement-pro">"That wasn't my setup. The next one will be — I wait."</span>
+          <span class="lang-context">Patience as a competitive advantage. Opportunity is never scarce.</span>
+        </div>
       </div>
-      <div class="glossary-card">
-        <div class="glossary-term">Risk-Reward Ratio</div>
-        <span class="glossary-phonetic">/ˈrisk ri-ˈwȯrd ˈrā-ˌshō/</span>
-        <p class="glossary-def">The comparison of potential profit to potential loss on a trade, expressed as a ratio (e.g., 2:1).</p>
-        <p class="glossary-ashford">We don't take trades under 2:1. The math of longevity demands asymmetric bets.</p>
+
+      <div class="lang-concept-label">Concept: Fear of Missing Out</div>
+
+      <!-- Row 4 -->
+      <div class="lang-row lang-row-anim">
+        <div class="lang-cell lang-cell-amateur">
+          <span class="lang-tag lang-tag-amateur">On Winning</span>
+          <span class="lang-statement lang-statement-amateur">"I'm on fire today — let me size up and take more trades."</span>
+          <span class="lang-context">Overconfidence after a streak. Risk management abandoned.</span>
+        </div>
+        <div class="lang-cell-divider"><span class="lang-divider-icon">vs</span></div>
+        <div class="lang-cell lang-cell-pro">
+          <span class="lang-tag lang-tag-pro">On Winning</span>
+          <span class="lang-statement lang-statement-pro">"Good session. I'll review what worked and stick to my process."</span>
+          <span class="lang-context">Detachment from results. The system is evaluated, not the ego.</span>
+        </div>
       </div>
-      <div class="glossary-card">
-        <div class="glossary-term">Liquidity</div>
-        <span class="glossary-phonetic">/li-ˈkwi-də-tē/</span>
-        <p class="glossary-def">The ease with which an asset can be bought or sold without affecting its price.</p>
-        <p class="glossary-ashford">Liquidity pools are where stops cluster. We read them as magnets — not as danger, but as fuel.</p>
+
+      <div class="lang-concept-label">Concept: Winning Streak Psychology</div>
+
+      <!-- Row 5 -->
+      <div class="lang-row lang-row-anim">
+        <div class="lang-cell lang-cell-amateur">
+          <span class="lang-tag lang-tag-amateur">On Risk</span>
+          <span class="lang-statement lang-statement-amateur">"I'm confident about this one — I'll put in a bigger size."</span>
+          <span class="lang-context">Confidence is not a risk management strategy. It's a bias.</span>
+        </div>
+        <div class="lang-cell-divider"><span class="lang-divider-icon">vs</span></div>
+        <div class="lang-cell lang-cell-pro">
+          <span class="lang-tag lang-tag-pro">On Risk</span>
+          <span class="lang-statement lang-statement-pro">"My risk is 1% of capital per trade — regardless of how I feel."</span>
+          <span class="lang-context">Position size is a function of account math, not emotional conviction.</span>
+        </div>
       </div>
-      <div class="glossary-card">
-        <div class="glossary-term">Trend</div>
-        <span class="glossary-phonetic">/ˈtrend/</span>
-        <p class="glossary-def">The general direction in which a market is moving — up, down, or sideways.</p>
-        <p class="glossary-ashford">The trend is your friend until it bends. We don't predict the bend — we structure for it.</p>
+
+      <div class="lang-concept-label">Concept: Position Sizing</div>
+
+      <!-- Row 6 -->
+      <div class="lang-row lang-row-anim">
+        <div class="lang-cell lang-cell-amateur">
+          <span class="lang-tag lang-tag-amateur">On Prediction</span>
+          <span class="lang-statement lang-statement-amateur">"I predicted this move perfectly — I knew it was going to happen."</span>
+          <span class="lang-context">Hindsight bias. The market wasn't "read" — it was rationalized after.</span>
+        </div>
+        <div class="lang-cell-divider"><span class="lang-divider-icon">vs</span></div>
+        <div class="lang-cell lang-cell-pro">
+          <span class="lang-tag lang-tag-pro">On Prediction</span>
+          <span class="lang-statement lang-statement-pro">"I identified a high-probability scenario and managed the trade with my plan."</span>
+          <span class="lang-context">No prediction. Only probabilities and structured responses to what unfolds.</span>
+        </div>
       </div>
-      <div class="glossary-card">
-        <div class="glossary-term">Volatility</div>
-        <span class="glossary-phonetic">/ˌvä-tə-ˈli-tē/</span>
-        <p class="glossary-def">The degree of variation in price over time, often measured by standard deviation.</p>
-        <p class="glossary-ashford">Volatility isn't risk — it's opportunity amplitude. We size for the swing, not the calm.</p>
-      </div>
+
+      <div class="lang-concept-label">Concept: Forecasting vs Probability</div>
+
+    </div><!-- end language-table -->
+
+    <div class="language-cta">
+      <p>At Ashford, we don't just teach you what to trade. We rewire how you think, speak, and act around markets — because language shapes reality, and your internal dialogue is the first trade you make every session.</p>
+      <a href="#contact" class="btn-primary" style="cursor:none;">Change How You Think</a>
     </div>
   </div>
 </section>
@@ -5821,188 +6154,445 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
 })();
 
 /* ════════════════════════════════════════
-   SECTION 08 — EMOTION VS SYSTEM SIMULATOR
+   SECTION 08 — 3D TRADER SLIDER (EMOTION vs SYSTEM)
 ════════════════════════════════════════ */
 (function() {
-  const canvas = document.getElementById('emotion-canvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
+  // ── Shared Three.js helpers ──────────────
+  function createTraderScene(canvasEl, mode) {
+    // mode: 'emotion' | 'system'
+    const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-  let animationId = null;
-  let isRunning = false;
-  let mode = 'system'; // 'system' or 'emotion'
-  let tick = 0;
-  let systemPnL = 0;
-  let emotionPnL = 0;
-  const history = [];
-  const maxHistory = 150;
+    const scene = new THREE.Scene();
+    const w = canvasEl.parentElement.offsetWidth;
+    const h = canvasEl.parentElement.offsetHeight;
+    renderer.setSize(w, h);
 
-  function resize() {
-    const rect = canvas.parentElement.getBoundingClientRect();
-    canvas.width = rect.width * window.devicePixelRatio;
-    canvas.height = rect.height * window.devicePixelRatio;
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-  }
-  resize();
-  window.addEventListener('resize', resize);
+    const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 100);
+    camera.position.set(0, 1.2, 4.2);
+    camera.lookAt(0, 0.5, 0);
 
-  function drawGrid(w, h) {
-    ctx.strokeStyle = 'rgba(255,255,255,0.03)';
-    ctx.lineWidth = 1;
-    for (let i = 0; i <= 10; i++) {
-      const y = (h / 10) * i;
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(w, y);
-      ctx.stroke();
+    // Fog
+    if (mode === 'emotion') {
+      scene.fog = new THREE.Fog(0x1a0012, 6, 18);
+      scene.background = new THREE.Color(0x0d0008);
+    } else {
+      scene.fog = new THREE.Fog(0x020810, 8, 22);
+      scene.background = new THREE.Color(0x020610);
     }
-    for (let i = 0; i <= 20; i++) {
-      const x = (w / 20) * i;
-      ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, h);
-      ctx.stroke();
-    }
-  }
 
-  function drawLine(data, color, width) {
-    if (data.length < 2) return;
-    const w = canvas.width / window.devicePixelRatio;
-    const h = canvas.height / window.devicePixelRatio;
-    const midY = h / 2;
-    const stepX = w / maxHistory;
+    // Ambient
+    const ambient = new THREE.AmbientLight(
+      mode === 'emotion' ? 0x330011 : 0x041020, 0.8
+    );
+    scene.add(ambient);
 
-    ctx.strokeStyle = color;
-    ctx.lineWidth = width;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.beginPath();
+    // Key light
+    const keyLight = new THREE.DirectionalLight(
+      mode === 'emotion' ? 0xff3355 : 0x3d85ff, mode === 'emotion' ? 1.2 : 1.4
+    );
+    keyLight.position.set(mode === 'emotion' ? -2 : 2, 4, 3);
+    keyLight.castShadow = true;
+    scene.add(keyLight);
 
-    data.forEach((point, i) => {
-      const x = i * stepX;
-      const y = midY - point * h * 0.35;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+    // Fill light
+    const fillLight = new THREE.PointLight(
+      mode === 'emotion' ? 0xff6600 : 0x00c853, 0.6, 8
+    );
+    fillLight.position.set(mode === 'emotion' ? 1.5 : -1.5, 0.5, 2);
+    scene.add(fillLight);
+
+    // Screen glow light (laptop screen)
+    const screenLight = new THREE.PointLight(
+      mode === 'emotion' ? 0xff2244 : 0x1a6bff, 1.2, 3.5
+    );
+    screenLight.position.set(0, 1.0, 0.5);
+    scene.add(screenLight);
+
+    // ── Floor ──
+    const floorGeo = new THREE.PlaneGeometry(12, 12);
+    const floorMat = new THREE.MeshStandardMaterial({
+      color: mode === 'emotion' ? 0x0c0008 : 0x020508,
+      roughness: 0.9, metalness: 0.1
     });
-    ctx.stroke();
-  }
+    const floor = new THREE.Mesh(floorGeo, floorMat);
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = -0.85;
+    floor.receiveShadow = true;
+    scene.add(floor);
 
-  function draw() {
-    const w = canvas.width / window.devicePixelRatio;
-    const h = canvas.height / window.devicePixelRatio;
+    // ── Desk ──
+    const deskMat = new THREE.MeshStandardMaterial({
+      color: mode === 'emotion' ? 0x1a0d0d : 0x0d1520,
+      roughness: 0.7, metalness: 0.3
+    });
+    const deskTop = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.07, 1.1), deskMat);
+    deskTop.position.set(0, 0, 0);
+    deskTop.castShadow = true; deskTop.receiveShadow = true;
+    scene.add(deskTop);
 
-    ctx.fillStyle = '#0a0d1a';
-    ctx.fillRect(0, 0, w, h);
+    // Desk legs
+    [-1.1, 1.1].forEach(x => [-0.45, 0.45].forEach(z => {
+      const leg = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.85, 0.07), deskMat);
+      leg.position.set(x, -0.46, z);
+      leg.castShadow = true;
+      scene.add(leg);
+    }));
 
-    drawGrid(w, h);
+    // ── Laptop ──
+    const laptopBaseMat = new THREE.MeshStandardMaterial({
+      color: mode === 'emotion' ? 0x1e0a0a : 0x0a1520,
+      roughness: 0.4, metalness: 0.7
+    });
+    const laptopBase = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.04, 0.75), laptopBaseMat);
+    laptopBase.position.set(0, 0.055, -0.1);
+    laptopBase.castShadow = true;
+    scene.add(laptopBase);
 
-    // Draw break-even line
-    ctx.strokeStyle = 'rgba(0,200,83,0.3)';
-    ctx.lineWidth = 1;
-    ctx.setLineDash([6, 4]);
-    ctx.beginPath();
-    ctx.moveTo(0, h / 2);
-    ctx.lineTo(w, h / 2);
-    ctx.stroke();
-    ctx.setLineDash([]);
+    // Laptop screen (hinge opened)
+    const screenGroup = new THREE.Group();
+    screenGroup.position.set(0, 0.055, -0.485);
 
-    // Draw history
-    const systemHistory = history.map(h => h.system);
-    const emotionHistory = history.map(h => h.emotion);
+    const screenBackMat = new THREE.MeshStandardMaterial({
+      color: mode === 'emotion' ? 0x1e0a0a : 0x0a1520,
+      roughness: 0.4, metalness: 0.7
+    });
+    const screenBack = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.72, 0.03), screenBackMat);
+    screenBack.position.set(0, 0.36, 0);
+    screenGroup.add(screenBack);
 
-    drawLine(systemHistory, '#1a6bff', 2.5);
-    drawLine(emotionHistory, '#ff4757', 2.5);
+    // Screen face (glow color)
+    const screenFaceMat = new THREE.MeshStandardMaterial({
+      color: mode === 'emotion' ? 0xff1133 : 0x0a3a8a,
+      emissive: mode === 'emotion' ? 0xcc0020 : 0x0a2f7a,
+      emissiveIntensity: mode === 'emotion' ? 0.8 : 0.7,
+      roughness: 0.2
+    });
+    const screenFace = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.64, 0.01), screenFaceMat);
+    screenFace.position.set(0, 0.36, 0.012);
+    screenGroup.add(screenFace);
 
-    // Draw current value indicator
-    if (history.length > 0) {
-      const last = history[history.length - 1];
-      ctx.fillStyle = 'rgba(26,107,255,0.15)';
-      ctx.fillRect(w - 120, 10, 110, 50);
-      ctx.fillStyle = '#eef0f7';
-      ctx.font = '11px Geist Mono, monospace';
-      ctx.fillText('System: ' + (last.system * 100).toFixed(1) + '%', w - 110, 32);
-      ctx.fillStyle = '#ff4757';
-      ctx.fillText('Emotion: ' + (last.emotion * 100).toFixed(1) + '%', w - 110, 48);
+    // Chart lines on screen (simplified)
+    const lineMat = new THREE.LineBasicMaterial({ color: mode === 'emotion' ? 0xff6677 : 0x3dffaa, linewidth: 2 });
+    const pts = [];
+    const numPts = mode === 'emotion' ? 20 : 20;
+    for (let i = 0; i < numPts; i++) {
+      const x = (i / (numPts - 1)) * 0.8 - 0.4;
+      const y = mode === 'emotion'
+        ? 0.28 + Math.sin(i * 0.9) * 0.12 - (i / numPts) * 0.08 + (Math.random() - 0.5) * 0.06
+        : 0.28 + (i / numPts) * 0.1 + Math.sin(i * 0.4) * 0.03;
+      pts.push(new THREE.Vector3(x, y, 0.015));
     }
-  }
+    const lineGeo = new THREE.BufferGeometry().setFromPoints(pts);
+    const chartLine = new THREE.Line(lineGeo, lineMat);
+    screenGroup.add(chartLine);
 
-  function simulate() {
-    tick++;
+    scene.add(screenGroup);
 
-    // System: steady, small variations, positive drift
-    const systemNoise = (Math.random() - 0.45) * 0.02;
-    const systemDrift = 0.0008;
-    systemPnL = Math.max(-0.35, Math.min(0.85, systemPnL + systemDrift + systemNoise));
+    // ── Chair (simplified) ──
+    const chairMat = new THREE.MeshStandardMaterial({
+      color: mode === 'emotion' ? 0x1a0808 : 0x080d15,
+      roughness: 0.8
+    });
+    // Seat
+    const seat = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.06, 0.8), chairMat);
+    seat.position.set(0, -0.38, 0.7);
+    scene.add(seat);
+    // Back
+    const back = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.8, 0.06), chairMat);
+    back.position.set(0, 0.03, 1.1);
+    scene.add(back);
 
-    // Emotion: volatile, fear/greed cycles
-    const emotionBase = (Math.random() - 0.5) * 0.08;
-    const fearGreed = Math.sin(tick * 0.1) * 0.04;
-    const tiltFactor = tick % 40 > 30 ? -0.03 : 0; // emotional tilt near end of cycles
-    emotionPnL = Math.max(-0.65, Math.min(0.55, emotionPnL + emotionBase + fearGreed + tiltFactor));
+    // ── Trader body (simplified humanoid) ──
+    const skinColor = 0xc8956c;
+    const clothColor = mode === 'emotion' ? 0x2a0d0d : 0x0d1a2a;
 
-    history.push({ system: systemPnL, emotion: emotionPnL });
-    if (history.length > maxHistory) history.shift();
-  }
+    const torsoMat = new THREE.MeshStandardMaterial({ color: clothColor, roughness: 0.9 });
+    const skinMat = new THREE.MeshStandardMaterial({ color: skinColor, roughness: 0.8 });
 
-  function loop() {
-    if (!isRunning) return;
-    simulate();
-    draw();
-    animationId = requestAnimationFrame(loop);
-  }
+    const traderGroup = new THREE.Group();
 
-  window.startEmotionSim = function() {
-    if (isRunning) return;
-    isRunning = true;
-    document.getElementById('emotion-start').classList.add('active');
-    document.getElementById('emotion-reset').classList.remove('active');
-    loop();
-  };
+    // Torso
+    const torso = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.52, 0.22), torsoMat);
+    torso.position.set(0, 0.42, 0.62);
+    traderGroup.add(torso);
 
-  window.resetEmotionSim = function() {
-    isRunning = false;
-    if (animationId) cancelAnimationFrame(animationId);
-    tick = 0;
-    systemPnL = 0;
-    emotionPnL = 0;
-    history.length = 0;
-    document.getElementById('emotion-start').classList.remove('active');
-    document.getElementById('emotion-reset').classList.add('active');
-    draw();
-  };
+    // Head
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.14, 16, 12), skinMat);
+    head.position.set(0, 0.88, 0.62);
+    traderGroup.add(head);
 
-  window.setEmotionMode = function(newMode) {
-    mode = newMode;
-    document.getElementById('emotion-system-mode').classList.toggle('active', mode === 'system');
-    document.getElementById('emotion-emotion-mode').classList.toggle('active', mode === 'emotion');
-  };
+    // Hair
+    const hairMat = new THREE.MeshStandardMaterial({ color: mode === 'emotion' ? 0x1a0a00 : 0x0d0d0d, roughness: 1.0 });
+    const hair = new THREE.Mesh(new THREE.SphereGeometry(0.145, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2), hairMat);
+    hair.position.set(0, 0.88, 0.62);
+    traderGroup.add(hair);
 
-  // IntersectionObserver to gate the animation
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) {
-        window.resetEmotionSim();
+    // Arms
+    // Left arm (emotion: raised in frustration / system: relaxed on desk)
+    const armMat = new THREE.MeshStandardMaterial({ color: clothColor, roughness: 0.9 });
+
+    const leftUpper = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.32, 8), armMat);
+    const rightUpper = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.32, 8), armMat);
+
+    if (mode === 'emotion') {
+      // Arms up in frustration
+      leftUpper.position.set(-0.27, 0.62, 0.62);
+      leftUpper.rotation.z = Math.PI / 3;
+      rightUpper.position.set(0.27, 0.62, 0.62);
+      rightUpper.rotation.z = -Math.PI / 3;
+    } else {
+      // Arms leaning forward on desk
+      leftUpper.position.set(-0.22, 0.28, 0.38);
+      leftUpper.rotation.z = Math.PI / 6;
+      leftUpper.rotation.x = -Math.PI / 4;
+      rightUpper.position.set(0.22, 0.28, 0.38);
+      rightUpper.rotation.z = -Math.PI / 6;
+      rightUpper.rotation.x = -Math.PI / 4;
+    }
+    traderGroup.add(leftUpper);
+    traderGroup.add(rightUpper);
+
+    // Hands
+    const leftHand = new THREE.Mesh(new THREE.SphereGeometry(0.065, 8, 8), skinMat);
+    const rightHand = new THREE.Mesh(new THREE.SphereGeometry(0.065, 8, 8), skinMat);
+    if (mode === 'emotion') {
+      leftHand.position.set(-0.44, 0.76, 0.62);
+      rightHand.position.set(0.44, 0.76, 0.62);
+    } else {
+      leftHand.position.set(-0.32, 0.12, 0.22);
+      rightHand.position.set(0.32, 0.12, 0.22);
+    }
+    traderGroup.add(leftHand);
+    traderGroup.add(rightHand);
+
+    // Legs
+    const legMat = new THREE.MeshStandardMaterial({ color: 0x0d0d0d, roughness: 0.9 });
+    const leftLeg = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.08, 0.45, 8), legMat);
+    leftLeg.position.set(-0.13, 0.03, 0.65);
+    traderGroup.add(leftLeg);
+    const rightLeg = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.08, 0.45, 8), legMat);
+    rightLeg.position.set(0.13, 0.03, 0.65);
+    traderGroup.add(rightLeg);
+
+    // Shoes
+    const shoeMat = new THREE.MeshStandardMaterial({ color: 0x080808, roughness: 0.9 });
+    [-0.13, 0.13].forEach(x => {
+      const shoe = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.08, 0.22), shoeMat);
+      shoe.position.set(x, -0.2, 0.75);
+      traderGroup.add(shoe);
+    });
+
+    scene.add(traderGroup);
+
+    // ── Emotion-only: stress particles ──
+    let stressParticles = null;
+    if (mode === 'emotion') {
+      const pGeo = new THREE.BufferGeometry();
+      const positions = [];
+      for (let i = 0; i < 60; i++) {
+        positions.push((Math.random() - 0.5) * 1.5, 0.5 + Math.random() * 1.5, 0.2 + Math.random() * 0.8);
       }
+      pGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      const pMat = new THREE.PointsMaterial({ color: 0xff3355, size: 0.025, transparent: true, opacity: 0.6 });
+      stressParticles = new THREE.Points(pGeo, pMat);
+      scene.add(stressParticles);
+    }
+
+    // ── System-only: floating data nodes ──
+    let dataNodes = [];
+    if (mode === 'system') {
+      for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2;
+        const r = 0.9 + Math.random() * 0.3;
+        const nodeMesh = new THREE.Mesh(
+          new THREE.OctahedronGeometry(0.025, 0),
+          new THREE.MeshStandardMaterial({ color: 0x1a6bff, emissive: 0x1a6bff, emissiveIntensity: 0.8 })
+        );
+        nodeMesh.position.set(Math.cos(angle) * r, 0.8 + Math.random() * 0.4, 0.4 + Math.sin(angle) * 0.3);
+        scene.add(nodeMesh);
+        dataNodes.push({ mesh: nodeMesh, angle, r, baseY: nodeMesh.position.y });
+      }
+    }
+
+    // ── Animation ──
+    let t = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      t += 0.016;
+
+      if (mode === 'emotion') {
+        // Frustrated head shake
+        head.rotation.z = Math.sin(t * 3.5) * 0.12;
+        head.rotation.x = Math.sin(t * 2.1) * 0.06;
+        // Tense arms shake
+        leftUpper.rotation.z = Math.PI / 3 + Math.sin(t * 4) * 0.08;
+        rightUpper.rotation.z = -Math.PI / 3 - Math.sin(t * 4) * 0.08;
+        // Screen flicker
+        screenFaceMat.emissiveIntensity = 0.6 + Math.sin(t * 7) * 0.3;
+        // Stress particles drift up
+        if (stressParticles) {
+          const pos = stressParticles.geometry.attributes.position;
+          for (let i = 0; i < pos.count; i++) {
+            pos.setY(i, pos.getY(i) + 0.004);
+            if (pos.getY(i) > 2.2) pos.setY(i, 0.5);
+            pos.setX(i, pos.getX(i) + (Math.random() - 0.5) * 0.003);
+          }
+          pos.needsUpdate = true;
+          stressParticles.rotation.y += 0.003;
+        }
+        // Subtle body sway
+        traderGroup.rotation.z = Math.sin(t * 1.8) * 0.02;
+        screenLight.intensity = 0.9 + Math.sin(t * 6) * 0.4;
+      } else {
+        // Calm, focused
+        head.rotation.x = -0.12 + Math.sin(t * 0.5) * 0.02; // leaning forward
+        head.rotation.z = Math.sin(t * 0.3) * 0.02;
+        // Steady screen
+        screenFaceMat.emissiveIntensity = 0.65 + Math.sin(t * 0.8) * 0.05;
+        // Data nodes orbit
+        dataNodes.forEach((n, i) => {
+          n.angle += 0.004;
+          n.mesh.position.x = Math.cos(n.angle) * n.r;
+          n.mesh.position.y = n.baseY + Math.sin(t * 0.8 + i) * 0.04;
+          n.mesh.position.z = 0.4 + Math.sin(n.angle) * 0.3;
+          n.mesh.rotation.y += 0.02;
+        });
+        // Gentle body breathe
+        traderGroup.position.y = Math.sin(t * 0.6) * 0.008;
+        screenLight.intensity = 1.1 + Math.sin(t * 0.5) * 0.1;
+      }
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Resize handler
+    function onResize() {
+      const pw = canvasEl.parentElement.offsetWidth;
+      const ph = canvasEl.parentElement.offsetHeight;
+      camera.aspect = pw / ph;
+      camera.updateProjectionMatrix();
+      renderer.setSize(pw, ph);
+    }
+    window.addEventListener('resize', onResize);
+  }
+
+  // Init both scenes after DOM + Three loaded
+  function initTraderSlider() {
+    const wrap = document.getElementById('trader-slider-wrap');
+    if (!wrap || typeof THREE === 'undefined') return;
+
+    const canvasEmotion = document.getElementById('trader-canvas-emotion');
+    const canvasSystem  = document.getElementById('trader-canvas-system');
+    if (canvasEmotion) createTraderScene(canvasEmotion, 'emotion');
+    if (canvasSystem)  createTraderScene(canvasSystem, 'system');
+
+    // ── Drag slider ──
+    const divider = document.getElementById('trader-divider');
+    const systemPanel = document.getElementById('trader-panel-system');
+    const hint = wrap.querySelector('.trader-hint');
+    let isDragging = false;
+    let hintShown = false;
+
+    function setReveal(pct) {
+      const clamped = Math.max(5, Math.min(95, pct));
+      systemPanel.style.width = clamped + '%';
+      divider.style.left = clamped + '%';
+    }
+    setReveal(50);
+
+    function getX(e) {
+      return e.touches ? e.touches[0].clientX : e.clientX;
+    }
+
+    divider.addEventListener('mousedown', e => { isDragging = true; e.preventDefault(); });
+    divider.addEventListener('touchstart', e => { isDragging = true; }, { passive: true });
+    wrap.addEventListener('mousedown', e => { isDragging = true; });
+    wrap.addEventListener('touchstart', e => { isDragging = true; }, { passive: true });
+
+    window.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      const rect = wrap.getBoundingClientRect();
+      const pct = ((getX(e) - rect.left) / rect.width) * 100;
+      setReveal(pct);
+      if (!hintShown) { hint.style.opacity = '0'; hintShown = true; }
     });
-  }, { threshold: 0.1 });
+    window.addEventListener('touchmove', e => {
+      if (!isDragging) return;
+      const rect = wrap.getBoundingClientRect();
+      const pct = ((e.touches[0].clientX - rect.left) / rect.width) * 100;
+      setReveal(pct);
+      if (!hintShown) { hint.style.opacity = '0'; hintShown = true; }
+    }, { passive: true });
+    window.addEventListener('mouseup', () => { isDragging = false; });
+    window.addEventListener('touchend', () => { isDragging = false; });
+  }
 
-  observer.observe(canvas.parentElement);
-
-  // Initial draw
-  draw();
+  // Wait for DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTraderSlider);
+  } else {
+    setTimeout(initTraderSlider, 100);
+  }
 
   // Entrance animation
   gsap.timeline({ scrollTrigger: { trigger: '#emotion-simulator', start: 'top 76%', toggleActions: 'play none none none' } })
-    .from('.emotion-stage', { y: 40, opacity: 0, duration: 0.7, ease: 'power3.out' })
-    .from('.emotion-btn', { scale: 0.9, opacity: 0, stagger: 0.1, duration: 0.4 }, '-=0.3');
+    .from('.trader-slider-wrap', { y: 40, opacity: 0, duration: 0.8, ease: 'power3.out' })
+    .from('.trader-stats-row', { y: 20, opacity: 0, duration: 0.5 }, '-=0.3');
 })();
 
 /* ════════════════════════════════════════
-   SECTION 09 — THE ASHFORD GLOSSARY DECODED
+   SECTION 09 — THE LANGUAGE: STAGGERED ROW ANIMATIONS
 ════════════════════════════════════════ */
 (function() {
-  gsap.timeline({ scrollTrigger: { trigger: '#glossary', start: 'top 76%', toggleActions: 'play none none none' } })
-    .from('.glossary-card', { y: 50, opacity: 0, stagger: 0.06, duration: 0.6, ease: 'power3.out' });
+  // Animate column headers
+  gsap.from('.language-col-headers', {
+    scrollTrigger: { trigger: '#glossary', start: 'top 78%', toggleActions: 'play none none none' },
+    y: 30, opacity: 0, duration: 0.6, ease: 'power3.out'
+  });
+
+  // Each phrase row staggers in from alternating sides
+  const rows = document.querySelectorAll('.lang-row-anim');
+  rows.forEach((row, i) => {
+    const cells = row.querySelectorAll('.lang-cell-amateur, .lang-cell-pro');
+    gsap.from(cells[0], {
+      scrollTrigger: { trigger: row, start: 'top 85%', toggleActions: 'play none none none' },
+      x: -40, opacity: 0, duration: 0.65, ease: 'power3.out', delay: 0.05
+    });
+    if (cells[1]) {
+      gsap.from(cells[1], {
+        scrollTrigger: { trigger: row, start: 'top 85%', toggleActions: 'play none none none' },
+        x: 40, opacity: 0, duration: 0.65, ease: 'power3.out', delay: 0.05
+      });
+    }
+    // Concept labels
+    const label = row.nextElementSibling;
+    if (label && label.classList.contains('lang-concept-label')) {
+      gsap.from(label, {
+        scrollTrigger: { trigger: label, start: 'top 90%', toggleActions: 'play none none none' },
+        opacity: 0, duration: 0.4, ease: 'power2.out'
+      });
+    }
+  });
+
+  // CTA fade in
+  gsap.from('.language-cta', {
+    scrollTrigger: { trigger: '.language-cta', start: 'top 88%', toggleActions: 'play none none none' },
+    y: 24, opacity: 0, duration: 0.7, ease: 'power3.out'
+  });
+
+  // Hover: subtle glow pulse on each row
+  rows.forEach(row => {
+    row.addEventListener('mouseenter', () => {
+      gsap.to(row, { scale: 1.005, duration: 0.25, ease: 'power2.out' });
+    });
+    row.addEventListener('mouseleave', () => {
+      gsap.to(row, { scale: 1, duration: 0.3, ease: 'power2.out' });
+    });
+  });
 })();
 
 /* ════════════════════════════════════════
