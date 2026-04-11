@@ -99,6 +99,7 @@ h1, h2, h3, h4 {
   transform: translate(-50%,-50%);
   transition: width .15s, height .15s, background .2s;
   mix-blend-mode: screen;
+  will-change: transform;
 }
 #c-ring {
   width: 32px; height: 32px;
@@ -109,6 +110,7 @@ h1, h2, h3, h4 {
   transform: translate(-50%,-50%);
   transition: width .35s var(--ease-expo), height .35s var(--ease-expo),
               border-color .3s, opacity .3s;
+  will-change: transform;
 }
 #c-ring.expanded {
   width: 56px; height: 56px;
@@ -123,6 +125,7 @@ h1, h2, h3, h4 {
   position: fixed; inset: 0;
   width: 100%; height: 100%;
   z-index: 0; pointer-events: none;
+  contain: strict;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -334,7 +337,7 @@ h1, h2, h3, h4 {
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
   display: flex; align-items: center; justify-content: center;
-  will-change: transform;
+  will-change: transform, opacity;
 }
 
 #hero-logo-img {
@@ -368,6 +371,7 @@ h1, h2, h3, h4 {
   pointer-events: none;
   max-width: 520px;
   z-index: 2;
+  will-change: transform, opacity;
 }
 
 .hero-wordmark {
@@ -4929,13 +4933,24 @@ footer {
   let scrollP = 0, targetP = 0, t = 0;
   let mx = 0, my = 0;
 
+  // Use lenis scroll event (set after lenis init) via a shared variable — Lenis fires on its RAF,
+  // so we simply read scrollY inside the tick loop instead of a separate listener.
   window.addEventListener('scroll', () => {
     targetP = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-  });
+  }, { passive: true });
+
+  // Throttled mousemove for Three.js (16ms ≈ 60fps cap, avoids redundant work)
+  let _mx = 0, _my = 0, _mmPending = false;
   window.addEventListener('mousemove', e => {
-    mx = (e.clientX / window.innerWidth  - 0.5);
-    my = (e.clientY / window.innerHeight - 0.5);
-  });
+    _mx = (e.clientX / window.innerWidth  - 0.5);
+    _my = (e.clientY / window.innerHeight - 0.5);
+    if (!_mmPending) {
+      _mmPending = true;
+      requestAnimationFrame(() => { mx = _mx; my = _my; _mmPending = false; });
+    }
+  }, { passive: true });
+
+  let prevGridOpacity = -1, prevPartOpacity = -1;
 
   (function tick() {
     requestAnimationFrame(tick);
@@ -4954,7 +4969,7 @@ footer {
     r1.rotation.y = t * 0.12;
     r2.rotation.x = -t * 0.10;
     r2.rotation.z = t * 0.07 + scrollP * 1.2;
-    r3.rotation.y = t * 0.25 + scrollP * 1.8; // green ring faster
+    r3.rotation.y = t * 0.25 + scrollP * 1.8;
     r3.rotation.x = scrollP * 2;
     r4.rotation.z = t * 0.04;
     r4.rotation.y = t * 0.06;
@@ -4965,13 +4980,23 @@ footer {
     diamond.position.y = Math.sin(t * 0.5) * 0.5;
 
     // Grid depth shift
-    grid.position.y = -12 + scrollP * 5;
-    gridMat.opacity = Math.max(0.02, 0.22 - scrollP * 0.15);
+    grid.position.y  = -12 + scrollP * 5;
     grid2.position.y = -11.8 + scrollP * 4.5;
+
+    // Only write material opacity when value actually changes (avoids GPU state flush)
+    const newGridOp = Math.max(0.02, 0.22 - scrollP * 0.15);
+    if (Math.abs(newGridOp - prevGridOpacity) > 0.001) {
+      gridMat.opacity = newGridOp;
+      prevGridOpacity = newGridOp;
+    }
+    const newPartOp = Math.max(0.08, 0.55 - scrollP * 0.3);
+    if (Math.abs(newPartOp - prevPartOpacity) > 0.001) {
+      pMat.opacity = newPartOp;
+      prevPartOpacity = newPartOp;
+    }
 
     // Particles slow drift
     particles.rotation.y = t * 0.03 + scrollP * 0.3;
-    pMat.opacity = Math.max(0.08, 0.55 - scrollP * 0.3);
 
     renderer.render(scene, camera);
   })();
@@ -4992,11 +5017,11 @@ let cx = 0, cy = 0, rx = 0, ry = 0;
 
 document.addEventListener('mousemove', e => {
   cx = e.clientX; cy = e.clientY;
-  cDot.style.left = cx + 'px'; cDot.style.top = cy + 'px';
+  cDot.style.transform = `translate(calc(${cx}px - 50%), calc(${cy}px - 50%))`;
 });
 (function lerpRing() {
   rx += (cx - rx) * 0.1; ry += (cy - ry) * 0.1;
-  cRing.style.left = rx + 'px'; cRing.style.top = ry + 'px';
+  cRing.style.transform = `translate(calc(${rx}px - 50%), calc(${ry}px - 50%))`;
   requestAnimationFrame(lerpRing);
 })();
 
@@ -5010,10 +5035,10 @@ hoverEls.forEach(el => {
    LENIS SMOOTH SCROLL
 ════════════════════════════════════════ */
 const lenis = new Lenis({
-  duration: 1.9,
+  duration: 1.2,
   easing: t => 1 - Math.pow(1 - t, 4),
   smoothWheel: true,
-  wheelMultiplier: 0.75,
+  wheelMultiplier: 0.9,
   touchMultiplier: 1.5,
 });
 lenis.on('scroll', ScrollTrigger.update);
@@ -5193,9 +5218,16 @@ document.querySelectorAll('[data-count]').forEach(el => {
 /* ════════════════════════════════════════
    NAVBAR — scroll state
 ════════════════════════════════════════ */
+let _navPending = false;
 window.addEventListener('scroll', () => {
-  document.getElementById('nav').classList.toggle('solid', window.scrollY > 40);
-});
+  if (!_navPending) {
+    _navPending = true;
+    requestAnimationFrame(() => {
+      document.getElementById('nav').classList.toggle('solid', window.scrollY > 40);
+      _navPending = false;
+    });
+  }
+}, { passive: true });
 
 /* ════════════════════════════════════════
    HAMBURGER NAV TOGGLE
