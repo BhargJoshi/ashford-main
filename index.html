@@ -761,24 +761,32 @@ h1, h2, h3, h4 {
   position: relative;
 }
 .wyg-header {
-  display: flex; align-items: center; gap: 1.2rem;
   margin-bottom: 2.8rem;
 }
-.wyg-title {
+.wyg-title-eyebrow {
   font-family: var(--f-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.3em;
+  font-size: 0.6rem;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--t-tertiary);
-  position: relative;
+  color: var(--blue-pale);
+  display: flex; align-items: center; gap: .8rem;
+  margin-bottom: 0.8rem;
 }
-.wyg-title::after {
-  content: '';
-  position: absolute; bottom: -8px; left: 0;
-  width: 36px; height: 1px;
-  background: linear-gradient(to right, var(--green), transparent);
+.wyg-title-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--blue-dim); }
+.wyg-title {
+  font-family: var(--f-serif);
+  font-size: clamp(1.9rem, 3.5vw, 3rem);
+  font-weight: 300;
+  line-height: 1.15;
+  color: var(--t-primary);
+  letter-spacing: -0.01em;
 }
-.wyg-rule { flex: 1; height: 1px; background: var(--b-faint); }
+.wyg-title .wyg-title-accent {
+  color: var(--green);
+  font-style: italic;
+  text-shadow: 0 0 18px rgba(0,200,83,0.35);
+}
+.wyg-rule { display: none; }
 
 .wyg-grid {
   display: grid;
@@ -3732,43 +3740,6 @@ footer {
   </div>
 </div>
 
-<!-- ── SCROLLYTELLING ── -->
-<div id="scrolly">
-  <div id="scrolly-pin">
-
-    <div class="sy-scene" id="sy1">
-      <div class="sy-num"><span class="tick"></span>01 / The Problem<span class="tick"></span></div>
-      <h2 class="sy-h2">Most traders<br><span class="blue">know the theory.</span><br></h2>
-      <p class="sy-sub">They've read the books. Watched the videos. Know every term. Yet markets still feel alien when real capital is on the line.</p>
-    </div>
-
-    <div class="sy-scene" id="sy2">
-      <div class="sy-num"><span class="tick"></span>02 / The Gap<span class="tick green-tick"></span></div>
-      <h2 class="sy-h2"><br><span class="blue">But Freeze When its.</span><br><span class="ghost">Live Trading.</span></h2>
-      <p class="sy-sub">Live markets are psychologically different. Emotions override logic every single time — until you've been trained otherwise.</p>
-    </div>
-
-    <div class="sy-scene" id="sy3">
-      <div class="sy-num"><span class="tick"></span>03 / The Solution<span class="tick green-tick"></span></div>
-      <h2 class="sy-h2">We build<br><span class="green"> Live Executional Clarity.</span><br><span class="ghost">Not theory.</span></h2>
-      <p class="sy-sub">Real trades. Real pressure. Real decisions — systematically built through structured practice until execution becomes second nature.</p>
-    </div>
-
-    <div class="sy-scene" id="sy4">
-      <div class="sy-num"><span class="tick"></span>04 / The Outcome<span class="tick green-tick"></span></div>
-      <h2 class="sy-h2">Precision.<br><span class="ghost">Over</span> <span class="blue">prediction.</span></h2>
-      <p class="sy-sub">Stop guessing. Start operating like a professional market participant. That is the Ashford standard.</p>
-    </div>
-
-    <div class="sy-rail">
-      <div class="sy-tick live" id="syt0"></div>
-      <div class="sy-tick" id="syt1"></div>
-      <div class="sy-tick" id="syt2"></div>
-      <div class="sy-tick" id="syt3"></div>
-    </div>
-  </div>
-</div>
-
 <!-- ── ABOUT ── -->
 <section id="about" class="s">
   <div class="s-inner">
@@ -3802,8 +3773,8 @@ footer {
     <!-- WHAT YOU GET -->
     <div class="wyg-section">
       <div class="wyg-header">
-        <span class="wyg-title">What You Get ?</span>
-        <div class="wyg-rule"></div>
+        <div class="wyg-title-eyebrow">What You Get</div>
+        <h3 class="wyg-title">Everything you need to <span class="wyg-title-accent">trade with precision.</span></h3>
       </div>
       <div class="wyg-grid">
         <div class="wyg-card">
@@ -3856,6 +3827,43 @@ footer {
 
   </div>
 </section>
+
+<!-- ── SCROLLYTELLING ── -->
+<div id="scrolly">
+  <div id="scrolly-pin">
+
+    <div class="sy-scene" id="sy1">
+      <div class="sy-num"><span class="tick"></span>01 / The Problem<span class="tick"></span></div>
+      <h2 class="sy-h2">Most traders<br><span class="blue">know the theory.</span><br></h2>
+      <p class="sy-sub">They've read the books. Watched the videos. Know every term. Yet markets still feel alien when real capital is on the line.</p>
+    </div>
+
+    <div class="sy-scene" id="sy2">
+      <div class="sy-num"><span class="tick"></span>02 / The Gap<span class="tick green-tick"></span></div>
+      <h2 class="sy-h2"><br><span class="blue">But Freeze When its.</span><br><span class="ghost">Live Trading.</span></h2>
+      <p class="sy-sub">Live markets are psychologically different. Emotions override logic every single time — until you've been trained otherwise.</p>
+    </div>
+
+    <div class="sy-scene" id="sy3">
+      <div class="sy-num"><span class="tick"></span>03 / The Solution<span class="tick green-tick"></span></div>
+      <h2 class="sy-h2">We build<br><span class="green"> Live Executional Clarity.</span><br><span class="ghost">Not theory.</span></h2>
+      <p class="sy-sub">Real trades. Real pressure. Real decisions — systematically built through structured practice until execution becomes second nature.</p>
+    </div>
+
+    <div class="sy-scene" id="sy4">
+      <div class="sy-num"><span class="tick"></span>04 / The Outcome<span class="tick green-tick"></span></div>
+      <h2 class="sy-h2">Precision.<br><span class="ghost">Over</span> <span class="blue">prediction.</span></h2>
+      <p class="sy-sub">Stop guessing. Start operating like a professional market participant. That is the Ashford standard.</p>
+    </div>
+
+    <div class="sy-rail">
+      <div class="sy-tick live" id="syt0"></div>
+      <div class="sy-tick" id="syt1"></div>
+      <div class="sy-tick" id="syt2"></div>
+      <div class="sy-tick" id="syt3"></div>
+    </div>
+  </div>
+</div>
 
 <!-- ── SECTION 02: NOISE VS SIGNAL ── -->
 <section id="noise-signal">
