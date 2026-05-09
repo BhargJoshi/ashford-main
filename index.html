@@ -4096,6 +4096,38 @@ footer {
   max-width: 520px;
   margin: 0 auto 2rem;
 }
+.profiler-pro-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  max-width: 520px;
+  margin: 0 auto 2rem;
+  padding: 1rem 1.4rem;
+  background: linear-gradient(135deg, rgba(26,107,255,0.08) 0%, rgba(0,200,83,0.05) 100%);
+  border: 1px solid rgba(26,107,255,0.25);
+  border-left: 3px solid var(--blue-bright);
+  text-align: left;
+}
+.profiler-pro-tip-badge {
+  font-family: var(--f-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+  background: rgba(26,107,255,0.12);
+  border: 1px solid rgba(26,107,255,0.3);
+  padding: 0.25rem 0.6rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+.profiler-pro-tip-text {
+  font-family: var(--f-sans);
+  font-size: 0.82rem;
+  font-weight: 300;
+  color: var(--t-primary);
+  line-height: 1.7;
+}
 .profiler-dimensions {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -5490,7 +5522,7 @@ footer {
     <div class="s-label">The Assessment</div>
     <h2 class="s-h2">The Readiness <span class="blue">Profiler</span></h2>
     <div class="readiness-intro">
-      <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.5rem;">Ten questions. Three dimensions. One clear read on where you stand as a trader.</p>
+      <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.5rem;">Five questions. Three dimensions. One clear read on where you stand as a trader.</p>
     </div>
 
     <div class="readiness-wrap">
@@ -5541,6 +5573,11 @@ footer {
           <p class="profiler-breakdown" id="profiler-breakdown">
             You show strong systematic thinking but may still have gaps in execution under pressure.
           </p>
+
+          <div class="profiler-pro-tip" id="profiler-pro-tip">
+            <span class="profiler-pro-tip-badge">Ashford Pro Tip</span>
+            <span class="profiler-pro-tip-text" id="profiler-pro-tip-text">Start with live execution training to close the gap between knowledge and action.</span>
+          </div>
 
           <div class="profiler-dimensions">
             <div class="profiler-dim">
@@ -7607,104 +7644,52 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
 (function() {
   const questions = [
     {
-      q: "When you enter a trade, what percentage of the decision is based on a pre-defined system versus gut feeling?",
+      q: "When you enter a trade, how much of the decision is driven by a pre-defined system?",
       options: [
-        { text: "Mostly gut feeling — I read the chart and go with what feels right", dim: "psychology", score: 1 },
-        { text: "About 50/50 — I have some rules but still rely on instinct", dim: "psychology", score: 2 },
+        { text: "Gut feeling — I read the chart and go with what feels right", dim: "psychology", score: 1 },
+        { text: "About 50/50 — some rules but I still rely on instinct", dim: "psychology", score: 2 },
         { text: "Mostly system — I have clear entry/exit rules I follow", dim: "psychology", score: 3 },
-        { text: "Entirely system — every decision is predefined and backtested", dim: "psychology", score: 4 }
+        { text: "Entirely system — every decision is predefined, no exceptions", dim: "psychology", score: 4 }
       ]
     },
     {
-      q: "How do you handle a trade that moves against you immediately after entry?",
+      q: "How do you react when a trade moves against you right after entry?",
       options: [
-        { text: "I hold and hope it comes back — markets always reverse eventually", dim: "psychology", score: 1 },
-        { text: "I sometimes exit at stop, sometimes hold depending on how I feel", dim: "psychology", score: 2 },
-        { text: "I exit at my pre-defined stop loss without hesitation", dim: "psychology", score: 4 }
+        { text: "I hold and hope — markets always reverse eventually", dim: "execution", score: 1 },
+        { text: "I sometimes exit at stop, sometimes hold depending on how I feel", dim: "execution", score: 2 },
+        { text: "I exit at my pre-defined stop loss without hesitation", dim: "execution", score: 4 }
       ]
     },
     {
-      q: "What does your trading journal look like?",
+      q: "How do you size your positions?",
       options: [
-        { text: "I don't keep one — I know my trades from memory", dim: "strategy", score: 1 },
-        { text: "I log trades occasionally when I remember", dim: "strategy", score: 2 },
-        { text: "I journal every trade with entry/exit rationale and screenshots", dim: "strategy", score: 4 }
+        { text: "Based on how confident I feel about the setup", dim: "strategy", score: 1 },
+        { text: "I have a formula but don't always follow it consistently", dim: "strategy", score: 2 },
+        { text: "Fixed risk percentage of capital — the same every trade", dim: "strategy", score: 4 }
       ]
     },
     {
-      q: "How do you determine position size for a new trade?",
+      q: "What is your relationship with FOMO?",
       options: [
-        { text: "I use a consistent size based on account risk percentage", dim: "strategy", score: 4 },
-        { text: "It depends on how confident I feel about the setup", dim: "strategy", score: 1 },
-        { text: "I have a formula but don't always follow it", dim: "strategy", score: 2 }
-      ]
-    },
-    {
-      q: "Describe your approach to waiting for setups:",
-      options: [
-        { text: "I trade frequently — there's always opportunity somewhere", dim: "execution", score: 1 },
-        { text: "I wait for my setups but sometimes force trades out of boredom", dim: "execution", score: 2 },
-        { text: "I wait patiently for my exact criteria to be met — no exceptions", dim: "execution", score: 4 }
-      ]
-    },
-    {
-      q: "After a losing trade, what's your typical next action?",
-      options: [
-        { text: "I immediately look for another trade to make it back", dim: "psychology", score: 1 },
-        { text: "I take a short break, then resume if I feel calm", dim: "psychology", score: 3 },
-        { text: "I review what went wrong before trading again", dim: "psychology", score: 4 }
-      ]
-    },
-    {
-      q: "How do you define your edge in the market?",
-      options: [
-        { text: "I'm still figuring it out — trying different approaches", dim: "strategy", score: 1 },
-        { text: "I have a general approach but it's evolving", dim: "strategy", score: 2 },
-        { text: "My edge is clearly defined and statistically validated", dim: "strategy", score: 4 }
-      ]
-    },
-    {
-      q: "What's your relationship with FOMO (Fear Of Missing Out)?",
-      options: [
-        { text: "I often chase moves I missed — hate feeling left out", dim: "execution", score: 1 },
-        { text: "I sometimes chase, but I'm working on it", dim: "execution", score: 2 },
+        { text: "I chase moves I miss — hate feeling left out", dim: "execution", score: 1 },
+        { text: "I sometimes chase, but I'm aware of it and working on it", dim: "execution", score: 2 },
         { text: "FOMO doesn't drive my decisions — the system does", dim: "execution", score: 4 }
       ]
     },
     {
-      q: "How do you handle a winning streak?",
+      q: "How clearly defined is your trading edge?",
       options: [
-        { text: "I increase size — I'm clearly in the zone", dim: "psychology", score: 1 },
-        { text: "I stay confident but don't change my approach", dim: "psychology", score: 3 },
-        { text: "I remain vigilant — complacency kills accounts", dim: "psychology", score: 4 }
-      ]
-    },
-    {
-      q: "When do you add to a winning position?",
-      options: [
-        { text: "I add when I feel the momentum is strong", dim: "execution", score: 1 },
-        { text: "I have predefined scaling rules I follow exactly", dim: "execution", score: 4 },
-        { text: "I sometimes scale per plan, sometimes based on feel", dim: "execution", score: 2 }
+        { text: "Still figuring it out — trying different approaches each week", dim: "strategy", score: 1 },
+        { text: "I have a general approach but it's still evolving", dim: "strategy", score: 2 },
+        { text: "Clearly defined, tested under live conditions, and documented", dim: "strategy", score: 4 }
       ]
     }
   ];
 
   let currentQ = 0;
   let scores = { psychology: 0, strategy: 0, execution: 0 };
-  let maxScores = { psychology: 0, strategy: 0, execution: 0 };
+  const maxScores = { psychology: 4, strategy: 8, execution: 8 };
   let selectedOption = null;
-
-  function calculateMaxScores() {
-    maxScores = { psychology: 0, strategy: 0, execution: 0 };
-    questions.forEach(q => {
-      q.options.forEach(opt => {
-        maxScores[opt.dim] += 4; // max per question
-      });
-    });
-    // Normalize - each dimension has different question counts
-    maxScores = { psychology: 28, strategy: 20, execution: 20 };
-  }
-  calculateMaxScores();
 
   function loadQuestion() {
     const q = questions[currentQ];
@@ -7732,7 +7717,7 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
   }
 
   function updateProgressBar() {
-    const pct = ((currentQ) / questions.length) * 100;
+    const pct = (currentQ / questions.length) * 100;
     document.getElementById('profiler-bar').style.width = pct + '%';
   }
 
@@ -7778,31 +7763,52 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
       if (displayScore >= readinessPct) clearInterval(scoreInterval);
     }, 15);
 
-    // Verdict
+    // Verdict + Pro Tip
     const verdicts = [
-      { min: 0, text: "Pre-System Trader", desc: "You're operating primarily on instinct and incomplete frameworks. This is where every trader starts — but awareness is the first step. Ashford builds your system from the ground up." },
-      { min: 40, text: "Developing Discipline", desc: "You have pieces of a system but inconsistency in execution. The foundation is there — now it's about building repeatable processes under live pressure." },
-      { min: 65, text: "Systematic Operator", desc: "Strong framework with solid execution. You understand the gap between knowing and doing. Ashford refines your edge through live session training." },
-      { min: 85, text: "Elite Readiness", desc: "You operate with professional-grade discipline. Your system is defined, your psychology is managed, and your execution is consistent. Ashford sharpens what's already working." }
+      {
+        min: 0,
+        text: "Pre-System Trader",
+        desc: "You're trading on instinct without a defined framework — this is where most traders start, and where most stay stuck.",
+        tip: "Build your foundation first: Ashford's live sessions teach you to read market structure before placing a single entry."
+      },
+      {
+        min: 40,
+        text: "Developing Discipline",
+        desc: "You have rules but execution breaks down under pressure — the gap between knowing and doing is costing you consistency.",
+        tip: "Your missing piece is live repetition under real pressure — Ashford's sessions rewire hesitation into reflex."
+      },
+      {
+        min: 65,
+        text: "Systematic Operator",
+        desc: "Strong framework, occasional emotional leaks — you understand the game but the edges still need sharpening.",
+        tip: "Ashford's advanced live review sessions will help you close the final gaps between system and flawless execution."
+      },
+      {
+        min: 85,
+        text: "Elite Readiness",
+        desc: "You operate with professional-grade discipline — your edge is defined, your psychology is managed, and execution is consistent.",
+        tip: "Ashford's precision training will compound what's already working and expose the subtle edges most traders never find."
+      }
     ];
 
     const verdict = verdicts.reduce((a, b) => readinessPct >= b.min ? b : a, verdicts[0]);
     document.getElementById('profiler-verdict').textContent = verdict.text;
     document.getElementById('profiler-breakdown').innerHTML = verdict.desc;
+    document.getElementById('profiler-pro-tip-text').textContent = verdict.tip;
 
     // Dimension scores
-    const psychPct = Math.round((scores.psychology / maxScores.psychology) * 100);
-    const stratPct = Math.round((scores.strategy / maxScores.strategy) * 100);
-    const execPct = Math.round((scores.execution / maxScores.execution) * 100);
+    const psychPct  = Math.round((scores.psychology / maxScores.psychology) * 100);
+    const stratPct  = Math.round((scores.strategy   / maxScores.strategy)   * 100);
+    const execPct   = Math.round((scores.execution  / maxScores.execution)  * 100);
 
     setTimeout(() => {
-      document.getElementById('profiler-dim-psych').textContent = psychPct + '%';
+      document.getElementById('profiler-dim-psych').textContent    = psychPct + '%';
       document.getElementById('profiler-dim-strategy').textContent = stratPct + '%';
-      document.getElementById('profiler-dim-exec').textContent = execPct + '%';
+      document.getElementById('profiler-dim-exec').textContent     = execPct  + '%';
 
-      document.getElementById('profiler-fill-psych').style.width = psychPct + '%';
+      document.getElementById('profiler-fill-psych').style.width    = psychPct + '%';
       document.getElementById('profiler-fill-strategy').style.width = stratPct + '%';
-      document.getElementById('profiler-fill-exec').style.width = execPct + '%';
+      document.getElementById('profiler-fill-exec').style.width     = execPct  + '%';
     }, 800);
   }
 
