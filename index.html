@@ -3165,11 +3165,15 @@ footer {
 .live-card {
   background: var(--ink-panel);
   border: 1px solid var(--b-faint);
-  padding: 1.5rem;
+  padding: 1.5rem 1.2rem 1.2rem;
   cursor: none;
   position: relative;
   overflow: hidden;
   transition: border-color 0.3s, transform 0.3s var(--ease-expo), box-shadow 0.3s;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .live-card::before {
   content: '';
@@ -3193,23 +3197,228 @@ footer {
   text-transform: uppercase;
   color: var(--blue-pale);
   display: block;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.6rem;
+  align-self: flex-start;
 }
 .live-card-title {
   font-family: var(--f-serif);
-  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
   font-weight: 300;
   color: var(--t-primary);
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  align-self: flex-start;
 }
-.live-card-desc {
-  font-family: var(--f-sans);
-  font-size: 0.78rem;
-  font-weight: 300;
-  color: var(--t-secondary);
-  line-height: 1.8;
+/* Hide text desc, replaced by animation */
+.live-card-desc { display: none; }
+
+/* ── Card animation areas ── */
+.live-card-anim {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+/* ── Card 01: Pre-Market Analysis — animated level markers ── */
+.anim-premarket {
+  width: 100%;
+  height: 90px;
+  position: relative;
+}
+.anim-premarket .pm-chart {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 56px;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  padding: 0 4px;
+}
+.pm-bar {
+  flex: 1;
+  border-radius: 1px 1px 0 0;
+  transform-origin: bottom;
+  animation: pmBarGrow 1.8s var(--ease-expo) infinite alternate;
+}
+.pm-bar:nth-child(odd) { background: rgba(0,200,83,0.35); }
+.pm-bar:nth-child(even) { background: rgba(255,77,109,0.3); }
+.pm-bar:nth-child(1) { height: 35%; animation-delay: 0s; }
+.pm-bar:nth-child(2) { height: 55%; animation-delay: 0.1s; }
+.pm-bar:nth-child(3) { height: 70%; animation-delay: 0.2s; }
+.pm-bar:nth-child(4) { height: 45%; animation-delay: 0.3s; }
+.pm-bar:nth-child(5) { height: 85%; animation-delay: 0.15s; }
+.pm-bar:nth-child(6) { height: 60%; animation-delay: 0.05s; }
+.pm-bar:nth-child(7) { height: 40%; animation-delay: 0.25s; }
+.pm-bar:nth-child(8) { height: 75%; animation-delay: 0.35s; }
+.pm-bar:nth-child(9) { height: 50%; animation-delay: 0.12s; }
+.pm-bar:nth-child(10) { height: 65%; animation-delay: 0.22s; }
+@keyframes pmBarGrow {
+  0% { opacity: 0.5; filter: brightness(0.7); }
+  100% { opacity: 1; filter: brightness(1.2); }
+}
+.pm-level {
+  position: absolute;
+  left: 4px; right: 4px;
+  height: 1px;
+  animation: pmLevelPulse 2.5s ease-in-out infinite;
+}
+.pm-level.key { background: rgba(26,107,255,0.6); top: 18%; animation-delay: 0s; }
+.pm-level.sup { background: rgba(0,200,83,0.55); top: 48%; animation-delay: 0.4s; }
+@keyframes pmLevelPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; box-shadow: 0 0 6px currentColor; }
+}
+.pm-time-badge {
+  position: absolute;
+  top: 0; right: 0;
+  font-family: var(--f-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  color: var(--blue-pale);
+  background: rgba(26,107,255,0.1);
+  border: 1px solid rgba(26,107,255,0.2);
+  padding: 2px 6px;
+  animation: pmBadgePop 3s ease-in-out infinite;
+}
+@keyframes pmBadgePop {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* ── Card 02: Live Execution — animated trade entry ── */
+.anim-execution {
+  width: 100%;
+  height: 90px;
+  position: relative;
+}
+.exec-candles {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 72px;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 0 4px;
+}
+.exec-candle {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.exec-candle-body {
+  width: 100%;
+  border-radius: 1px;
+}
+.exec-candle.bull .exec-candle-body { background: rgba(0,200,83,0.55); }
+.exec-candle.bear .exec-candle-body { background: rgba(255,77,109,0.5); }
+.exec-candle-wick {
+  width: 1px;
+  background: rgba(255,255,255,0.2);
+}
+.exec-candle:nth-child(1) .exec-candle-body { height: 16px; animation: bodyGrow 2s ease-in-out infinite alternate; animation-delay: 0s; }
+.exec-candle:nth-child(2) .exec-candle-body { height: 24px; animation: bodyGrow 2s ease-in-out infinite alternate; animation-delay: 0.1s; }
+.exec-candle:nth-child(3) .exec-candle-body { height: 18px; animation: bodyGrow 2s ease-in-out infinite alternate; animation-delay: 0.2s; }
+.exec-candle:nth-child(4) .exec-candle-body { height: 30px; animation: bodyGrow 2s ease-in-out infinite alternate; animation-delay: 0.3s; }
+.exec-candle:nth-child(5) .exec-candle-body { height: 20px; animation: bodyGrow 2s ease-in-out infinite alternate; animation-delay: 0.4s; }
+.exec-candle:nth-child(6) .exec-candle-body { height: 36px; animation: bodyGrow 2s ease-in-out infinite alternate; animation-delay: 0.2s; }
+.exec-candle:nth-child(7) .exec-candle-body { height: 14px; animation: bodyGrow 2s ease-in-out infinite alternate; animation-delay: 0.1s; }
+.exec-candle:nth-child(8) .exec-candle-body { height: 28px; animation: bodyGrow 2s ease-in-out infinite alternate; animation-delay: 0.35s; }
+@keyframes bodyGrow {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+.exec-entry-arrow {
+  position: absolute;
+  bottom: 34px;
+  right: 18px;
+  color: var(--green);
+  font-size: 1.4rem;
+  animation: entryArrowPulse 1.6s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(0,200,83,0.7);
+  line-height: 1;
+}
+@keyframes entryArrowPulse {
+  0%, 100% { transform: translateY(3px); opacity: 0.7; }
+  50% { transform: translateY(-3px); opacity: 1; }
+}
+.exec-entry-label {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-family: var(--f-mono);
+  font-size: 0.48rem;
+  letter-spacing: 0.1em;
+  color: var(--green);
+  background: rgba(0,200,83,0.1);
+  border: 1px solid rgba(0,200,83,0.3);
+  padding: 2px 5px;
+  animation: entryLabelFlash 2s ease-in-out infinite;
+}
+@keyframes entryLabelFlash {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; box-shadow: 0 0 8px rgba(0,200,83,0.3); }
+}
+
+/* ── Card 03: Post-Market Review — animated PnL sweep ── */
+.anim-review {
+  width: 100%;
+  height: 90px;
+  position: relative;
+}
+.review-equity-line {
+  position: absolute;
+  top: 8px; left: 4px; right: 4px;
+  height: 50px;
+  overflow: hidden;
+}
+.review-equity-line svg { width: 100%; height: 100%; }
+.review-equity-path {
+  fill: none;
+  stroke: var(--green);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation: drawEquity 2.2s var(--ease-expo) infinite;
+  animation-delay: 0.3s;
+  filter: drop-shadow(0 0 4px rgba(0,200,83,0.5));
+}
+@keyframes drawEquity {
+  0% { stroke-dashoffset: 300; opacity: 0; }
+  15% { opacity: 1; }
+  80%, 100% { stroke-dashoffset: 0; opacity: 1; }
+}
+.review-trade-rows {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.review-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1px 4px;
+  font-family: var(--f-mono);
+  font-size: 0.46rem;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--b-faint);
+  animation: rowFadeIn 0.5s ease forwards;
+  opacity: 0;
+}
+.review-row:nth-child(1) { animation-delay: 0.5s; }
+.review-row:nth-child(2) { animation-delay: 0.9s; }
+.review-row:nth-child(3) { animation-delay: 1.3s; }
+@keyframes rowFadeIn { to { opacity: 1; } }
+.review-row .trade-id { color: var(--t-tertiary); }
+.review-row .trade-res.win { color: var(--green); }
+.review-row .trade-res.loss { color: rgba(255,77,109,0.8); }
 .live-stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -4004,6 +4213,15 @@ footer {
     <a class="nav-link" href="#about">About</a>
     <a class="nav-link" href="#why-fail">Why Traders Fail</a>
     <a class="nav-link" href="#services">Services</a>
+    <a class="nav-link" href="#advantage">The Advantage</a>
+    <a class="nav-link" href="#noise-signal">The Method</a>
+    <a class="nav-link" href="#ashford-clock">Market Clock</a>
+    <a class="nav-link" href="#live-room">Live Sessions</a>
+    <a class="nav-link" href="#codex">Operator's Codex</a>
+    <a class="nav-link" href="#emotion-simulator">Simulator</a>
+    <a class="nav-link" href="#glossary">Pro Language</a>
+    <a class="nav-link" href="#testimonials">Results</a>
+    <a class="nav-link" href="#readiness">Readiness Profiler</a>
     <a class="nav-link" href="#philosophy">Philosophy</a>
     <a class="nav-link" href="#faq">FAQ</a>
   </nav>
@@ -4657,17 +4875,57 @@ footer {
           <div class="live-card">
             <span class="live-card-num">[ 01 ]</span>
             <span class="live-card-title">Pre-Market Analysis</span>
-            <p class="live-card-desc">6:30 AM IST — We map the battlefield before the open. Levels, zones, scenarios.</p>
+            <div class="live-card-anim">
+              <div class="anim-premarket">
+                <span class="pm-time-badge">6:30 AM IST</span>
+                <div class="pm-chart">
+                  <div class="pm-bar"></div><div class="pm-bar"></div><div class="pm-bar"></div>
+                  <div class="pm-bar"></div><div class="pm-bar"></div><div class="pm-bar"></div>
+                  <div class="pm-bar"></div><div class="pm-bar"></div><div class="pm-bar"></div>
+                  <div class="pm-bar"></div>
+                </div>
+                <div class="pm-level key"></div>
+                <div class="pm-level sup"></div>
+              </div>
+            </div>
           </div>
           <div class="live-card">
             <span class="live-card-num">[ 02 ]</span>
             <span class="live-card-title">Live Execution</span>
-            <p class="live-card-desc">9:15 AM — Market opens. We trade together, live, with real capital at stake.</p>
+            <div class="live-card-anim">
+              <div class="anim-execution">
+                <div class="exec-candles">
+                  <div class="exec-candle bull"><div class="exec-candle-wick" style="height:6px"></div><div class="exec-candle-body"></div></div>
+                  <div class="exec-candle bear"><div class="exec-candle-wick" style="height:5px"></div><div class="exec-candle-body"></div></div>
+                  <div class="exec-candle bull"><div class="exec-candle-wick" style="height:7px"></div><div class="exec-candle-body"></div></div>
+                  <div class="exec-candle bull"><div class="exec-candle-wick" style="height:5px"></div><div class="exec-candle-body"></div></div>
+                  <div class="exec-candle bear"><div class="exec-candle-wick" style="height:6px"></div><div class="exec-candle-body"></div></div>
+                  <div class="exec-candle bull"><div class="exec-candle-wick" style="height:8px"></div><div class="exec-candle-body"></div></div>
+                  <div class="exec-candle bear"><div class="exec-candle-wick" style="height:4px"></div><div class="exec-candle-body"></div></div>
+                  <div class="exec-candle bull"><div class="exec-candle-wick" style="height:7px"></div><div class="exec-candle-body"></div></div>
+                </div>
+                <div class="exec-entry-arrow">↑</div>
+                <div class="exec-entry-label">ENTRY ●</div>
+              </div>
+            </div>
           </div>
           <div class="live-card">
             <span class="live-card-num">[ 03 ]</span>
             <span class="live-card-title">Post-Market Review</span>
-            <p class="live-card-desc">3:45 PM — Every trade reviewed. What worked, what didn't, why.</p>
+            <div class="live-card-anim">
+              <div class="anim-review">
+                <div class="review-equity-line">
+                  <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+                    <path class="review-equity-path" d="M0 42 L25 38 L50 44 L75 30 L100 26 L125 18 L150 10 L175 6 L200 3"/>
+                  </svg>
+                </div>
+                <div class="review-trade-rows">
+                  <div class="review-row"><span class="trade-id">T-01 NIFTY</span><span class="trade-res win">+2.4R</span></div>
+                  <div class="review-row"><span class="trade-id">T-02 BANK</span><span class="trade-res loss">-1.0R</span></div>
+                  <div class="review-row"><span class="trade-id">T-03 CRUDE</span><span class="trade-res win">+3.1R</span></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -6216,47 +6474,125 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
     const cx = cleanC.getContext('2d');
     const W = cleanC.width, H = cleanC.height;
     cx.clearRect(0,0,W,H);
-    cx.fillStyle = 'rgba(5,7,16,0.97)'; cx.fillRect(0,0,W,H);
-    const { toY, cw, pt, dH } = baseCandles(cleanC, 0.65);
-    const n = nsC.length;
+    cx.fillStyle = 'rgba(2,4,12,0.99)'; cx.fillRect(0,0,W,H);
 
-    // Support / resistance zones
+    // Subtle grid lines
+    cx.strokeStyle = 'rgba(26,107,255,0.05)'; cx.lineWidth = 0.5;
+    for (let gy = 0; gy < H; gy += H/6) {
+      cx.beginPath(); cx.moveTo(0, gy); cx.lineTo(W, gy); cx.stroke();
+    }
+
+    const { toY, cw, pt, dH } = baseCandles(cleanC, 0.78);
+    const n = nsC.length;
     const vals = nsC.flatMap(c=>[c.h,c.l]);
     const mn = Math.min(...vals), mx = Math.max(...vals), rng = mx - mn;
-    const sup = mn + rng * 0.27;
-    const res = mn + rng * 0.70;
 
-    cx.fillStyle = 'rgba(0,200,83,0.04)';
-    cx.fillRect(0, toY(res), W, toY(sup) - toY(res));
-    cx.strokeStyle = 'rgba(0,200,83,0.25)'; cx.lineWidth = 1; cx.setLineDash([6,5]);
-    cx.beginPath(); cx.moveTo(0,toY(sup)); cx.lineTo(W,toY(sup)); cx.stroke();
-    cx.strokeStyle = 'rgba(0,200,83,0.18)';
-    cx.beginPath(); cx.moveTo(0,toY(res)); cx.lineTo(W,toY(res)); cx.stroke();
+    // ── DEMAND ZONE (strong buy area near lows) ──
+    const demandLow  = mn + rng * 0.08;
+    const demandHigh = mn + rng * 0.22;
+    const demandY1 = toY(demandHigh), demandY2 = toY(demandLow);
+    cx.fillStyle = 'rgba(0,200,83,0.07)';
+    cx.fillRect(0, demandY1, W, demandY2 - demandY1);
+    cx.strokeStyle = 'rgba(0,200,83,0.45)'; cx.lineWidth = 1.2; cx.setLineDash([]);
+    cx.beginPath(); cx.moveTo(0, demandY1); cx.lineTo(W, demandY1); cx.stroke();
+    cx.strokeStyle = 'rgba(0,200,83,0.22)'; cx.lineWidth = 0.8;
+    cx.beginPath(); cx.moveTo(0, demandY2); cx.lineTo(W, demandY2); cx.stroke();
+    // Label pill
+    cx.fillStyle = 'rgba(0,200,83,0.85)';
+    cx.font = 'bold 9px Geist Mono, monospace';
+    cx.fillText('▲ DEMAND ZONE', 8, demandY1 - 5);
+
+    // ── SUPPLY ZONE (institutional selling area near highs) ──
+    const supplyLow  = mn + rng * 0.76;
+    const supplyHigh = mn + rng * 0.90;
+    const supplyY1 = toY(supplyHigh), supplyY2 = toY(supplyLow);
+    cx.fillStyle = 'rgba(255,77,109,0.07)';
+    cx.fillRect(0, supplyY1, W, supplyY2 - supplyY1);
+    cx.strokeStyle = 'rgba(255,77,109,0.45)'; cx.lineWidth = 1.2;
+    cx.beginPath(); cx.moveTo(0, supplyY1); cx.lineTo(W, supplyY1); cx.stroke();
+    cx.strokeStyle = 'rgba(255,77,109,0.22)'; cx.lineWidth = 0.8;
+    cx.beginPath(); cx.moveTo(0, supplyY2); cx.lineTo(W, supplyY2); cx.stroke();
+    cx.fillStyle = 'rgba(255,100,120,0.85)';
+    cx.font = 'bold 9px Geist Mono, monospace';
+    cx.fillText('▼ SUPPLY ZONE', 8, supplyY1 - 5);
+
+    // ── LIQUIDITY POOL (mid-structure, equal highs / lows cluster) ──
+    const liqLevel = mn + rng * 0.48;
+    const liqY = toY(liqLevel);
+    cx.strokeStyle = 'rgba(100,180,255,0.5)'; cx.lineWidth = 1; cx.setLineDash([3,5]);
+    cx.beginPath(); cx.moveTo(0, liqY); cx.lineTo(W * 0.72, liqY); cx.stroke();
     cx.setLineDash([]);
-    cx.fillStyle = 'rgba(0,200,83,0.55)';
-    cx.font = '10px Geist Mono, monospace';
-    cx.fillText('SUPPORT', 10, toY(sup) - 6);
-    cx.fillText('RESISTANCE', 10, toY(res) - 6);
+    cx.fillStyle = 'rgba(100,180,255,0.75)';
+    cx.font = '9px Geist Mono, monospace';
+    cx.fillText('≡ LIQUIDITY POOL', 8, liqY - 5);
 
-    // Clean trend line (last 30 candles)
-    const tSlice = nsC.slice(30);
-    cx.strokeStyle = 'rgba(26,107,255,0.25)'; cx.lineWidth = 1; cx.setLineDash([8,6]);
+    // ── STRUCTURE BREAK (BOS — Break of Structure marker) ──
+    const bosIdx = Math.floor(n * 0.42);
+    const bosX = (bosIdx + 0.5) * cw;
+    const bosC = nsC[bosIdx];
+    if (bosC) {
+      const bosY = toY(bosC.h) - 14;
+      cx.strokeStyle = 'rgba(255,190,0,0.7)'; cx.lineWidth = 1; cx.setLineDash([2,3]);
+      cx.beginPath(); cx.moveTo(bosX, bosY + 2); cx.lineTo(bosX, toY(bosC.h) + 2); cx.stroke();
+      cx.setLineDash([]);
+      cx.fillStyle = 'rgba(255,200,60,0.9)';
+      cx.font = 'bold 8px Geist Mono, monospace';
+      const bosLabel = 'BOS';
+      const bosLW = cx.measureText(bosLabel).width;
+      cx.fillText(bosLabel, bosX - bosLW/2, bosY - 2);
+    }
+
+    // ── POSSIBLE ENTRY POINT (after demand zone retest) ──
+    const entryIdx = Math.floor(n * 0.62);
+    const entryC = nsC[entryIdx];
+    if (entryC) {
+      const eix = (entryIdx + 0.5) * cw;
+      const eiy = toY(entryC.l) + 6;
+      // Arrow up
+      cx.fillStyle = 'rgba(0,200,83,1)';
+      cx.beginPath(); cx.moveTo(eix, eiy - 12); cx.lineTo(eix - 6, eiy); cx.lineTo(eix + 6, eiy); cx.closePath(); cx.fill();
+      // Glow box
+      cx.strokeStyle = 'rgba(0,200,83,0.55)'; cx.lineWidth = 1;
+      const eLabel = '✦ POSSIBLE ENTRY';
+      cx.font = 'bold 9px Geist Mono, monospace';
+      const eLW = cx.measureText(eLabel).width;
+      const eLX = Math.min(eix - eLW/2, W - eLW - 6);
+      cx.fillStyle = 'rgba(0,200,83,0.12)';
+      cx.fillRect(eLX - 4, eiy + 3, eLW + 8, 14);
+      cx.strokeRect(eLX - 4, eiy + 3, eLW + 8, 14);
+      cx.fillStyle = 'rgba(0,255,110,0.95)';
+      cx.fillText(eLabel, eLX, eiy + 13);
+    }
+
+    // ── POTENTIAL TARGET ZONE ──
+    const tgtLevel = mn + rng * 0.68;
+    const tgtY = toY(tgtLevel);
+    cx.strokeStyle = 'rgba(26,107,255,0.4)'; cx.lineWidth = 1; cx.setLineDash([6,4]);
+    const tgtStartX = (entryIdx + 0.5) * cw;
+    cx.beginPath(); cx.moveTo(tgtStartX, tgtY); cx.lineTo(W, tgtY); cx.stroke();
+    cx.setLineDash([]);
+    cx.fillStyle = 'rgba(80,150,255,0.85)';
+    cx.font = '9px Geist Mono, monospace';
+    cx.fillText('⊙ TARGET ZONE', W - cx.measureText('⊙ TARGET ZONE').width - 8, tgtY - 5);
+
+    // ── STOP LOSS LEVEL ──
+    const slLevel = mn + rng * 0.04;
+    const slY = toY(slLevel);
+    cx.strokeStyle = 'rgba(255,77,109,0.35)'; cx.lineWidth = 0.8; cx.setLineDash([4,5]);
+    cx.beginPath(); cx.moveTo(tgtStartX, slY); cx.lineTo(W, slY); cx.stroke();
+    cx.setLineDash([]);
+    cx.fillStyle = 'rgba(255,90,110,0.75)';
+    cx.font = '8px Geist Mono, monospace';
+    cx.fillText('✕ STOP LOSS', W - cx.measureText('✕ STOP LOSS').width - 8, slY - 5);
+
+    // ── CLEAN TREND LINE (structural, not lagging) ──
+    const tSlice = nsC.slice(20);
+    cx.strokeStyle = 'rgba(26,107,255,0.3)'; cx.lineWidth = 1.2; cx.setLineDash([]);
     cx.beginPath();
     tSlice.forEach((c, i) => {
-      const x = (30+i+0.5)*cw, y = toY((c.o+c.c)/2);
+      const x = (20+i+0.5)*cw, y = toY((c.o+c.c)/2);
       i===0 ? cx.moveTo(x,y) : cx.lineTo(x,y);
-    }); cx.stroke(); cx.setLineDash([]);
-
-    // Entry marker
-    const ei = Math.floor(n * 0.64);
-    const eiC = nsC[ei];
-    if (eiC) {
-      const eix = (ei+0.5)*cw, eiy = toY((eiC.o+eiC.c)/2);
-      cx.strokeStyle = 'rgba(255,200,0,0.8)'; cx.lineWidth = 1.5;
-      cx.beginPath(); cx.moveTo(eix-10,eiy); cx.lineTo(eix+10,eiy); cx.moveTo(eix,eiy-8); cx.lineTo(eix,eiy+8); cx.stroke();
-      cx.fillStyle = 'rgba(255,200,0,0.7)'; cx.font = '9px Geist Mono, monospace';
-      cx.fillText('ENTRY', eix+8, eiy-7);
-    }
+    }); cx.stroke();
   }
 
   function drawBoth() { drawNoisy(); drawClean(); }
