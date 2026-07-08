@@ -57,6 +57,12 @@
   --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
   --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-silk: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Glass-card system — universal card focus */
+  --glass-grey:        rgba(158, 166, 186, 0.12);
+  --glass-grey-strong: rgba(174, 182, 202, 0.20);
+  --glass-border:      rgba(190, 198, 218, 0.16);
+  --glass-blur:        blur(20px) saturate(1.45);
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -910,8 +916,10 @@ h1, h2, h3, h4 {
 }
 
 .wyg-card {
-  background: rgba(15, 18, 34, 0.55);
-  border: 1px solid var(--b-faint);
+  background: linear-gradient(160deg, var(--glass-grey) 0%, rgba(15, 18, 34, 0.68) 100%);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   padding: 2rem 1.5rem 2rem;
   position: relative;
   overflow: hidden;
@@ -1105,16 +1113,18 @@ h1, h2, h3, h4 {
   display: grid;
   grid-template-columns: repeat(4,1fr);
   gap: 1px;
-  background: var(--b-faint);
-  border: 1px solid var(--b-faint);
+  background: var(--glass-border);
+  border: 1px solid var(--glass-border);
   margin-top: 3.5rem;
 }
 .adv-cell {
-  background: var(--ink-deep);
+  background: linear-gradient(160deg, var(--glass-grey) 0%, rgba(5, 7, 16, 0.72) 100%);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   padding: 2.8rem 2rem;
   position: relative; overflow: hidden;
   cursor: none;
-  transition: background .4s;
+  transition: background .4s, filter .4s ease, transform .4s var(--ease-expo);
 }
 .adv-cell::before {
   content: '';
@@ -1170,18 +1180,23 @@ h1, h2, h3, h4 {
   display: grid;
   grid-template-columns: repeat(3,1fr);
   gap: 1px;
-  background: var(--b-faint);
-  border: 1px solid var(--b-faint);
+  background: var(--glass-border);
+  border: 1px solid var(--glass-border);
   margin-top: 3.5rem;
+  perspective: 1400px;
 }
 .svc-card {
-  background: var(--ink);
+  background: linear-gradient(160deg, var(--glass-grey) 0%, rgba(2, 3, 10, 0.76) 100%);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   padding: 3rem 2.5rem;
   display: flex; flex-direction: column;
   position: relative; overflow: hidden; cursor: none;
-  transition: background .4s;
+  transform-origin: center center;
+  will-change: transform, filter;
+  transition: background .4s, filter .5s ease, transform .6s var(--ease-expo), box-shadow .5s ease;
 }
-.svc-card.star { background: linear-gradient(160deg, rgba(26,107,255,0.06) 0%, var(--ink) 60%); }
+.svc-card.star { background: linear-gradient(160deg, rgba(26,107,255,0.10) 0%, var(--glass-grey) 40%, rgba(2, 3, 10, 0.76) 100%); }
 .svc-card::after {
   content: '';
   position: absolute; top: 0; left: 0; right: 0;
@@ -1260,14 +1275,16 @@ h1, h2, h3, h4 {
   display: grid;
   grid-template-columns: repeat(3,1fr);
   gap: 1px;
-  background: var(--b-faint);
-  border: 1px solid var(--b-faint);
+  background: var(--glass-border);
+  border: 1px solid var(--glass-border);
 }
 .phil-card {
-  background: var(--ink-deep);
+  background: linear-gradient(160deg, var(--glass-grey) 0%, rgba(5, 7, 16, 0.72) 100%);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   padding: 3rem;
   position: relative; overflow: hidden; cursor: none;
-  transition: background .4s;
+  transition: background .4s, filter .4s ease, transform .4s var(--ease-expo);
 }
 .phil-card:hover { background: rgba(26,107,255,0.03); }
 
@@ -1306,15 +1323,17 @@ h1, h2, h3, h4 {
   display: grid;
   grid-template-columns: repeat(2,1fr);
   gap: 1px;
-  background: var(--b-faint);
-  border: 1px solid var(--b-faint);
+  background: var(--glass-border);
+  border: 1px solid var(--glass-border);
   margin-top: 3.5rem;
 }
 .testi-card {
-  background: var(--ink);
+  background: linear-gradient(160deg, var(--glass-grey) 0%, rgba(2, 3, 10, 0.76) 100%);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   padding: 3.5rem;
   cursor: none; position: relative; overflow: hidden;
-  transition: background .4s;
+  transition: background .4s, filter .4s ease, transform .4s var(--ease-expo);
 }
 .testi-card:hover { background: var(--blue-ghost); }
 .testi-mark {
@@ -1757,16 +1776,18 @@ footer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
-  background: var(--b-faint);
-  border: 1px solid var(--b-faint);
+  background: var(--glass-border);
+  border: 1px solid var(--glass-border);
 }
 
 .fail-card {
-  background: var(--ink-deep);
+  background: linear-gradient(160deg, var(--glass-grey) 0%, rgba(5, 7, 16, 0.72) 100%);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  transition: background .4s;
+  transition: background .4s, filter .4s ease, transform .4s var(--ease-expo);
 }
 .fail-card:hover { background: var(--ink-lift); }
 
@@ -1946,6 +1967,120 @@ footer {
 
 /* Shift nav down for ticker */
 #nav { top: 28px; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   UNIVERSAL CARD FOCUS SYSTEM
+   Hover any card in any grid site-wide → its siblings
+   (and the section title above them) recede into blur,
+   leaving only the hovered card sharp. Same mechanic as
+   WHAT YOU GET, now applied to every card grid.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Advantage */
+.adv-grid:has(.adv-cell:hover) .adv-cell:not(:hover) {
+  filter: blur(2.5px) brightness(0.6);
+  transform: scale(0.97) !important;
+}
+
+/* Philosophy */
+.phil-grid:has(.phil-card:hover) .phil-card:not(:hover) {
+  filter: blur(2.5px) brightness(0.6);
+  transform: scale(0.97) !important;
+}
+
+/* Testimonials */
+.testi-grid:has(.testi-card:hover) .testi-card:not(:hover) {
+  filter: blur(2.5px) brightness(0.6);
+  transform: scale(0.97) !important;
+}
+
+/* Why Most Traders Fail */
+.fail-grid:has(.fail-card:hover) .fail-card:not(:hover) {
+  filter: blur(2.5px) brightness(0.6);
+  transform: scale(0.97) !important;
+}
+
+/* Live Session Room */
+.live-room-cards:has(.live-card:hover) .live-card:not(:hover) {
+  filter: blur(2.5px) brightness(0.6);
+  transform: scale(0.97) !important;
+}
+
+/* The section's own title/label/intro recedes along with its cards —
+   reinforces the "screen focusing on it" spotlight feel */
+#services .s-inner:has(.svc-card:hover) > .s-label,
+#services .s-inner:has(.svc-card:hover) > .s-h2,
+#services .s-inner:has(.svc-card:hover) > p,
+#advantage .s-inner:has(.adv-cell:hover) > .s-label,
+#advantage .s-inner:has(.adv-cell:hover) > .s-h2,
+#advantage .s-inner:has(.adv-cell:hover) > p,
+#philosophy .s-inner:has(.phil-card:hover) > .s-label,
+#philosophy .s-inner:has(.phil-card:hover) > .philosophy-statement,
+#why-fail .s-inner:has(.fail-card:hover) > .s-label,
+#why-fail .s-inner:has(.fail-card:hover) > .s-h2,
+#why-fail .s-inner:has(.fail-card:hover) > p,
+#testimonials .s-inner:has(.testi-card:hover) > .s-label,
+#testimonials .s-inner:has(.testi-card:hover) > .s-h2,
+#testimonials .s-inner:has(.testi-card:hover) > p,
+#live-room .s-inner:has(.live-card:hover) > .s-label,
+#live-room .s-inner:has(.live-card:hover) > .s-h2,
+#live-room .s-inner:has(.live-card:hover) > p {
+  filter: blur(6px) brightness(0.5);
+  transition: filter .5s ease;
+}
+.wyg-section:has(.wyg-card:hover) .wyg-header {
+  filter: blur(6px) brightness(0.5);
+  transition: filter .5s ease;
+}
+
+/* ── "Choose Your Path" — character-select focus ──────────────
+   Hover a program card and it becomes the sharp, enlarged pick;
+   the other two slide outward, shrink, tilt away in 3D and blur —
+   like a game roster reacting to whichever fighter you're on. */
+
+.svc-grid:has(.svc-card:hover) .svc-card:not(:hover) {
+  filter: blur(3px) brightness(0.45) saturate(0.7);
+}
+
+.svc-grid .svc-card:hover {
+  transform: translateY(-22px) scale(1.14) !important;
+  filter: none !important;
+  z-index: 30;
+  box-shadow:
+    0 34px 90px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(26,107,255,0.3),
+    0 0 70px rgba(26,107,255,0.18);
+}
+
+/* Cards after (to the right of) the hovered one drift further right */
+.svc-grid .svc-card:hover ~ .svc-card {
+  transform: scale(0.84) translateX(60px) rotateY(-10deg) !important;
+  z-index: 1;
+}
+.svc-grid .svc-card:hover + .svc-card {
+  transform: scale(0.88) translateX(38px) rotateY(-7deg) !important;
+}
+
+/* Cards before (to the left of) the hovered one drift further left */
+.svc-grid .svc-card:has(~ .svc-card:hover) {
+  transform: scale(0.84) translateX(-60px) rotateY(10deg) !important;
+  z-index: 1;
+}
+.svc-grid .svc-card:has(+ .svc-card:hover) {
+  transform: scale(0.88) translateX(-38px) rotateY(7deg) !important;
+}
+
+@media (max-width: 960px) {
+  /* Single-column stack below this width — keep it a simple recede,
+     no horizontal drift since there are no side-by-side neighbours */
+  .svc-grid .svc-card:hover { transform: scale(1.03) !important; }
+  .svc-grid .svc-card:hover ~ .svc-card,
+  .svc-grid .svc-card:hover + .svc-card,
+  .svc-grid .svc-card:has(~ .svc-card:hover),
+  .svc-grid .svc-card:has(+ .svc-card:hover) {
+    transform: scale(0.97) !important;
+  }
+}
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    RESPONSIVE — FULL MOBILE / TABLET SUPPORT
@@ -3167,13 +3302,15 @@ footer {
   margin-top: 2rem;
 }
 .live-card {
-  background: var(--ink-panel);
-  border: 1px solid var(--b-faint);
+  background: linear-gradient(160deg, var(--glass-grey) 0%, rgba(19, 23, 41, 0.68) 100%);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   padding: 1.5rem 1.2rem 1.2rem;
   cursor: none;
   position: relative;
   overflow: hidden;
-  transition: border-color 0.3s, transform 0.3s var(--ease-expo), box-shadow 0.3s;
+  transition: border-color 0.3s, transform 0.3s var(--ease-expo), box-shadow 0.3s, filter 0.4s ease;
   min-height: 200px;
   display: flex;
   flex-direction: column;
@@ -5928,7 +6065,7 @@ document.addEventListener('mousemove', e => {
   requestAnimationFrame(lerpRing);
 })();
 
-const hoverEls = document.querySelectorAll('button, a, .adv-cell, .svc-card, .pillar-row, .testi-card, .faq-row, .phil-card, .nav-logo, .footer-brand-logo, .about-feat, .fail-card, .wyg-card');
+const hoverEls = document.querySelectorAll('button, a, .adv-cell, .svc-card, .pillar-row, .testi-card, .faq-row, .phil-card, .nav-logo, .footer-brand-logo, .about-feat, .fail-card, .wyg-card, .live-card');
 hoverEls.forEach(el => {
   el.addEventListener('mouseenter', () => { cRing.classList.add('expanded'); cDot.classList.add('green-mode'); });
   el.addEventListener('mouseleave', () => { cRing.classList.remove('expanded'); cDot.classList.remove('green-mode'); });
