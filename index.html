@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ashford Capital</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Geist+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Geist+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -35,6 +35,9 @@
   --green-dim: #045c2d;
   --green-ghost: rgba(6, 122, 61, 0.07);
   --green-glow:  rgba(6, 122, 61, 0.16);
+
+  /* Red — losses, warnings, "amateur" contrast (existing accent, kept) */
+  --red: #c72a4a;
 
   /* Text hierarchy — black/near-black on white */
   --t-primary: #0b1220;
@@ -382,9 +385,9 @@ h1, h2, h3, h4 {
 }
 
 .hero-wordmark {
-  font-family: var(--f-serif);
+  font-family: var(--f-display);
   font-size: clamp(2.8rem, 6vw, 5.8rem);
-  font-weight: 300;
+  font-weight: 700;
   line-height: 1.0;
   letter-spacing: -0.01em;
   color: var(--t-primary);
@@ -395,7 +398,7 @@ h1, h2, h3, h4 {
   transform: translateY(110%);
   will-change: transform;
 }
-.hero-wordmark .wm-accent { color: var(--blue); font-weight: 600; }
+.hero-wordmark .wm-accent { color: var(--blue); font-weight: 700; font-style: italic; }
 
 .hero-tagline-rule {
   width: 0;
@@ -418,7 +421,7 @@ h1, h2, h3, h4 {
   transform: translateY(100%);
   will-change: transform;
 }
-.hero-tagline .green-word { color: var(--green); }
+.hero-tagline .green-word { color: var(--blue); font-style: italic; }
 
 .hero-diff {
   font-family: var(--f-mono);
@@ -624,14 +627,14 @@ h1, h2, h3, h4 {
 .sy-num .green-tick { background: var(--green-dim); }
 
 .sy-h2 {
-  font-family: var(--f-serif);
+  font-family: var(--f-display);
   font-size: clamp(3rem, 8vw, 7.5rem);
-  font-weight: 300;
+  font-weight: 700;
   line-height: 1.0;
   max-width: 960px;
+  color: var(--t-primary);
 }
 .sy-h2 .blue { color: var(--blue); font-style: italic; }
-.sy-h2 .green { color: var(--green); }
 .sy-h2 .ghost { color: var(--t-tertiary); }
 
 .sy-sub {
@@ -835,16 +838,16 @@ h1, h2, h3, h4 {
 }
 .wyg-title-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--blue-dim); }
 .wyg-title {
-  font-family: var(--f-serif);
+  font-family: var(--f-display);
   font-size: clamp(2.4rem, 5.5vw, 4.5rem);
-  font-weight: 300;
+  font-weight: 700;
   line-height: 1.1;
   color: var(--t-primary);
   letter-spacing: -0.01em;
   margin-bottom: 0;
 }
 .wyg-title .wyg-title-accent {
-  color: var(--green);
+  color: var(--blue);
   font-style: italic;
 }
 .wyg-rule { display: none; }
@@ -951,7 +954,7 @@ h1, h2, h3, h4 {
 .wyg-card-title {
   font-family: var(--f-serif);
   font-size: 1.1rem;
-  font-weight: 400;
+  font-weight: 600;
   color: var(--t-primary);
   line-height: 1.25;
   transition: color 0.3s;
@@ -1111,9 +1114,9 @@ h1, h2, h3, h4 {
 .adv-cell:hover .adv-glyph { transform: scale(1.2) translateY(-3px); }
 
 .adv-title {
-  font-family: var(--f-serif);
+  font-family: var(--f-display);
   font-size: 1.35rem;
-  font-weight: 400;
+  font-weight: 700;
   color: var(--t-primary);
   margin-bottom: .7rem;
 }
@@ -1182,9 +1185,9 @@ h1, h2, h3, h4 {
 }
 .svc-icon { font-size: 2.2rem; display: block; margin-bottom: 1.2rem; }
 .svc-name {
-  font-family: var(--f-serif);
+  font-family: var(--f-display);
   font-size: 1.6rem;
-  font-weight: 400;
+  font-weight: 700;
   color: var(--t-primary);
   margin-bottom: .5rem;
   line-height: 1.15;
@@ -1264,9 +1267,9 @@ h1, h2, h3, h4 {
 .phil-card:hover .phil-index { -webkit-text-stroke: 1px rgba(26,107,255,0.25); }
 
 .phil-title {
-  font-family: var(--f-serif);
+  font-family: var(--f-display);
   font-size: 1.5rem;
-  font-weight: 400;
+  font-weight: 700;
   margin-bottom: 1rem;
   color: var(--t-primary);
 }
@@ -1346,7 +1349,7 @@ h1, h2, h3, h4 {
 .faq-q-text {
   font-family: var(--f-serif);
   font-size: 1.1rem;
-  font-weight: 400;
+  font-weight: 600;
   color: var(--t-primary);
   flex: 1;
 }
@@ -1402,9 +1405,9 @@ h1, h2, h3, h4 {
 
 .cta-inner { max-width: 860px; margin: 0 auto; padding: 0 5%; position: relative; z-index: 1; }
 .cta-h2 {
-  font-family: var(--f-serif);
+  font-family: var(--f-display);
   font-size: clamp(3rem, 8vw, 7rem);
-  font-weight: 300;
+  font-weight: 700;
   line-height: 1.05;
   margin-bottom: 1.5rem;
 }
@@ -1586,8 +1589,9 @@ footer {
   color: var(--blue); margin-bottom: .6rem;
 }
 .modal-title {
-  font-family: var(--f-serif);
-  font-size: 1.8rem; font-weight: 300;
+  font-family: var(--f-display);
+  font-size: 1.8rem; font-weight: 700;
+  color: var(--t-primary);
   margin-bottom: 1rem;
 }
 .modal-body {
@@ -1817,8 +1821,8 @@ footer {
   margin-bottom: 1rem;
 }
 .fail-tag-problem {
-  color: rgba(255,77,109,0.8);
-  border: 1px solid rgba(255,77,109,0.25);
+  color: var(--red);
+  border: 1px solid rgba(199,42,74,0.3);
   background: rgba(255,77,109,0.05);
 }
 .fail-tag-solution {
@@ -2282,9 +2286,9 @@ footer {
   margin-bottom: 1.4rem;
 }
 .psych-beat-h {
-  font-family: var(--f-serif);
+  font-family: var(--f-display);
   font-size: clamp(2.2rem, 6vw, 5.5rem);
-  font-weight: 300;
+  font-weight: 700;
   line-height: 1.05;
   color: var(--t-primary);
 }
@@ -2359,6 +2363,15 @@ footer {
   background: var(--ink-deep);
   padding: 0;
   overflow: hidden;
+}
+.method-phil-lede {
+  font-family: var(--f-sans);
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--t-secondary);
+  max-width: 640px;
+  margin-top: 0.5rem;
+  margin-bottom: 2.5rem;
 }
 .ns-header {
   padding: 90px 5% 60px;
@@ -2607,16 +2620,16 @@ footer {
 .ch-5 .arc-ch-num { color: rgba(11,18,32,0.05); -webkit-text-stroke: 1px rgba(10,143,74,0.45); }
 
 .arc-ch-title {
-  font-family: var(--f-serif);
+  font-family: var(--f-display);
   font-size: clamp(2rem, 5vw, 4rem);
-  font-weight: 300;
+  font-weight: 700;
   line-height: 1.1;
   margin-bottom: 1.5rem;
   color: var(--t-primary);
 }
-.ch-1 .arc-ch-title .accent { color: rgba(255,77,109,0.85); }
-.ch-2 .arc-ch-title .accent { color: rgba(255,77,109,0.9); font-style: italic; }
-.ch-3 .arc-ch-title .accent { color: rgba(255,77,109,0.7); font-style: italic; }
+.ch-1 .arc-ch-title .accent { color: var(--red); }
+.ch-2 .arc-ch-title .accent { color: var(--red); font-style: italic; }
+.ch-3 .arc-ch-title .accent { color: var(--red); font-style: italic; }
 .ch-4 .arc-ch-title .accent { color: var(--blue); font-style: italic; }
 .ch-5 .arc-ch-title .accent { color: var(--green); }
 .arc-ch-body {
@@ -2711,9 +2724,9 @@ footer {
 }
 .pt-intro-label::before { content: ''; width: 24px; height: 1px; background: var(--blue-dim); }
 .pt-intro-h {
-  font-family: var(--f-serif);
+  font-family: var(--f-display);
   font-size: clamp(2.2rem, 5vw, 4.2rem);
-  font-weight: 300;
+  font-weight: 700;
   line-height: 1.1;
 }
 .pt-intro-h .blue { color: var(--blue); font-style: italic; }
@@ -2852,7 +2865,7 @@ footer {
 .pt-choice-btn.correct .pt-choice-label { color: var(--green); }
 .pt-choice-btn.incorrect { background: rgba(255,77,109,0.06); }
 .pt-choice-btn.incorrect::before { transform: scaleX(1); background: #ff4d6d; }
-.pt-choice-btn.incorrect .pt-choice-label { color: rgba(255,77,109,0.8); }
+.pt-choice-btn.incorrect .pt-choice-label { color: var(--red); }
 
 /* Score screen */
 #pt-score-screen {
@@ -3213,7 +3226,7 @@ footer {
 .live-card-title {
   font-family: var(--f-serif);
   font-size: clamp(1rem, 1.8vw, 1.25rem);
-  font-weight: 300;
+  font-weight: 700;
   color: var(--t-primary);
   display: block;
   margin-bottom: 1rem;
@@ -3427,7 +3440,7 @@ footer {
 @keyframes rowFadeIn { to { opacity: 1; } }
 .review-row .trade-id { color: var(--t-tertiary); }
 .review-row .trade-res.win { color: var(--green); }
-.review-row .trade-res.loss { color: rgba(255,77,109,0.8); }
+.review-row .trade-res.loss { color: var(--red); }
 .live-stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -3682,7 +3695,7 @@ footer {
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
-.emotion-col .trader-stat-title { color: rgba(255,100,120,0.7); }
+.emotion-col .trader-stat-title { color: var(--red); }
 .system-col .trader-stat-title { color: var(--green-dim); }
 .trader-stat-list {
   list-style: none;
@@ -3761,16 +3774,16 @@ footer {
   gap: 0.7rem;
 }
 .lang-col-head.amateur-head {
-  color: rgba(255,90,120,0.75);
+  color: var(--red);
   background: rgba(255,50,80,0.05);
-  border: 1px solid rgba(255,50,80,0.14);
+  border: 1px solid rgba(199,42,74,0.25);
   border-right: none;
   justify-content: flex-end;
 }
 .lang-col-head.pro-head {
-  color: rgba(0,210,100,0.75);
+  color: var(--green);
   background: rgba(0,200,83,0.05);
-  border: 1px solid rgba(0,200,83,0.16);
+  border: 1px solid rgba(6,122,61,0.25);
   border-left: none;
   justify-content: flex-start;
 }
@@ -3856,14 +3869,14 @@ footer {
   border: 1px solid;
 }
 .lang-tag-amateur {
-  color: rgba(255,90,120,0.6);
-  border-color: rgba(255,50,80,0.2);
-  background: rgba(255,50,80,0.05);
+  color: rgba(199,42,74,0.85);
+  border-color: rgba(255,50,80,0.3);
+  background: rgba(255,50,80,0.06);
 }
 .lang-tag-pro {
-  color: rgba(0,210,110,0.7);
-  border-color: rgba(0,200,83,0.2);
-  background: rgba(0,200,83,0.05);
+  color: var(--green);
+  border-color: rgba(6,122,61,0.3);
+  background: var(--green-ghost);
 }
 
 /* The statement text */
@@ -3877,10 +3890,10 @@ footer {
   font-style: italic;
 }
 .lang-statement-amateur {
-  color: rgba(255,130,150,0.82);
+  color: rgba(199,42,74,0.9);
 }
 .lang-statement-pro {
-  color: rgba(80,230,155,0.88);
+  color: var(--green);
 }
 
 /* Context note */
@@ -4334,8 +4347,7 @@ footer {
       <div class="hero-tagline-rule" id="h-rule"></div>
 
       <p class="hero-tagline">
-      
-        <span class="green-word">For Those Who Want Precision - Not Prediction</span> 
+        For Those Who Want <span class="green-word">Precision</span> - Not Prediction
       </p>
 
       <div class="hero-actions" id="h-actions">
@@ -4477,7 +4489,7 @@ footer {
     <!-- Beat 4 -->
     <div class="psych-scene-text" id="pb4">
       <div class="psych-beat-label">04 / Time of Truth</div>
-      <h2 class="psych-beat-h">The correct entry<br><span class="green">was always there.</span></h2>
+      <h2 class="psych-beat-h">The correct entry<br><span class="blue">was always there.</span></h2>
       <div class="psych-cta-scene">
         <button class="btn-primary" onclick="redirectToCTA()">We fix this →</button>
       </div>
@@ -4510,7 +4522,7 @@ footer {
 
     <div class="sy-scene" id="sy3">
       <div class="sy-num"><span class="tick"></span>03 / The Solution<span class="tick green-tick"></span></div>
-      <h2 class="sy-h2">We build<br><span class="green"> Live Executional Clarity.</span><br><span class="ghost">Not theory.</span></h2>
+      <h2 class="sy-h2">We build<br><span class="blue"> Live Executional Clarity.</span><br><span class="ghost">Not theory.</span></h2>
       <p class="sy-sub">Real trades. Real pressure. Real decisions — systematically built through structured practice until execution becomes second nature.</p>
     </div>
 
@@ -5223,7 +5235,7 @@ footer {
 <section id="glossary" class="s">
   <div class="s-inner">
     <div class="s-label">The Language</div>
-    <h2 class="s-h2">How You <span class="blue">Speak</span> About Markets<br>Reveals How You <span class="green">Trade</span> Them</h2>
+    <h2 class="s-h2">How You <span class="blue">Speak</span> About Markets<br>Reveals How You <span class="blue">Trade</span> Them</h2>
     <div class="language-intro">
       <p>The amateur's vocabulary is built on hope, prediction, and ego. The professional's is built on probability, process, and evidence. Same market. Same chart. Completely different lens.</p>
     </div>
