@@ -15,43 +15,44 @@
    DESIGN TOKEN SYSTEM
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 :root {
-  /* Core palette */
-  --ink:       #02030a;
-  --ink-deep:  #050710;
-  --ink-mid:   #0a0d1a;
-  --ink-lift:  #0f1222;
-  --ink-panel: #131729;
+  /* Core palette — white, institutional */
+  --ink:       #ffffff;
+  --ink-deep:  #f6f7fb;
+  --ink-mid:   #eef1f6;
+  --ink-lift:  #e4e9f2;
+  --ink-panel: #ffffff;
 
-  /* Blue — structural, dominant accent */
-  --blue:      #1a6bff;
-  --blue-bright: #3d85ff;
-  --blue-pale: #6ba3ff;
-  --blue-dim:  #0e3d99;
-  --blue-ghost:rgba(26, 107, 255, 0.08);
-  --blue-glow: rgba(26, 107, 255, 0.22);
+  /* Blue — structural, dominant accent (titles & content) */
+  --blue:      #1550c9;
+  --blue-bright: #2f6fef;
+  --blue-pale: #6f9bf0;
+  --blue-dim:  #0d3380;
+  --blue-ghost:rgba(21, 80, 201, 0.06);
+  --blue-glow: rgba(21, 80, 201, 0.16);
 
-  /* Green — rare, precious, highlight only */
-  --green:     #00c853;
-  --green-dim: #007a33;
-  --green-ghost: rgba(0, 200, 83, 0.08);
-  --green-glow:  rgba(0, 200, 83, 0.25);
+  /* Green — rare, precious, highlight only (never in titles) */
+  --green:     #067a3d;
+  --green-dim: #045c2d;
+  --green-ghost: rgba(6, 122, 61, 0.07);
+  --green-glow:  rgba(6, 122, 61, 0.16);
 
-  /* Text hierarchy */
-  --t-primary: #eef0f7;
-  --t-secondary: rgba(220, 225, 240, 0.65);
-  --t-tertiary:  rgba(180, 190, 215, 0.38);
-  --t-ghost:     rgba(150, 165, 200, 0.18);
+  /* Text hierarchy — black/near-black on white */
+  --t-primary: #0b1220;
+  --t-secondary: rgba(11, 18, 32, 0.66);
+  --t-tertiary:  rgba(11, 18, 32, 0.42);
+  --t-ghost:     rgba(11, 18, 32, 0.22);
 
   /* Borders */
-  --b-faint:  rgba(255,255,255,0.05);
-  --b-soft:   rgba(255,255,255,0.08);
-  --b-blue:   rgba(26, 107, 255, 0.18);
-  --b-green:  rgba(0, 200, 83, 0.22);
+  --b-faint:  rgba(11, 18, 32, 0.07);
+  --b-soft:   rgba(11, 18, 32, 0.12);
+  --b-blue:   rgba(21, 80, 201, 0.22);
+  --b-green:  rgba(10, 143, 74, 0.28);
 
   /* Typography */
   --f-serif:  'Cormorant Garamond', serif;
   --f-sans:   'Outfit', sans-serif;
   --f-mono:   'Geist Mono', monospace;
+  --f-display:'Playfair Display', var(--f-serif);
 
   /* Motion */
   --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
@@ -59,9 +60,9 @@
   --ease-silk: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   /* Glass-card system — universal card focus */
-  --glass-grey:        rgba(158, 166, 186, 0.12);
-  --glass-grey-strong: rgba(174, 182, 202, 0.20);
-  --glass-border:      rgba(190, 198, 218, 0.16);
+  --glass-grey:        rgba(15, 23, 42, 0.035);
+  --glass-grey-strong: rgba(15, 23, 42, 0.07);
+  --glass-border:      rgba(15, 23, 42, 0.10);
   --glass-blur:        blur(20px) saturate(1.45);
 }
 
@@ -88,7 +89,7 @@ a { text-decoration: none; color: inherit; }
 
 h1, h2, h3, h4 {
   font-family: var(--f-serif);
-  font-weight: 300;
+  font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.1;
 }
@@ -104,7 +105,7 @@ h1, h2, h3, h4 {
   z-index: 99999; pointer-events: none;
   transform: translate(-50%,-50%);
   transition: width .15s, height .15s, background .2s;
-  mix-blend-mode: screen;
+  mix-blend-mode: difference;
   will-change: transform;
 }
 #c-ring {
@@ -158,12 +159,12 @@ h1, h2, h3, h4 {
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 4%;
   border-bottom: 1px solid var(--b-faint);
-  background: rgba(2,3,10,0.6);
+  background: rgba(255,255,255,0.7);
   backdrop-filter: blur(28px) saturate(1.6);
   -webkit-backdrop-filter: blur(28px) saturate(1.6);
   transition: background .4s, border-color .4s;
 }
-#nav.solid { background: rgba(5,7,16,0.95); border-color: var(--b-blue); }
+#nav.solid { background: rgba(255,255,255,0.92); border-color: var(--b-blue); box-shadow: 0 1px 24px rgba(15,23,42,0.06); }
 
 .nav-logo {
   display: flex; align-items: center; gap: 12px;
@@ -193,7 +194,7 @@ h1, h2, h3, h4 {
   color: var(--t-primary);
   transition: color .25s;
 }
-.nav-logo:hover .nav-wordmark { color: var(--blue-pale); }
+.nav-logo:hover .nav-wordmark { color: var(--blue); }
 
 .nav-links {
   display: flex; align-items: center; gap: 2.5rem;
@@ -277,7 +278,7 @@ h1, h2, h3, h4 {
   top: calc(28px + 68px);
   right: 0;
   width: 220px;
-  background: rgba(5,7,16,0.97);
+  background: rgba(255,255,255,0.97);
   border: 1px solid var(--b-blue);
   border-top: none;
   border-right: none;
@@ -394,7 +395,7 @@ h1, h2, h3, h4 {
   transform: translateY(110%);
   will-change: transform;
 }
-.hero-wordmark .wm-accent { color: var(--blue-bright); font-weight: 600; }
+.hero-wordmark .wm-accent { color: var(--blue); font-weight: 600; }
 
 .hero-tagline-rule {
   width: 0;
@@ -417,7 +418,7 @@ h1, h2, h3, h4 {
   transform: translateY(100%);
   will-change: transform;
 }
-.hero-tagline .green-word { color: var(--green); text-shadow: 0 0 10px rgba(0,200,83,0.45); }
+.hero-tagline .green-word { color: var(--green); }
 
 .hero-diff {
   font-family: var(--f-mono);
@@ -427,33 +428,6 @@ h1, h2, h3, h4 {
   line-height: 1.8;
   margin-top: 1rem;
   max-width: 400px;
-}
-
-.hero-trust {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  margin-top: 1.8rem;
-  opacity: 0;
-}
-.trust-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 8px rgba(0,200,83,0.5);
-  animation: trustpulse 2s ease-in-out infinite;
-  flex-shrink: 0;
-}
-@keyframes trustpulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-.trust-text {
-  font-family: var(--f-mono);
-  font-size: 0.55rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--t-tertiary);
 }
 
 .hero-actions {
@@ -467,33 +441,6 @@ h1, h2, h3, h4 {
 .hc.tr { top: 80px; right: 4%; border-top: 1px solid var(--blue); border-right: 1px solid var(--blue); }
 .hc.bl { bottom: 50px; left: 4%; border-bottom: 1px solid var(--green); border-left: 1px solid var(--green); }
 .hc.br { bottom: 50px; right: 4%; border-bottom: 1px solid var(--green); border-right: 1px solid var(--green); }
-
-/* ── Metrics strip ── */
-.hero-metrics {
-  position: absolute;
-  bottom: 48px; left: 6%;
-  display: flex; gap: 4rem;
-  opacity: 0;
-}
-.h-metric-val {
-  font-family: var(--f-serif);
-  font-size: 2.8rem;
-  font-weight: 300;
-  color: var(--t-primary);
-  line-height: 1;
-  display: block;
-}
-.h-metric-val .accent { color: var(--blue-bright); }
-.h-metric-val .green-accent { color: var(--green); text-shadow: 0 0 18px rgba(0,200,83,0.5); }
-.h-metric-label {
-  font-family: var(--f-mono);
-  font-size: 0.55rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--t-tertiary);
-  display: block;
-  margin-top: 0.35rem;
-}
 
 /* ── Scroll indicator ── */
 .scroll-cue {
@@ -558,7 +505,7 @@ h1, h2, h3, h4 {
   transition: transform .4s var(--ease-expo);
   z-index: -1;
 }
-.btn-primary:hover { color: white; border-color: var(--blue-bright); box-shadow: 0 0 36px var(--blue-glow); transform: translateY(-2px); }
+.btn-primary:hover { color: white; border-color: var(--blue); box-shadow: 0 0 36px var(--blue-glow); transform: translateY(-2px); }
 .btn-primary:hover::before { transform: scaleX(1); }
 
 .btn-secondary {
@@ -579,7 +526,6 @@ h1, h2, h3, h4 {
 @media (max-width: 768px) {
   #hero-logo-wrap { left: 50%; }
   #hero-text { left: 5%; max-width: 90%; }
-  .hero-metrics { gap: 2rem; flex-wrap: wrap; bottom: 60px; }
   #hero-divider { display: none; }
 }
 
@@ -616,26 +562,28 @@ h1, h2, h3, h4 {
 .s-inner { max-width: 1240px; margin: 0 auto; padding: 0 5%; }
 
 .s-label {
-  font-family: 'Playfair Display', var(--f-serif);
+  font-family: var(--f-display);
   font-size: 1.2rem;
   letter-spacing: 0.06em;
   text-transform: none;
   font-style: italic;
-  color: var(--blue-bright);
+  font-weight: 600;
+  color: var(--blue);
   display: flex; align-items: center; gap: .8rem;
   margin-bottom: 1.2rem;
 }
 .s-label::before { content: ''; width: 24px; height: 1px; background: var(--blue-dim); }
 
 .s-h2 {
-  font-family: var(--f-serif);
+  font-family: var(--f-display);
   font-size: clamp(2.4rem, 5.5vw, 4.5rem);
-  font-weight: 300;
+  font-weight: 700;
+  color: var(--t-primary);
   line-height: 1.1;
   margin-bottom: 1rem;
 }
-.s-h2 .blue { color: var(--blue-bright); font-style: italic; }
-.s-h2 .green { color: var(--green); text-shadow: 0 0 18px rgba(0,200,83,0.45); }
+.s-h2 .blue { color: var(--blue); font-style: italic; }
+.s-h2 .green { color: var(--green); }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    SCROLLYTELLING
@@ -682,8 +630,8 @@ h1, h2, h3, h4 {
   line-height: 1.0;
   max-width: 960px;
 }
-.sy-h2 .blue { color: var(--blue-bright); font-style: italic; }
-.sy-h2 .green { color: var(--green); text-shadow: 0 0 22px rgba(0,200,83,0.45); }
+.sy-h2 .blue { color: var(--blue); font-style: italic; }
+.sy-h2 .green { color: var(--green); }
 .sy-h2 .ghost { color: var(--t-tertiary); }
 
 .sy-sub {
@@ -740,7 +688,7 @@ h1, h2, h3, h4 {
   margin-bottom: 2.5rem;
   position: relative;
 }
-.about-pull-quote .green { color: var(--green); font-style: italic; text-shadow: 0 0 14px rgba(0,200,83,0.4); }
+.about-pull-quote .green { color: var(--green); font-style: italic; }
 
 .about-body-text {
   font-size: 0.88rem;
@@ -779,7 +727,7 @@ h1, h2, h3, h4 {
 }
 .about-feat-icon {
   font-size: 1rem;
-  color: var(--blue-pale);
+  color: var(--blue);
   flex-shrink: 0;
   transition: color .3s;
 }
@@ -794,7 +742,7 @@ h1, h2, h3, h4 {
 .about-feat-arrow {
   font-family: var(--f-mono);
   font-size: 1.1rem;
-  color: var(--blue-pale);
+  color: var(--blue);
   transition: transform .35s var(--ease-back), color .3s;
   line-height: 1;
 }
@@ -843,7 +791,7 @@ h1, h2, h3, h4 {
   font-family: var(--f-mono);
   font-size: 0.58rem;
   letter-spacing: 0.1em;
-  color: var(--blue-pale);
+  color: var(--blue);
   min-width: 36px;
   padding-top: 0.3rem;
 }
@@ -881,7 +829,7 @@ h1, h2, h3, h4 {
   letter-spacing: 0.06em;
   text-transform: none;
   font-style: italic;
-  color: var(--blue-bright);
+  color: var(--blue);
   display: flex; align-items: center; gap: .8rem;
   margin-bottom: 1rem;
 }
@@ -898,7 +846,6 @@ h1, h2, h3, h4 {
 .wyg-title .wyg-title-accent {
   color: var(--green);
   font-style: italic;
-  text-shadow: 0 0 18px rgba(0,200,83,0.45);
 }
 .wyg-rule { display: none; }
 
@@ -916,7 +863,7 @@ h1, h2, h3, h4 {
 }
 
 .wyg-card {
-  background: linear-gradient(160deg, var(--glass-grey) 0%, rgba(15, 18, 34, 0.68) 100%);
+  background: linear-gradient(160deg, var(--glass-grey) 0%, var(--ink-mid) 100%);
   border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -962,7 +909,7 @@ h1, h2, h3, h4 {
 
 .wyg-card:hover {
   transform: translateY(-10px) scale(1.02);
-  background: rgba(15, 18, 34, 0.82);
+  background: var(--ink-lift);
   border-color: rgba(26, 107, 255, 0.28);
   box-shadow:
     0 24px 60px rgba(0, 0, 0, 0.55),
@@ -984,7 +931,7 @@ h1, h2, h3, h4 {
   font-family: var(--f-mono);
   font-size: 0.52rem;
   letter-spacing: 0.14em;
-  color: var(--blue-pale);
+  color: var(--blue);
   opacity: 0.7;
   transition: opacity 0.3s, color 0.3s;
 }
@@ -1009,7 +956,7 @@ h1, h2, h3, h4 {
   line-height: 1.25;
   transition: color 0.3s;
 }
-.wyg-card:hover .wyg-card-title { color: #fff; }
+.wyg-card:hover .wyg-card-title { color: var(--blue); }
 
 .wyg-card-desc {
   font-family: var(--f-sans);
@@ -1019,7 +966,7 @@ h1, h2, h3, h4 {
   line-height: 1.75;
   transition: color 0.3s;
 }
-.wyg-card:hover .wyg-card-desc { color: rgba(220, 225, 240, 0.82); }
+.wyg-card:hover .wyg-card-desc { color: var(--t-primary); }
 
 /* Corner accent on hover */
 .wyg-corner {
@@ -1117,8 +1064,19 @@ h1, h2, h3, h4 {
   border: 1px solid var(--glass-border);
   margin-top: 3.5rem;
 }
+.adv-summary {
+  max-width: 720px;
+  margin-top: 2.2rem;
+  font-family: var(--f-sans);
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--t-secondary);
+  border-left: 2px solid var(--b-blue);
+  padding-left: 1.2rem;
+}
 .adv-cell {
-  background: linear-gradient(160deg, var(--glass-grey) 0%, rgba(5, 7, 16, 0.72) 100%);
+  background: linear-gradient(160deg, var(--glass-grey) 0%, var(--ink-mid) 100%);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   padding: 2.8rem 2rem;
@@ -1186,7 +1144,7 @@ h1, h2, h3, h4 {
   perspective: 1400px;
 }
 .svc-card {
-  background: linear-gradient(160deg, var(--glass-grey) 0%, rgba(2, 3, 10, 0.76) 100%);
+  background: linear-gradient(160deg, var(--glass-grey) 0%, var(--ink-mid) 100%);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   padding: 3rem 2.5rem;
@@ -1196,7 +1154,7 @@ h1, h2, h3, h4 {
   will-change: transform, filter;
   transition: background .4s, filter .5s ease, transform .6s var(--ease-expo), box-shadow .5s ease;
 }
-.svc-card.star { background: linear-gradient(160deg, rgba(26,107,255,0.10) 0%, var(--glass-grey) 40%, rgba(2, 3, 10, 0.76) 100%); }
+.svc-card.star { background: linear-gradient(160deg, rgba(26,107,255,0.10) 0%, var(--glass-grey) 40%, var(--ink-mid) 100%); }
 .svc-card::after {
   content: '';
   position: absolute; top: 0; left: 0; right: 0;
@@ -1220,7 +1178,6 @@ h1, h2, h3, h4 {
   margin-bottom: 1.5rem;
   align-self: flex-start;
   background: var(--green-ghost);
-  text-shadow: 0 0 10px rgba(0,200,83,0.4);
   box-shadow: 0 0 12px rgba(0,200,83,0.08);
 }
 .svc-icon { font-size: 2.2rem; display: block; margin-bottom: 1.2rem; }
@@ -1235,7 +1192,7 @@ h1, h2, h3, h4 {
 .svc-price {
   font-family: var(--f-mono);
   font-size: 1.6rem;
-  color: var(--blue-bright);
+  color: var(--blue);
   line-height: 1;
   margin-bottom: 1.3rem;
   letter-spacing: -0.02em;
@@ -1252,7 +1209,7 @@ h1, h2, h3, h4 {
   display: flex; align-items: center; gap: .8rem;
   letter-spacing: 0.03em;
 }
-.svc-list li::before { content: '→'; color: var(--blue-pale); font-size: 0.65rem; flex-shrink: 0; }
+.svc-list li::before { content: '→'; color: var(--blue); font-size: 0.65rem; flex-shrink: 0; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    PHILOSOPHY
@@ -1267,8 +1224,8 @@ h1, h2, h3, h4 {
   max-width: 860px;
   margin-bottom: 80px;
 }
-.philosophy-statement .blue { color: var(--blue-bright); font-style: italic; }
-.philosophy-statement .green { color: var(--green); text-shadow: 0 0 16px rgba(0,200,83,0.4); }
+.philosophy-statement .blue { color: var(--blue); font-style: italic; }
+.philosophy-statement .green { color: var(--green); }
 .philosophy-statement .ghost { color: var(--t-tertiary); }
 
 .phil-grid {
@@ -1279,7 +1236,7 @@ h1, h2, h3, h4 {
   border: 1px solid var(--glass-border);
 }
 .phil-card {
-  background: linear-gradient(160deg, var(--glass-grey) 0%, rgba(5, 7, 16, 0.72) 100%);
+  background: linear-gradient(160deg, var(--glass-grey) 0%, var(--ink-mid) 100%);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   padding: 3rem;
@@ -1328,7 +1285,7 @@ h1, h2, h3, h4 {
   margin-top: 3.5rem;
 }
 .testi-card {
-  background: linear-gradient(160deg, var(--glass-grey) 0%, rgba(2, 3, 10, 0.76) 100%);
+  background: linear-gradient(160deg, var(--glass-grey) 0%, var(--ink-mid) 100%);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   padding: 3.5rem;
@@ -1398,7 +1355,7 @@ h1, h2, h3, h4 {
   border: 1px solid var(--b-blue);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  color: var(--blue-bright);
+  color: var(--blue);
   font-family: var(--f-mono);
   font-size: 1rem; line-height: 1;
   flex-shrink: 0;
@@ -1451,8 +1408,8 @@ h1, h2, h3, h4 {
   line-height: 1.05;
   margin-bottom: 1.5rem;
 }
-.cta-h2 .blue { color: var(--blue-bright); font-style: italic; }
-.cta-h2 .green { color: var(--green); text-shadow: 0 0 20px rgba(0,200,83,0.45); }
+.cta-h2 .blue { color: var(--blue); font-style: italic; }
+.cta-h2 .green { color: var(--green); }
 .cta-h2 .ghost { color: var(--t-tertiary); }
 .cta-body {
   font-size: 0.9rem;
@@ -1480,7 +1437,7 @@ h1, h2, h3, h4 {
 .nl-form { display: flex; max-width: 480px; margin: 0 auto; }
 .nl-input {
   flex: 1;
-  background: rgba(255,255,255,0.03);
+  background: var(--ink-mid);
   border: 1px solid var(--b-soft);
   border-right: none;
   padding: .85rem 1.2rem;
@@ -1552,7 +1509,7 @@ footer {
   font-size: 0.58rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--blue-pale);
+  color: var(--blue);
   margin-bottom: 1.4rem;
   display: flex; align-items: center; gap: .6rem;
 }
@@ -1566,7 +1523,7 @@ footer {
   font-weight: 300; cursor: none;
   transition: color .25s;
 }
-.footer-nav a:hover { color: var(--blue-pale); }
+.footer-nav a:hover { color: var(--blue); }
 
 .footer-bottom {
   max-width: 1240px; margin: 3.5rem auto 0;
@@ -1626,7 +1583,7 @@ footer {
 .modal-eyebrow {
   font-family: var(--f-mono); font-size: 0.58rem;
   letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--blue-pale); margin-bottom: .6rem;
+  color: var(--blue); margin-bottom: .6rem;
 }
 .modal-title {
   font-family: var(--f-serif);
@@ -1682,7 +1639,7 @@ footer {
   line-height: 1;
   display: block;
 }
-.cred-green { color: var(--green); text-shadow: 0 0 16px rgba(0,200,83,0.4); }
+.cred-green { color: var(--green); }
 .cred-label {
   font-family: var(--f-mono);
   font-size: 0.55rem;
@@ -1720,7 +1677,7 @@ footer {
   top: 50%;
   transform: translate(-50%, -50%);
   font-size: 0.4rem;
-  color: var(--blue-pale);
+  color: var(--blue);
   background: var(--ink);
   padding: 0 0.5rem;
   letter-spacing: 0.1em;
@@ -1770,7 +1727,18 @@ footer {
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    WHY MOST TRADERS FAIL — INTERACTIVE CARDS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-#why-fail { background: var(--ink-deep); }
+#why-fail { background: var(--ink-deep); position: relative; overflow: hidden; }
+
+.fail-bg-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 0;
+}
+#why-fail .s-inner { position: relative; z-index: 1; }
 
 .fail-grid {
   display: grid;
@@ -1781,7 +1749,7 @@ footer {
 }
 
 .fail-card {
-  background: linear-gradient(160deg, var(--glass-grey) 0%, rgba(5, 7, 16, 0.72) 100%);
+  background: linear-gradient(160deg, var(--glass-grey) 0%, var(--ink-mid) 100%);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   position: relative;
@@ -1857,7 +1825,6 @@ footer {
   color: var(--green);
   border: 1px solid var(--b-green);
   background: var(--green-ghost);
-  text-shadow: 0 0 8px rgba(0,200,83,0.3);
 }
 
 .fail-icon {
@@ -1886,7 +1853,7 @@ footer {
 
 .fail-fix {
   font-size: 0.82rem;
-  color: rgba(200, 240, 215, 0.9);
+  color: var(--green);
   font-weight: 300;
   line-height: 1.85;
   margin-top: 0.75rem;
@@ -1919,7 +1886,7 @@ footer {
 }
 .cta-pillar-icon {
   font-size: 1rem;
-  color: var(--blue-pale);
+  color: var(--blue);
 }
 .cta-pillar-text {
   font-family: var(--f-mono);
@@ -1960,7 +1927,7 @@ footer {
   color: var(--t-tertiary);
   display: flex; align-items: center; gap: .5rem;
 }
-.ticker-item .up   { color: var(--green); text-shadow: 0 0 8px rgba(0,200,83,0.5); }
+.ticker-item .up   { color: var(--green); }
 .ticker-item .down { color: #ff4d6d; }
 .ticker-sep { color: var(--b-soft); }
 @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -2094,7 +2061,6 @@ footer {
   .phil-grid { grid-template-columns: 1fr; }
   .testi-grid { grid-template-columns: 1fr; }
   .footer-wrap { grid-template-columns: 1fr 1fr; gap: 40px; }
-  .hero-metrics { gap: 3rem; flex-wrap: wrap; }
 
   /* Scrollytelling on tablet */
   .sy-h2 { font-size: clamp(2.2rem, 6vw, 5rem); }
@@ -2150,19 +2116,6 @@ footer {
   }
   .hero-actions .btn-primary,
   .hero-actions .btn-secondary { width: 100%; max-width: 280px; text-align: center; }
-
-  /* Metrics — bottom strip on mobile */
-  .hero-metrics {
-    bottom: 14px;
-    left: 50%;
-    transform: translateX(-50%);
-    gap: 1.8rem;
-    flex-wrap: nowrap;
-    justify-content: center;
-    width: 90vw;
-  }
-  .h-metric-val { font-size: 1.8rem; }
-  .h-metric-label { font-size: 0.46rem; letter-spacing: 0.12em; }
 
   #hero-divider { display: none; }
 
@@ -2237,8 +2190,6 @@ footer {
   #hero-text { top: 80% !important; }
 
   .hero-wordmark { font-size: clamp(1.8rem, 11vw, 2.8rem); }
-  .hero-metrics { gap: 1.2rem; }
-  .h-metric-val { font-size: 1.5rem; }
 
   .sy-h2 { font-size: clamp(1.6rem, 9vw, 2.8rem); }
 
@@ -2259,7 +2210,6 @@ footer {
 @media (max-width: 375px) {
   .nav-wordmark { font-size: 0.82rem; }
   #hero-logo-img { width: 75vw; }
-  .hero-metrics { flex-wrap: wrap; justify-content: flex-start; gap: 1rem 2rem; }
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2328,7 +2278,7 @@ footer {
   font-size: 1.16rem;
   letter-spacing: 0.06em;
   font-style: italic;
-  color: var(--blue-bright);
+  color: var(--blue);
   margin-bottom: 1.4rem;
 }
 .psych-beat-h {
@@ -2338,9 +2288,9 @@ footer {
   line-height: 1.05;
   color: var(--t-primary);
 }
-.psych-beat-h .red-word { color: #ff4d6d; font-style: italic; text-shadow: 0 0 20px rgba(255,77,109,0.35); }
-.psych-beat-h .blue { color: var(--blue-bright); font-style: italic; }
-.psych-beat-h .green { color: var(--green); text-shadow: 0 0 18px rgba(0,200,83,0.4); }
+.psych-beat-h .red-word { color: #ff4d6d; font-style: italic; }
+.psych-beat-h .blue { color: var(--blue); font-style: italic; }
+.psych-beat-h .green { color: var(--green); }
 .psych-beat-h .ghost { color: var(--t-tertiary); }
 .psych-beat-sub {
   font-family: var(--f-sans);
@@ -2421,7 +2371,7 @@ footer {
   letter-spacing: 0.06em;
   text-transform: none;
   font-style: italic;
-  color: var(--blue-bright);
+  color: var(--blue);
   display: flex; align-items: center; gap: .8rem;
   margin-bottom: 1.2rem;
 }
@@ -2433,7 +2383,7 @@ footer {
   line-height: 1.1;
   max-width: 700px;
 }
-.ns-intro-h .blue { color: var(--blue-bright); font-style: italic; }
+.ns-intro-h .blue { color: var(--blue); font-style: italic; }
 .ns-intro-sub {
   font-size: 0.85rem;
   color: var(--t-secondary);
@@ -2450,6 +2400,8 @@ footer {
   overflow: hidden;
   user-select: none;
   cursor: col-resize;
+  border: 1px solid var(--b-soft);
+  box-shadow: 0 20px 60px rgba(15,23,42,0.10);
 }
 .ns-side {
   position: absolute;
@@ -2487,7 +2439,7 @@ footer {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%,-50%);
-  color: var(--blue-bright);
+  color: var(--blue);
   font-size: 1.1rem;
   background: var(--ink-panel);
   width: 38px; height: 38px;
@@ -2522,7 +2474,6 @@ footer {
   color: var(--green);
   border-color: var(--b-green);
   background: var(--green-ghost);
-  text-shadow: 0 0 8px rgba(0,200,83,0.35);
 }
 .ns-chart-canvas {
   width: 100%; height: 100%;
@@ -2565,119 +2516,6 @@ footer {
 .ns-footer-quote strong { color: var(--t-primary); font-weight: 400; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SECTION 03 — THE ASHFORD CLOCK
-   Live market mission-control ambient
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-#ashford-clock {
-  background: var(--ink-deep);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-#clock-particle-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  opacity: 0.45;
-}
-.clock-inner {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3rem;
-}
-.clock-headline {
-  font-family: var(--f-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: var(--t-tertiary);
-  text-align: center;
-}
-.clock-face-wrap {
-  position: relative;
-  width: clamp(260px, 36vw, 420px);
-  height: clamp(260px, 36vw, 420px);
-}
-#clock-svg {
-  width: 100%; height: 100%;
-}
-/* Orbital data nodes */
-.clock-orbital-ring {
-  position: absolute;
-  top: 50%; left: 50%;
-  border: 1px dashed rgba(26,107,255,0.12);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-.clock-node {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  cursor: none;
-  transition: opacity 0.3s;
-}
-.clock-node:hover { opacity: 0.85; }
-.clock-node-val {
-  font-family: var(--f-mono);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-}
-.clock-node-val.up { color: var(--green); text-shadow: 0 0 10px rgba(0,200,83,0.4); }
-.clock-node-val.down { color: #ff4d6d; }
-.clock-node-val.neutral { color: var(--blue-pale); }
-.clock-node-label {
-  font-family: var(--f-mono);
-  font-size: 0.48rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--t-tertiary);
-}
-.clock-node-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--blue-dim);
-  margin-top: 2px;
-}
-.clock-session-badge {
-  font-family: var(--f-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  padding: 0.4rem 1.2rem;
-  border: 1px solid var(--b-green);
-  color: var(--green);
-  background: var(--green-ghost);
-  text-shadow: 0 0 8px rgba(0,200,83,0.3);
-}
-.clock-session-badge.closed {
-  border-color: var(--b-soft);
-  color: var(--t-tertiary);
-  background: none;
-  text-shadow: none;
-}
-.clock-tagline {
-  font-family: var(--f-serif);
-  font-size: clamp(1.5rem, 3vw, 2.4rem);
-  font-weight: 300;
-  text-align: center;
-  color: var(--t-primary);
-  line-height: 1.3;
-  max-width: 560px;
-}
-.clock-tagline .blue { color: var(--blue-bright); font-style: italic; }
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    SECTION 04 — THE TRADER'S ARC
    Horizontal scroll narrative
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -2715,11 +2553,11 @@ footer {
   opacity: 0;
   transition: opacity 1s;
 }
-.arc-chapter.ch-1 { background: linear-gradient(160deg, #0a0d1a 0%, #110208 100%); }
-.arc-chapter.ch-2 { background: linear-gradient(160deg, #0d0608 0%, #060a18 100%); }
-.arc-chapter.ch-3 { background: linear-gradient(160deg, #100304 0%, #03070f 100%); }
-.arc-chapter.ch-4 { background: linear-gradient(160deg, #03070f 0%, #040c10 100%); }
-.arc-chapter.ch-5 { background: linear-gradient(160deg, #04090e 0%, #0a0d1a 100%); }
+.arc-chapter.ch-1 { background: linear-gradient(160deg, #ffffff 0%, #eef3fc 100%); }
+.arc-chapter.ch-2 { background: linear-gradient(160deg, #fffbfb 0%, #fdeef0 100%); }
+.arc-chapter.ch-3 { background: linear-gradient(160deg, #fdf6f7 0%, #fbe6e9 100%); }
+.arc-chapter.ch-4 { background: linear-gradient(160deg, #f4f8ff 0%, #e6eefd 100%); }
+.arc-chapter.ch-5 { background: linear-gradient(160deg, #f2fbf6 0%, #e6f3ec 100%); }
 
 /* Glow behind each chapter */
 .arc-chapter::after {
@@ -2747,7 +2585,7 @@ footer {
   font-size: 1.2rem;
   letter-spacing: 0.06em;
   font-style: italic;
-  color: var(--blue-bright);
+  color: var(--blue);
   margin-bottom: 2rem;
   display: flex;
   align-items: center;
@@ -2762,11 +2600,11 @@ footer {
   margin-bottom: 1.5rem;
   display: block;
 }
-.ch-1 .arc-ch-num { color: rgba(255,255,255,0.08); -webkit-text-stroke: 1px rgba(255,77,109,0.25); }
-.ch-2 .arc-ch-num { color: rgba(255,255,255,0.06); -webkit-text-stroke: 1px rgba(255,77,109,0.35); }
-.ch-3 .arc-ch-num { color: rgba(255,255,255,0.06); -webkit-text-stroke: 1px rgba(255,77,109,0.2); }
-.ch-4 .arc-ch-num { color: rgba(255,255,255,0.06); -webkit-text-stroke: 1px rgba(26,107,255,0.3); }
-.ch-5 .arc-ch-num { color: rgba(255,255,255,0.06); -webkit-text-stroke: 1px rgba(0,200,83,0.4); }
+.ch-1 .arc-ch-num { color: rgba(11,18,32,0.05); -webkit-text-stroke: 1px rgba(255,77,109,0.3); }
+.ch-2 .arc-ch-num { color: rgba(11,18,32,0.05); -webkit-text-stroke: 1px rgba(255,77,109,0.4); }
+.ch-3 .arc-ch-num { color: rgba(11,18,32,0.05); -webkit-text-stroke: 1px rgba(255,77,109,0.3); }
+.ch-4 .arc-ch-num { color: rgba(11,18,32,0.05); -webkit-text-stroke: 1px rgba(21,80,201,0.35); }
+.ch-5 .arc-ch-num { color: rgba(11,18,32,0.05); -webkit-text-stroke: 1px rgba(10,143,74,0.45); }
 
 .arc-ch-title {
   font-family: var(--f-serif);
@@ -2779,8 +2617,8 @@ footer {
 .ch-1 .arc-ch-title .accent { color: rgba(255,77,109,0.85); }
 .ch-2 .arc-ch-title .accent { color: rgba(255,77,109,0.9); font-style: italic; }
 .ch-3 .arc-ch-title .accent { color: rgba(255,77,109,0.7); font-style: italic; }
-.ch-4 .arc-ch-title .accent { color: var(--blue-bright); font-style: italic; }
-.ch-5 .arc-ch-title .accent { color: var(--green); text-shadow: 0 0 14px rgba(0,200,83,0.4); }
+.ch-4 .arc-ch-title .accent { color: var(--blue); font-style: italic; }
+.ch-5 .arc-ch-title .accent { color: var(--green); }
 .arc-ch-body {
   font-size: 0.85rem;
   color: var(--t-secondary);
@@ -2867,7 +2705,7 @@ footer {
   letter-spacing: 0.06em;
   text-transform: none;
   font-style: italic;
-  color: var(--blue-bright);
+  color: var(--blue);
   display: flex; align-items: center; gap: .8rem;
   margin-bottom: 1.2rem;
 }
@@ -2878,7 +2716,7 @@ footer {
   font-weight: 300;
   line-height: 1.1;
 }
-.pt-intro-h .blue { color: var(--blue-bright); font-style: italic; }
+.pt-intro-h .blue { color: var(--blue); font-style: italic; }
 .pt-intro-sub {
   font-size: 0.82rem;
   color: var(--t-secondary);
@@ -2931,7 +2769,7 @@ footer {
   padding: 1.4rem 2rem;
   border-top: 1px solid var(--b-faint);
   border-bottom: 1px solid var(--b-faint);
-  background: rgba(10,13,26,0.6);
+  background: var(--ink-mid);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3056,7 +2894,7 @@ footer {
   position: relative; z-index: 1;
 }
 .pt-score-verdict .green { color: var(--green); font-style: italic; }
-.pt-score-verdict .blue { color: var(--blue-bright); font-style: italic; }
+.pt-score-verdict .blue { color: var(--blue); font-style: italic; }
 .pt-score-body {
   font-size: 0.85rem;
   color: var(--t-secondary);
@@ -3186,7 +3024,7 @@ footer {
 
 /* Back face */
 .codex-card-back {
-  background: rgba(15,18,34,0.95);
+  background: var(--ink-deep);
   border: 1px solid rgba(26,107,255,0.22);
   transform: rotateY(180deg);
   overflow: hidden;
@@ -3211,7 +3049,6 @@ footer {
   font-style: italic;
   font-size: 0.95rem;
   color: var(--green);
-  text-shadow: 0 0 14px rgba(0,200,83,0.35);
   display: block;
   margin-top: 1rem;
 }
@@ -3295,6 +3132,38 @@ footer {
 .live-room-left {
   position: relative;
 }
+.day-one-timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 0.75rem;
+  height: 32px;
+}
+.dot-timeline-track {
+  position: absolute;
+  top: 5px; left: calc(16.66% - 1px); right: calc(16.66% - 1px);
+  height: 1px;
+  background: linear-gradient(90deg, var(--b-blue), var(--b-green), var(--b-blue));
+}
+.dot-timeline-point {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center;
+}
+.dot-timeline-point::before {
+  content: '';
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--blue);
+  z-index: 1;
+}
+.dot-timeline-point:nth-child(4)::before { border-color: var(--green); }
+.dot-timeline-time {
+  margin-top: 0.5rem;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--t-tertiary);
+}
 .live-room-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -3302,7 +3171,7 @@ footer {
   margin-top: 2rem;
 }
 .live-card {
-  background: linear-gradient(160deg, var(--glass-grey) 0%, rgba(19, 23, 41, 0.68) 100%);
+  background: linear-gradient(160deg, var(--glass-grey) 0%, var(--ink-mid) 100%);
   border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -3336,7 +3205,7 @@ footer {
   font-size: 0.58rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--blue-pale);
+  color: var(--blue);
   display: block;
   margin-bottom: 0.6rem;
   align-self: flex-start;
@@ -3418,7 +3287,7 @@ footer {
   font-family: var(--f-mono);
   font-size: 0.5rem;
   letter-spacing: 0.1em;
-  color: var(--blue-pale);
+  color: var(--blue);
   background: rgba(26,107,255,0.1);
   border: 1px solid rgba(26,107,255,0.2);
   padding: 2px 6px;
@@ -3459,7 +3328,7 @@ footer {
 .exec-candle.bear .exec-candle-body { background: rgba(255,77,109,0.5); }
 .exec-candle-wick {
   width: 1px;
-  background: rgba(255,255,255,0.2);
+  background: rgba(11,18,32,0.35);
 }
 .exec-candle:nth-child(1) .exec-candle-body { height: 16px; animation: bodyGrow 2s ease-in-out infinite alternate; animation-delay: 0s; }
 .exec-candle:nth-child(2) .exec-candle-body { height: 24px; animation: bodyGrow 2s ease-in-out infinite alternate; animation-delay: 0.1s; }
@@ -3480,7 +3349,6 @@ footer {
   color: var(--green);
   font-size: 1.4rem;
   animation: entryArrowPulse 1.6s ease-in-out infinite;
-  text-shadow: 0 0 10px rgba(0,200,83,0.7);
   line-height: 1;
 }
 @keyframes entryArrowPulse {
@@ -3576,7 +3444,7 @@ footer {
   font-family: var(--f-serif);
   font-size: clamp(1.8rem, 3vw, 2.4rem);
   font-weight: 300;
-  color: var(--blue-bright);
+  color: var(--blue);
   display: block;
 }
 .live-stat-label {
@@ -3609,14 +3477,58 @@ footer {
   margin: 0 auto 2.5rem;
 }
 
+/* ── Realistic platform mockup frame ── */
+.sim-mockup-frame {
+  border: 1px solid var(--b-soft);
+  background: var(--ink);
+  box-shadow: 0 20px 60px rgba(15,23,42,0.08);
+  overflow: hidden;
+}
+.sim-mockup-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 1rem;
+  background: var(--ink-deep);
+  border-bottom: 1px solid var(--b-soft);
+}
+.sim-mockup-dots { display: flex; gap: 6px; }
+.sim-mockup-dots span {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--t-ghost);
+}
+.sim-mockup-dots span:nth-child(1) { background: #ff5f57; }
+.sim-mockup-dots span:nth-child(2) { background: #febc2e; }
+.sim-mockup-dots span:nth-child(3) { background: #28c840; }
+.sim-mockup-title {
+  flex: 1;
+  text-align: center;
+  font-family: var(--f-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--t-tertiary);
+}
+.sim-mockup-live {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-family: var(--f-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  color: var(--green);
+  font-weight: 500;
+}
+.sim-live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+  animation: simLivePulse 1.6s ease-in-out infinite;
+}
+@keyframes simLivePulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
 /* ── Trader 3D Slider ── */
 .trader-slider-wrap {
   position: relative;
   width: 100%;
   height: clamp(420px, 65vh, 600px);
   overflow: hidden;
-  border: 1px solid var(--b-faint);
-  background: var(--ink-deep);
   cursor: col-resize;
   user-select: none;
 }
@@ -3631,12 +3543,12 @@ footer {
 }
 #trader-panel-emotion {
   left: 0; right: 0;
-  background: linear-gradient(135deg, #0d0006 0%, #130a1a 50%, #0a0d1a 100%);
+  background: linear-gradient(135deg, #fff7f7 0%, #fde9eb 50%, #fbdfe2 100%);
 }
 #trader-panel-system {
   left: 0;
   width: 50%;
-  background: linear-gradient(135deg, #020812 0%, #050d1f 50%, #02060f 100%);
+  background: linear-gradient(135deg, #f5f9ff 0%, #e9f1fd 50%, #e0eafc 100%);
   overflow: hidden;
 }
 /* The 3D scene canvases */
@@ -3670,7 +3582,6 @@ footer {
   color: var(--green);
   border-color: var(--b-green);
   background: var(--green-ghost);
-  text-shadow: 0 0 8px rgba(0,200,83,0.35);
 }
 /* Story captions */
 .trader-caption {
@@ -3712,7 +3623,7 @@ footer {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%,-50%);
-  color: var(--blue-bright);
+  color: var(--blue);
   font-size: 1.1rem;
   background: var(--ink-panel);
   width: 40px; height: 40px;
@@ -3970,7 +3881,6 @@ footer {
 }
 .lang-statement-pro {
   color: rgba(80,230,155,0.88);
-  text-shadow: 0 0 18px rgba(0,200,83,0.12);
 }
 
 /* Context note */
@@ -4250,7 +4160,7 @@ footer {
   font-size: 0.52rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--blue-bright);
+  color: var(--blue);
   background: rgba(26,107,255,0.12);
   border: 1px solid rgba(26,107,255,0.3);
   padding: 0.25rem 0.6rem;
@@ -4387,15 +4297,13 @@ footer {
     <a class="nav-link" href="#why-fail">Why Traders Fail</a>
     <a class="nav-link" href="#services">Services</a>
     <a class="nav-link" href="#advantage">The Advantage</a>
-    <a class="nav-link" href="#noise-signal">The Method</a>
-    <a class="nav-link" href="#ashford-clock">Market Clock</a>
+    <a class="nav-link" href="#noise-signal">Philosophy &amp; Method</a>
+    <a class="nav-link" href="#emotion-simulator">Simulator</a>
     <a class="nav-link" href="#live-room">Live Sessions</a>
     <a class="nav-link" href="#codex">Operator's Codex</a>
-    <a class="nav-link" href="#emotion-simulator">Simulator</a>
     <a class="nav-link" href="#glossary">Pro Language</a>
     <a class="nav-link" href="#testimonials">Results</a>
     <a class="nav-link" href="#readiness">Readiness Profiler</a>
-    <a class="nav-link" href="#philosophy">Philosophy</a>
     <a class="nav-link" href="#faq">FAQ</a>
   </nav>
 </header>
@@ -4434,17 +4342,6 @@ footer {
         <button class="btn-primary" onclick="redirectToCTA()">Begin Your Journey →</button>
         <button class="btn-secondary" onclick="lenisTo('#about')">Explore ↓</button>
       </div>
-
-      <div class="hero-trust" id="hero-trust">
-        <span class="trust-dot"></span>
-      </div>
-    </div>
-
-    <!-- Metrics strip -->
-    <div class="hero-metrics" id="h-metrics">   
-      <div class="h-metric">
-        <span class="h-metric-val green-accent">Live Executional Training & Assistance</span>
-      </div>
     </div>
 
   </div><!-- /hero-stage -->
@@ -4472,50 +4369,6 @@ footer {
     <span>Capital Intelligence</span><span class="dot">◆</span>
     <span class="green-word">Structured Decisions</span><span class="dot">◆</span>
     <span>Ashford Capital</span><span class="dot">◆</span>
-  </div>
-</div>
-
-<!-- ── SECTION 01: PSYCHOLOGY OF A TRADE ── -->
-<div id="psych-trade" style="min-height:600vh; position:relative;">
-  <div id="psych-pin">
-    <!-- Missed zone overlay -->
-    <div id="psych-missed-zone"></div>
-    <!-- Ghost "correct entry" line -->
-    <div id="psych-ghost-line"></div>
-    <!-- Chart canvas -->
-    <div id="psych-canvas-wrap">
-      <canvas id="psych-chart"></canvas>
-    </div>
-    <!-- Beat 1 -->
-    <div class="psych-scene-text active" id="pb1">
-      <div class="psych-beat-label">01 / Your Scenario</div>
-      <h2 class="psych-beat-h">You see the<br><span class="blue">setup clearly.</span></h2>
-    </div>
-    <!-- Beat 2 -->
-    <div class="psych-scene-text" id="pb2">
-      <div class="psych-beat-label">02 / The Hesitation</div>
-      <h2 class="psych-beat-h">Your hand<br><span class="red-word">hesitates.</span></h2>
-    </div>
-    <!-- Beat 3 -->
-    <div class="psych-scene-text" id="pb3">
-      <div class="psych-beat-label">03 / Mistake You Make</div>
-      <h2 class="psych-beat-h">You enter<br><span class="red-word">late.</span> <span class="red-word">Out of fear.</span></h2>
-    </div>
-    <!-- Beat 4 -->
-    <div class="psych-scene-text" id="pb4">
-      <div class="psych-beat-label">04 / Time of Truth</div>
-      <h2 class="psych-beat-h">The correct entry<br><span class="green">was always there.</span></h2>
-      <div class="psych-cta-scene">
-        <button class="btn-primary" onclick="redirectToCTA()">We fix this →</button>
-      </div>
-    </div>
-    <!-- Progress dots -->
-    <div class="psych-progress-rail">
-      <div class="psych-dot active" id="pd0"></div>
-      <div class="psych-dot" id="pd1"></div>
-      <div class="psych-dot" id="pd2"></div>
-      <div class="psych-dot" id="pd3"></div>
-    </div>
   </div>
 </div>
 
@@ -4592,8 +4445,93 @@ footer {
         <span class="v-label">[ Ashford Capital — Intro Reel ]</span>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- WHAT YOU GET -->
+<!-- ── SECTION 01: PSYCHOLOGY OF A TRADE ── -->
+<div id="psych-trade" style="min-height:600vh; position:relative;">
+  <div id="psych-pin">
+    <!-- Missed zone overlay -->
+    <div id="psych-missed-zone"></div>
+    <!-- Ghost "correct entry" line -->
+    <div id="psych-ghost-line"></div>
+    <!-- Chart canvas -->
+    <div id="psych-canvas-wrap">
+      <canvas id="psych-chart"></canvas>
+    </div>
+    <!-- Beat 1 -->
+    <div class="psych-scene-text active" id="pb1">
+      <div class="psych-beat-label">01 / Your Scenario</div>
+      <h2 class="psych-beat-h">You see the<br><span class="blue">setup clearly.</span></h2>
+    </div>
+    <!-- Beat 2 -->
+    <div class="psych-scene-text" id="pb2">
+      <div class="psych-beat-label">02 / The Hesitation</div>
+      <h2 class="psych-beat-h">Your hand<br><span class="red-word">hesitates.</span></h2>
+    </div>
+    <!-- Beat 3 -->
+    <div class="psych-scene-text" id="pb3">
+      <div class="psych-beat-label">03 / Mistake You Make</div>
+      <h2 class="psych-beat-h">You enter<br><span class="red-word">late.</span> <span class="red-word">Out of fear.</span></h2>
+    </div>
+    <!-- Beat 4 -->
+    <div class="psych-scene-text" id="pb4">
+      <div class="psych-beat-label">04 / Time of Truth</div>
+      <h2 class="psych-beat-h">The correct entry<br><span class="green">was always there.</span></h2>
+      <div class="psych-cta-scene">
+        <button class="btn-primary" onclick="redirectToCTA()">We fix this →</button>
+      </div>
+    </div>
+    <!-- Progress dots -->
+    <div class="psych-progress-rail">
+      <div class="psych-dot active" id="pd0"></div>
+      <div class="psych-dot" id="pd1"></div>
+      <div class="psych-dot" id="pd2"></div>
+      <div class="psych-dot" id="pd3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCROLLYTELLING ── -->
+<div id="scrolly">
+  <div id="scrolly-pin">
+
+    <div class="sy-scene" id="sy1">
+      <div class="sy-num"><span class="tick"></span>01 / The Problem<span class="tick"></span></div>
+      <h2 class="sy-h2">Most traders<br><span class="blue">know the theory.</span><br></h2>
+      <p class="sy-sub">They've read the books. Watched the videos. Know every term. Yet markets still feel alien when real capital is on the line.</p>
+    </div>
+
+    <div class="sy-scene" id="sy2">
+      <div class="sy-num"><span class="tick"></span>02 / The Gap<span class="tick green-tick"></span></div>
+      <h2 class="sy-h2"><br><span class="blue">But Freeze When its.</span><br><span class="ghost">Live Trading.</span></h2>
+      <p class="sy-sub">Live markets are psychologically different. Emotions override logic every single time — until you've been trained otherwise.</p>
+    </div>
+
+    <div class="sy-scene" id="sy3">
+      <div class="sy-num"><span class="tick"></span>03 / The Solution<span class="tick green-tick"></span></div>
+      <h2 class="sy-h2">We build<br><span class="green"> Live Executional Clarity.</span><br><span class="ghost">Not theory.</span></h2>
+      <p class="sy-sub">Real trades. Real pressure. Real decisions — systematically built through structured practice until execution becomes second nature.</p>
+    </div>
+
+    <div class="sy-scene" id="sy4">
+      <div class="sy-num"><span class="tick"></span>04 / The Outcome<span class="tick green-tick"></span></div>
+      <h2 class="sy-h2">Precision.<br><span class="ghost">Over</span> <span class="blue">prediction.</span></h2>
+      <p class="sy-sub">Stop guessing. Start operating like a professional market participant. That is the Ashford standard.</p>
+    </div>
+
+    <div class="sy-rail">
+      <div class="sy-tick live" id="syt0"></div>
+      <div class="sy-tick" id="syt1"></div>
+      <div class="sy-tick" id="syt2"></div>
+      <div class="sy-tick" id="syt3"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WHAT YOU GET ── -->
+<section id="wyg" class="s">
+  <div class="s-inner">
     <div class="wyg-section">
       <div class="wyg-header">
         <div class="wyg-title-eyebrow">What You Get</div>
@@ -4647,49 +4585,50 @@ footer {
         </div>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- ── SCROLLYTELLING ── -->
-<div id="scrolly">
-  <div id="scrolly-pin">
-
-    <div class="sy-scene" id="sy1">
-      <div class="sy-num"><span class="tick"></span>01 / The Problem<span class="tick"></span></div>
-      <h2 class="sy-h2">Most traders<br><span class="blue">know the theory.</span><br></h2>
-      <p class="sy-sub">They've read the books. Watched the videos. Know every term. Yet markets still feel alien when real capital is on the line.</p>
-    </div>
-
-    <div class="sy-scene" id="sy2">
-      <div class="sy-num"><span class="tick"></span>02 / The Gap<span class="tick green-tick"></span></div>
-      <h2 class="sy-h2"><br><span class="blue">But Freeze When its.</span><br><span class="ghost">Live Trading.</span></h2>
-      <p class="sy-sub">Live markets are psychologically different. Emotions override logic every single time — until you've been trained otherwise.</p>
-    </div>
-
-    <div class="sy-scene" id="sy3">
-      <div class="sy-num"><span class="tick"></span>03 / The Solution<span class="tick green-tick"></span></div>
-      <h2 class="sy-h2">We build<br><span class="green"> Live Executional Clarity.</span><br><span class="ghost">Not theory.</span></h2>
-      <p class="sy-sub">Real trades. Real pressure. Real decisions — systematically built through structured practice until execution becomes second nature.</p>
-    </div>
-
-    <div class="sy-scene" id="sy4">
-      <div class="sy-num"><span class="tick"></span>04 / The Outcome<span class="tick green-tick"></span></div>
-      <h2 class="sy-h2">Precision.<br><span class="ghost">Over</span> <span class="blue">prediction.</span></h2>
-      <p class="sy-sub">Stop guessing. Start operating like a professional market participant. That is the Ashford standard.</p>
-    </div>
-
-    <div class="sy-rail">
-      <div class="sy-tick live" id="syt0"></div>
-      <div class="sy-tick" id="syt1"></div>
-      <div class="sy-tick" id="syt2"></div>
-      <div class="sy-tick" id="syt3"></div>
-    </div>
-  </div>
-</div>
-
 <!-- ── WHY MOST TRADERS FAIL ── -->
 <section id="why-fail" class="s" style="background:var(--ink-deep);">
+  <svg class="fail-bg-art" viewBox="0 0 1400 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="failFade" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="var(--ink-deep)" stop-opacity="0"/>
+        <stop offset="55%" stop-color="var(--ink-deep)" stop-opacity="0"/>
+        <stop offset="100%" stop-color="var(--ink-deep)" stop-opacity="0.9"/>
+      </linearGradient>
+    </defs>
+    <!-- Chaotic noisy line, left half — represents the scattered, reactive trader -->
+    <polyline points="0,420 40,380 70,460 110,340 150,470 190,300 230,480 270,360 310,500 350,320 390,440 430,280 470,460 510,340" fill="none" stroke="rgba(255,77,109,0.30)" stroke-width="2"/>
+    <polyline points="0,520 50,470 90,560 130,430 170,570 210,410 250,580 290,440 330,590 370,420 410,540 450,400" fill="none" stroke="rgba(11,18,32,0.10)" stroke-width="1.5"/>
+    <!-- scattered dots, left half -->
+    <g fill="rgba(255,77,109,0.28)">
+      <circle cx="60" cy="200" r="4"/><circle cx="140" cy="160" r="3"/><circle cx="220" cy="230" r="5"/>
+      <circle cx="300" cy="150" r="3"/><circle cx="380" cy="210" r="4"/><circle cx="30" cy="620" r="3"/>
+      <circle cx="160" cy="660" r="4"/><circle cx="260" cy="600" r="3"/><circle cx="420" cy="650" r="4"/>
+    </g>
+    <!-- Orderly ascending structure, right half — represents Ashford's systematic clarity -->
+    <g stroke="rgba(21,80,201,0.28)" stroke-width="1.5">
+      <line x1="900" y1="600" x2="900" y2="200"/>
+      <line x1="960" y1="600" x2="960" y2="160"/>
+      <line x1="1020" y1="600" x2="1020" y2="120"/>
+      <line x1="1080" y1="600" x2="1080" y2="90"/>
+      <line x1="1140" y1="600" x2="1140" y2="60"/>
+      <line x1="1200" y1="600" x2="1200" y2="40"/>
+      <line x1="1260" y1="600" x2="1260" y2="20"/>
+      <line x1="1320" y1="600" x2="1320" y2="10"/>
+      <line x1="1380" y1="600" x2="1380" y2="4"/>
+    </g>
+    <polyline points="900,560 960,510 1020,470 1080,420 1140,380 1200,330 1260,280 1320,230 1380,180" fill="none" stroke="rgba(10,143,74,0.35)" stroke-width="2"/>
+    <!-- soft grid, right half -->
+    <g stroke="rgba(11,18,32,0.05)" stroke-width="1">
+      <line x1="850" y1="100" x2="1400" y2="100"/>
+      <line x1="850" y1="250" x2="1400" y2="250"/>
+      <line x1="850" y1="400" x2="1400" y2="400"/>
+      <line x1="850" y1="550" x2="1400" y2="550"/>
+    </g>
+    <rect x="0" y="0" width="1400" height="800" fill="url(#failFade)"/>
+  </svg>
   <div class="s-inner">
     <div class="s-label">The Pattern</div>
     <h2 class="s-h2">Why Most Traders <span class="blue">Fail</span></h2>
@@ -4870,7 +4809,7 @@ footer {
   <div class="s-inner">
     <div class="s-label">The Edge</div>
     <h2 class="s-h2">The Ashford <span class="blue">Advantage</span></h2>
-    <p style="color:var(--t-secondary);font-size:.85rem;font-weight:300;margin-top:.4rem;">What separates us from every other trading education platform.</p>
+    <p style="color:var(--t-secondary);font-size:.85rem;font-weight:300;margin-top:.4rem;max-width:680px;">What separates us from every other trading education platform — and why it compounds into results conventional courses can't match. Not more information. A different system entirely.</p>
 
     <div class="adv-grid">
       <div class="adv-cell" onclick="openModal('Clarity', 'Our Clarity framework cuts through market noise — no indicators, no opinions. Pure price logic. This is what separates systematic traders from gamblers.')">
@@ -4902,105 +4841,17 @@ footer {
         <div class="adv-cell-foot"></div>
       </div>
     </div>
+    <p class="adv-summary">Four principles. One system — not four separate promises. Where conventional courses sell information and leave execution to chance, Ashford builds all four into a single compounding discipline.</p>
   </div>
 </section>
 
-<!-- ── SECTION 02: NOISE VS SIGNAL ── -->
-<section id="noise-signal">
-  <div class="ns-header">
-    <div class="ns-intro-label">The Ashford Method</div>
-    <h2 class="ns-intro-h">Drag to see through the <span class="blue">noise.</span></h2>
-    <p class="ns-intro-sub">Most traders see the same chart buried under layers of indicators. Ashford trains you to see only what matters. Drag the line to experience the difference.</p>
-  </div>
-  <div class="ns-stage" id="ns-stage">
-    <!-- Noisy side (full width base) -->
-    <div class="ns-side" id="ns-noisy">
-      <span class="ns-label-overlay" id="ns-noisy-label">How most traders see it</span>
-      <canvas class="ns-chart-canvas" id="ns-noisy-canvas"></canvas>
-    </div>
-    <!-- Clean side (clips from left) -->
-    <div class="ns-side" id="ns-clean">
-      <span class="ns-label-overlay" id="ns-clean-label">The Ashford way</span>
-      <canvas class="ns-chart-canvas" id="ns-clean-canvas"></canvas>
-    </div>
-    <!-- Divider handle -->
-    <div id="ns-divider"><div id="ns-divider-handle">⇄</div></div>
-    <!-- Hint -->
-    <div class="ns-hint" id="ns-hint">← Drag to reveal →</div>
-  </div>
-  <div class="ns-footer">
-    <p class="ns-footer-quote">"Clarity isn't about adding more. <strong>It's about removing what blinds you.</strong>"</p>
-    <button class="btn-primary" onclick="redirectToCTA()">Train Your Perception →</button>
-  </div>
-</section>
-
-<!-- ── SECTION 08: EMOTION VS SYSTEM SIMULATOR ── -->
-<section id="emotion-simulator">
+<!-- ── SECTION 02: THE ASHFORD METHOD & PHILOSOPHY (merged) ── -->
+<section id="noise-signal" class="s">
   <div class="s-inner">
-    <div class="s-label">The Simulator</div>
-    <h2 class="s-h2">Emotion vs <span class="blue">System</span></h2>
-    <div class="emotion-header">
-      <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.5rem;">Two traders. Same market. One driven by fear and impulse — the other by structure and clarity. Drag the divider to reveal the difference.</p>
-    </div>
-
-    <!-- 3D Trader Slider -->
-    <div class="trader-slider-wrap" id="trader-slider-wrap">
-      <!-- Emotion panel (behind) -->
-      <div class="trader-panel" id="trader-panel-emotion">
-        <canvas class="trader-3d-canvas" id="trader-canvas-emotion"></canvas>
-        <span class="trader-panel-label trader-label-emotion">Emotion-Driven</span>
-        <div class="trader-caption trader-caption-emotion">
-          Reactive. Impulsive.<br>Trading from fear.
-        </div>
-      </div>
-
-      <!-- System panel (reveal on top) -->
-      <div class="trader-panel" id="trader-panel-system">
-        <canvas class="trader-3d-canvas" id="trader-canvas-system"></canvas>
-        <span class="trader-panel-label trader-label-system">System Clarity</span>
-        <div class="trader-caption trader-caption-system">
-          Disciplined. Present.<br>Executing the plan.
-        </div>
-      </div>
-
-      <!-- Slider divider -->
-      <div id="trader-divider">
-        <div id="trader-divider-handle">⟺</div>
-      </div>
-
-      <div class="trader-hint">← Drag to reveal →</div>
-    </div>
-
-    <!-- Stats comparison row -->
-    <div class="trader-stats-row">
-      <div class="trader-stat-col emotion-col">
-        <div class="trader-stat-title">Operating from Emotion</div>
-        <ul class="trader-stat-list">
-          <li>Revenge trades after every loss</li>
-          <li>Exits winners too early, holds losers too long</li>
-          <li>Position sizes based on gut, not risk rules</li>
-          <li>Checks P&L every 30 seconds — amplifies anxiety</li>
-          <li>FOMO drives entries at the worst possible moments</li>
-        </ul>
-      </div>
-      <div class="trader-stat-col system-col">
-        <div class="trader-stat-title">Operating with System Clarity</div>
-        <ul class="trader-stat-list">
-          <li>Waits for exact setup criteria — no exceptions</li>
-          <li>Pre-defined stops and targets before entry</li>
-          <li>Position sized by risk percentage, not confidence</li>
-          <li>Journals every trade — data drives decisions</li>
-          <li>Losses are feedback. The system evolves.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ── PHILOSOPHY ── -->
-<section id="philosophy" class="s">
-  <div class="s-inner">
-    <div class="s-label">Our Philosophy</div>
+    <div class="s-label">Our Philosophy &amp; Method</div>
+    <h2 class="s-h2">How Ashford <span class="blue">Develops Traders</span></h2>
+    <p class="method-phil-lede">Mindset first. Then principles. Then the practiced execution framework that turns both into instinct.</p>
+    <div id="philosophy">
     <div class="philosophy-statement">
       Markets are not random.<br>
       They are <span class="blue">structured.</span><br>
@@ -5028,18 +4879,121 @@ footer {
         <p class="phil-body">Winning big once is gambling. Winning consistently is craft. Capital preservation, position sizing, and patience are the real alpha generators.</p>
       </div>
     </div>
+    </div>
+
+  <div class="ns-header">
+    <div class="ns-intro-label">The Ashford Method</div>
+    <h2 class="ns-intro-h">Drag to see through the <span class="blue">noise.</span></h2>
+    <p class="ns-intro-sub">Most traders see the same chart buried under layers of indicators. Ashford trains you to see only what matters. Drag the line to experience the difference.</p>
+  </div>
+  <div class="ns-stage" id="ns-stage">
+    <!-- Noisy side (full width base) -->
+    <div class="ns-side" id="ns-noisy">
+      <span class="ns-label-overlay" id="ns-noisy-label">How most traders see it</span>
+      <canvas class="ns-chart-canvas" id="ns-noisy-canvas"></canvas>
+    </div>
+    <!-- Clean side (clips from left) -->
+    <div class="ns-side" id="ns-clean">
+      <span class="ns-label-overlay" id="ns-clean-label">The Ashford way</span>
+      <canvas class="ns-chart-canvas" id="ns-clean-canvas"></canvas>
+    </div>
+    <!-- Divider handle -->
+    <div id="ns-divider"><div id="ns-divider-handle">⇄</div></div>
+    <!-- Hint -->
+    <div class="ns-hint" id="ns-hint">← Drag to reveal →</div>
+  </div>
+  <div class="ns-footer">
+    <p class="ns-footer-quote">"Clarity isn't about adding more. <strong>It's about removing what blinds you.</strong>"</p>
+    <button class="btn-primary" onclick="redirectToCTA()">Train Your Perception →</button>
+  </div>
+  </div>
+</section>
+
+<!-- ── SECTION 08: EMOTION VS SYSTEM SIMULATOR ── -->
+<section id="emotion-simulator">
+  <div class="s-inner">
+    <div class="s-label">The Simulator</div>
+    <h2 class="s-h2">Emotion vs <span class="blue">System</span></h2>
+    <div class="emotion-header">
+      <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.5rem;">Two traders. Same market. One driven by fear and impulse — the other by structure and clarity. Drag the divider to reveal the difference.</p>
+    </div>
+
+    <!-- 3D Trader Slider — framed as a live platform mockup -->
+    <div class="sim-mockup-frame">
+      <div class="sim-mockup-bar">
+        <div class="sim-mockup-dots"><span></span><span></span><span></span></div>
+        <div class="sim-mockup-title">Ashford Terminal — Session Replay</div>
+        <div class="sim-mockup-live"><span class="sim-live-dot"></span>LIVE</div>
+      </div>
+    <div class="trader-slider-wrap" id="trader-slider-wrap">
+      <!-- Emotion panel (behind) -->
+      <div class="trader-panel" id="trader-panel-emotion">
+        <canvas class="trader-3d-canvas" id="trader-canvas-emotion"></canvas>
+        <span class="trader-panel-label trader-label-emotion">Emotion-Driven</span>
+        <div class="trader-caption trader-caption-emotion">
+          Reactive. Impulsive.<br>Trading from fear.
+        </div>
+      </div>
+
+      <!-- System panel (reveal on top) -->
+      <div class="trader-panel" id="trader-panel-system">
+        <canvas class="trader-3d-canvas" id="trader-canvas-system"></canvas>
+        <span class="trader-panel-label trader-label-system">System Clarity</span>
+        <div class="trader-caption trader-caption-system">
+          Disciplined. Present.<br>Executing the plan.
+        </div>
+      </div>
+
+      <!-- Slider divider -->
+      <div id="trader-divider">
+        <div id="trader-divider-handle">⟺</div>
+      </div>
+
+      <div class="trader-hint">← Drag to reveal →</div>
+    </div>
+    </div><!-- /sim-mockup-frame -->
+
+    <!-- Stats comparison row -->
+    <div class="trader-stats-row">
+      <div class="trader-stat-col emotion-col">
+        <div class="trader-stat-title">Operating from Emotion</div>
+        <ul class="trader-stat-list">
+          <li>Revenge trades after every loss</li>
+          <li>Exits winners too early, holds losers too long</li>
+          <li>Position sizes based on gut, not risk rules</li>
+          <li>Checks P&L every 30 seconds — amplifies anxiety</li>
+          <li>FOMO drives entries at the worst possible moments</li>
+        </ul>
+      </div>
+      <div class="trader-stat-col system-col">
+        <div class="trader-stat-title">Operating with System Clarity</div>
+        <ul class="trader-stat-list">
+          <li>Waits for exact setup criteria — no exceptions</li>
+          <li>Pre-defined stops and targets before entry</li>
+          <li>Position sized by risk percentage, not confidence</li>
+          <li>Journals every trade — data drives decisions</li>
+          <li>Losses are feedback. The system evolves.</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ── SECTION 07: THE LIVE SESSION ROOM ── -->
 <section id="live-room" class="s">
   <div class="s-inner">
-    <div class="s-label">Practical Execution</div>
-    <h2 class="s-h2">How Real <span class="blue">Learning</span> Happens</h2>
-    <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.4rem;">Live markets. Real capital. Real decisions. This is where theory becomes execution.</p>
+    <div class="s-label">Day One</div>
+    <h2 class="s-h2">Your First Session, <span class="blue">Hour by Hour</span></h2>
+    <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.4rem;">This is what Day One looks like. Live markets. Real capital. Real decisions — the moment theory becomes execution.</p>
 
     <div class="live-room-intro">
       <div class="live-room-left">
+        <div class="day-one-timeline">
+          <div class="dot-timeline-track"></div>
+          <div class="dot-timeline-point"><span class="dot-timeline-time">6:30 AM</span></div>
+          <div class="dot-timeline-point"><span class="dot-timeline-time">9:15 AM</span></div>
+          <div class="dot-timeline-point"><span class="dot-timeline-time">3:45 PM</span></div>
+        </div>
         <div class="live-room-cards">
           <div class="live-card">
             <span class="live-card-num">[ 01 ]</span>
@@ -5401,137 +5355,6 @@ footer {
   </div>
 </section>
 
-<!-- ── SECTION 03: THE ASHFORD CLOCK ── -->
-<section id="ashford-clock">
-  <canvas id="clock-particle-canvas"></canvas>
-  <div class="clock-inner">
-    <div class="clock-headline">Market Intelligence — Live</div>
-
-    <!-- Orbital rings + clock face -->
-    <div class="clock-face-wrap" id="clock-face-wrap">
-      <!-- Outer orbital ring with nodes -->
-      <div class="clock-orbital-ring" id="clock-ring-outer" style="width:140%;height:140%;"></div>
-      <div class="clock-orbital-ring" id="clock-ring-inner" style="width:115%;height:115%;"></div>
-
-      <!-- Floating orbital data nodes (positioned via JS) -->
-      <div class="clock-node" id="cn-nifty" style="position:absolute;">
-        <span class="clock-node-val up" id="cn-nifty-val">+0.42%</span>
-        <span class="clock-node-label">Nifty 50</span>
-        <div class="clock-node-dot"></div>
-      </div>
-      <div class="clock-node" id="cn-sensex" style="position:absolute;">
-        <span class="clock-node-val up" id="cn-sensex-val">+0.38%</span>
-        <span class="clock-node-label">Sensex</span>
-        <div class="clock-node-dot"></div>
-      </div>
-      <div class="clock-node" id="cn-vix" style="position:absolute;">
-        <span class="clock-node-val down" id="cn-vix-val">−2.10%</span>
-        <span class="clock-node-label">Vix</span>
-        <div class="clock-node-dot"></div>
-      </div>
-      <div class="clock-node" id="cn-gold" style="position:absolute;">
-        <span class="clock-node-val up" id="cn-gold-val">+0.55%</span>
-        <span class="clock-node-label">Gold</span>
-        <div class="clock-node-dot"></div>
-      </div>
-      <div class="clock-node" id="cn-crude" style="position:absolute;">
-        <span class="clock-node-val up" id="cn-crude-val">+1.12%</span>
-        <span class="clock-node-label">Crude</span>
-        <div class="clock-node-dot"></div>
-      </div>
-
-      <!-- Clock SVG face -->
-      <svg id="clock-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <!-- Outer ring -->
-        <circle cx="100" cy="100" r="94" fill="none" stroke="rgba(26,107,255,0.12)" stroke-width="1"/>
-        <circle cx="100" cy="100" r="88" fill="rgba(5,7,16,0.7)" stroke="rgba(26,107,255,0.18)" stroke-width="0.5"/>
-        <!-- Minute ticks -->
-        <g stroke="rgba(255,255,255,0.06)" stroke-width="0.5">
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(0 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(6 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(12 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(18 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(24 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(36 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(42 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(48 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(54 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(66 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(72 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(78 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(84 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(96 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(102 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(108 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(114 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(126 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(132 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(138 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(144 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(156 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(162 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(168 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(174 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(186 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(192 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(198 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(204 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(216 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(222 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(228 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(234 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(246 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(252 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(258 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(264 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(276 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(282 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(288 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(294 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(306 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(312 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(318 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(324 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(336 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(342 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(348 100 100)"/>
-          <line x1="100" y1="14" x2="100" y2="20" transform="rotate(354 100 100)"/>
-        </g>
-        <!-- Hour ticks -->
-        <g stroke="rgba(26,107,255,0.35)" stroke-width="1">
-          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(0 100 100)"/>
-          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(30 100 100)"/>
-          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(60 100 100)"/>
-          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(90 100 100)"/>
-          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(120 100 100)"/>
-          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(150 100 100)"/>
-          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(180 100 100)"/>
-          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(210 100 100)"/>
-          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(240 100 100)"/>
-          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(270 100 100)"/>
-          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(300 100 100)"/>
-          <line x1="100" y1="13" x2="100" y2="23" transform="rotate(330 100 100)"/>
-        </g>
-        <!-- Hour hand -->
-        <line id="clock-hour" x1="100" y1="100" x2="100" y2="45" stroke="rgba(220,225,240,0.7)" stroke-width="2" stroke-linecap="round"/>
-        <!-- Minute hand -->
-        <line id="clock-min" x1="100" y1="100" x2="100" y2="32" stroke="rgba(220,225,240,0.85)" stroke-width="1.5" stroke-linecap="round"/>
-        <!-- Second hand (gold) -->
-        <line id="clock-sec" x1="100" y1="108" x2="100" y2="26" stroke="#1a6bff" stroke-width="0.8" stroke-linecap="round"/>
-        <!-- Center dot -->
-        <circle cx="100" cy="100" r="3.5" fill="var(--blue-bright)"/>
-        <circle cx="100" cy="100" r="1.5" fill="var(--ink)"/>
-      </svg>
-    </div><!-- /clock-face-wrap -->
-
-    <div class="clock-session-badge" id="clock-session-badge">● Market Hours Active</div>
-
-    <h2 class="clock-tagline">Every second is <span class="blue">structured.</span><br>Are you?</h2>
-
-    <button class="btn-primary" onclick="redirectToCTA()" style="margin-top:0.5rem;">Begin Structured Training →</button>
-  </div>
-</section>
-
 <!-- ── SECTION 05: THE PERCEPTION TEST ── -->
 <section id="perception-test">
   <div class="pt-header">
@@ -5840,7 +5663,7 @@ footer {
         <li><a href="#about">About</a></li>
         <li><a href="#why-fail">Why Traders Fail</a></li>
         <li><a href="#services">Services</a></li>
-        <li><a href="#philosophy">Philosophy</a></li>
+        <li><a href="#noise-signal">Philosophy &amp; Method</a></li>
         <li><a href="#codex">The Codex</a></li>
         <li><a href="#testimonials">Results</a></li>
         <li><a href="#faq">FAQ</a></li>
@@ -6105,8 +5928,6 @@ gsap.set('.wm-line',      { y: '0%' });
 gsap.set('.tl-line',      { y: '0%' });
 gsap.set('#h-rule',       { width: 0, opacity: 0 });
 gsap.set('#h-actions',    { opacity: 0, y: 0 });
-gsap.set('#hero-trust',   { opacity: 0 });
-gsap.set('#h-metrics',    { opacity: 0 });
 gsap.set('#scroll-cue',   { opacity: 0 });
 gsap.set('#hero-divider', { opacity: 0, scaleY: 0 });
 
@@ -6141,15 +5962,13 @@ heroTL
     duration: 1.1, ease: 'expo.inOut'
   }, '<')
 
-  // PHASE 3 — Divider line, rule, buttons, metrics appear after settle
+  // PHASE 3 — Divider line, rule, and CTA settle in clean
   .to('#hero-divider', {
     opacity: 1, scaleY: 1, duration: 0.5, ease: 'power3.out'
   }, '-=0.15')
   .to('#h-rule', { width: 240, opacity: 1, duration: 0.55, ease: 'power3.out' }, '-=0.35')
   .to('#h-actions',  { opacity: 1, duration: 0.45, ease: 'power2.out' }, '-=0.2')
-  .to('#hero-trust', { opacity: 1, duration: 0.4, ease: 'power2.out' }, '-=0.2')
-  .to('#h-metrics',  { opacity: 1, duration: 0.45, ease: 'power2.out' }, '-=0.35')
-  .to('#scroll-cue', { opacity: 1, duration: 0.35 }, '-=0.1');
+  .to('#scroll-cue', { opacity: 1, duration: 0.35 }, '-=0.15');
 
 // Reposition on resize after animation ends
 window.addEventListener('resize', () => {
@@ -6813,107 +6632,6 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
 })();
 
 /* ════════════════════════════════════════
-   SECTION 03 — ASHFORD CLOCK
-════════════════════════════════════════ */
-(function() {
-  const canvas = document.getElementById('clock-particle-canvas');
-  if (!canvas) return;
-
-  function resizePC() {
-    canvas.width  = canvas.offsetWidth  || window.innerWidth;
-    canvas.height = canvas.offsetHeight || window.innerHeight;
-  }
-  resizePC();
-  window.addEventListener('resize', resizePC);
-
-  const pts = Array.from({ length: 55 }, () => ({
-    x: Math.random(), y: Math.random(),
-    vx: (Math.random() - 0.5) * 0.00018,
-    vy: (Math.random() - 0.5) * 0.00018,
-    r: Math.random() * 1.6 + 0.3,
-    a: Math.random() * 0.35 + 0.05,
-  }));
-
-  function drawParticles() {
-    if (!canvas.width) { requestAnimationFrame(drawParticles); return; }
-    const ctx = canvas.getContext('2d');
-    const W = canvas.width, H = canvas.height;
-    ctx.clearRect(0,0,W,H);
-    pts.forEach(p => { p.x=(p.x+p.vx+1)%1; p.y=(p.y+p.vy+1)%1; });
-    for (let i = 0; i < pts.length; i++) {
-      for (let j = i+1; j < pts.length; j++) {
-        const dx=(pts[i].x-pts[j].x)*W, dy=(pts[i].y-pts[j].y)*H;
-        const d=Math.sqrt(dx*dx+dy*dy);
-        if (d < 115) {
-          ctx.beginPath(); ctx.moveTo(pts[i].x*W,pts[i].y*H); ctx.lineTo(pts[j].x*W,pts[j].y*H);
-          ctx.strokeStyle=`rgba(26,107,255,${0.06*(1-d/115)})`; ctx.lineWidth=0.5; ctx.stroke();
-        }
-      }
-    }
-    pts.forEach(p => {
-      ctx.beginPath(); ctx.arc(p.x*W, p.y*H, p.r, 0, Math.PI*2);
-      ctx.fillStyle=`rgba(26,107,255,${p.a})`; ctx.fill();
-    });
-    requestAnimationFrame(drawParticles);
-  }
-  drawParticles();
-
-  function updateClock() {
-    const now = new Date();
-    const s = now.getSeconds() + now.getMilliseconds()/1000;
-    const m = now.getMinutes() + s/60;
-    const h = (now.getHours()%12) + m/60;
-    const r = (d) => `rotate(${d} 100 100)`;
-    document.getElementById('clock-hour')?.setAttribute('transform', r(h*30));
-    document.getElementById('clock-min')?.setAttribute('transform',  r(m*6));
-    document.getElementById('clock-sec')?.setAttribute('transform',  r(s*6));
-    setTimeout(updateClock, 50);
-  }
-  updateClock();
-
-  function positionNodes() {
-    const wrap = document.getElementById('clock-face-wrap');
-    if (!wrap) return;
-    const sz = wrap.offsetWidth;
-    const cx = sz/2, cy = sz/2, r = sz * 0.73;
-    [
-      { id:'cn-nifty',  deg:-75 },
-      { id:'cn-sensex', deg:-20 },
-      { id:'cn-vix',    deg: 45 },
-      { id:'cn-gold',   deg:120 },
-      { id:'cn-crude',  deg:190 },
-    ].forEach(({ id, deg }) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const rad = (deg - 90) * Math.PI / 180;
-      el.style.left = (cx + r * Math.cos(rad) - el.offsetWidth/2)  + 'px';
-      el.style.top  = (cy + r * Math.sin(rad) - el.offsetHeight/2) + 'px';
-    });
-  }
-  setTimeout(positionNodes, 250);
-  window.addEventListener('resize', positionNodes);
-
-  function updateSession() {
-    const badge = document.getElementById('clock-session-badge');
-    if (!badge) return;
-    const IST = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-    const mins = IST.getHours()*60 + IST.getMinutes();
-    const open = mins >= 555 && mins <= 930;
-    badge.textContent = open ? '● Market Hours Active' : '○ Market Closed';
-    badge.className   = 'clock-session-badge' + (open ? '' : ' closed');
-  }
-  updateSession(); setInterval(updateSession, 60000);
-
-  // Entrance animation
-  gsap.timeline({ scrollTrigger: { trigger: '#ashford-clock', start: 'top 70%', toggleActions: 'play none none none' } })
-    .from('.clock-headline',     { y: 24, opacity: 0, duration: 0.5 })
-    .from('.clock-face-wrap',    { scale: 0.88, opacity: 0, duration: 0.9, ease: 'back.out(1.4)' }, '-=0.2')
-    .from('.clock-session-badge',{ y: 16, opacity: 0, duration: 0.4 }, '-=0.2')
-    .from('.clock-tagline',      { y: 20, opacity: 0, duration: 0.55 }, '-=0.15')
-    .from('#ashford-clock .btn-primary', { y: 12, opacity: 0, duration: 0.4 }, '-=0.1');
-})();
-
-/* ════════════════════════════════════════
    SECTION 04 — TRADER'S ARC
 ════════════════════════════════════════ */
 (function() {
@@ -7324,7 +7042,9 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
 ════════════════════════════════════════ */
 (function() {
   gsap.timeline({ scrollTrigger: { trigger: '#live-room', start: 'top 76%', toggleActions: 'play none none none' } })
-    .from('.live-card', { y: 40, opacity: 0, stagger: 0.12, duration: 0.7, ease: 'power3.out' })
+    .from('.dot-timeline-track', { scaleX: 0, duration: 0.6, ease: 'power3.out' })
+    .from('.dot-timeline-point', { opacity: 0, scale: 0, stagger: 0.15, duration: 0.4, ease: 'back.out(2)' }, '-=0.3')
+    .from('.live-card', { y: 40, opacity: 0, stagger: 0.12, duration: 0.7, ease: 'power3.out' }, '-=0.1')
     .from('.live-stat', { scale: 0.9, opacity: 0, stagger: 0.08, duration: 0.5, ease: 'back.out(1.3)' }, '-=0.4')
     .from('.live-demo-btn', { y: 20, opacity: 0, duration: 0.4 }, '-=0.2');
 })();
