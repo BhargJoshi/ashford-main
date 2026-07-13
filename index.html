@@ -2094,11 +2094,7 @@ footer {
   transform: scale(0.97) !important;
 }
 
-/* Live Session Room */
-.live-room-cards:has(.live-card:hover) .live-card:not(:hover) {
-  filter: blur(2.5px) brightness(0.6);
-  transform: scale(0.97) !important;
-}
+/* Live Session Room — see .journey-track:has(.journey-circle:hover) rule with the new journey CSS */
 
 /* The section's own title/label/intro recedes along with its cards —
    reinforces the "screen focusing on it" spotlight feel */
@@ -2116,9 +2112,9 @@ footer {
 #testimonials .s-inner:has(.testi-card:hover) > .s-label,
 #testimonials .s-inner:has(.testi-card:hover) > .s-h2,
 #testimonials .s-inner:has(.testi-card:hover) > p,
-#live-room .s-inner:has(.live-card:hover) > .s-label,
-#live-room .s-inner:has(.live-card:hover) > .s-h2,
-#live-room .s-inner:has(.live-card:hover) > p {
+#live-room .s-inner:has(.journey-circle:hover) > .s-label,
+#live-room .s-inner:has(.journey-circle:hover) > .s-h2,
+#live-room .s-inner:has(.journey-circle:hover) > p {
   filter: blur(6px) brightness(0.5);
   transition: filter .5s ease;
 }
@@ -3118,16 +3114,6 @@ footer {
 @keyframes futurePulse {
   0% { transform: scale(0.3); opacity: 0.9; }
   100% { transform: scale(2.5); opacity: 0; }
-}
-
-/* ── Card animation areas (unchanged mechanics, repurposed content) ── */
-.live-card-anim {
-  flex: 1;
-  width: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 /* ── Stage 1: Learning to See — animated level markers ── */
@@ -4946,77 +4932,98 @@ footer {
 <!-- ── SECTION 07: THE LIVE SESSION ROOM ── -->
 <section id="live-room" class="s">
   <div class="s-inner">
-    <div class="s-label">Day One</div>
-    <h2 class="s-h2">Your First Session, <span class="blue">Hour by Hour</span></h2>
-    <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.4rem;">This is what Day One looks like. Live markets. Real capital. Real decisions — the moment theory becomes execution.</p>
+    <div class="s-label">The Journey</div>
+    <h2 class="s-h2">Your Story, <span class="blue">Stage by Stage</span></h2>
+    <p style="font-family:var(--f-sans);font-size:0.85rem;color:var(--t-secondary);font-weight:300;margin-top:0.4rem;max-width:640px;">Not a syllabus. Not a schedule. This is who you become between the trader you are today and the one you're training to be — one live session at a time.</p>
 
-    <div class="live-room-intro">
-      <div class="live-room-left">
-        <div class="day-one-timeline">
-          <div class="dot-timeline-track"></div>
-          <div class="dot-timeline-point"><span class="dot-timeline-time">6:30 AM</span></div>
-          <div class="dot-timeline-point"><span class="dot-timeline-time">9:15 AM</span></div>
-          <div class="dot-timeline-point"><span class="dot-timeline-time">3:45 PM</span></div>
-        </div>
-        <div class="live-room-cards">
-          <div class="live-card">
-            <span class="live-card-num">[ 01 ]</span>
-            <span class="live-card-title">Pre-Market Analysis</span>
-            <div class="live-card-anim">
-              <div class="anim-premarket">
-                <span class="pm-time-badge">6:30 AM IST</span>
-                <div class="pm-chart">
-                  <div class="pm-bar"></div><div class="pm-bar"></div><div class="pm-bar"></div>
-                  <div class="pm-bar"></div><div class="pm-bar"></div><div class="pm-bar"></div>
-                  <div class="pm-bar"></div><div class="pm-bar"></div><div class="pm-bar"></div>
-                  <div class="pm-bar"></div>
-                </div>
-                <div class="pm-level key"></div>
-                <div class="pm-level sup"></div>
+    <div class="journey-track">
+      <div class="journey-stage">
+        <div class="journey-circle">
+          <span class="journey-num">Weeks 1–2</span>
+          <div class="journey-anim-wrap">
+            <div class="anim-premarket">
+              <span class="pm-time-badge">READING</span>
+              <div class="pm-chart">
+                <div class="pm-bar"></div><div class="pm-bar"></div><div class="pm-bar"></div>
+                <div class="pm-bar"></div><div class="pm-bar"></div><div class="pm-bar"></div>
+                <div class="pm-bar"></div><div class="pm-bar"></div><div class="pm-bar"></div>
+                <div class="pm-bar"></div>
               </div>
+              <div class="pm-level key"></div>
+              <div class="pm-level sup"></div>
             </div>
           </div>
-          <div class="live-card">
-            <span class="live-card-num">[ 02 ]</span>
-            <span class="live-card-title">Live Execution</span>
-            <div class="live-card-anim">
-              <div class="anim-execution">
-                <div class="exec-candles">
-                  <div class="exec-candle bull"><div class="exec-candle-wick" style="height:6px"></div><div class="exec-candle-body"></div></div>
-                  <div class="exec-candle bear"><div class="exec-candle-wick" style="height:5px"></div><div class="exec-candle-body"></div></div>
-                  <div class="exec-candle bull"><div class="exec-candle-wick" style="height:7px"></div><div class="exec-candle-body"></div></div>
-                  <div class="exec-candle bull"><div class="exec-candle-wick" style="height:5px"></div><div class="exec-candle-body"></div></div>
-                  <div class="exec-candle bear"><div class="exec-candle-wick" style="height:6px"></div><div class="exec-candle-body"></div></div>
-                  <div class="exec-candle bull"><div class="exec-candle-wick" style="height:8px"></div><div class="exec-candle-body"></div></div>
-                  <div class="exec-candle bear"><div class="exec-candle-wick" style="height:4px"></div><div class="exec-candle-body"></div></div>
-                  <div class="exec-candle bull"><div class="exec-candle-wick" style="height:7px"></div><div class="exec-candle-body"></div></div>
-                </div>
-                <div class="exec-entry-arrow">↑</div>
-                <div class="exec-entry-label">ENTRY ●</div>
-              </div>
-            </div>
-          </div>
-          <div class="live-card">
-            <span class="live-card-num">[ 03 ]</span>
-            <span class="live-card-title">Post-Market Review</span>
-            <div class="live-card-anim">
-              <div class="anim-review">
-                <div class="review-equity-line">
-                  <svg viewBox="0 0 200 50" preserveAspectRatio="none">
-                    <path class="review-equity-path" d="M0 42 L25 38 L50 44 L75 30 L100 26 L125 18 L150 10 L175 6 L200 3"/>
-                  </svg>
-                </div>
-                <div class="review-trade-rows">
-                  <div class="review-row"><span class="trade-id">T-01 NIFTY</span><span class="trade-res win">+2.4R</span></div>
-                  <div class="review-row"><span class="trade-id">T-02 BANK</span><span class="trade-res loss">-1.0R</span></div>
-                  <div class="review-row"><span class="trade-id">T-03 CRUDE</span><span class="trade-res win">+3.1R</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <span class="journey-title">Learning to See</span>
+          <p class="journey-text">You stop staring at fifteen indicators. Structure starts to look obvious — the same way it always did to the people trading against you.</p>
         </div>
       </div>
-      <div class="live-room-right">
+
+      <div class="journey-arrow">→</div>
+
+      <div class="journey-stage">
+        <div class="journey-circle">
+          <span class="journey-num">Weeks 3–8</span>
+          <div class="journey-anim-wrap">
+            <div class="anim-execution">
+              <div class="exec-candles">
+                <div class="exec-candle bull"><div class="exec-candle-wick" style="height:6px"></div><div class="exec-candle-body"></div></div>
+                <div class="exec-candle bear"><div class="exec-candle-wick" style="height:5px"></div><div class="exec-candle-body"></div></div>
+                <div class="exec-candle bull"><div class="exec-candle-wick" style="height:7px"></div><div class="exec-candle-body"></div></div>
+                <div class="exec-candle bull"><div class="exec-candle-wick" style="height:5px"></div><div class="exec-candle-body"></div></div>
+                <div class="exec-candle bear"><div class="exec-candle-wick" style="height:6px"></div><div class="exec-candle-body"></div></div>
+                <div class="exec-candle bull"><div class="exec-candle-wick" style="height:8px"></div><div class="exec-candle-body"></div></div>
+                <div class="exec-candle bear"><div class="exec-candle-wick" style="height:4px"></div><div class="exec-candle-body"></div></div>
+                <div class="exec-candle bull"><div class="exec-candle-wick" style="height:7px"></div><div class="exec-candle-body"></div></div>
+              </div>
+              <div class="exec-entry-arrow">↑</div>
+              <div class="exec-entry-label">LIVE ●</div>
+            </div>
+          </div>
+          <span class="journey-title">Learning to Act</span>
+          <p class="journey-text">Live sessions. Real capital. Every entry follows a rule you set before the candle closed. Each time, the hesitation gets a little quieter.</p>
+        </div>
+      </div>
+
+      <div class="journey-arrow">→</div>
+
+      <div class="journey-stage">
+        <div class="journey-circle">
+          <span class="journey-num">Weeks 9–12</span>
+          <div class="journey-anim-wrap">
+            <div class="anim-review">
+              <div class="review-equity-line">
+                <svg viewBox="0 0 200 50" preserveAspectRatio="none">
+                  <path class="review-equity-path" d="M0 42 L25 38 L50 44 L75 30 L100 26 L125 18 L150 10 L175 6 L200 3"/>
+                </svg>
+              </div>
+              <div class="review-trade-rows">
+                <div class="review-row"><span class="trade-id">T-01 NIFTY</span><span class="trade-res win">+2.4R</span></div>
+                <div class="review-row"><span class="trade-id">T-02 BANK</span><span class="trade-res loss">-1.0R</span></div>
+                <div class="review-row"><span class="trade-id">T-03 CRUDE</span><span class="trade-res win">+3.1R</span></div>
+              </div>
+            </div>
+          </div>
+          <span class="journey-title">Learning to Own It</span>
+          <p class="journey-text">Every trade reviewed. Win or lose, you already know why — because the system tells you, not your feelings.</p>
+        </div>
+      </div>
+
+      <div class="journey-arrow">→</div>
+
+      <div class="journey-stage journey-future">
+        <div class="journey-circle">
+          <span class="journey-num">Beyond</span>
+          <div class="journey-future-badge">
+            <span class="journey-future-dot"></span>
+          </div>
+          <span class="journey-title">The Trader You Become</span>
+          <p class="journey-text">Calm in the chaos. Systematic by instinct. This is the person you were building toward the entire time.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey-footer">
+      <div class="journey-footer-inner">
         <div class="live-stats">
           <div class="live-stat">
             <span class="live-stat-val">120+</span>
@@ -5035,7 +5042,7 @@ footer {
             <span class="live-stat-label">Reward:Risk</span>
           </div>
         </div>
-        <button class="btn-primary live-demo-btn" onclick="redirectToCTA()">Experience a Live Session →</button>
+        <button class="btn-primary live-demo-btn" onclick="redirectToCTA()">Begin Your Journey →</button>
       </div>
     </div>
   </div>
@@ -5187,7 +5194,7 @@ footer {
 <section id="glossary" class="s">
   <div class="s-inner">
     <div class="s-label">The Language</div>
-    <h2 class="s-h2">How You <span class="blue">Speak</span> About Markets<br>Reveals How You <span class="blue">Trade</span> Them</h2>
+    <h2 class="s-h2">The <span class="blue">Mindset Shift</span> You Need</h2>
     <div class="language-intro">
       <p>The amateur's vocabulary is built on hope, prediction, and ego. The professional's is built on probability, process, and evidence. Same market. Same chart. Completely different lens.</p>
     </div>
@@ -5800,7 +5807,7 @@ document.addEventListener('mousemove', e => {
   requestAnimationFrame(lerpRing);
 })();
 
-const hoverEls = document.querySelectorAll('button, a, .adv-cell, .svc-card, .pillar-row, .testi-card, .faq-row, .phil-card, .nav-logo, .footer-brand-logo, .pyr-tier, .fail-card, .wyg-card, .live-card');
+const hoverEls = document.querySelectorAll('button, a, .adv-cell, .svc-card, .pillar-row, .testi-card, .faq-row, .phil-card, .nav-logo, .footer-brand-logo, .pyr-tier, .fail-card, .wyg-card, .journey-circle');
 hoverEls.forEach(el => {
   el.addEventListener('mouseenter', () => { cRing.classList.add('expanded'); cDot.classList.add('green-mode'); });
   el.addEventListener('mouseleave', () => { cRing.classList.remove('expanded'); cDot.classList.remove('green-mode'); });
@@ -6796,14 +6803,13 @@ function redirectToCTA() { window.location.href = 'https://ashford-cta.vercel.ap
 })();
 
 /* ════════════════════════════════════════
-   SECTION 07 — THE LIVE SESSION ROOM
+   SECTION 07 — THE LIVE SESSION ROOM (now: the journey)
 ════════════════════════════════════════ */
 (function() {
   gsap.timeline({ scrollTrigger: { trigger: '#live-room', start: 'top 76%', toggleActions: 'play none none none' } })
-    .from('.dot-timeline-track', { scaleX: 0, duration: 0.6, ease: 'power3.out' })
-    .from('.dot-timeline-point', { opacity: 0, scale: 0, stagger: 0.15, duration: 0.4, ease: 'back.out(2)' }, '-=0.3')
-    .from('.live-card', { y: 40, opacity: 0, stagger: 0.12, duration: 0.7, ease: 'power3.out' }, '-=0.1')
-    .from('.live-stat', { scale: 0.9, opacity: 0, stagger: 0.08, duration: 0.5, ease: 'back.out(1.3)' }, '-=0.4')
+    .from('.journey-circle', { y: 40, opacity: 0, stagger: 0.15, duration: 0.7, ease: 'power3.out' })
+    .from('.journey-arrow', { opacity: 0, scale: 0.5, stagger: 0.15, duration: 0.4, ease: 'back.out(2)' }, '-=0.9')
+    .from('.live-stat', { scale: 0.9, opacity: 0, stagger: 0.08, duration: 0.5, ease: 'back.out(1.3)' }, '-=0.3')
     .from('.live-demo-btn', { y: 20, opacity: 0, duration: 0.4 }, '-=0.2');
 })();
 
